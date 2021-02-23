@@ -1,0 +1,15 @@
+sample_name,group,cell_type,drug,time_hr
+SRR3228429,HCT116.p53_WT.control,HCT116_WT,control,
+SRR3228430,HCT116.p53_WT.control,HCT116_WT,control,
+SRR3228431,HCT116.p53_WT.doxorubicin.300nM.16h,HCT116_WT,doxorubicin_300nM,16
+SRR3228432,HCT116.p53_WT.doxorubicin.300nM.16h,HCT116_WT,doxorubicin_300nM,16
+SRR3228434,HCT116.p53_KO.doxorubicin.300nM.16h,HCT116_KO,doxorubicin_300nM,16
+SRR3228435,RKO.p53_WT.control,RKO_WT,control,
+SRR3228436,RKO.p53_WT.doxorubicin.300nM.16h,RKO_KO,doxorubicin_300nM,16
+SRR3228438,RKO.p53_KO.doxorubicin.300nM.16h,RKO_KO,doxorubicin_300nM,16
+SRR3228439,SW48.p53_WT.control,SW48_WT,control,
+SRR3228440,SW48.p53_WT.doxorubicin.300nM.16h,SW48_WT,doxorubicin_300nM,16
+SRR3228441,SW48.p53_KO.control,SW48_KO,control,
+SRR3228442,SW48.p53_KO.doxorubicin.300nM.16h,SW48_KO,doxorubicin_300nM,16
+SRR3228437,RKO.p53_KO.control,RKO_KO,control,
+SRR3228433,HCT116.p53_KO.control,HCT116_KO,control,

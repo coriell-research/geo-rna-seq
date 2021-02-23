@@ -1,0 +1,7 @@
+sample_name,group,cell_type,drug,time_hr
+SRR6261913,HT29.untreated,HT29,untreated,72
+SRR6261914,HT29.5FU_20uM.72hr,HT29,5FU_20uM,72
+SRR6261915,HT29.5FU_20uM.72hr,HT29,5FU_20uM,72
+SRR6261916,HT29.5FU_20uM.72hr,HT29,5FU_20uM,72
+SRR6261917,HT29.untreated,HT29,untreated,72
+SRR6261918,HT29.untreated,HT29,untreated,72
