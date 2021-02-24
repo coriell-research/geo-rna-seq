@@ -77,3 +77,17 @@ DTP heterochromatin in genomic repeat regions protects the population from
 drug-induced death. Overall design: Investigation of RNA expression changes in 
 heterogenous parental populations as compared to drug treated and drugtolerant 
 populations. Also included are TSA treated parental and drug-tolerant populations
+
+## PRJNA260377
+
+## PRJNA312611
+
+## PRJNA316529
+
+## PRJNA497893
+
+## PRJNA607909
+
+## PRJNA649432
+
+## PRJNA265187
