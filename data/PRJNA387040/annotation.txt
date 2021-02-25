@@ -1,7 +1,0 @@
-sample_name,group,cell_type,drug
-SRR5574051,wt.control,IMR90_WT,control
-SRR5574052,wt.control,IMR90_WT,control
-SRR5574053,wt.etoposide,IMR90_WT,etoposide
-SRR5574054,wt.etoposide,IMR90_WT,etoposide
-SRR5574055,ko_cGAS.etoposide,IMR90_KO,etoposide
-SRR5574056,ko_cGAS.etoposide,IMR90_KO,etoposide
