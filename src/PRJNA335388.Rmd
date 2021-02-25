@@ -10,144 +10,37 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+source("helpers/helpers.R")
 ```
 
-## Read in quant files
+## Read in SummarizedExperiment Object
 
 ```{r}
-library(here)
 library(tidyverse)
+library(here)
+library(SummarizedExperiment)
 
 
-quant_files <- list.files(here("data", "PRJNA335388"), 
-                          pattern = "quant.sf",
-                          recursive = TRUE,
-                          full.names = TRUE)
-
-names(quant_files) <- str_extract(quant_files, "SRR[0-9]+")
+se <- readRDS(here("data", "PRJNA335388", "summarized_experiment.rds"))
 ```
 
-## Read in the annotation file, clean, and save
+## Read in gene annotations
 
 ```{r}
-sra_annotation <- read_csv(here("data", "PRJNA335388", "SraRunTable.txt"))
-
-info <- sra_annotation %>% 
-  janitor::clean_names() %>% 
-  select(run, source_name, treatment) %>% 
-  mutate(source_name = if_else(str_detect(source_name, "Breast"), "breast_cancer", "osteosarcoma"),
-         drug = case_when(str_detect(treatment, "DMSO") ~ "dmso",
-                          str_detect(treatment, "Doxo") ~ "doxorubicin",
-                          str_detect(treatment, "Paclit") ~ "paclitaxel",
-                          str_detect(treatment, "Etoposide") ~ "etoposide",
-                          str_detect(treatment, "MMS") ~ "mms"),
-         dose = str_extract(treatment, "^[^\\s]+"),
-         dose = str_replace(dose, "DMSO", "NA"),
-         dose = str_replace(dose, "µM", "uM"),
-         dose = str_replace(dose, "µg/ml", "ug_ml"),
-         dose = str_replace(dose, "microg/ml", "ug_ml"),
-         time_hr = str_extract(treatment, "[0-9]+ hours"),
-         time_hr = str_extract(time_hr, "[0-9]"),
-         time_hr = replace_na(time_hr, "NA")) %>%
-  unite(drug, drug, dose, time_hr, sep = ".") %>% 
-  select(sample_name = run, cell_type = source_name, drug)
-
-head(info)
-```
-
-## Load helper functions for processing raw data
-
-Reads in `process_quant_file` and `get_de_results` functions.
-
-```{r}
-source(here("src", "helpers", "helpers.R"))
-```
-
-## Process the quant files
-
-Run on multiple cores. Each process uses about 2.7GB of memory.
-
-```{r}
-processed <- parallel::mclapply(quant_files, process_quant_file, mc.cores = length(quant_files))
-```
-
-## Extract gene and RE tables
-
-```{r}
-gene_counts <- map(processed, purrr::pluck, "gene_counts")
-re_counts <- map(processed, purrr::pluck, "allRE_counts")
-
-# collapse into single dataframe and round the counts for edgeR
-gene_df <- bind_rows(gene_counts, .id = "sample_name") %>% mutate(count = round(count))
-re_df <- bind_rows(re_counts, .id = "sample_name") %>% mutate(count = round(count))
-```
-
-## Coerce count dfs to count matrices
-
-```{r}
-gene_mat <- gene_df %>% 
-  pivot_wider(names_from = sample_name, 
-              values_from = count, 
-              values_fill = 0) %>% 
-  column_to_rownames(var = "symbol")
-
-re_mat <- re_df %>% 
-  pivot_wider(names_from = sample_name,
-              values_from = count,
-              values_fill = 0) %>% 
-  column_to_rownames(var = "repElem")
-
-re_mat <- subset(re_mat, !str_detect(rownames(re_mat), "tRNA|snRNA|scRNA|rRNA|srpRNA"))
-
-# check that they can be row-bound
-all(colnames(gene_mat) == colnames(re_mat))
-```
-
-## Only include protein coding genes in gene matrix
-
-```{r}
-# read in GTF file for gene annotations
-gtf <- as.data.frame(rtracklayer::import(here("doc", "gencode.v26.annotation.gtf.gz")))
-
-# filter for protein coding genes
-cds <- subset(gtf, 
+gtf <- rtracklayer::import("/mnt/data/data_gc/projects/yb5-combined-analysis/doc/gencode.v26.annotation.gtf.gz")
+gtf_df <- as.data.frame(gtf)
+cds <- subset(gtf_df, 
               type == "gene" & gene_type == "protein_coding", 
               c("gene_id", "gene_name", "seqnames", "start", "end", "width", "strand")
               )
-
-# filter counts matrix for only protein coding genes
-gene_mat <- subset(gene_mat, rownames(gene_mat) %in% cds$gene_name)
 ```
 
-## Append the RE counts onto the protein coding count matrix
-
-This way we can use the control genes to estimate the normalization factors for
-both the gene counts and the REs simultaneously
+## Filter out RNA REs from counts assay
 
 ```{r}
-# combine counts
-counts <- rbind(gene_mat, re_mat)
-
-# write out the raw counts
-write_rds(gene_mat, here("results", "PRJNA335388", "rds-files", "gene-mat.rds"))
-write_rds(re_mat, here("results", "PRJNA335388", "rds-files", "re-mat.rds"))
-```
-
-## Create annotation for edgeR
-
-```{r}
-samples <- info %>%
-  mutate(group = str_c(cell_type, drug, sep = "."),
-         group = factor(group)) %>% 
-  column_to_rownames(var = "sample_name")
-
-# reorder rownames of samples to match colnames of counts
-samples <- samples[match(colnames(counts), rownames(samples)), ]
-
-# check
-all(rownames(samples) == colnames(counts))
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
 ```
 
 ## DE pipeline
@@ -157,10 +50,10 @@ library(edgeR)
 library(coriell)
 
 
-design <- model.matrix(~0 + group, data = samples)
+design <- model.matrix(~0 + group, data = colData(se))
 colnames(design) <- str_remove(colnames(design), "^group")
-y <- DGEList(counts = counts,
-             samples = samples)
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se)) 
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")
@@ -172,14 +65,14 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  bc_dox = breast_cancer.doxorubicin.1uM.8 - breast_cancer.dmso.NA.NA,
-  bc_eto = breast_cancer.etoposide.20uM.8 - breast_cancer.dmso.NA.NA,
-  bc_mms = breast_cancer.mms.40ug_ml.8 - breast_cancer.dmso.NA.NA,
-  bc_pac = breast_cancer.paclitaxel.0.2uM.8 - breast_cancer.dmso.NA.NA,
-  os_dox = osteosarcoma.doxorubicin.1uM.8 - osteosarcoma.dmso.NA.NA,
-  os_eto = osteosarcoma.etoposide.20uM.8 - osteosarcoma.dmso.NA.NA,
-  os_mms = osteosarcoma.mms.40ug_ml.8 - osteosarcoma.dmso.NA.NA,
-  os_pac = osteosarcoma.paclitaxel.0.2uM.8 - osteosarcoma.dmso.NA.NA,
+  bc_dox = MDA.doxorubicin_1uM - MDA.dmso,
+  bc_eto = MDA.etoposide_20uM - MDA.dmso,
+  bc_mms = MDA.mms_40ug_ml - MDA.dmso,
+  bc_pac = MDA.paclitaxel_0.2uM - MDA.dmso,
+  os_dox = U2OS.doxorubicin_1uM - U2OS.dmso,
+  os_eto = U2OS.etoposide_20uM - U2OS.dmso,
+  os_mms = U2OS.mms_40ug_ml - U2OS.dmso,
+  os_pac = U2OS.paclitaxel_0.2uM - U2OS.dmso,
   
   levels = design
 )
@@ -218,11 +111,11 @@ df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```{r}
 # split DE results into gene and RE results and write out
 dge <- df %>% 
-  filter(feature_id %in% rownames(gene_mat)) %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
   write_tsv(here("results", "PRJNA335388", "data-files", "dge.tsv"))
 
 dre <- df %>% 
-  filter(feature_id %in% rownames(re_mat)) %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
   write_tsv(here("results", "PRJNA335388", "data-files", "dre.tsv"))
 ```
 
@@ -268,8 +161,8 @@ for (i in seq_along(coi)) {
 lcpms <- cpm(y, log = TRUE, prior.count = 2)
 
 # split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% rownames(gene_mat))
-lcpms.re <- subset(lcpms, rownames(lcpms) %in% rownames(re_mat))
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
 write_rds(lcpms.gene, here("results", "PRJNA335388", "rds-files", "gene-lcpms.rds"))
@@ -315,7 +208,7 @@ ind.re <- get_pca_ind(pca.re)
 # genes
 ind.gene$coord %>% 
   as_tibble(rownames = "sample_name") %>% 
-  left_join(as_tibble(samples, rownames = "sample_name"), by = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
   ggplot(aes(x = Dim.1, y = Dim.2, color = drug, shape = cell_type)) +
   geom_point(size = 5) +
   geom_hline(yintercept = 0, linetype = 3) +
@@ -331,7 +224,7 @@ ind.gene$coord %>%
 # REs
 ind.re$coord %>% 
   as_tibble(rownames = "sample_name") %>% 
-  left_join(as_tibble(samples, rownames = "sample_name"), by = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
   ggplot(aes(x = Dim.1, y = Dim.2, color = drug, shape = cell_type)) +
   geom_point(size = 5) +
   geom_hline(yintercept = 0, linetype = 3) +
@@ -350,7 +243,7 @@ ind.re$coord %>%
 
 ```{r}
 # create column annotation
-col_df <- samples[, c("cell_type", "drug")]
+col_df <- colData(se)[, c("cell_type", "drug")] %>% as.data.frame()
 
 # create colors for column annotations
 cell_colors <- c("firebrick", "steelblue")
@@ -363,8 +256,8 @@ names(drug_colors) <- unique(col_df$drug)
 ann_colors <- list(cell_type = cell_colors, drug = drug_colors)
 
 # extract only significant genes and REs ---------------------------------------
-sig_genes <- df %>% filter(feature_id %in% rownames(gene_mat) & FDR < sig) %>% pull(feature_id)
-sig_res <- df %>% filter(feature_id %in% rownames(re_mat) & FDR < sig) %>% pull(feature_id)
+sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+sig_res <- df %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
 lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
 lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
 
@@ -453,7 +346,7 @@ for (i in seq_along(names(de_results))) {
 
 (dotplots[[1]] + ggtitle(titles[[1]]) | 
  dotplots[[2]] + ggtitle(titles[[2]]) | 
- dotplots[[3]] + ggtitle(titles[[3]])) / 
+ plot_spacer()) / 
 (dotplots[[5]] + ggtitle(titles[[5]]) | 
  dotplots[[6]] + ggtitle(titles[[6]]) | 
  dotplots[[7]] + ggtitle(titles[[7]])) +
