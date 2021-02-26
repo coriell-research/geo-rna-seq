@@ -341,3 +341,37 @@ functional patterns of CARs between dCAR T and CAR T, we compared the
 genome-wide transcriptional profiles of dCAR and CAR T cell before and after 
 cocultured with Raji cells for 24 h.
 
+## PRJNA555350
+
+**Lineage tracing of acute myeloid leukemia reveals the impact of hypomethylating agents on chemoresistance selection**
+
+Chemotherapy-resistant cancer recurrence is a major cause of mortality. In 
+acute myeloid leukemia (AML), chemorefractory relapses result from the complex 
+interplay between altered genetic, epigenetic and transcriptional states in 
+leukemic cells. We developed an experimental model system using in vitro 
+lineage tracing coupled with exome, transcriptome and in vivo functional 
+readouts to assess the AML population dynamics and associated molecular 
+determinants underpinning chemoresistance development. We found that combining 
+standard chemotherapeutic regimens with low doses of DNA methyltransferase 
+inhibitors (DNMTi, hypomethylating drugs) prevents chemoresistant relapses. 
+Mechanistically, DNMTi suppressed the outgrowth of a pre-determined set of 
+chemoresistant AML clones with stemness properties, instead favoring the 
+expansion of rarer and unfit chemosensitive clones. Importantly, we confirmed 
+the capacity of DNMTi combination to suppress stemness-dependent chemoresistance 
+development in both xenotransplantation models and primary AML patient samples. 
+Together, these results support the potential of DNMTi combination treatment to 
+circumvent the development of chemorefractory AML relapses. Overall design: We 
+preformed RNA-Seq analysis of 3 untreated HEL (AML cell line) replicates; 
+3 Doxorubicin treated HEL replicates; 3 Doxorubicn + Cytarabine treated HEL 
+replicates; 4 Doxorubicin + Cytarabine + Decitabine
+
+## PRJNA670901
+
+**The Mechanistic Differences/Similarities of Azacitidine and Decitabine in Models of Mature T-cell Lymphoma**
+
+We perform expression analysis on a panel of three T-cell lymphoma lines 
+exposed to 5-azacytidine and decitabine as single agent. Overall design: 
+Gene expression profiles of cells exposed and not exposed to 5-azacytidine 
+and decitabine.
+
+## PRJNA642730
