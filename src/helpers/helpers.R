@@ -1,7 +1,7 @@
 library(data.table)
-library(tidyverse)
 library(forcats)
 library(coriell)
+library(tidyverse)
 
 
 # perform differential expression on all contrasts ------------------------
