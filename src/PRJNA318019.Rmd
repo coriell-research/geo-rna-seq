@@ -64,6 +64,7 @@ contrast.matrix <- makeContrasts(
   lnt_dac = LNT_229.decitabine - LNT_229.untreated,
   t98g_dac = T98G.decitabine - T98G.untreated,
   u87_dac = U_87.decitabine - U_87.untreated,
+  dac = ((LNT_229.decitabine + T98G.decitabine + U_87.decitabine) / 3) - ((LNT_229.untreated + T98G.untreated + U_87.untreated) / 3),
   levels = design
 )
 
@@ -72,7 +73,8 @@ cons <- colnames(contrast.matrix)
 names(cons) <- cons
 titles <- c("LNT-229 DAC vs LNT229 Control",
             "T98G DAC vs Control",
-            "U87 DAC vs Control")
+            "U87 DAC vs Control",
+            "DAC vs Control")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5

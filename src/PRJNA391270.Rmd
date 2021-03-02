@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -75,6 +74,29 @@ contrast.matrix <- makeContrasts(
   u2os_4gy = U2OS.4GY_3hr - U2OS.control,
   uacc257_4gy = UACC257.4GY_3hr - UACC257.control,
   uo31_4gy = UO31.4GY_3hr - UO31.control,
+  
+  gy4.3hr = ((A498.4GY_3hr + 
+             A549.4GY_3hr + 
+             H460.4GY_3hr + 
+             HCT116.4GY_3hr + 
+             LOXIMVI.4GY_3hr +
+             MALME3.4GY_3hr +
+             MCF7.4GY_3hr + 
+             SKMEL5.4GY_3hr +
+             U2OS.4GY_3hr +
+             UACC257.4GY_3hr +
+             UO31.4GY_3hr) / 11) - 
+           ((A498.control +
+             A549.control +
+             H460.control +
+             HCT116.control +
+             LOXIMVI.control +
+             MALME3.control +
+             MCF7.control +
+             SKMEL5.control +
+             U2OS.control +
+             UACC257.control +
+             UO31.control) / 11),
   levels = design
 )
 
@@ -94,7 +116,8 @@ titles <- c("A498 + 4GY vs A498 Control",
             "SKMEL5 + 4GY vs Control",
             "U2OS + 4GY vs Control",
             "UACC257 + 4GY vs Control",
-            "UO31 + 4GY vs Control")
+            "UO31 + 4GY vs Control",
+            "4GY All vs Control")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5

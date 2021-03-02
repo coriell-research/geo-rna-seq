@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -72,25 +71,25 @@ fc = 1.5
 sig = 0.1
 
 # test for overall differences 
-dac_vs_dmso <- glmTreat(fit, lfc = log2(fc))
+dac <- glmTreat(fit, lfc = log2(fc))
 
 # volcano plots
-v1 <- edger_to_df(dac_vs_dmso) %>%
+v1 <- edger_to_df(dac) %>%
   filter(feature_id %in% cds$gene_name) %>% 
   plot_volcano(fdr = sig, lfc = log2(fc)) +
   ggtitle("Protein Coding Gene Expression")
 
-v2 <- edger_to_df(dac_vs_dmso) %>%
+v2 <- edger_to_df(dac) %>%
   filter(!feature_id %in% cds$gene_name) %>% 
   plot_volcano(fdr = sig, lfc = log2(fc)) +
   ggtitle("RE Expression")
 
-m1 <- edger_to_df(dac_vs_dmso) %>% 
+m1 <- edger_to_df(dac) %>% 
   filter(feature_id %in% cds$gene_name) %>% 
   plot_md(fdr = sig, lfc = log2(fc)) +
   ggtitle("Protein Coding Gene Expression")
 
-m2 <- edger_to_df(dac_vs_dmso) %>% 
+m2 <- edger_to_df(dac) %>% 
   filter(!feature_id %in% cds$gene_name) %>% 
   plot_md(fdr = sig, lfc = log2(fc)) +
   ggtitle("RE Expression")
@@ -108,12 +107,16 @@ ggsave(here("results", "PRJNA607909", "figures", "patchwork.png"),
 
 ```{r}
 # split DE results into gene and RE results and write out
-dge <- edger_to_df(dac_vs_dmso) %>% 
+dge <- edger_to_df(dac) %>% 
   filter(feature_id %in% cds$gene_name) %>% 
+  mutate(contrast = "dac") %>% 
+  select(contrast, everything()) %>% 
   write_tsv(here("results", "PRJNA607909", "data-files", "dge.tsv"))
 
-dre <- edger_to_df(dac_vs_dmso) %>% 
+dre <- edger_to_df(dac) %>% 
   filter(!feature_id %in% cds$gene_name) %>% 
+  mutate(contrast = "dac") %>% 
+  select(contrast, everything()) %>% 
   write_tsv(here("results", "PRJNA607909", "data-files", "dre.tsv"))
 ```
 
@@ -220,8 +223,8 @@ names(trt_colors) <- levels(col_df$treatment)
 ann_colors <- list(cell_type = cell_colors, treatment = trt_colors)
 
 # extract only significant genes and REs ---------------------------------------
-sig_genes <- edger_to_df(dac_vs_dmso) %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
-sig_res <- edger_to_df(dac_vs_dmso) %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+sig_genes <- edger_to_df(dac) %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+sig_res <- edger_to_df(dac) %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
 lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
 lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
 
@@ -242,11 +245,11 @@ quickmap(lcpms.sig_res,
 ## Create Family-Level Dotplots for significant REs
 
 ```{r}
-de_df <- edger_to_df(dac_vs_dmso) %>% 
+de_df <- edger_to_df(dac) %>% 
   filter(!feature_id %in% cds$gene_name) %>% 
-  mutate(contrast = "dac_vs_dmso")
+  mutate(contrast = "dac")
 
-plot_fam_counts(de_df, "dac_vs_dmso") +
+plot_fam_counts(de_df, "dac") +
   ggsave(here("results", "PRJNA607909", "figures", "dotplot.png"),
          width = 8,
          height = 5)

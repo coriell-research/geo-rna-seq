@@ -1,5 +1,5 @@
 ---
-title: "PRJNA555350 Analysis"
+title: "PRJNA649431 Analysis"
 output:
   html_document:
     df_print: paged
@@ -19,11 +19,12 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
+library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
 
-se <- readRDS(here("data", "PRJNA555350", "summarized_experiment.rds"))
+se <- readRDS(here("data", "PRJNA649431", "summarized_experiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -60,18 +61,18 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  doxorubicin_cytabine_decitabine = doxorubicin_cytabine_decitabine - control,
-  doxorubicin_cytabine = doxorubicin_cytabine - control,
-  doxorubicin = doxorubicin - control,
+  PDX_TALL1.dac = PDX_TALL1.dac - PDX_TALL1.dmso,
+  PDX_TALL2.dac = PDX_TALL2.dac - PDX_TALL2.dmso,
+  dac = ((PDX_TALL1.dac + PDX_TALL2.dac) / 2) - ((PDX_TALL1.dmso + PDX_TALL2.dmso) / 2),
   levels = design
 )
 
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("Doxorubicin + Cytabine + Decitabine vs Control", 
-            "Doxorubicin + Cytabine vs Control", 
-            "Doxorubicin vs Control")
+titles <- c("PDX_TALL1 DAC vs DMSO",
+            "PDX_TALL2 DAC vs DMSO",
+            "DAC vs DMSO")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
@@ -96,11 +97,11 @@ df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 # split DE results into gene and RE results and write out
 dge <- df %>% 
   filter(feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA555350", "data-files", "dge.tsv"))
+  write_tsv(here("results", "PRJNA649431", "data-files", "dge.tsv"))
 
 dre <- df %>% 
   filter(!feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA555350", "data-files", "dre.tsv"))
+  write_tsv(here("results", "PRJNA649431", "data-files", "dre.tsv"))
 ```
 
 ## Create plots for each contrast 
@@ -149,8 +150,8 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA555350", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA555350", "rds-files", "re-lcpms.rds"))
+write_rds(lcpms.gene, here("results", "PRJNA649431", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA649431", "rds-files", "re-lcpms.rds"))
 ```
 
 ## PCA
@@ -174,13 +175,13 @@ pca.re <- PCA(t(lcpms.re),
 # scree plot -------------------------------------------------------------------
 fviz_eig(pca.gene, addlabels = TRUE) +
   ggtitle("Protein Coding Genes") +
-  ggsave(here("results", "PRJNA555350", "figures", "gene-scree.png"),
+  ggsave(here("results", "PRJNA649431", "figures", "gene-scree.png"),
          width = 8,
          height = 5)
 
 fviz_eig(pca.re, addlabels = TRUE) +
   ggtitle("Repetitive Elements") +
-  ggsave(here("results", "PRJNA555350", "figures", "re-scree.png"),
+  ggsave(here("results", "PRJNA649431", "figures", "re-scree.png"),
          width = 8,
          height = 5)
 
@@ -193,7 +194,7 @@ ind.re <- get_pca_ind(pca.re)
 ind.gene$coord %>% 
   as_tibble(rownames = "sample_name") %>% 
   left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
-  ggplot(aes(x = Dim.1, y = Dim.2, color = group)) +
+  ggplot(aes(x = Dim.1, y = Dim.2, color = treatment, shape = cell_type)) +
   geom_point(size = 5) +
   geom_hline(yintercept = 0, linetype = 3) +
   geom_vline(xintercept = 0, linetype = 3) +
@@ -202,14 +203,14 @@ ind.gene$coord %>%
        y = "PC 2") +
   scale_color_brewer(palette = "Dark2") +
   theme_light() +
-  ggsave(here("results", "PRJNA555350", "figures", "gene-pca.png"),
+  ggsave(here("results", "PRJNA649431", "figures", "gene-pca.png"),
          width = 8,
          height = 5)
 # REs
 ind.re$coord %>% 
   as_tibble(rownames = "sample_name") %>% 
   left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
-  ggplot(aes(x = Dim.1, y = Dim.2, color = group)) +
+  ggplot(aes(x = Dim.1, y = Dim.2, color = treatment, shape = cell_type)) +
   geom_point(size = 5) +
   geom_hline(yintercept = 0, linetype = 3) +
   geom_vline(xintercept = 0, linetype = 3) +
@@ -218,7 +219,7 @@ ind.re$coord %>%
        y = "PC 2") +
   scale_color_brewer(palette = "Dark2") +
   theme_light() +
-  ggsave(here("results", "PRJNA555350", "figures", "re-pca.png"),
+  ggsave(here("results", "PRJNA649431", "figures", "re-pca.png"),
          width = 8,
          height = 5)
 ```
@@ -227,15 +228,19 @@ ind.re$coord %>%
 
 ```{r}
 # create column annotation
-col_df <- colData(se)[, c("group"), drop = FALSE] %>%
-  as.data.frame()
+col_df <- colData(se)[, c("cell_type", "treatment")] %>%
+  as.data.frame() %>% 
+  mutate(treatment = factor(treatment),
+         cell_type = factor(cell_type))
 
 # create colors for column annotations
-grp_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$group), "Dark2")
-names(grp_colors) <- levels(col_df$group)
+trt_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$treatment), "Dark2")[1:2]
+cell_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$cell_type), "Set1")[1:2]
+names(trt_colors) <- levels(col_df$treatment)
+names(cell_colors) <- levels(col_df$cell_type)
 
 # put colors in list
-ann_colors <- list(group = grp_colors)
+ann_colors <- list(treatment = trt_colors, cell_type = cell_colors)
 
 # extract only significant genes and REs ---------------------------------------
 sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
@@ -248,13 +253,13 @@ quickmap(lcpms.sig_genes,
          annotation_col = col_df,
          annotation_colors = ann_colors,
          main = paste("Significant (FDR <", sig, ") Protein Coding Genes"),
-         filename = here("results", "PRJNA555350", "figures", "gene-heatmap.png"))
+         filename = here("results", "PRJNA649431", "figures", "gene-heatmap.png"))
 
 quickmap(lcpms.sig_res, 
          annotation_col = col_df,
          annotation_colors = ann_colors,
          main = paste("Significant (FDR <", sig, ") Repetitive Elements"),
-         filename = here("results", "PRJNA555350", "figures", "re-heatmap.png"))
+         filename = here("results", "PRJNA649431", "figures", "re-heatmap.png"))
 ```
 
 ## Create Patchworks
@@ -262,32 +267,31 @@ quickmap(lcpms.sig_res,
 ```{r}
 library(patchwork)
 
-
-# Genes
-(gene_vplots[[1]] + scale_y_continuous(limits = c(0, 6)) + scale_x_continuous(limits = c(-10, 10)) |
- gene_vplots[[2]] + scale_y_continuous(limits = c(0, 6)) + scale_x_continuous(limits = c(-10, 10)) |
- gene_vplots[[3]] + scale_y_continuous(limits = c(0, 6)) + scale_x_continuous(limits = c(-10, 10)) ) /
+# Gene
+(gene_vplots[[1]] + scale_y_continuous(limits = c(0, 13)) + scale_x_continuous(limits = c(-10, 10)) |
+ gene_vplots[[2]] + scale_y_continuous(limits = c(0, 13)) + scale_x_continuous(limits = c(-10, 10)) |
+ gene_vplots[[3]] + scale_y_continuous(limits = c(0, 13)) + scale_x_continuous(limits = c(-10, 10)) ) /
 (gene_mdplots[[1]] + scale_y_continuous(limits = c(-10, 10)) |
  gene_mdplots[[2]] + scale_y_continuous(limits = c(-10, 10)) |
- gene_mdplots[[3]] + scale_y_continuous(limits = c(-10, 10))) +
-plot_annotation("Protein Coding Gene Expression") +
-plot_layout(guides = "collect") +
-ggsave(here("results", "PRJNA555350", "figures", "gene-patchwork.png"),
-       width = 18,
-       height = 10)
+ gene_mdplots[[3]] + scale_y_continuous(limits = c(-10, 10)) ) +
+ plot_layout(guides = "collect") +
+ plot_annotation("Protein Coding Gene Expression") +
+ ggsave(here("results", "PRJNA649431", "figures", "gene-patchwork.png"),
+        width = 18,
+        height = 10)
 
-# REs
-(re_vplots[[1]] + scale_y_continuous(limits = c(0, 3)) + scale_x_continuous(limits = c(-6, 6)) |
- re_vplots[[2]] + scale_y_continuous(limits = c(0, 3)) + scale_x_continuous(limits = c(-6, 6)) |
- re_vplots[[3]] + scale_y_continuous(limits = c(0, 3)) + scale_x_continuous(limits = c(-6, 6)) ) /
-(re_mdplots[[1]] + scale_y_continuous(limits = c(-6, 6)) |
- re_mdplots[[2]] + scale_y_continuous(limits = c(-6, 6)) |
- re_mdplots[[3]] + scale_y_continuous(limits = c(-6, 6))) +
-plot_annotation("RE Expression") +
-plot_layout(guides = "collect") +
-ggsave(here("results", "PRJNA555350", "figures", "re-patchwork.png"),
-       width = 18,
-       height = 10)
+# RE
+(re_vplots[[1]] + scale_y_continuous(limits = c(0, 2)) + scale_x_continuous(limits = c(-2, 2)) |
+ re_vplots[[2]] + scale_y_continuous(limits = c(0, 2)) + scale_x_continuous(limits = c(-2, 2)) |
+ re_vplots[[3]] + scale_y_continuous(limits = c(0, 2)) + scale_x_continuous(limits = c(-2, 2)) ) /
+(re_mdplots[[1]] + scale_y_continuous(limits = c(-2, 2)) |
+ re_mdplots[[2]] + scale_y_continuous(limits = c(-2, 2)) |
+ re_mdplots[[3]] + scale_y_continuous(limits = c(-2, 2)) ) +
+ plot_layout(guides = "collect") +
+ plot_annotation("RE Expression") +
+ ggsave(here("results", "PRJNA649431", "figures", "re-patchwork.png"),
+        width = 18,
+        height = 10)
 ```
 
 ## Create Family-Level Dotplots for significant REs
@@ -301,9 +305,9 @@ for (i in seq_along(names(de_results))) {
 # remove null dotplots
 dotplots <- dotplots[!sapply(dotplots, is.null)]
 
-(dotplots[[1]] | dotplots[[2]]) +
+(dotplots[[1]] | dotplots[[2]] ) +
 plot_annotation("RE Family Expression") +
-ggsave(here("results", "PRJNA555350", "figures", "dotplots.png"),
-       width = 11,
+ggsave(here("results", "PRJNA649431", "figures", "dotplots.png"),
+       width = 18,
        height = 7)
 ```

@@ -30,12 +30,7 @@ se <- readRDS(here("data", "PRJNA315294", "summarized_experiment.rds"))
 ## Read in gene annotations
 
 ```{r}
-gtf <- rtracklayer::import("/mnt/data/data_gc/projects/yb5-combined-analysis/doc/gencode.v26.annotation.gtf.gz")
-gtf_df <- as.data.frame(gtf)
-cds <- subset(gtf_df, 
-              type == "gene" & gene_type == "protein_coding", 
-              c("gene_id", "gene_name", "seqnames", "start", "end", "width", "strand")
-              )
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
 ## Filter out RNA REs from counts assay
@@ -75,6 +70,18 @@ contrast.matrix <- makeContrasts(
   hct_dox = ((HCT116.p53_WT.doxorubicin.300nM.16h + HCT116.p53_KO.doxorubicin.300nM.16h) / 2) - ((HCT116.p53_WT.control + HCT116.p53_KO.control) / 2), 
   rko_dox = ((RKO.p53_WT.doxorubicin.300nM.16h + RKO.p53_KO.doxorubicin.300nM.16h) / 2) - ((RKO.p53_WT.control + RKO.p53_KO.control) / 2),
   sw48_dox = ((SW48.p53_WT.doxorubicin.300nM.16h + SW48.p53_KO.doxorubicin.300nM.16h) / 2) - ((SW48.p53_WT.control + SW48.p53_KO.control) / 2),
+  doxorubicin.300nM.16h = ((HCT116.p53_WT.doxorubicin.300nM.16h +
+                            HCT116.p53_KO.doxorubicin.300nM.16h +
+                            RKO.p53_WT.doxorubicin.300nM.16h +
+                            RKO.p53_KO.doxorubicin.300nM.16h +
+                            SW48.p53_WT.doxorubicin.300nM.16h +
+                            SW48.p53_KO.doxorubicin.300nM.16h) / 6) -
+                            ((HCT116.p53_WT.control +
+                              HCT116.p53_KO.control +
+                              RKO.p53_WT.control +
+                              RKO.p53_KO.control +
+                              SW48.p53_WT.control +
+                              SW48.p53_KO.control) / 6),
   levels = design
 )
 
@@ -89,7 +96,8 @@ titles <- c("HCT116 p53 WT + Doxorubicin 300nM vs. HCT116 p53 WT Control",
             "SW48 p53 KO + Doxorubicin 300nM vs. SW48 p53 KO Control",
             "HCT116 + Doxorubicin 300nM vs. HCT116 Control",
             "RKO + Doxorubicin 300nM vs. RKO Control",
-            "SW48 + Doxorubicin 300nM vs SW48 Control")
+            "SW48 + Doxorubicin 300nM vs SW48 Control",
+            "Doxorubicin vs Control")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5

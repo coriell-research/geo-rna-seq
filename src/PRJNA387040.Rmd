@@ -30,12 +30,7 @@ se <- readRDS(here("data", "PRJNA387040", "summarized_experiment.rds"))
 ## Read in gene annotations
 
 ```{r}
-gtf <- rtracklayer::import("/mnt/data/data_gc/projects/yb5-combined-analysis/doc/gencode.v26.annotation.gtf.gz")
-gtf_df <- as.data.frame(gtf)
-cds <- subset(gtf_df, 
-              type == "gene" & gene_type == "protein_coding", 
-              c("gene_id", "gene_name", "seqnames", "start", "end", "width", "strand")
-              )
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
 ## Filter out RNA REs from counts assay
@@ -68,6 +63,7 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 contrast.matrix <- makeContrasts(
   wt_eto = wt.etoposide - wt.control,
   ko_eto = ko_cGAS.etoposide - wt.control,
+  etoposide = ((wt.etoposide + ko_cGAS.etoposide) / 2) - wt.control,
   levels = design
 )
 
@@ -75,7 +71,8 @@ contrast.matrix <- makeContrasts(
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
 titles <- c("Lung Cancer (IMR90 cells) - cGAS KO + Etoposide",
-            "Lung Cancer (IMR90 cells) - WT + Etoposide")
+            "Lung Cancer (IMR90 cells) - WT + Etoposide",
+            "Etoposide")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5

@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -30,12 +29,7 @@ se <- readRDS(here("data", "PRJNA392914", "summarized_experiment.rds"))
 ## Read in gene annotations
 
 ```{r}
-gtf <- rtracklayer::import("/mnt/data/data_gc/projects/yb5-combined-analysis/doc/gencode.v26.annotation.gtf.gz")
-gtf_df <- as.data.frame(gtf)
-cds <- subset(gtf_df, 
-              type == "gene" & gene_type == "protein_coding", 
-              c("gene_id", "gene_name", "seqnames", "start", "end", "width", "strand")
-              )
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
 ## Filter out RNA REs from counts assay
@@ -67,10 +61,11 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 ```{r}
 contrast.matrix <- makeContrasts(
   dtp_tsa = PC9_DTP.TSA.50nM_5hr - PC9_DTP.untreated,
-  carbo = PC9.carboplatin.50uM_72hr - PC9.DMSO,
-  erlo = PC9.erlotinib.1uM_24hr - PC9.DMSO,
-  tsa = PC9.TSA.50nM_5hr - PC9.DMSO,
+  carboplatin.50uM_72hr = PC9.carboplatin.50uM_72hr - PC9.DMSO,
+  erlotinib.1uM_24hr = PC9.erlotinib.1uM_24hr - PC9.DMSO,
+  tsa.50nM_5hr = PC9.TSA.50nM_5hr - PC9.DMSO,
   dtp = PC9_DTP.untreated - PC9.DMSO,
+  
   levels = design
 )
 

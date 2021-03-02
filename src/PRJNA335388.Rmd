@@ -29,12 +29,7 @@ se <- readRDS(here("data", "PRJNA335388", "summarized_experiment.rds"))
 ## Read in gene annotations
 
 ```{r}
-gtf <- rtracklayer::import("/mnt/data/data_gc/projects/yb5-combined-analysis/doc/gencode.v26.annotation.gtf.gz")
-gtf_df <- as.data.frame(gtf)
-cds <- subset(gtf_df, 
-              type == "gene" & gene_type == "protein_coding", 
-              c("gene_id", "gene_name", "seqnames", "start", "end", "width", "strand")
-              )
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
 ## Filter out RNA REs from counts assay
@@ -74,6 +69,11 @@ contrast.matrix <- makeContrasts(
   os_mms = U2OS.mms_40ug_ml - U2OS.dmso,
   os_pac = U2OS.paclitaxel_0.2uM - U2OS.dmso,
   
+  doxorubicin.1uM = ((MDA.doxorubicin_1uM + U2OS.doxorubicin_1uM) / 2) - ((MDA.dmso + U2OS.dmso) / 2),
+  etoposide.20uM = ((MDA.etoposide_20uM + U2OS.etoposide_20uM) / 2) - ((MDA.dmso + U2OS.dmso) / 2),
+  mms.40ug_ml = ((MDA.mms_40ug_ml + U2OS.mms_40ug_ml) / 2) - ((MDA.dmso + U2OS.dmso) / 2),
+  paclitaxel.02uM = ((MDA.paclitaxel_0.2uM + U2OS.paclitaxel_0.2uM) / 2) - ((MDA.dmso + U2OS.dmso) / 2), 
+  
   levels = design
 )
 
@@ -87,7 +87,11 @@ titles <- c("Breast Cancer - Doxorubicin.1uM",
             "Osteosarcoma - Doxorubicin.1uM",
             "Osteosarcoma - Etoposide.20uM",
             "Osteosarcoma - MMS.40ug_ml",
-            "Osteosarcoma - Paclitaxel.0.2uM")
+            "Osteosarcoma - Paclitaxel.0.2uM", 
+            "Doxorubicin",
+            "Etoposide",
+            "MMS",
+            "Paclitaxel")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5

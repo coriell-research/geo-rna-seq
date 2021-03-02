@@ -1,0 +1,40 @@
+---
+title: "Combine Datasets"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read in DE data
+
+```{r}
+library(here)
+
+
+dge_files <- list.files(path = here("results"),
+                        pattern = "dge.tsv",
+                        recursive = TRUE,
+                        full.names = TRUE)
+
+dre_files <- list.files(path = here("results"),
+                        pattern = "dre.tsv",
+                        recursive = TRUE,
+                        full.names = TRUE)
+```
+
+## Read into a single giant dataframe
+
+```{r}
+dge <- vroom::vroom(dge_files, id = "fpath", delim = "\t")
+dre <- vroom::vroom(dre_files, id = "fpath", delim = "\t")
+```
+

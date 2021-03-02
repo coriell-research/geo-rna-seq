@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -30,12 +29,7 @@ se <- readRDS(here("data", "PRJNA417314", "summarized_experiment.rds"))
 ## Read in gene annotations
 
 ```{r}
-gtf <- rtracklayer::import("/mnt/data/data_gc/projects/yb5-combined-analysis/doc/gencode.v26.annotation.gtf.gz")
-gtf_df <- as.data.frame(gtf)
-cds <- subset(gtf_df, 
-              type == "gene" & gene_type == "protein_coding", 
-              c("gene_id", "gene_name", "seqnames", "start", "end", "width", "strand")
-              )
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
 ## Filter out RNA REs from counts assay
