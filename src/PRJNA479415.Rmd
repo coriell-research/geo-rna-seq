@@ -1,0 +1,243 @@
+---
+title: "PRJNA479415 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r}
+library(here)
+library(SummarizedExperiment)
+
+
+se <- readRDS(here("data", "PRJNA479415", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## DE pipeline
+
+```{r}
+library(edgeR)
+library(coriell)
+
+# add batch variable
+colData(se)$batch <- factor(c(1, 1, 2, 2, 3, 3))
+design <- model.matrix(~0 + batch + group, data = colData(se))
+colnames(design) <- str_remove(colnames(design), "^group")
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+
+```{r}
+# set global significance values
+fc <- 1.5
+sig <- 0.1
+
+# test, controlling for batches
+venetoclax_azacitidine_6hr <- glmTreat(fit, coef = 4, lfc = log2(fc))
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out (add contrast column for consistency)
+df <- edger_to_df(venetoclax_azacitidine_6hr) %>% 
+  mutate(contrast = "venetoclax_azacitidine_6hr") %>% 
+  select(contrast, everything())
+
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA479415", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA479415", "data-files", "dre.tsv"))
+```
+
+## Create plots for each contrast 
+
+```{r}
+library(patchwork)
+
+
+v1.gene <- plot_volcano(dge, lfc = log2(fc), fdr = sig) +
+  ggtitle("Venetoclax + Azacitidine 6hr",
+          subtitle = "Protein Coding Genes")
+
+m1.gene <- plot_md(dge, lfc = log2(fc), fdr = sig) +
+  ggtitle("Venetoclax + Azacitidine 6hr",
+          subtitle = "Protein Coding Genes")
+
+v1.re <- plot_volcano(dre, lfc = log2(fc), fdr = sig) +
+  ggtitle("Venetoclax + Azacitidine 6hr",
+          subtitle = "REs")
+
+m1.re <- plot_md(dre, lfc = log2(fc), fdr = sig) +
+  ggtitle("Venetoclax + Azacitidine 6hr",
+          subtitle = "REs")
+
+# create patchwork
+(v1.gene | m1.gene) / (v1.re | m1.re) +
+  plot_layout(guides = "collect") +
+  ggsave(here("results", "PRJNA479415", "figures", "patchwork.png"),
+         width = 11,
+         height = 7)
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA479415", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA479415", "rds-files", "re-lcpms.rds"))
+```
+
+## Calculate Batch-normalized counts for visualization
+
+```{r}
+lcpms.gene.c <- removeBatchEffect(lcpms.gene, batch = factor(c(1, 1, 2, 2, 3, 3)))
+lcpms.re.c <- removeBatchEffect(lcpms.re, batch = factor(c(1, 1, 2, 2, 3, 3)))
+```
+
+## PCA
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+
+
+# perform PCA with factominer --------------------------------------------------
+pca.gene <- PCA(t(lcpms.gene.c),
+                scale.unit = TRUE,
+                graph = FALSE,
+                ncp = 5)
+
+pca.re <- PCA(t(lcpms.re.c),
+              scale.unit = TRUE,
+              graph = FALSE,
+              ncp = 5)
+
+# scree plot -------------------------------------------------------------------
+fviz_eig(pca.gene, addlabels = TRUE) +
+  ggtitle("Protein Coding Genes") +
+  ggsave(here("results", "PRJNA479415", "figures", "gene-scree.png"),
+         width = 8,
+         height = 5)
+
+fviz_eig(pca.re, addlabels = TRUE) +
+  ggtitle("Repetitive Elements") +
+  ggsave(here("results", "PRJNA479415", "figures", "re-scree.png"),
+         width = 8,
+         height = 5)
+
+# extract the individual level coordinates -------------------------------------
+ind.gene <- get_pca_ind(pca.gene)
+ind.re <- get_pca_ind(pca.re)
+
+# plot -------------------------------------------------------------------------
+# genes
+ind.gene$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = group)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Protein Coding Genes",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA479415", "figures", "gene-pca.png"),
+         width = 8,
+         height = 5)
+# REs
+ind.re$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = group)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Repetitive Elements",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA479415", "figures", "re-pca.png"),
+         width = 8,
+         height = 5)
+```
+
+## Heatmaps
+
+```{r}
+# create column annotation
+col_df <- colData(se)[, "group", drop = FALSE] %>%
+  as.data.frame()
+
+# create colors for column annotations
+grp_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$group), "Dark2")[1:2]
+names(grp_colors) <- levels(col_df$group)
+
+# put colors in list
+ann_colors <- list(group = grp_colors)
+
+# extract only significant genes and REs ---------------------------------------
+# sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+# sig_res <- df %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+# lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
+# lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
+
+# PLOT ALL FEATURES SINCE NONE SIGNIFICANT
+# plot heatmaps ----------------------------------------------------------------
+quickmap(lcpms.gene.c, 
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Protein Coding Genes"),
+         filename = here("results", "PRJNA479415", "figures", "gene-heatmap.png"))
+
+quickmap(lcpms.re.c, 
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Repetitive Elements"),
+         filename = here("results", "PRJNA479415", "figures", "re-heatmap.png"))
+```

@@ -1,0 +1,330 @@
+---
+title: "PRJNA477352 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r}
+library(tidyverse)
+library(here)
+library(SummarizedExperiment)
+
+
+se <- readRDS(here("data", "PRJNA477352", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## REMOVE OUTLIER SAMPLE
+
+```{r}
+se <- se[, !str_detect(colnames(se), "SRR7407822")]
+```
+
+## DE pipeline
+
+```{r}
+library(edgeR)
+library(coriell)
+
+
+design <- model.matrix(~0 + group, data = colData(se))
+colnames(design) <- str_remove(colnames(design), "^group")
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+```{r}
+contrast.matrix <- makeContrasts(
+  j4.thz1_250nM_6hr = j4.thz1_250nM_6hr - j4.dmso,
+  j4.thz1_50nM_6hr = j4.thz1_50nM_6hr - j4.dmso,
+  l10.thz1_250nM_6hr = l10.thz1_250nM_6hr - l10.dmso,
+  l10.thz1_50nM_6hr = l10.thz1_50nM_6hr - l10.dmso,
+  l20.thz1_250nM_6hr = l20.thz1_250nM_6hr - l20.dmso,
+  l20.thz1_50nM_6hr = l20.thz1_50nM_6hr - l20.dmso,
+  par.thz1_250nM_6hr = par.thz1_250nM_6hr - par.dmso,
+  par.thz1_50nM_6hr = par.thz1_50nM_6hr - par.dmso,
+  
+  thz1_250nM_6hr = ((j4.thz1_250nM_6hr + l10.thz1_250nM_6hr + l20.thz1_250nM_6hr + par.thz1_250nM_6hr) / 4) - 
+                   ((j4.dmso + l10.dmso + l20.dmso + par.dmso) / 4),
+  thz1_50nM_6hr = ((j4.thz1_50nM_6hr + l10.thz1_50nM_6hr + l20.thz1_50nM_6hr + par.thz1_50nM_6hr) / 4) -
+                  ((j4.dmso + l10.dmso + l20.dmso + par.dmso) / 4),
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+titles <- c("J4 THZ1 250nM 6hr vs DMSO",
+            "J4 THZ1 50nM 6hr vs DMSO",
+            "L10 THZ1 250nM 6hr vs DMSO",
+            "L10 THZ1 50nM 6hr vs DMSO",
+            "L20 THZ1 250nM 6hr vs DMSO",
+            "L20 THZ1 50nM 6hr vs DMSO",
+            "PAR THZ1 250nM 6hr vs DMSO",
+            "PAR THZ1 50nM 6hr vs DMSO",
+            "THZ1 250nM 6hr vs DMSO",
+            "THZ1 50nM 6hr vs DMSO")
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+sig <- 0.1
+
+# map over and extract results
+de_results <- map2(.x = cons, 
+                   .y = titles, 
+                   .f = get_de_results, 
+                    contrast_matrix = contrast.matrix,
+                    fdr = sig,
+                    fc = fc,
+                    glm_fit = fit)
+
+# extract all results and bind to single df
+df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA477352", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA477352", "data-files", "dre.tsv"))
+```
+
+## Create plots for each contrast 
+
+```{r}
+coi <- names(de_results)
+gene_vplots <- vector("list", length(coi))
+gene_mdplots <- vector("list", length(coi))
+re_vplots <- vector("list", length(coi))
+re_mdplots <- vector("list", length(coi))
+
+for (i in seq_along(coi)) {
+  gene_vplots[[i]] <- 
+    dge %>%
+    filter(contrast == coi[[i]]) %>% 
+    plot_volcano(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+  
+  gene_mdplots[[i]] <- 
+    dge %>%
+    filter(contrast == coi[[i]]) %>% 
+    plot_md(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+  
+  re_vplots[[i]] <- 
+    dre %>% 
+    filter(contrast == coi[[i]]) %>% 
+    plot_volcano(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+  
+  re_mdplots[[i]] <- 
+    dre %>% 
+    filter(contrast == coi[[i]]) %>% 
+    plot_md(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+}
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA477352", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA477352", "rds-files", "re-lcpms.rds"))
+```
+
+## PCA
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+
+
+# perform PCA with factominer --------------------------------------------------
+pca.gene <- PCA(t(lcpms.gene),
+                scale.unit = TRUE,
+                graph = FALSE,
+                ncp = 5)
+
+pca.re <- PCA(t(lcpms.re),
+              scale.unit = TRUE,
+              graph = FALSE,
+              ncp = 5)
+
+# scree plot -------------------------------------------------------------------
+fviz_eig(pca.gene, addlabels = TRUE) +
+  ggtitle("Protein Coding Genes") +
+  ggsave(here("results", "PRJNA477352", "figures", "gene-scree.png"),
+         width = 8,
+         height = 5)
+
+fviz_eig(pca.re, addlabels = TRUE) +
+  ggtitle("Repetitive Elements") +
+  ggsave(here("results", "PRJNA477352", "figures", "re-scree.png"),
+         width = 8,
+         height = 5)
+
+# extract the individual level coordinates -------------------------------------
+ind.gene <- get_pca_ind(pca.gene)
+ind.re <- get_pca_ind(pca.re)
+
+# plot -------------------------------------------------------------------------
+# genes
+ind.gene$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = drug, shape = dtep)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Protein Coding Genes",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA477352", "figures", "gene-pca.png"),
+         width = 8,
+         height = 5)
+# REs
+ind.re$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = drug, shape = dtep)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Repetitive Elements",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA477352", "figures", "re-pca.png"),
+         width = 8,
+         height = 5)
+```
+
+## Heatmaps
+
+```{r}
+# create column annotation
+col_df <- colData(se)[, c("drug", "dtep"), drop = FALSE] %>%
+  as.data.frame() %>% 
+  mutate(drug = factor(drug),
+         dtep = factor(dtep))
+
+# create colors for column annotations
+drug_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$drug), "Dark2")
+dtep_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$dtep), "Set1")
+names(drug_colors) <- levels(col_df$drug)
+names(dtep_colors) <- levels(col_df$dtep)
+
+# put colors in list
+ann_colors <- list(drug = drug_colors, dtep = dtep_colors)
+
+# extract only significant genes and REs ---------------------------------------
+sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+sig_res <- df %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
+lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
+
+# plot heatmaps ----------------------------------------------------------------
+quickmap(lcpms.sig_genes, 
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Protein Coding Genes"),
+         filename = here("results", "PRJNA477352", "figures", "gene-heatmap.png"))
+
+quickmap(lcpms.sig_res, 
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Repetitive Elements"),
+         filename = here("results", "PRJNA477352", "figures", "re-heatmap.png"))
+```
+
+## Create Patchworks
+
+```{r}
+library(patchwork)
+
+
+(gene_vplots[[10]] + scale_y_continuous(limits = c(0, 35)) + scale_x_continuous(limits = c(-8, 8)) |
+ gene_vplots[[9]]  + scale_y_continuous(limits = c(0, 35)) + scale_x_continuous(limits = c(-8, 8))) /
+(gene_mdplots[[10]] + scale_y_continuous(limits = c(-8, 8)) |
+ gene_mdplots[[9]]  + scale_y_continuous(limits = c(-8, 8))) +
+  plot_layout(guides = "collect") +
+  plot_annotation("Protein Coding Gene Expression") +
+  ggsave(here("results", "PRJNA477352", "figures", "gene-patchwork.png"),
+         width = 18,
+         height = 10)
+
+(re_vplots[[10]] + scale_y_continuous(limits = c(0, 25)) + scale_x_continuous(limits = c(-4, 4)) |
+ re_vplots[[9]]  + scale_y_continuous(limits = c(0, 25)) + scale_x_continuous(limits = c(-4, 4))) /
+(re_mdplots[[10]] + scale_y_continuous(limits = c(-4, 4))  |
+ re_mdplots[[9]] + scale_y_continuous(limits = c(-4, 4))) +
+  plot_layout(guides = "collect") +
+  plot_annotation("RE Expression") +
+  ggsave(here("results", "PRJNA477352", "figures", "re-patchwork.png"),
+         width = 18,
+         height = 10)
+```
+
+## Create Family-Level Dotplots for significant REs
+
+```{r}
+dotplots <- vector("list", length(names(de_results)))
+for (i in seq_along(names(de_results))) {
+  dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)
+}
+
+dotplots <- dotplots[!is.null(dotplots)]
+
+(dotplots[[10]] | dotplots[[9]]) +
+plot_annotation("RE Family Expression") +
+ggsave(here("results", "PRJNA477352", "figures", "dotplots.png"),
+       width = 18,
+       height = 7)
+```

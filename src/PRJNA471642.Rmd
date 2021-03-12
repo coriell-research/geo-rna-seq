@@ -1,0 +1,326 @@
+---
+title: "PRJNA471642 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r}
+library(tidyverse)
+library(here)
+library(SummarizedExperiment)
+
+
+se <- readRDS(here("data", "PRJNA471642", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## DE pipeline
+
+This DE analysis is modified because the study design is a time-series
+
+```{r}
+library(edgeR)
+library(coriell)
+
+
+Cell_line <- factor(colData(se)$cell_line)
+Time <- factor(colData(se)$time_hr)
+design <- model.matrix(~Cell_line + Time)
+
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+Differential expression testing is set up differently for this dataset
+
+```{r}
+# set global significance levels
+fc <- 1.5
+sig <- 0.1
+
+# perfom DE testing of each coefficient
+mec1 <- glmTreat(fit, coef = 2, lfc = log2(fc)) %>% edger_to_df()
+time_2hr <- glmTreat(fit, coef = 3, lfc = log2(fc)) %>% edger_to_df()
+time_6hr <- glmTreat(fit, coef = 4, lfc = log2(fc)) %>% edger_to_df()
+time_24hr <- glmTreat(fit, coef = 5, lfc = log2(fc)) %>% edger_to_df()
+
+# bind results into single df
+results_list <- list("mec1_vs_gm12878" = mec1,
+                     "SD6.125nm.2hr" = time_2hr,
+                     "SD6.125nm.6hr" = time_6hr,
+                     "SD6.125nm.24hr" = time_24hr)
+
+df <- bind_rows(results_list, .id = "contrast")
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA471642", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA471642", "data-files", "dre.tsv"))
+```
+
+## Create plots for each contrast 
+
+```{r}
+library(patchwork)
+
+
+# Gene level plots
+v1.gene <- plot_volcano({time_2hr %>% 
+                         filter(feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 2hr vs Baseline 0hr")
+
+v2.gene <- plot_volcano({time_6hr %>% 
+                         filter(feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 6hr vs Baseline 0hr")
+
+v3.gene <- plot_volcano({time_24hr %>% 
+                         filter(feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 24hr vs Baseline 0hr")
+
+m1.gene <- plot_md({time_2hr %>% 
+                         filter(feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 2hr vs Baseline 0hr")
+
+m2.gene <- plot_md({time_6hr %>% 
+                         filter(feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 6hr vs Baseline 0hr")
+
+m3.gene <- plot_md({time_24hr %>% 
+                         filter(feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 24hr vs Baseline 0hr")
+
+# RE level
+v1.re <- plot_volcano({time_2hr %>% 
+                         filter(!feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 2hr vs Baseline 0hr")
+
+v2.re <- plot_volcano({time_6hr %>% 
+                         filter(!feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 6hr vs Baseline 0hr")
+
+v3.re <- plot_volcano({time_24hr %>% 
+                         filter(!feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 24hr vs Baseline 0hr")
+
+m1.re <- plot_md({time_2hr %>% 
+                         filter(!feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 2hr vs Baseline 0hr")
+
+m2.re <- plot_md({time_6hr %>% 
+                         filter(!feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 6hr vs Baseline 0hr")
+
+m3.re <- plot_md({time_24hr %>% 
+                         filter(!feature_id %in% cds$gene_name)}, 
+                        lfc = log2(fc), 
+                        fdr = sig) + ggtitle("SD6.125nm 24hr vs Baseline 0hr")
+
+# Create patchworks
+(v1.gene + scale_y_continuous(limits = c(0, 4)) + scale_x_continuous(limits = c(-10, 10)) |
+ v2.gene + scale_y_continuous(limits = c(0, 4)) + scale_x_continuous(limits = c(-10, 10)) | 
+ v3.gene + scale_y_continuous(limits = c(0, 4)) + scale_x_continuous(limits = c(-10, 10))) / 
+(m1.gene + scale_y_continuous(limits = c(-10, 10)) | 
+ m2.gene + scale_y_continuous(limits = c(-10, 10)) | 
+ m3.gene + scale_y_continuous(limits = c(-10, 10))) +
+  plot_annotation("Protein Coding Gene Expression") +
+  ggsave(here("results", "PRJNA471642", "figures", "gene-patchwork.png"),
+         width = 18,
+         height = 10)
+
+(v1.re + scale_y_continuous(limits = c(0, 4)) + scale_x_continuous(limits = c(-8, 8)) |
+ v2.re + scale_y_continuous(limits = c(0, 4)) + scale_x_continuous(limits = c(-8, 8)) | 
+ v3.re + scale_y_continuous(limits = c(0, 4)) + scale_x_continuous(limits = c(-8, 8))) / 
+(m1.re + scale_y_continuous(limits = c(-8, 8))  | 
+ m2.re + scale_y_continuous(limits = c(-8, 8))  | 
+ m3.re + scale_y_continuous(limits = c(-8, 8)) ) +
+  plot_annotation("RE Expression") +
+  ggsave(here("results", "PRJNA471642", "figures", "re-patchwork.png"),
+         width = 18,
+         height = 10)
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA471642", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA471642", "rds-files", "re-lcpms.rds"))
+```
+
+## PCA
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+
+
+# perform PCA with factominer --------------------------------------------------
+pca.gene <- PCA(t(lcpms.gene),
+                scale.unit = TRUE,
+                graph = FALSE,
+                ncp = 5)
+
+pca.re <- PCA(t(lcpms.re),
+              scale.unit = TRUE,
+              graph = FALSE,
+              ncp = 5)
+
+# scree plot -------------------------------------------------------------------
+fviz_eig(pca.gene, addlabels = TRUE) +
+  ggtitle("Protein Coding Genes") +
+  ggsave(here("results", "PRJNA471642", "figures", "gene-scree.png"),
+         width = 8,
+         height = 5)
+
+fviz_eig(pca.re, addlabels = TRUE) +
+  ggtitle("Repetitive Elements") +
+  ggsave(here("results", "PRJNA471642", "figures", "re-scree.png"),
+         width = 8,
+         height = 5)
+
+# extract the individual level coordinates -------------------------------------
+ind.gene <- get_pca_ind(pca.gene)
+ind.re <- get_pca_ind(pca.re)
+
+# plot -------------------------------------------------------------------------
+# genes
+ind.gene$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  mutate(time_hr = factor(time_hr)) %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = cell_line, shape = time_hr)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Protein Coding Genes",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA471642", "figures", "gene-pca.png"),
+         width = 8,
+         height = 5)
+# REs
+ind.re$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  mutate(time_hr = factor(time_hr)) %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = cell_line, shape = time_hr)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Repetitive Elements",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA471642", "figures", "re-pca.png"),
+         width = 8,
+         height = 5)
+```
+
+## Heatmaps
+
+```{r}
+# create column annotation
+col_df <- colData(se)[, c("cell_line", "time_hr")] %>% 
+  as.data.frame()
+
+# create colors for column annotations
+cell_colors <- c("MEC1" = "#1B9E77", "GM12878" = "#D95F02")
+time_colors <- RColorBrewer::brewer.pal(n = length(unique(col_df$time_hr)), "Blues")
+names(time_colors) <- levels(factor(col_df$time_hr))
+
+# put colors in list
+ann_colors <- list(cell_line = cell_colors, time_hr = time_colors)
+
+# extract only significant genes and REs ---------------------------------------
+sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+sig_res <- df %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
+lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
+
+# plot heatmaps ----------------------------------------------------------------
+quickmap(lcpms.sig_genes,
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Protein Coding Genes"),
+         filename = here("results", "PRJNA471642", "figures", "gene-heatmap.png"))
+
+quickmap(lcpms.sig_res,
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Repetitive Elements"),
+         filename = here("results", "PRJNA471642", "figures", "re-heatmap.png"))
+```
+
+## Create family level dotplots for RE
+
+```{r}
+d1 <- plot_fam_counts(dre, "SD6.125nm.6hr")
+d2 <- plot_fam_counts(dre, "SD6.125nm.24hr")
+
+(d1 | d2) +
+  plot_annotation("Family-level RE Expression") +
+  ggsave(here("results", "PRJNA471642", "figures", "dotplots.png"),
+         width = 11,
+         height = 7)
+```
+
