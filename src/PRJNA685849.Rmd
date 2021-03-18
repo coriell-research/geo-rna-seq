@@ -1,0 +1,398 @@
+---
+title: "PRJNA685849 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r}
+library(tidyverse)
+library(here)
+library(SummarizedExperiment)
+
+
+se <- readRDS(here("data", "PRJNA685849", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## DE pipeline
+
+```{r}
+library(edgeR)
+library(coriell)
+
+
+design <- model.matrix(~0 + group, data = colData(se))
+colnames(design) <- str_remove(colnames(design), "^group")
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+Since there are no 0hr time points for the treatments, treat 4hr as the baseline
+as test for genes that respond differently to the drug vs no treatment at each 
+time.
+
+```{r}
+contrast.matrix <- makeContrasts(
+  CDDP_50uM_4hr = CDDP_50uM_4hr - untreated_4hr,
+  CDDP_50uM_10hr = (CDDP_50uM_10hr - CDDP_50uM_4hr) - (untreated_10hr - untreated_4hr),
+  CDDP_50uM_20hr = (CDDP_50uM_20hr - CDDP_50uM_4hr) - (untreated_20hr - untreated_4hr),
+  Hypercin_150nM_irradiation_4hr = Hypercin_150nM_irradiation_4hr - untreated_4hr,
+  Hypercin_150nM_irradiation_10hr = (Hypercin_150nM_irradiation_10hr - Hypercin_150nM_irradiation_4hr) - (untreated_10hr - untreated_4hr),
+  Hypercin_150nM_irradiation_20hr = (Hypercin_150nM_irradiation_20hr - Hypercin_150nM_irradiation_4hr) - (untreated_20hr - untreated_4hr),
+  MTX_1um_4hr = MTX_1um_4hr - untreated_4hr,
+  MTX_1um_10hr = (MTX_1um_10hr - MTX_1um_4hr) - (untreated_10hr - untreated_4hr),
+  MTX_1um_20hr = (MTX_1um_20hr - MTX_1um_4hr) - (untreated_20hr - untreated_4hr),
+
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+titles <- c("CPPP 50uM vs Untreated at 4hrs",
+            "CPPP 50uM vs Untreated at 10hrs",
+            "CPPP 50uM vs Untreated at 20hrs",
+            "Hypercin 150nM + irradiation vs Untreated at 4hrs",
+            "Hypercin 150nM + irradiation vs Untreated at 10hrs",
+            "Hypercin 150nM + irradiation vs Untreated at 20hrs",
+            "MTX 1uM vs Untreated at 4hrs",
+            "MTX 1uM vs Untreated at 10hrs",
+            "MTX 1uM vs Untreated at 20hrs")
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+sig <- 0.1
+
+# map over and extract results
+de_results <- map2(.x = cons, 
+                   .y = titles, 
+                   .f = get_de_results, 
+                    contrast_matrix = contrast.matrix,
+                    fdr = sig,
+                    fc = fc,
+                    glm_fit = fit)
+
+# extract all results and bind to single df
+df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA685849", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA685849", "data-files", "dre.tsv"))
+```
+
+## Create plots for each contrast 
+
+```{r}
+coi <- names(de_results)
+gene_vplots <- vector("list", length(coi))
+gene_mdplots <- vector("list", length(coi))
+re_vplots <- vector("list", length(coi))
+re_mdplots <- vector("list", length(coi))
+
+for (i in seq_along(coi)) {
+  gene_vplots[[i]] <- 
+    dge %>%
+    filter(contrast == coi[[i]]) %>% 
+    plot_volcano(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+  
+  gene_mdplots[[i]] <- 
+    dge %>%
+    filter(contrast == coi[[i]]) %>% 
+    plot_md(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+  
+  re_vplots[[i]] <- 
+    dre %>% 
+    filter(contrast == coi[[i]]) %>% 
+    plot_volcano(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+  
+  re_mdplots[[i]] <- 
+    dre %>% 
+    filter(contrast == coi[[i]]) %>% 
+    plot_md(fdr = sig, lfc = log2(fc)) +
+    ggtitle(titles[[i]])
+}
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA685849", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA685849", "rds-files", "re-lcpms.rds"))
+```
+
+## PCA
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+
+
+# perform PCA with factominer --------------------------------------------------
+pca.gene <- PCA(t(lcpms.gene),
+                scale.unit = TRUE,
+                graph = FALSE,
+                ncp = 5)
+
+pca.re <- PCA(t(lcpms.re),
+              scale.unit = TRUE,
+              graph = FALSE,
+              ncp = 5)
+
+# scree plot -------------------------------------------------------------------
+fviz_eig(pca.gene, addlabels = TRUE) +
+  ggtitle("Protein Coding Genes") +
+  ggsave(here("results", "PRJNA685849", "figures", "gene-scree.png"),
+         width = 8,
+         height = 5)
+
+fviz_eig(pca.re, addlabels = TRUE) +
+  ggtitle("Repetitive Elements") +
+  ggsave(here("results", "PRJNA685849", "figures", "re-scree.png"),
+         width = 8,
+         height = 5)
+
+# extract the individual level coordinates -------------------------------------
+ind.gene <- get_pca_ind(pca.gene)
+ind.re <- get_pca_ind(pca.re)
+
+# plot -------------------------------------------------------------------------
+# genes
+ind.gene$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>%
+  mutate(treatment = factor(treatment),
+         recovery_time = factor(recovery_time, levels = c("0 hours", "4 hours", "10 hours", "20 hours"))) %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = treatment, shape = recovery_time)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Protein Coding Genes",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA685849", "figures", "gene-pca.png"),
+         width = 8,
+         height = 5)
+# REs
+ind.re$coord %>% 
+  as_tibble(rownames = "sample_name") %>% 
+  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
+  mutate(treatment = factor(treatment),
+         recovery_time = factor(recovery_time, levels = c("0 hours", "4 hours", "10 hours", "20 hours"))) %>% 
+  ggplot(aes(x = Dim.1, y = Dim.2, color = treatment, shape = recovery_time)) +
+  geom_point(size = 5) +
+  geom_hline(yintercept = 0, linetype = 3) +
+  geom_vline(xintercept = 0, linetype = 3) +
+  labs(title = "Repetitive Elements",
+       x = "PC 1",
+       y = "PC 2") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_light() +
+  ggsave(here("results", "PRJNA685849", "figures", "re-pca.png"),
+         width = 8,
+         height = 5)
+```
+
+## Heatmaps
+
+```{r}
+# create column annotation
+col_df <- colData(se)[, c("treatment", "recovery_time"), drop = FALSE] %>%
+  as.data.frame() %>% 
+  mutate(treatment = factor(treatment),
+         recovery_time = factor(recovery_time, levels = c("0 hours", "4 hours", "10 hours", "20 hours")))
+
+# create colors for column annotations
+trt_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$treatment), "Dark2")
+rec_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$recovery_time), "Blues")
+names(trt_colors) <- levels(col_df$treatment)
+names(rec_colors) <- levels(col_df$recovery_time)
+
+# put colors in list
+ann_colors <- list(treatment = trt_colors, recovery_time = rec_colors)
+
+# extract only significant genes and REs ---------------------------------------
+sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+sig_res <- df %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
+lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
+lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
+
+# plot heatmaps ----------------------------------------------------------------
+quickmap(lcpms.sig_genes, 
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Protein Coding Genes"),
+         filename = here("results", "PRJNA685849", "figures", "gene-heatmap.png"))
+
+quickmap(lcpms.sig_res, 
+         annotation_col = col_df,
+         annotation_colors = ann_colors,
+         main = paste("Significant (FDR <", sig, ") Repetitive Elements"),
+         filename = here("results", "PRJNA685849", "figures", "re-heatmap.png"))
+```
+
+## Create Patchworks
+
+```{r}
+library(patchwork)
+
+
+# Gene CDDP
+(gene_vplots[[1]] + scale_x_continuous(limits = c(-10, 10)) + scale_y_continuous(limits = c(0, 20)) |
+ gene_vplots[[2]] + scale_x_continuous(limits = c(-10, 10)) + scale_y_continuous(limits = c(0, 20)) |
+ gene_vplots[[3]] + scale_x_continuous(limits = c(-10, 10)) + scale_y_continuous(limits = c(0, 20)) ) /
+(gene_mdplots[[1]] + scale_y_continuous(limits = c(-10, 10)) |
+ gene_mdplots[[2]] + scale_y_continuous(limits = c(-10, 10)) |
+ gene_mdplots[[3]] + scale_y_continuous(limits = c(-10, 10) )) +
+ plot_layout(guides = "collect") +
+ plot_annotation("CDDP 50uM Protein Coding Gene Expression") +
+ ggsave(here("results", "PRJNA685849", "figures", "gene-patchwork-1.png"),
+        width = 18,
+        height = 10)
+
+# Gene Hypercin
+(gene_vplots[[4]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-11, 11)) |
+ gene_vplots[[5]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-11, 11)) |
+ gene_vplots[[6]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-11, 11)) ) /
+(gene_mdplots[[4]] + scale_y_continuous(limits = c(-11, 11)) |
+ gene_mdplots[[5]] + scale_y_continuous(limits = c(-11, 11)) |
+ gene_mdplots[[6]] + scale_y_continuous(limits = c(-11, 11))) +
+ plot_layout(guides = "collect") +
+ plot_annotation("Hypercin 150nM + Irradiation Protein Coding Gene Expression") +
+ ggsave(here("results", "PRJNA685849", "figures", "gene-patchwork-2.png"),
+        width = 18,
+        height = 10)
+
+# Gene MTX
+(gene_vplots[[7]] + scale_x_continuous(limits = c(-11, 11)) + scale_y_continuous(limits = c(0, 40)) |
+ gene_vplots[[8]] + scale_x_continuous(limits = c(-11, 11)) + scale_y_continuous(limits = c(0, 40)) |
+ gene_vplots[[9]] + scale_x_continuous(limits = c(-11, 11)) + scale_y_continuous(limits = c(0, 40)) ) /
+(gene_mdplots[[7]] + scale_y_continuous(limits = c(-11, 11)) |
+ gene_mdplots[[8]] + scale_y_continuous(limits = c(-11, 11)) |
+ gene_mdplots[[9]] + scale_y_continuous(limits = c(-11, 11))) +
+ plot_layout(guides = "collect") +
+ plot_annotation("MTX 1uM Protein Coding Gene Expression") +
+ ggsave(here("results", "PRJNA685849", "figures", "gene-patchwork-3.png"),
+        width = 18,
+        height = 10)
+
+# RE CDDP
+(re_vplots[[1]] + scale_x_continuous(limits = c(-7, 7)) + scale_y_continuous(limits = c(0, 3)) |
+ re_vplots[[2]] + scale_x_continuous(limits = c(-7, 7)) + scale_y_continuous(limits = c(0, 3)) |
+ re_vplots[[3]] + scale_x_continuous(limits = c(-7, 7)) + scale_y_continuous(limits = c(0, 3)) ) /
+(re_mdplots[[1]] + scale_y_continuous(limits = c(-7, 7))|
+ re_mdplots[[2]] + scale_y_continuous(limits = c(-7, 7))|
+ re_mdplots[[3]] + scale_y_continuous(limits = c(-7, 7))) +
+ plot_layout(guides = "collect") +
+ plot_annotation("CDDP 50uM RE Expression") +
+ ggsave(here("results", "PRJNA685849", "figures", "re-patchwork-1.png"),
+        width = 18,
+        height = 10)
+
+# RE Hypercin
+(re_vplots[[4]] + scale_y_continuous(limits = c(0, 8)) + scale_x_continuous(limits = c(-7, 7)) |
+ re_vplots[[5]] + scale_y_continuous(limits = c(0, 8)) + scale_x_continuous(limits = c(-7, 7)) |
+ re_vplots[[6]] + scale_y_continuous(limits = c(0, 8)) + scale_x_continuous(limits = c(-7, 7)) ) /
+(re_mdplots[[4]] + scale_y_continuous(limits = c(-7, 7)) |
+ re_mdplots[[5]] + scale_y_continuous(limits = c(-7, 7)) |
+ re_mdplots[[6]] + scale_y_continuous(limits = c(-7, 7))) +
+ plot_layout(guides = "collect") +
+ plot_annotation("Hypercin 150nM + Irradiation RE Expression") +
+ ggsave(here("results", "PRJNA685849", "figures", "re-patchwork-2.png"),
+        width = 18,
+        height = 10)
+
+# RE MTX
+(re_vplots[[7]] + scale_x_continuous(limits = c(-5, 5)) + scale_y_continuous(limits = c(0, 10)) |
+ re_vplots[[8]] + scale_x_continuous(limits = c(-5, 5)) + scale_y_continuous(limits = c(0, 10)) |
+ re_vplots[[9]] + scale_x_continuous(limits = c(-5, 5)) + scale_y_continuous(limits = c(0, 10)) ) /
+(re_mdplots[[7]] + scale_y_continuous(limits = c(-5, 5)) |
+ re_mdplots[[8]] + scale_y_continuous(limits = c(-5, 5)) |
+ re_mdplots[[9]] + scale_y_continuous(limits = c(-5, 5))) +
+ plot_layout(guides = "collect") +
+ plot_annotation("MTX 1uM RE Expression") +
+ ggsave(here("results", "PRJNA685849", "figures", "re-patchwork-3.png"),
+        width = 18,
+        height = 10)
+```
+
+## Create Family-Level Dotplots for significant REs
+
+```{r}
+dotplots <- vector("list", length(names(de_results)))
+for (i in seq_along(names(de_results))) {
+  dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)
+}
+
+dotplots <- dotplots[!sapply(dotplots, is.null)]
+
+(dotplots[[1]] | dotplots[[2]] | plot_spacer()) +
+plot_annotation("RE Family Expression") +
+ggsave(here("results", "PRJNA685849", "figures", "dotplots-1.png"),
+       width = 18,
+       height = 7)
+
+(dotplots[[3]] | dotplots[[4]] | plot_spacer()) +
+plot_annotation("RE Family Expression") +
+ggsave(here("results", "PRJNA685849", "figures", "dotplots-2.png"),
+       width = 18,
+       height = 7)
+
+(dotplots[[5]] | dotplots[[6]] | dotplots[[7]]) +
+plot_annotation("RE Family Expression") +
+ggsave(here("results", "PRJNA685849", "figures", "dotplots-3.png"),
+       width = 18,
+       height = 7)
+```

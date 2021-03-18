@@ -18,6 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(here)
+library(magrittr)
 
 
 dge_files <- list.files(
@@ -70,7 +71,7 @@ dre <- as.data.table(vroom::vroom(dre_files,
 ))
 ```
 
-## Clean
+## Clean and add variables
 
 ```{r}
 clean_fpath = function(s) { gsub("/data-files/", "", 
@@ -87,6 +88,22 @@ dre[, experiment := clean_fpath(fpath)]
 # (used to differentiate same conditions in different experiments)
 dge[, condition := paste(experiment, contrast, sep = ".")]
 dre[, condition := paste(experiment, contrast, sep = ".")]
+
+# create an additional column based on the feature's ranking
+dge[, rank := sign(logFC) * -log10(FDR)]
+dre[, rank := sign(logFC) * -log10(FDR)]
+```
+
+## Write the unique conditions out for manual annotation
+
+I need to annotate the drugs by class/type/ something so they can be 
+differentiated better on plots.
+
+**I will have to manually edit this file since its information is not readily
+available when downloading the datasets from GEO**
+
+```{r eval=FALSE, include=FALSE}
+fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-annotation.csv"))
 ```
 
 ## Cast into matrices
@@ -112,605 +129,276 @@ dre_fdr_mat <- as.matrix(dcast(dre[, .(feature_id, condition, FDR)],
   feature_id ~ condition,
   value.var = "FDR"
 ), rownames = "feature_id")
+
+# repeat for ranks
+dge_rank_mat <- as.matrix(dcast(dge[, .(feature_id, condition, rank)],
+  feature_id ~ condition,
+  value.var = "rank"
+), rownames = "feature_id")
+
+dre_rank_mat <- as.matrix(dcast(dre[, .(feature_id, condition, rank)],
+  feature_id ~ condition,
+  value.var = "rank"
+), rownames = "feature_id")
 ```
 
 ## Replace NA values after cast
 
 LFC values that were NA get 0 for their logFC and FDR values that were NA get 1.
+Ranks are trickier. -1/1 rank should put features near the middle. 
 
 ```{r}
 dge_lfc_mat[is.na(dge_lfc_mat)] <- 0
 dre_lfc_mat[is.na(dre_lfc_mat)] <- 0
 dge_fdr_mat[is.na(dge_fdr_mat)] <- 1
 dre_fdr_mat[is.na(dre_fdr_mat)] <- 1
+dge_rank_mat[is.na(dge_rank_mat)] <- 1
+dre_rank_mat[is.na(dre_rank_mat)] <- 1
 ```
 
 ## PCA on all conditions
+
+logFC, p-value, and rank
 
 ```{r}
 pca_dge_lfc <- prcomp(t(dge_lfc_mat), scale. = FALSE, center = TRUE)
 pca_dre_lfc <- prcomp(t(dre_lfc_mat), scale. = FALSE, center = TRUE)
 pca_dge_fdr <- prcomp(t(dge_fdr_mat), scale. = FALSE, center = TRUE)
 pca_dre_fdr <- prcomp(t(dre_fdr_mat), scale. = FALSE, center = TRUE)
+pca_dge_rank <- prcomp(t(dge_rank_mat), scale. = FALSE, center = TRUE)
+pca_dre_rank <- prcomp(t(dre_rank_mat), scale. = FALSE, center = TRUE)
 
 # extract the components
 dge_lfc_pca_df <- as.data.table(pca_dge_lfc$x, keep.rownames = "condition")
 dre_lfc_pca_df <- as.data.table(pca_dre_lfc$x, keep.rownames = "condition")
 dge_fdr_pca_df <- as.data.table(pca_dge_fdr$x, keep.rownames = "condition")
 dre_fdr_pca_df <- as.data.table(pca_dre_fdr$x, keep.rownames = "condition")
+dge_rank_pca_df <- as.data.table(pca_dge_rank$x, keep.rownames = "condition")
+dre_rank_pca_df <- as.data.table(pca_dre_rank$x, keep.rownames = "condition")
 ```
 
-## Can we cluster (k-means) to get larger groups?
-
-### Find number of PCs
+### Get the percent variance explained
 
 ```{r}
-factoextra::fviz_eig(pca_dge_lfc, addlabels = TRUE) + ggtitle("DE Gene logFC")
-factoextra::fviz_eig(pca_dre_lfc, addlabels = TRUE) + ggtitle("DE RE logFC")
+factoextra::fviz_eig(pca_dge_lfc, addlabels = TRUE)
+factoextra::fviz_eig(pca_dge_rank, addlabels = TRUE)
+factoextra::fviz_eig(pca_dre_lfc, addlabels = TRUE)
+factoextra::fviz_eig(pca_dre_rank, addlabels = TRUE)
 ```
 
-### K-means on PCs
+
+## Join in manual annotation information
 
 ```{r}
-# use first 50 PCs and (4?) centers
-dge_lfc_km <- kmeans(dge_lfc_pca_df[, 2:51], centers = 10)
-dge_lfc_pca_df$cluster <- factor(dge_lfc_km$cluster)
+exp_annot <- fread(here("doc", "2021_03_17-experiment-annotation.csv"))
+exp_annot[, condition := paste(experiment, contrast, sep = ".")]
 ```
 
-### Plot
+## Create PCA plots
 
 ```{r}
 library(plotly)
 
 
-fig <- plot_ly(dge_lfc_pca_df, 
+df <- merge(dge_lfc_pca_df, exp_annot, by = "condition")
+fig1 <- plot_ly(df, 
                x = ~PC1, 
-               y = ~PC2,
-               color = ~cluster, 
-               type = 'scatter', 
-               mode = 'markers',
-               size = 3,
-               colors = "Set3",
-        text = ~paste('Condition: ', condition))
+               y = ~PC2, 
+               z = ~PC3, 
+               color = ~drug,
+               hovertext = paste("Cell Type:", df$cell_type, 
+                                 "<br> Drug:", df$drug,
+                                 "<br> Dose", df$dose,
+                                 "<br> Time", df$time_hr)) %>%
+  add_markers() %>% 
+  layout(
+    title = list(text = "Protein Coding Gene Expression - logFC"),
+    scene = list(
+      xaxis = list(title = "PC1 (12.1%)"),
+      yaxis = list(title = "PC2 (10.1%)"),
+      zaxis = list(title = "PC3 (4.5%)")))
 
-fig
+# do the same for REs ----------------------------------------------------------
+df2 <- merge(dre_lfc_pca_df, exp_annot, by = "condition")
+fig2 <- plot_ly(df2, 
+               x = ~PC1, 
+               y = ~PC2, 
+               z = ~PC3, 
+               color = ~drug,
+               hovertext = paste("Cell Type:", df2$cell_type, 
+                                 "<br> Drug:", df2$drug,
+                                 "<br> Dose", df2$dose,
+                                 "<br> Time", df2$time_hr)) %>%
+  add_markers() %>% 
+  layout(
+    title = list(text = "RE Expression - logFC"),
+    scene = list(
+      xaxis = list(title = "PC1 (34.8%)"),
+      yaxis = list(title = "PC2 (5.3%)"),
+      zaxis = list(title = "PC3 (3.1%)")))
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Convert to datatables for speed
+Same deal but use rankings
 
 ```{r}
+df3 <- merge(dge_rank_pca_df, exp_annot, by = "condition")
+fig3 <- plot_ly(df3, 
+               x = ~PC1, 
+               y = ~PC2, 
+               z = ~PC3, 
+               color = ~drug,
+               hovertext = paste("Cell Type:", df3$cell_type, 
+                                 "<br> Drug:", df3$drug,
+                                 "<br> Dose", df3$dose,
+                                 "<br> Time", df3$time_hr)) %>%
+  add_markers() %>% 
+    layout(
+    title = list(text = "Protein Coding Gene Expression - Gene Ranks"),
+    scene = list(
+      xaxis = list(title = "PC1 (23.3%)"),
+      yaxis = list(title = "PC2 (18.1%)"),
+      zaxis = list(title = "PC3 (8.8%%)")))
 
-dge_dt <- as.data.table(dge_df)
-dre_dt <- as.data.table(dre_df)
-
-# remove the REs from the entire table (PRJNAs had this filtering done)
-dre_dt <- dre_dt[!stringr::str_detect(feature_id, "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity")]
+# same with REs ----------------------------------------------------------------
+df4 <- merge(dre_rank_pca_df, exp_annot, by = "condition")
+fig4 <- plot_ly(df4, 
+               x = ~PC1, 
+               y = ~PC2, 
+               z = ~PC3, 
+               color = ~drug,
+               hovertext = paste("Cell Type:", df4$cell_type, 
+                                 "<br> Drug:", df4$drug,
+                                 "<br> Dose", df4$dose,
+                                 "<br> Time", df4$time_hr)) %>%
+  add_markers() %>% 
+    layout(
+    title = list(text = "RE Expression - Gene Ranks"),
+    scene = list(
+      xaxis = list(title = "PC1 (66.4%)"),
+      yaxis = list(title = "PC2 (5.6%)"),
+      zaxis = list(title = "PC3 (4.8%%)")))
 ```
 
-## Filter out the contrasts that we are not interested in
+## Save plots
 
 ```{r}
-all_conditions <- unique(dge_dt[, contrast])
-
-# used to paste the vector for easier manual cleanup
-#datapasta::vector_paste_vertical(all_conditions)
-
-coi <- c("hh1_96hr",
-         "hh1_25um_96hr",
-         "dac_96hr",
-         "dac_hh1_10um_96hr",
-         "dac_hh1_25um_96hr",
-         "tetOff",
-         "pladb_150nM",
-         "pladb_10nM",
-         "dac",
-         "dac_siCHD4",
-         "siCHD4",
-         "siDMNT1",
-         "siDNMT1_siCHD4",
-         "doxorubicin.300nM.16h",
-         "dac_deazaneplanocinA",
-         "deazaneplanocinA",
-         "doxorubicin.1uM",
-         "etoposide.20uM",
-         "mms.40ug_ml",
-         "paclitaxel.02uM",
-         "etoposide",
-         "gy4.3hr",
-         "carboplatin.50uM_72hr",
-         "erlotinib.1uM_24hr",
-         "tsa.50nM_5hr",
-         "hc29_5fu",
-         "doxorubicin_cytabine_decitabine",
-         "doxorubicin_cytabine",
-         "doxorubicin",
-         "dac.300nM",
-         "dac.100nM",
-         "azacitidine_125nM",
-         "azacitidine_250nM",
-         "azacitidine_50nM",
-         "dac_12.5nM",
-         "dac_25nM",
-         "dac_5nM",
-         "proa",
-         "dac_proa",
-         "dac_depsi",
-         "dac_gsk343",
-         "dac_s2102",
-         "dac_unc0628",
-         "depsi",
-         "gsk343",
-         "s2102",
-         "unc0628",
-         "toyo_72hr")
+htmlwidgets::saveWidget(fig1, here("results", "combined", "figures", "dge-lfc-pca.html"))
+htmlwidgets::saveWidget(fig2, here("results", "combined", "figures", "dre-lfc-pca.html"))
+htmlwidgets::saveWidget(fig3, here("results", "combined", "figures", "dge-rank-pca.html"))
+htmlwidgets::saveWidget(fig4, here("results", "combined", "figures", "dre-rank-pca.html"))
 ```
 
-### Filter datasets for coi
+## Dendrogram / Heatmap
+
+### Heatmap of most variable logFCs
 
 ```{r}
-dge.coi <- dge_dt[contrast %in% coi]
-dre.coi <- dre_dt[contrast %in% coi]
+library(matrixStats)
+
+
+# calculate unsupervised variance across logFC values
+dge_lfc_vars <- rowVars(dge_lfc_mat, na.rm = TRUE)
+dge_lfc_o <- order(dge_lfc_vars, decreasing = TRUE)
+dge_lfc_top <- dge_lfc_mat[head(dge_lfc_o, n = 500), ]
+
+# cluster rows and columns
+dd_rows <- as.dendrogram(hclust(dist(dge_lfc_top, method = "euclidean"), method = "ward.D2"))
+dd_cols <- as.dendrogram(hclust(dist(t(dge_lfc_top), method = "euclidean"), method = "ward.D2"))
+
+# reorder the matrix by calculated clustering
+dge_lfc_top <- dge_lfc_top[order.dendrogram(dd_rows), order.dendrogram(dd_cols)]
+
+# match colnames from matrix with annotations
+hm_annot <- exp_annot[match(colnames(dge_lfc_top), condition), ]
+
+fig5 <- plot_ly(x = hm_annot$condition,
+                y = rownames(dge_lfc_top),
+                z = dge_lfc_top, 
+                type = "heatmap") %>% 
+  layout(title = list(text = "500 Most Variable Genes by logFC"))
 ```
 
-
-
-## Create a matrix of the logFC values for all conditions
+Repeat for repeats
 
 ```{r}
-library(magrittr)
+# calculate unsupervised variance across logFC values
+dre_lfc_vars <- rowVars(dre_lfc_mat, na.rm = TRUE)
+dre_lfc_o <- order(dre_lfc_vars, decreasing = TRUE)
+dre_lfc_top <- dre_lfc_mat[head(dre_lfc_o, n = 100), ]
 
+# cluster rows and columns
+dd_rows2 <- as.dendrogram(hclust(dist(dre_lfc_top, method = "euclidean"), method = "ward.D2"))
+dd_cols2 <- as.dendrogram(hclust(dist(t(dre_lfc_top), method = "euclidean"), method = "ward.D2"))
 
-# extract cols of interest
-dge_logFC <- dge.coi[, .(feature_id, logFC, condition)]
+# reorder the matrix by calculated clustering
+dre_lfc_top <- dre_lfc_top[order.dendrogram(dd_rows2), order.dendrogram(dd_cols2)]
 
-# pivot wider
-dge_logFC.w <- dcast(dge_logFC, feature_id ~ condition, value.var = "logFC")
+# match colnames from matrix with annotations
+hm_annot2 <- exp_annot[match(colnames(dre_lfc_top), condition), ]
 
-# convert to matrix
-dge_mat <- dge_logFC.w %>% 
-  tibble::column_to_rownames(var = "feature_id") %>% 
-  as.matrix()
-
-# fill NAs with 0s
-dge_mat[is.na(dge_mat)] <- 0
-
-# same for RE ------------------------------------------------------------------
-dre_logFC <- dre.coi[, .(feature_id, logFC, condition)]
-dre_logFC.w <- dcast(dre_logFC, feature_id ~ condition, value.var = "logFC")
-dre_mat <- dre_logFC.w %>% 
-  tibble::column_to_rownames(var = "feature_id") %>% 
-  as.matrix()
-dre_mat[is.na(dre_mat)] <- 0
+fig6 <- plot_ly(x = hm_annot2$condition,
+                y = rownames(dre_lfc_top),
+                z = dre_lfc_top, 
+                type = "heatmap") %>% 
+  layout(title = list(text = "100 Most Variable REs by logFC"))
 ```
 
-## Repeat for FDR adjusted p-values
+and for calculated ranks
 
 ```{r}
-dge_fdr <- dge.coi[, .(feature_id, FDR, condition)]
-dge_fdr.w <- dcast(dge_fdr, feature_id ~ condition, value.var = "FDR")
-dge_mat.fdr <- dge_fdr.w %>% 
-  tibble::column_to_rownames(var = "feature_id") %>% 
-  as.matrix()
-dge_mat.fdr[is.na(dge_mat.fdr)] <- 1
+# calculate unsupervised variance across logFC values
+dge_rank_vars <- rowVars(dge_rank_mat, na.rm = TRUE)
+dge_rank_o <- order(dge_rank_vars, decreasing = TRUE)
+dge_rank_top <- dge_rank_mat[head(dge_rank_o, n = 500), ]
 
-# and for REs
-dre_fdr <- dre.coi[, .(feature_id, FDR, condition)]
-dre_fdr.w <- dcast(dre_fdr, feature_id ~ condition, value.var = "FDR")
-dre_mat.fdr <- dre_fdr.w %>% 
-  tibble::column_to_rownames(var = "feature_id") %>% 
-  as.matrix()
-dre_mat.fdr[is.na(dre_mat.fdr)] <- 1
+# cluster rows and columns
+dd_rows3 <- as.dendrogram(hclust(dist(dge_rank_top, method = "euclidean"), method = "ward.D2"))
+dd_cols3 <- as.dendrogram(hclust(dist(t(dge_rank_top), method = "euclidean"), method = "ward.D2"))
+
+# reorder the matrix by calculated clustering
+dge_rank_top <- dge_rank_top[order.dendrogram(dd_rows3), order.dendrogram(dd_cols3)]
+
+# match colnames from matrix with annotations
+hm_annot3 <- exp_annot[match(colnames(dge_rank_top), condition), ]
+
+fig7 <- plot_ly(x = hm_annot3$condition,
+                y = rownames(dge_rank_top),
+                z = dge_rank_top, 
+                type = "heatmap") %>% 
+  layout(title = list(text = "500 Most Variable Genes by Rank"))
+```
+ repeats by rank
+ 
+```{r}
+# calculate unsupervised variance across logFC values
+dre_rank_vars <- rowVars(dre_rank_mat, na.rm = TRUE)
+dre_rank_o <- order(dre_rank_vars, decreasing = TRUE)
+dre_rank_top <- dre_rank_mat[head(dre_rank_o, n = 100), ]
+
+# cluster rows and columns
+dd_rows4 <- as.dendrogram(hclust(dist(dre_rank_top, method = "euclidean"), method = "ward.D2"))
+dd_cols4 <- as.dendrogram(hclust(dist(t(dre_rank_top), method = "euclidean"), method = "ward.D2"))
+
+# reorder the matrix by calculated clustering
+dre_rank_top <- dre_rank_top[order.dendrogram(dd_rows4), order.dendrogram(dd_cols4)]
+
+# match colnames from matrix with annotations
+hm_annot4 <- exp_annot[match(colnames(dre_rank_top), condition), ]
+
+fig8 <- plot_ly(x = hm_annot4$condition,
+                y = rownames(dre_rank_top),
+                z = dre_rank_top, 
+                type = "heatmap") %>% 
+  layout(title = list(text = "100 Most Variable REs by Rank"))
 ```
 
-## Get the most variable rows and plot
+## Save widgets
 
 ```{r}
-library(tidyverse)
-
-
-dge_row_vars <- matrixStats::rowVars(dge_mat)
-dge_var_order <- order(dge_row_vars, decreasing = TRUE)
-top_dge <- dge_mat[head(dge_var_order, 5000), ]
-
-# repeat for REs
-dre_row_vars <- matrixStats::rowVars(dre_mat)
-dre_var_order <- order(dre_row_vars, decreasing = TRUE)
-top_dre <- dge_mat[head(dre_var_order, 500), ]
-
-# create annotations for heatmaps
-col_df <- colnames(top_dge) %>% 
-  enframe(value = "experiment_treatment", name = NULL) %>% 
-  separate(experiment_treatment, into = c("experiment", "treatment"), extra = "merge", remove = FALSE) %>% 
-  select(experiment_treatment, experiment) %>% 
-  mutate(drug = case_when(str_detect(experiment_treatment, "dac_[a-zA-Z]|decitabine") ~ "dac_combo",
-                          str_detect(experiment_treatment, "dac|dac_[0-9]") ~ "dac",
-                          TRUE ~ "other")) %>% 
-  column_to_rownames(var = "experiment_treatment")
-
-pheatmap::pheatmap(top_dge, 
-                   scale = "row", 
-                   show_rownames = FALSE, 
-                   treeheight_row = 0,
-                   cluster_rows = TRUE,
-                   cluster_cols = TRUE,
-                   annotation_col = col_df,
-                   fontsize_col = 4,
-                   angle_col = 315,
-                   color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
-                   main = "Top 5000 Most Variable Protein Coding Genes",
-                   filename = here("results", "combined", "figures", "dge-top5000-heatmap.png")
-                   )
-
-pheatmap::pheatmap(top_dre, 
-                   scale = "row", 
-                   show_rownames = FALSE, 
-                   treeheight_row = 0,
-                   cluster_rows = TRUE,
-                   cluster_cols = TRUE,
-                   annotation_col = col_df,
-                   fontsize_col = 4, 
-                   angle_col = 315,
-                   color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
-                   main = "Top 500 Most Variable REs",
-                   filename = here("results", "combined", "figures", "dre-top500-heatmap.png")
-                   )
+htmlwidgets::saveWidget(fig5, here("results", "combined", "figures", "dge-lfc-hm.html"))
+htmlwidgets::saveWidget(fig6, here("results", "combined", "figures", "dge-rank-hm.html"))
+htmlwidgets::saveWidget(fig7, here("results", "combined", "figures", "dre-lfc-hm.html"))
+htmlwidgets::saveWidget(fig8, here("results", "combined", "figures", "dre-rank-hm.html"))
 ```
 
-## Heatmap on significant genes
-
-```{r}
-significant_genes <- unique(dge.coi[FDR < 0.01, feature_id])
-significant_res <- unique(dre.coi[FDR < 0.01, feature_id])
-
-dge_sig_mat <- subset(dge_mat, rownames(dge_mat) %in% significant_genes)
-dre_sig_mat <- subset(dre_mat, rownames(dre_mat) %in% significant_res)
-
-# plot
-pheatmap::pheatmap(dge_sig_mat, 
-                   scale = "row", 
-                   show_rownames = FALSE, 
-                   treeheight_row = 0,
-                   cluster_rows = TRUE,
-                   cluster_cols = TRUE,
-                   annotation_col = col_df,
-                   fontsize_col = 4, 
-                   angle_col = 315,
-                   color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
-                   main = "Any Significant (FDR < 0.01) Protein Coding Gene",
-                   filename = here("results", "combined", "figures", "dge-sig-heatmap.png")
-                   )
-
-pheatmap::pheatmap(dre_sig_mat, 
-                   scale = "row", 
-                   show_rownames = FALSE, 
-                   treeheight_row = 0,
-                   cluster_rows = TRUE,
-                   cluster_cols = TRUE,
-                   fontsize_col = 4, 
-                   angle_col = 315,
-                   annotation_col = col_df,
-                   color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
-                   main = "Any Significant (FDR < 0.01) RE",
-                   filename = here("results", "combined", "figures", "dre-sig-heatmap.png")
-                   )
-```
-
-## Is PCA any more helpful
-
-```{r}
-library(ggrepel)
-library(forcats)
-
-
-dge.pca <- prcomp(t(dge_mat), scale. = FALSE, center = TRUE)
-dre.pca <- prcomp(t(dre_mat), scale. = FALSE, center = TRUE)
-
-# these are the treatments that will get text labels on PCA plots
-label_trts <- c("hh1_96hr",
-                "hh1_25um_96hr",
-                "pladb_150nM",
-                "doxorubicin.300nM.16h",
-                "deazaneplanocinA",
-                "doxorubicin.1uM",
-                "etoposide.20uM",
-                "mms.40ug_ml",
-                "paclitaxel.02uM",
-                "etoposide",
-                "gy4.3hr",
-                "carboplatin.50uM_72hr",
-                "erlotinib.1uM_24hr",
-                "tsa.50nM_5hr",
-                "hc29_5fu",
-                "doxorubicin_cytabine",
-                "doxorubicin",
-                "azacitidine_125nM",
-                "azacitidine_250nM",
-                "azacitidine_50nM",
-                "proa",
-                "depsi",
-                "toyo_72hr")
-
-# plot -------------------------------------------------------------------------
-
-# Genes
-dge_pca.df <- dge.pca$x %>% 
-  as_tibble(rownames = "X") %>% 
-  left_join(as_tibble(col_df, rownames = "X")) %>% 
-  separate(X, into = c("experiment", "treatment"), extra = "merge")
-
-dge_pca.df %>% 
-  ggplot(aes(x = PC1, y = PC2, color = experiment)) +
-  geom_hline(yintercept = 0, linetype = 2) +
-  geom_vline(xintercept = 0, linetype = 2) +
-  geom_point(size = 3.5, alpha = 0.25) +
-  geom_point(data = { dge_pca.df %>% filter(str_detect(treatment, "dac")) },
-             color = "grey",
-             size = 3,
-             alpha = 0.8) +
-  geom_text_repel(data = { dge_pca.df %>% filter(treatment %in% label_trts) },
-                  aes(label = treatment),
-                  max.overlaps = Inf,
-                  segment.linetype = 3,
-                  force = 1) +
-  theme_light() +
-  theme(legend.position = "none") +
-  labs(title = "logFC of Protein Coding Genes",
-       subtitle = "Grey points are DAC or DAC + Drug Combination") +
-  ggsave(here("results", "combined", "figures", "dge-pca.png"),
-         width = 18,
-         height = 10)
-
-# REs
-dre_pca.df <- dre.pca$x %>% 
-  as_tibble(rownames = "X") %>% 
-  left_join(as_tibble(col_df, rownames = "X")) %>% 
-  separate(X, into = c("experiment", "treatment"), extra = "merge") 
-
-dre_pca.df %>% 
-  ggplot(aes(x = PC1, y = PC2, color = experiment)) +
-  geom_hline(yintercept = 0, linetype = 2) +
-  geom_vline(xintercept = 0, linetype = 2) +
-  geom_point(size = 3.5, alpha = 0.25) +
-  geom_point(data = { dre_pca.df %>% filter(str_detect(treatment, "dac")) },
-             color = "grey",
-             size = 3,
-             alpha = 0.8) +
-  geom_text_repel(data = { dre_pca.df %>% filter(treatment %in% label_trts) },
-                  aes(label = treatment),
-                  max.overlaps = Inf,
-                  segment.linetype = 3,
-                  force = 1) +
-  theme_light() +
-  theme(legend.position = "none") +
-  labs(title = "logFC of REs",
-       subtitle = "Grey points are DAC or DAC + Drug Combination") +
-  ggsave(here("results", "combined", "figures", "dre-pca.png"),
-         width = 18,
-         height = 10)
-```
-
-### Filter out extreme drugs and re-plot
-
-```{r}
-dge_pca.df %>% 
-  filter(!str_detect(treatment, "deazaneplanocinA")) %>% 
-  ggplot(aes(x = PC1, y = PC2, color = experiment)) +
-  geom_hline(yintercept = 0, linetype = 2) +
-  geom_vline(xintercept = 0, linetype = 2) +
-  geom_point(size = 3.5, alpha = 0.25) +
-  geom_point(data = { dge_pca.df %>% filter(str_detect(treatment, "dac"), !str_detect(treatment, "deazaneplanocinA")) },
-             color = "grey",
-             size = 3,
-             alpha = 0.8) +
-  geom_text_repel(data = { dge_pca.df %>% filter(treatment %in% label_trts) %>% filter(!str_detect(treatment, "deazaneplanocinA"))  },
-                  aes(label = treatment),
-                  max.overlaps = Inf,
-                  segment.linetype = 3,
-                  force = 1) +
-  theme_light() +
-  theme(legend.position = "none") +
-  labs(title = "logFC of Protein Coding Genes",
-       subtitle = "Grey points are DAC or DAC + Drug Combination") +
-  ggsave(here("results", "combined", "figures", "dge-pca2.png"),
-         width = 18,
-         height = 10)
-
-dre_pca.df %>% 
-  filter(!str_detect(treatment, "deazaneplanocinA|toyo")) %>% 
-  ggplot(aes(x = PC1, y = PC2, color = experiment)) +
-  geom_hline(yintercept = 0, linetype = 2) +
-  geom_vline(xintercept = 0, linetype = 2) +
-  geom_point(size = 3.5, alpha = 0.25) +
-  geom_point(data = { dre_pca.df %>% filter(str_detect(treatment, "dac"), !str_detect(treatment, "deazaneplanocinA|toyo")) },
-             color = "grey",
-             size = 3,
-             alpha = 0.8) +
-  geom_text_repel(data = { dre_pca.df %>% filter(treatment %in% label_trts) %>% filter(!str_detect(treatment, "deazaneplanocinA|toyo"))  },
-                  aes(label = treatment),
-                  max.overlaps = Inf,
-                  segment.linetype = 3,
-                  force = 1) +
-  theme_light() +
-  theme(legend.position = "none") +
-  labs(title = "logFC of REs",
-       subtitle = "Grey points are DAC or DAC + Drug Combination") +
-  ggsave(here("results", "combined", "figures", "dre-pca2.png"),
-         width = 18,
-         height = 10)
-```
-
-## Create gene rankings
-
-```{r}
-dge.coi[, rank := sign(logFC) * -log10(PValue)]
-dre.coi[, rank := sign(logFC) * -log10(PValue)]
-```
-
-## Can we use proportions of up/down?
-
-Take the matrix and calculate a proportion for up and down logFC
-
-```{r}
-dge_prop_up <- apply(as.data.frame(dge_mat), 1, function(x) { mean(x > 0) } )
-dge_prop_down <- apply(as.data.frame(dge_mat), 1, function(x) { mean(x < 0) } )
-
-dre_prop_up <- apply(as.data.frame(dre_mat), 1, function(x) { mean(x > 0) } )
-dre_prop_down <- apply(as.data.frame(dre_mat), 1, function(x) { mean(x < 0) } )
-```
-
-## Plot top up/down genes by proportion
-
-`difference` below is the difference in the proportion of up/down. A number 
-closer to 1 indicates that the gene goes up in most treatments. Similiarly, 
-values closer to 0 indicate that the gene does down in most treatments.
-
-```{r}
-# create dataframes with the difference in proportion between up - down
-dge_prop_df <- dge_prop_up %>% 
-  enframe(name = "gene_name", value = "up") %>% 
-  left_join(enframe(dge_prop_down, name = "gene_name", value = "down"),
-            by = "gene_name") %>% 
-  mutate(difference = up - down)
-
-dre_prop_df <- dre_prop_up %>% 
-  enframe(name = "gene_name", value = "up") %>% 
-  left_join(enframe(dre_prop_down, name = "gene_name", value = "down"),
-            by = "gene_name") %>% 
-  mutate(difference = up - down)
-
-# get the top N genes by difference
-dge_prop_df %>% 
-  slice_max(n = 25, order_by = difference, with_ties = FALSE) %>% 
-  bind_rows( {dge_prop_df %>% slice_max(n = 25, order_by = desc(difference), with_ties = FALSE) }) %>% 
-  ggplot(aes(x = fct_reorder(gene_name, difference), y = difference)) +
-  geom_point() +
-  geom_hline(yintercept = 0, linetype = 2) +
-  coord_flip() +
-  theme_light() +
-  scale_y_continuous(limits = c(-1, 1)) +
-  labs(title = "Top Genes by (Proportion Up -  Proportion Down)",
-       x = NULL,
-       y = "Difference") +
-  ggsave(here("results", "combined", "figures", "dge-prop.png"),
-         width = 8,
-         height = 6)
-
-# and for REs
-dre_prop_df %>% 
-  slice_max(n = 25, order_by = difference, with_ties = FALSE) %>% 
-  bind_rows( {dre_prop_df %>% slice_max(n = 25, order_by = desc(difference), with_ties = FALSE) }) %>% 
-  ggplot(aes(x = fct_reorder(gene_name, difference), y = difference)) +
-  geom_point() +
-  geom_hline(yintercept = 0, linetype = 2) +
-  coord_flip() +
-  theme_light() +
-  scale_y_continuous(limits = c(-1, 1)) +
-  labs(title = "Top REs by (Proportion Up -  Proportion Down)",
-       x = NULL,
-       y = "Difference") +
-  ggsave(here("results", "combined", "figures", "dre-prop.png"),
-         width = 8,
-         height = 6)
-```
-
-## Incorporate significance
-
-```{r}
-dge_prop_sig <- apply(dge_mat.fdr, 1, function(x) { mean(x < 0.1) })
-dre_prop_sig <- apply(dre_mat.fdr, 1, function(x) { mean(x < 0.1) })
-
-dge_sig_df <- enframe(dge_prop_sig, name = "gene_name", value = "prop_sig")
-dre_sig_df <- enframe(dre_prop_sig, name = "gene_name", value = "prop_sig")
-
-# plot -------------------------------------------------------------------------
-dge_prop_df %>% 
-  left_join(dge_sig_df, by = "gene_name") %>% 
-  slice_max(n = 25, order_by = prop_sig, with_ties = FALSE) %>% 
-  select(gene_name, up, down) %>% 
-  pivot_longer(-gene_name, names_to = "direction", values_to = "prop") %>% 
-  ggplot(aes(x = gene_name, y = prop, color = direction)) +
-  geom_point(size = 3) +
-  coord_flip() +
-  scale_y_continuous(limits = c(0, 1)) +
-  theme_light() +
-  scale_color_manual(values = c("up" = "firebrick", "down" = "steelblue")) +
-  labs(title = "Proportion of studies where gene was up/down regulated",
-       subtitle = "Significantly DE in 50% or more experiments",
-       x = NULL,
-       y = "Proportion of experiments") +
-  ggsave(here("results", "combined", "figures", "dge-sigProp.png"),
-         width = 8,
-         height = 5)
-
-dre_prop_df %>% 
-  left_join(dre_sig_df, by = "gene_name") %>% 
-  slice_max(n = 25, order_by = prop_sig, with_ties = FALSE) %>%
-  filter(prop_sig >= 0.5) %>% 
-  select(gene_name, up, down) %>% 
-  pivot_longer(-gene_name, names_to = "direction", values_to = "prop") %>% 
-  ggplot(aes(x = gene_name, y = prop, color = direction)) +
-  geom_point(size = 3) +
-  coord_flip() +
-  scale_y_continuous(limits = c(0, 1)) +
-  theme_light() +
-  scale_color_manual(values = c("up" = "firebrick", "down" = "steelblue")) +
-  labs(title = "Proportion of studies where RE was up/down regulated",
-       subtitle = "Significantly DE in 50% or more experiments",
-       x = NULL,
-       y = "Proportion of experiments") +
-  ggsave(here("results", "combined", "figures", "dre-sigProp.png"),
-         width = 8,
-         height = 5)
-```
-
-
-
-
-
-
-
-
-
+ 

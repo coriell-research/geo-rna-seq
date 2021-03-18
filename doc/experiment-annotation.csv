@@ -1,0 +1,196 @@
+experiment,contrast,cell_type,drug,dose,time_hr
+hh1,hh1_2hr,YB5,HH1,10uM,2
+hh1,hh1_4hr,YB5,HH1,10uM,4
+hh1,hh1_8hr,YB5,HH1,10uM,8
+hh1,hh1_24hr,YB5,HH1,10uM,24
+hh1,hh1_96hr,YB5,HH1,10uM,96
+hh1,hh1_25um_96hr,YB5,HH1,25uM,96
+hh1,dac_96hr,YB5,Decitabine,,96
+hh1,dac_hh1_10um_96hr,YB5,HH1 + Decitabine,10uM,
+hh1,dac_hh1_25um_96hr,YB5,HH1 + Decitabine,25uM,
+hh1,tetOff,YB5,tetOff,,
+pladb,pladb_150nM,YB5,Pladienolide B,150nM,
+pladb,pladb_10nM,YB5,Pladienolide B,10nM,
+PRJNA260377,cmml1_resonder,BM MNC,Decitabine,20 mg/m2/day i.v.,3 cycles 5d/28d
+PRJNA260377,cmml2_respnder,BM MNC,Decitabine,20 mg/m2/day i.v.,3 cycles 5d/28d
+PRJNA260377,responder,BM MNC,Decitabine,20 mg/m2/day i.v.,3 cycles 5d/28d
+PRJNA265187,dac,SW48,Decitabine,,
+PRJNA265187,dac_siCHD4,SW48,Decitabine + siCHD4,,
+PRJNA265187,siCHD4,SW48,siCHD4,,
+PRJNA265187,siDMNT1,SW48,siDMNT1,,
+PRJNA265187,siDNMT1_siCHD4,SW48,siDNMT1 + siCHD4,,
+PRJNA315294,hct_wt_dox,HCT116_p53_WT,Doxorubicin,300nM,16
+PRJNA315294,hct_ko_dox,HCT116_p53_KO,Doxorubicin,300nM,16
+PRJNA315294,rko_wt_dox,RKO_p53_WT,Doxorubicin,300nM,16
+PRJNA315294,rko_ko_dox,RKO_p53_KO,Doxorubicin,300nM,16
+PRJNA315294,sw48_wt_dox,SW48_p53_WT,Doxorubicin,300nM,16
+PRJNA315294,sw48_ko_dox,SW48_p53_KO,Doxorubicin,300nM,16
+PRJNA315294,hct_dox,HCT116,Doxorubicin,300nM,16
+PRJNA315294,rko_dox,RKO,Doxorubicin,300nM,16
+PRJNA315294,sw48_dox,SW48,Doxorubicin,300nM,16
+PRJNA315294,doxorubicin.300nM.16h,CRC,Doxorubicin,300nM,16
+PRJNA316529,dac,HL-60,Decitabine,100nM,72
+PRJNA316529,dac_deazaneplanocinA,HL-60,Decitabine + 3-deazaneplanocin A,100nM + 1000nM,72
+PRJNA316529,deazaneplanocinA,HL-60,3-deazaneplanocin A,1000nM,72
+PRJNA318019,lnt_dac,LNT-299,Decitabine,1uM,72
+PRJNA318019,t98g_dac,T98G,Decitabine,1uM,72
+PRJNA318019,u87_dac,U-87,Decitabine,1uM,72
+PRJNA318019,dac,GBM,Decitabine,1uM,72
+PRJNA335388,bc_dox,MDA-MB231,Doxorubicin,1uM,72
+PRJNA335388,bc_eto,MDA-MB231,Etoposide,20uM,72
+PRJNA335388,bc_mms,MDA-MB231,MMS,40 ug/mL,72
+PRJNA335388,bc_pac,MDA-MB231,Paclitaxel,0.2uM,72
+PRJNA335388,os_dox,U2OS ,Doxorubicin,1uM,72
+PRJNA335388,os_eto,U2OS ,Etoposide,20uM,72
+PRJNA335388,os_mms,U2OS ,MMS,40 ug/mL,72
+PRJNA335388,os_pac,U2OS ,Paclitaxel,0.2uM,72
+PRJNA335388,doxorubicin.1uM,Breast/Osteosarcoma,Doxorubicin,1uM,72
+PRJNA335388,etoposide.20uM,Breast/Osteosarcoma,Etoposide,20uM,72
+PRJNA335388,mms.40ug_ml,Breast/Osteosarcoma,MMS,40 ug/mL,72
+PRJNA335388,paclitaxel.02uM,Breast/Osteosarcoma,Paclitaxel,0.2uM,72
+PRJNA387040,wt_eto,IMR90_shCGAS,Etoposide,100uM,48
+PRJNA387040,ko_eto,IMR90_shNTC,Etoposide,100uM,48
+PRJNA387040,etoposide,IMR90,Etoposide,100uM,48
+PRJNA391270,a498_4gy,A498,4GY,,3
+PRJNA391270,a549_4gy,A459,4GY,,3
+PRJNA391270,a549_nut,A459,Nutlin3A,5uM,
+PRJNA391270,a549_tgfb,A459,TGFB,2.5ng/ml,120
+PRJNA391270,a549_tgfb_nut,A459,Nutlin3A + TGFB,5uM + 2.5ng/ml,120
+PRJNA391270,h460_4gy,H460,4GY,,3
+PRJNA391270,hct116_4gy,HCT116,4GY,,3
+PRJNA391270,lox_4gy,LOXIMVI,4GY,,3
+PRJNA391270,malme3_4gy,MALME3M,4GY,,3
+PRJNA391270,mcf7_4gy,MCF7,4GY + Decitabine,2uM,3
+PRJNA391270,skmel5_4gy,SKMEL5,4GY,,3
+PRJNA391270,u2os_4gy,U2OS,4GY,,3
+PRJNA391270,uacc257_4gy,UACC257,4GY,,3
+PRJNA391270,uo31_4gy,UO31,4GY,,3
+PRJNA391270,gy4.3hr,Cancer,4GY,,3
+PRJNA392914,dtp_tsa,PC9 DTP,TSA,50nM,5
+PRJNA392914,carboplatin.50uM_72hr,PC9,Carboplatin,50uM,72
+PRJNA392914,erlotinib.1uM_24hr,PC9,Erlotinib,1um,24
+PRJNA392914,tsa.50nM_5hr,PC9,TSA,50nM,5
+PRJNA392914,dtp,PC9,,,
+PRJNA417314,hc29_5fu,HT-29,5-FU,20uM,72
+PRJNA471642,mec1_vs_gm12878,MEC1,,,
+PRJNA471642,SD6.125nm.2hr,CLL,SD6,125nM,2
+PRJNA471642,SD6.125nm.6hr,CLL,SD6,125nM,6
+PRJNA471642,SD6.125nm.24hr,CLL,SD6,125nM,24
+PRJNA477352,j4.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,250nM,6
+PRJNA477352,j4.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,50nM,6
+PRJNA477352,l10.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,250nM,6
+PRJNA477352,l10.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,50nM,6
+PRJNA477352,l20.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,250nM,6
+PRJNA477352,l20.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,50nM,6
+PRJNA477352,par.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,250nM,6
+PRJNA477352,par.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,50nM,6
+PRJNA477352,thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,250nM,6
+PRJNA477352,thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,THZ1,50nM,6
+PRJNA479415,venetoclax_azacitidine_6hr,AML,Venetoclax + Azacitidine,500nM + 2.5uM,6
+PRJNA497893,hpv16_e2,NOK,,,
+PRJNA497893,hpv16,NOK,,,
+PRJNA555350,doxorubicin_cytabine_decitabine,HEL,Doxorubicin + Cytarabine + Decitibine,3mg/kg + 100mg/kg + 0.5mg/kg,120
+PRJNA555350,doxorubicin_cytabine,HEL,Doxorubicin + Cytarabine,3mg/kg + 100mg/kg ,120
+PRJNA555350,doxorubicin,HEL,Doxorubicin,3mg/kg ,120
+PRJNA560975,tedizolid.5uM.4d,MOLM13,Tedizolid,5uM,96
+PRJNA560975,venetoclax.500nM.4d,MOLM13,Venetoclax,500nM,96
+PRJNA560975,venetoclax.500nM_tedizolid.5uM.4d,MOLM13,Venetoclax + Tedizolid,500nM + 5uM,96
+PRJNA596778,HKC.dac_300nM,HKC,Decitabine,300nM,120
+PRJNA596778,HKC.dac_100nM,HKC,Decitabine,100nM,120
+PRJNA596778,dac_300nM.786,786-0,Decitabine,300nM,120
+PRJNA596778,dac_100nM.786,786-0,Decitabine,100nM,120
+PRJNA596778,dac.300nM,ccRCC,Decitabine,300nM,120
+PRJNA596778,dac.100nM,ccRCC,Decitabine,100nM,120
+PRJNA596778,dac,ccRCC,Decitabine,300/100nM,120
+PRJNA603369,kasumi.abbv075.100nM,Kasumi-1,ABBV-075,100nM,24
+PRJNA603369,kasumi.abbv744.200nM,Kasumi-1,ABBV-744,200nM,24
+PRJNA603369,mv411.abbv075.100nM,MV-4-11,ABBV-075,100nM,24
+PRJNA603369,mv411.abbv744.200nM,MV-4-11,ABBV-744,200nM,24
+PRJNA603369,nci_h1299.abbv075.100nM,NCI-H1299,ABBV-075,100nM,24
+PRJNA603369,nci_h1299.abbv744.200nM,NCI-H1299,ABBV-744,200nM,24
+PRJNA603369,skm.abbv075.100nM,SKM-1,ABBV-075,100nM,24
+PRJNA603369,skm.abbv744.200nM,SKM-1,ABBV-744,200nM,24
+PRJNA603369,abbv075.100nM,AML,ABBV-075,100nM,24
+PRJNA603369,abbv744.200nM,AML,ABBV-744,200nM,24
+PRJNA607909,dac,LUAD,Decitabine,100nM,72
+PRJNA614994,trc105_vs_igg,AML,TRC105,,
+PRJNA636096,MCC.5637,,,,
+PRJNA636096,MCC.CLS_439,,,,
+PRJNA636096,MCC.T24,,,,
+PRJNA636096,MCC.TCC_SUP,,,,
+PRJNA636096,MCC,,,,
+PRJNA642730,NCH1681.dac,,,,
+PRJNA642730,NCH612.dac,,,,
+PRJNA642730,SU_AO3.dac,,,,
+PRJNA642730,TS603.dac,,,,
+PRJNA642730,dac,,,,
+PRJNA649431,PDX_TALL1.dac,,,,
+PRJNA649431,PDX_TALL2.dac,,,,
+PRJNA649431,dac,,,,
+PRJNA649432,Loucy.dac,,,,
+PRJNA649432,MOLT_16.dac,,,,
+PRJNA649432,PEER.dac,,,,
+PRJNA649432,PER_117.dac,,,,
+PRJNA649432,TALL_1.dac,,,,
+PRJNA649432,dac,,,,
+PRJNA657045,CAR.Raij,,,,
+PRJNA657045,Till_CAR.dac_14d_vs_7d,,,,
+PRJNA657045,Till_dCAR.dac_14d_vs_7d,,,,
+PRJNA657045,dCAR.dac_Raij_vs_dac,,,,
+PRJNA670855,sbi756.4hr,,,,
+PRJNA670901,HH.azacitidine_125nM,,,,
+PRJNA670901,HH.azacitidine_250nM,,,,
+PRJNA670901,HH.azacitidine_50nM,,,,
+PRJNA670901,HH.dac_12.5nM,,,,
+PRJNA670901,HH.dac_25nM,,,,
+PRJNA670901,HH.dac_5nM,,,,
+PRJNA670901,PF382.azacitidine_125nM,,,,
+PRJNA670901,PF382.azacitidine_250nM,,,,
+PRJNA670901,PF382.azacitidine_500nM,,,,
+PRJNA670901,PF382.dac_12.5nM,,,,
+PRJNA670901,PF382.dac_25nM,,,,
+PRJNA670901,PF382.dac_5nM,,,,
+PRJNA670901,TLOm1.azacitidine_125nM,,,,
+PRJNA670901,TLOm1.azacitidine_250nM,,,,
+PRJNA670901,TLOm1.azacitidine_500nM,,,,
+PRJNA670901,TLOm1.dac_12.5nM,,,,
+PRJNA670901,TLOm1.dac_25nM,,,,
+PRJNA670901,TLOm1.dac_5nM,,,,
+PRJNA670901,HH.azacitidine,,,,
+PRJNA670901,HH.dac,,,,
+PRJNA670901,PF382.azacitidine,,,,
+PRJNA670901,PF382.dac,,,,
+PRJNA670901,TLOm1.azacitidine,,,,
+PRJNA670901,TLOm1.dac,,,,
+PRJNA670901,azacitidine_125nM,,,,
+PRJNA670901,azacitidine_250nM,,,,
+PRJNA670901,azacitidine_50nM,,,,
+PRJNA670901,dac_12.5nM,,,,
+PRJNA670901,dac_25nM,,,,
+PRJNA670901,dac_5nM,,,,
+PRJNA685849,CDDP_50uM_4hr,,,,
+PRJNA685849,CDDP_50uM_10hr,,,,
+PRJNA685849,CDDP_50uM_20hr,,,,
+PRJNA685849,Hypercin_150nM_irradiation_4hr,,,,
+PRJNA685849,Hypercin_150nM_irradiation_10hr,,,,
+PRJNA685849,Hypercin_150nM_irradiation_20hr,,,,
+PRJNA685849,MTX_1um_4hr,,,,
+PRJNA685849,MTX_1um_10hr,,,,
+PRJNA685849,MTX_1um_20hr,,,,
+proa,dac,,,,
+proa,proa,,,,
+proa,dac_proa,,,,
+tak,dac_depsi,,,,
+tak,dac_gsk343,,,,
+tak,dac_s2102,,,,
+tak,dac_unc0628,,,,
+tak,dac,,,,
+tak,depsi,,,,
+tak,gsk343,,,,
+tak,s2102,,,,
+tak,unc0628,,,,
+toyo,toyo_2hr,,,,
+toyo,toyo_10hr,,,,
+toyo,toyo_24hr,,,,
+toyo,toyo_48hr,,,,
+toyo,toyo_72hr,,,,
