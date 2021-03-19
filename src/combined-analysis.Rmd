@@ -401,4 +401,20 @@ htmlwidgets::saveWidget(fig7, here("results", "combined", "figures", "dre-lfc-hm
 htmlwidgets::saveWidget(fig8, here("results", "combined", "figures", "dre-rank-hm.html"))
 ```
 
- 
+## Correlation analysis
+
+```{r}
+dge_rank_cor_mat <- cor(dge_rank_mat)
+dd_rows5 <- as.dendrogram(hclust(dist(dge_rank_cor_mat, method = "euclidean"), method = "ward.D2"))
+dd_cols5 <- as.dendrogram(hclust(dist(t(dge_rank_cor_mat), method = "euclidean"), method = "ward.D2"))
+dge_rank_cor_mat <- dge_rank_cor_mat[order.dendrogram(dd_rows5), order.dendrogram(dd_cols5)]
+
+fig9 <- plot_ly(z = dge_rank_cor_mat, 
+        x = rownames(dge_rank_cor_mat),
+        y = colnames(dge_rank_cor_mat),
+        type = "heatmap") %>% 
+  layout(title = list(text = "Correlation by Gene Rank"))
+
+htmlwidgets::saveWidget(fig9, here("results", "combined", "figures", "dge-rank-corr.html"))
+```
+
