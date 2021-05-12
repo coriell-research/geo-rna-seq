@@ -6,11 +6,11 @@ hh1,hh1_24hr,YB5,HH1,10uM,24
 hh1,hh1_96hr,YB5,HH1,10uM,96
 hh1,hh1_25um_96hr,YB5,HH1,25uM,96
 hh1,dac_96hr,YB5,Decitabine,,96
-hh1,dac_hh1_10um_96hr,YB5,HH1 + Decitabine,10uM,
-hh1,dac_hh1_25um_96hr,YB5,HH1 + Decitabine,25uM,
-hh1,tetOff,YB5,tetOff,,
-pladb,pladb_150nM,YB5,Pladienolide B,150nM,
-pladb,pladb_10nM,YB5,Pladienolide B,10nM,
+hh1,dac_hh1_10um_96hr,YB5,HH1 + Decitabine,10uM,96
+hh1,dac_hh1_25um_96hr,YB5,HH1 + Decitabine,25uM,96
+hh1,tetOff,YB5,tetOff,,72
+pladb,pladb_150nM,YB5,Pladienolide B,150nM,72
+pladb,pladb_10nM,YB5,Pladienolide B,10nM,72
 PRJNA260377,cmml1_resonder,BM MNC,Decitabine,20 mg/m2/day i.v.,3 cycles 5d/28d
 PRJNA260377,cmml2_respnder,BM MNC,Decitabine,20 mg/m2/day i.v.,3 cycles 5d/28d
 PRJNA260377,responder,BM MNC,Decitabine,20 mg/m2/day i.v.,3 cycles 5d/28d
