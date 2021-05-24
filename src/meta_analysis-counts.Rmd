@@ -1,0 +1,326 @@
+---
+title: "Combine Datasets"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(here)
+library(magrittr)
+library(data.table)
+```
+
+# Meta-analysis on within-experiment gene/RE counts
+
+## Read in the log expression matrices
+
+Read in the expression matrices from each study and combine into a single 
+dataframe. This might get huge so maybe a SQLite db is in order. IDK yet...
+
+```{r}
+gene_mat_files <- list.files(
+  path = here("results"),
+  pattern = "gene-lcpms.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+re_mat_files <- list.files(
+  path = here("results"),
+  pattern = "re-lcpms.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+# remove files from the 'combined' directory
+gene_mat_files <- gene_mat_files[!grepl("combined", gene_mat_files)]
+re_mat_files <- re_mat_files[!grepl("combined", re_mat_files)]
+
+# define function for cleaning file paths 
+clean_fpath = function(s) { gsub("/data-files/", "", 
+                            gsub("/results/", "", 
+                            regmatches(s, 
+                            regexpr("\\/results\\/.*\\/", s)))) 
+}
+
+names(gene_mat_files) <- clean_fpath(gene_mat_files) %>% gsub(pattern = "/rds-files/", replacement = "")
+names(re_mat_files) <- clean_fpath(re_mat_files) %>% gsub(pattern = "/rds-files/", replacement = "")
+
+# create a function for reading and making count matrices long
+process_count_matrix <- function(rds_path, exp_id) {
+  X <- as.data.table(readRDS(rds_path), keep.rownames = "feature")
+  M <- melt(X, id.vars = "feature", variable.name = "sample_name", value.name = "logCPM")
+  M[, sample_name := paste0(exp_id, "__", sample_name)]
+}
+
+# process all of the rds files into list of DTs
+gene_dts <- mapply(process_count_matrix, gene_mat_files, names(gene_mat_files), SIMPLIFY = FALSE)
+re_dts <- mapply(process_count_matrix, re_mat_files, names(re_mat_files), SIMPLIFY = FALSE)
+
+# bind all together
+gene_lcpm_dt <- rbindlist(gene_dts)
+re_lcpm_dt <- rbindlist(re_dts)
+
+saveRDS(gene_lcpm_dt, here("results", "combined", "rds-files", "gene-lcpm-dt.rds"))
+saveRDS(re_lcpm_dt, here("results", "combined", "rds-files", "re-lcpm-dt.rds"))
+
+# cast wide and save
+wide_gene_lcpm_dt <- dcast(gene_lcpm_dt, feature ~ sample_name, value.var = "logCPM", fill = 0)
+wide_re_lcpm_dt <- dcast(re_lcpm_dt, feature ~ sample_name, value.var = "logCPM", fill = 0)
+```
+
+## Read in the parsed metadata files
+
+I collected metadata from SRA for each study. Use this for sample annotation
+
+They are all formatted differently except for the first column. We can maybe 
+read in all of the files and then just unite all other columns into a single
+description column.
+
+I will still have to export this file and annotate by hand...
+
+```{r eval=FALSE, include=FALSE}
+library(tidyverse)
+
+
+meta_files <- list.files(
+  path = here("data"),
+  pattern = "metadata.txt",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(meta_files) <- str_extract(meta_files, "PRJNA[0-9]+")
+
+# function for reading in and uniting metadata
+clean_meta_txt <- function(fpath, project_id) {
+  df <- read_tsv(fpath, col_names = FALSE) %>% 
+    rename(run_accession = X1) %>% 
+    unite(-run_accession, sep = " | ", col = "description") %>% 
+    mutate(bio_project = project_id) %>% 
+    select(run_accession, bio_project, description)
+  
+  df
+}
+
+meta_df <- mapply(clean_meta_txt, 
+                  meta_files, 
+                  names(meta_files), 
+                  SIMPLIFY = FALSE) %>% 
+  bind_rows()
+
+# write out
+write_tsv(meta_df, here("results", "combined", "data-files", "run-metadata.tsv"))
+```
+
+## Read in the manual sample-level annotation
+
+```{r}
+sample_metadata <- fread(here("doc", "2021-04-20_run-metadata.tsv"), sep = "\t")
+
+# update sample name to match matrix sample names
+sample_metadata[, sample_name := paste0(bio_project, "__", sample_name)]
+
+# include only those that are in the count matrix
+sample_metadata <- sample_metadata[sample_name %in% colnames(wide_gene_lcpm_dt)]
+
+saveRDS(sample_metadata, here("results", "combined", "rds-files", "sample-metadata.rds"))
+```
+
+## Model the experiment as a batch effect and attempt to correct 
+
+```{r}
+library(limma)
+
+
+gene_mat <- as.matrix(wide_gene_lcpm_dt, rownames = "feature")
+re_mat <- as.matrix(wide_re_lcpm_dt, rownames = "feature")
+
+saveRDS(gene_mat, here("results", "combined", "rds-files", "gene-lcpms.rds"))
+saveRDS(re_mat, here("results", "combined", "rds-files", "re-lcpms.rds"))
+
+# get indeces of project with multiple batches
+idxs <- match(sample_metadata[bio_project == "PRJNA379584"]$sample_name, colnames(gene_mat))
+
+# add the per-project batch as a new vector (batch info stored in comment column)
+replacements <- sample_metadata[bio_project == "PRJNA379584", 
+                                .(bio_project2 = paste0(bio_project, ".", comment, "__", run_accession))]
+
+# create a vector with project id + project batch added
+new_ids <- replace(colnames(gene_mat), idxs, replacements$bio_project2)
+
+# extract Project Id + project batch for batch correction
+batches <- factor(sub("__.*", "", new_ids))
+
+# regress away with limma
+gene_mat.c <- removeBatchEffect(gene_mat, batch = batches)
+re_mat.c <- removeBatchEffect(re_mat, batch = batches)
+
+saveRDS(gene_mat.c, here("results", "combined", "rds-files", "batchCorrected-gene-lcpms.rds"))
+saveRDS(re_mat.c, here("results", "combined", "rds-files", "batchCorrected-re-lcpms.rds"))
+```
+
+## PCA
+
+```{r}
+library(PCAtools)
+
+
+# convert to data.frame for PCAtools
+sample_metadata <- data.frame(as.matrix(sample_metadata, rownames = "sample_name"))
+
+# match metadata rows with gene_mat cols
+sample_metadata <- sample_metadata[colnames(gene_mat.c), ]
+
+# check
+all(rownames(sample_metadata) == colnames(gene_mat.c))
+
+# Run PCA
+pca.genes <- pca(gene_mat.c, metadata = sample_metadata, center = TRUE, scale = FALSE)
+pca.res <- pca(re_mat.c, metadata = sample_metadata, center = TRUE, scale = FALSE)
+```
+
+### PCA plots
+
+```{r}
+screeplot(pca.genes, 
+          components = getComponents(pca.genes)[1:20],
+          title = "Protein Coding Genes w/Outliers") +
+  ggsave(here("results", "combined", "figures", "screeplot-gene.png"),
+         width = 8,
+         height = 5)
+
+biplot(pca.genes, 
+       showLoadings = TRUE,
+       lab = NULL,
+       colby = "bio_project", 
+       title = "Protein Coding Genes w/Outliers",
+       subtitle = "Colored by BioProject",
+       vline = 0,
+       vlineType = 2,
+       hline = 0,
+       hlineType = 2) +
+  ggsave(here("results", "combined", "figures", "pca-gene.png"),
+         width = 8,
+         height = 5)
+
+# what are the outlier samples?
+outlier_samples <- rownames(subset(pca.genes$rotated, PC1 > 100))
+
+# run again without outliers
+sample_metadata2 <- subset(sample_metadata, !rownames(sample_metadata) %in% outlier_samples)
+gene_mat.c2 <- subset(gene_mat.c, select = -(which(colnames(gene_mat.c) %in% outlier_samples)))
+
+pca.genes2 <- pca(gene_mat.c2, metadata = sample_metadata2, center = TRUE, scale = FALSE)
+
+screeplot(pca.genes2, 
+          components = getComponents(pca.genes2)[1:20],
+          title = "Protein Coding Genes w/o Outliers") +
+  ggsave(here("results", "combined", "figures", "screeplot-gene-noOutliers.png"),
+         width = 8,
+         height = 5)
+
+biplot(pca.genes2, 
+       showLoadings = TRUE,
+       lab = NULL,
+       colby = "drug", 
+       title = "Protein Coding Genes w/o Outliers",
+       subtitle = "Colored by Drug",
+       vline = 0,
+       vlineType = 2,
+       hline = 0,
+       hlineType = 2) +
+  ggsave(here("results", "combined", "figures", "pca-gene-noOutliers.png"),
+         width = 8,
+         height = 5)
+
+# REs --------------------------------------------------------------------------
+screeplot(pca.res, 
+          components = getComponents(pca.res)[1:20],
+          title = "REs") +
+  ggsave(here("results", "combined", "figures", "screeplot-re.png"),
+         width = 8,
+         height = 5)
+
+biplot(pca.res, 
+       showLoadings = TRUE,
+       lab = NULL,
+       colby = "bio_project", 
+       title = "RE",
+       subtitle = "Colored by BioProject",
+       vline = 0,
+       vlineType = 2,
+       hline = 0,
+       hlineType = 2) +
+  ggsave(here("results", "combined", "figures", "pca-re.png"),
+         width = 8,
+         height = 5)
+```
+
+## Interactive plots with plotly
+
+```{r}
+library(plotly)
+
+
+pca_gene_dt <- as.data.table(pca.genes2$rotated, keep.rownames = "sample_name")
+sample_metadata2 <- as.data.table(sample_metadata2, keep.rownames = "sample_name")
+
+gene_plot_dt <- merge(x = pca_gene_dt[, sample_name:PC10],
+                      y = sample_metadata2,
+                      by.x = "sample_name",
+                      by.y = "sample_name",
+                      all.x = TRUE)
+
+pca_genebySample <- plot_ly(gene_plot_dt,
+        x = ~PC1,
+        y = ~PC2, 
+        z = ~PC3, 
+        color = ~drug,
+        colors = "Set1",
+        hovertext = paste("BioProject:", gene_plot_dt$bio_project,
+                         "<br> Cell Type:", gene_plot_dt$cell_type,
+                         "<br> Drug:", gene_plot_dt$drug,
+                         "<br> Dose", gene_plot_dt$dose,
+                         "<br> Time", gene_plot_dt$time_hr)) %>%
+  add_markers() %>% 
+  layout(title = list(text = "Protein Coding Gene Expression"),
+         scene = list(xaxis = list(title = "PC1"), yaxis = list(title = "PC2"), zaxis = list(title = "PC3")))
+
+htmlwidgets::saveWidget(pca_genebySample, here("results", "combined", "figures", "pca-gene-noOutlier.html"))
+
+# REs --------------------------------------------------------------------------
+pca_re_dt <- as.data.table(pca.res$rotated, keep.rownames = "sample_name")
+sample_metadata <- as.data.table(sample_metadata, keep.rownames = "sample_name")
+
+re_plot_dt <- merge(x = pca_re_dt[, sample_name:PC10],
+                    y = sample_metadata,
+                    by.x = "sample_name",
+                    by.y = "sample_name",
+                    all.x = TRUE)
+
+pca_rebySample <- plot_ly(re_plot_dt,
+        x = ~PC1,
+        y = ~PC2, 
+        z = ~PC3, 
+        color = ~drug,
+        colors = "Dark2",
+        hovertext = paste("BioProject:", re_plot_dt$bio_project,
+                         "<br> Cell Type:", re_plot_dt$cell_type,
+                         "<br> Drug:", re_plot_dt$drug,
+                         "<br> Dose", re_plot_dt$dose,
+                         "<br> Time", re_plot_dt$time_hr)) %>%
+  add_markers() %>% 
+  layout(title = list(text = "RE Expression"),
+         scene = list(xaxis = list(title = "PC1"), yaxis = list(title = "PC2"), zaxis = list(title = "PC3")))
+
+htmlwidgets::saveWidget(pca_rebySample, here("results", "combined", "figures", "pca-re.html"))
+```
