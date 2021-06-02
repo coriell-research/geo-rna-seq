@@ -12,10 +12,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-library(here)
-library(magrittr)
-library(data.table)
 ```
 
 # Meta-analysis on differential expression data
@@ -23,6 +19,9 @@ library(data.table)
 ## Read in DE data
 
 ```{r}
+library(here)
+
+
 dge_files <- list.files(
   path = here("results"),
   pattern = "dge.tsv",
@@ -41,7 +40,10 @@ dre_files <- list.files(
 ## Read into single data.tables
 
 ```{r}
-dge <- as.data.table(vroom::vroom(dge_files,
+library(data.table)
+
+
+dge <- setDT(vroom::vroom(dge_files,
   id = "fpath",
   delim = "\t",
   col_types = list(
@@ -55,7 +57,7 @@ dge <- as.data.table(vroom::vroom(dge_files,
   )
 ))
 
-dre <- as.data.table(vroom::vroom(dre_files,
+dre <- setDT(vroom::vroom(dre_files,
   id = "fpath",
   delim = "\t",
   col_types = list(
@@ -73,6 +75,13 @@ dre <- as.data.table(vroom::vroom(dre_files,
 ## Clean and add variables
 
 ```{r}
+# function for extracting the experiment name from the filepath
+clean_fpath = function(s) { gsub("/data-files/", "", 
+                            gsub("/results/", "", 
+                            regmatches(s, 
+                            regexpr("\\/results\\/.*\\/", s)))) 
+}
+
 # create an experiment variable
 dge[, experiment := clean_fpath(fpath)]
 dre[, experiment := clean_fpath(fpath)]
@@ -82,19 +91,22 @@ dre[, experiment := clean_fpath(fpath)]
 dge[, condition := paste(experiment, contrast, sep = ".")]
 dre[, condition := paste(experiment, contrast, sep = ".")]
 
-# write the results out (could be used in Shiny app as input)
+# Filter REs to be same sets (Satellites and Simple repeats were removed from most analyses)
+dre <- dre[!feature_id %like% "Satellite|Simple_repeat|Unknown|Low_complexity"]
+
+# write the results out after removing fpath column
+dge[, fpath := NULL]
+dre[, fpath := NULL]
 fwrite(dge, here("results", "combined", "data-files", "dge-all-experiments.csv"))
 fwrite(dre, here("results", "combined", "data-files", "dre-all-experiments.csv"))
 
-# create an additional column based on the feature's ranking
-dge[, rank := sign(logFC) * -log10(FDR)]
-dre[, rank := sign(logFC) * -log10(FDR)]
-dge[, rank2 := logFC * -log10(FDR)]
-dre[, rank2 := logFC * -log10(FDR)]
-
-# remove fpath column
-dge[, fpath := NULL]
-dre[, fpath := NULL]
+# create an additional column based on the feature's ranking within each condition
+dge[, rank := frank(logFC, ties.method = "random"), by = condition]
+dre[, rank := frank(logFC, ties.method = "random"), by = condition]
+dge[, max_rank := max(rank), by = condition]
+dre[, max_rank := max(rank), by = condition]
+dge[, norm_rank := (rank - 1) / (max_rank - 1), by = condition]
+dre[, norm_rank := (rank - 1) / (max_rank - 1), by = condition]
 ```
 
 ## Write the unique conditions out for manual annotation
@@ -109,7 +121,16 @@ available when downloading the datasets from GEO**
 fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-annotation.csv"))
 ```
 
-## Cast DE logFC values into matrices
+## After manual editing, read in the contrast metadata
+
+```{r}
+metadata <- fread(here("doc", "2021-05-25-experiment-annotation.csv"))
+metadata[, id := paste(experiment, contrast, sep = ".")]
+
+head(metadata)
+```
+
+## Cast DE values into matrices
 
 ```{r}
 dge_lfc_mat <- as.matrix(dcast(dge[, .(feature_id, condition, logFC)],
@@ -133,296 +154,1220 @@ dre_fdr_mat <- as.matrix(dcast(dre[, .(feature_id, condition, FDR)],
   value.var = "FDR"
 ), rownames = "feature_id")
 
-# repeat for ranks
-dge_rank_mat <- as.matrix(dcast(dge[, .(feature_id, condition, rank)],
+# repeat for normalized ranks
+dge_rank_mat <- as.matrix(dcast(dge[, .(feature_id, condition, norm_rank)],
   feature_id ~ condition,
-  value.var = "rank"
+  value.var = "norm_rank"
 ), rownames = "feature_id")
 
-dre_rank_mat <- as.matrix(dcast(dre[, .(feature_id, condition, rank)],
+dre_rank_mat <- as.matrix(dcast(dre[, .(feature_id, condition, norm_rank)],
   feature_id ~ condition,
-  value.var = "rank"
+  value.var = "norm_rank"
 ), rownames = "feature_id")
 ```
 
 ## Replace NA values after cast
 
 LFC values that were NA get 0 for their logFC and FDR values that were NA get 1.
-Ranks are trickier. -1/1 rank should put features near the middle. 
+Ranks have been imputed with the median rank per condition. For normalized ranks
+place NAs directly in the middle (0.5)
 
 ```{r}
 dge_lfc_mat[is.na(dge_lfc_mat)] <- 0
 dre_lfc_mat[is.na(dre_lfc_mat)] <- 0
 dge_fdr_mat[is.na(dge_fdr_mat)] <- 1
 dre_fdr_mat[is.na(dre_fdr_mat)] <- 1
-dge_rank_mat[is.na(dge_rank_mat)] <- 1
-dre_rank_mat[is.na(dre_rank_mat)] <- 1
+dge_rank_mat[is.na(dge_rank_mat)] <- 0.5
+dre_rank_mat[is.na(dre_rank_mat)] <- 0.5
+
+# impute the median rank per column for NA values
+# for (i in 1:ncol(dge_rank_mat)) {
+#   imputed_val <- median(dge_rank_mat[, i], na.rm = TRUE)
+#   dge_rank_mat[, i][is.na(dge_rank_mat[, i])] <- imputed_val
+# }
+# 
+# for (i in 1:ncol(dre_rank_mat)) {
+#   imputed_val <- median(dre_rank_mat[, i], na.rm = TRUE)
+#   dre_rank_mat[, i][is.na(dre_rank_mat[, i])] <- imputed_val
+# }
 ```
 
-## PCA on all conditions
-
-logFC, p-value, and rank
+## Reorder metadata by matrix colnames
 
 ```{r}
-pca_dge_lfc <- prcomp(t(dge_lfc_mat), scale. = FALSE, center = TRUE)
-pca_dre_lfc <- prcomp(t(dre_lfc_mat), scale. = FALSE, center = TRUE)
-pca_dge_fdr <- prcomp(t(dge_fdr_mat), scale. = FALSE, center = TRUE)
-pca_dre_fdr <- prcomp(t(dre_fdr_mat), scale. = FALSE, center = TRUE)
-pca_dge_rank <- prcomp(t(dge_rank_mat), scale. = FALSE, center = TRUE)
-pca_dre_rank <- prcomp(t(dre_rank_mat), scale. = FALSE, center = TRUE)
+metadata <- metadata[id %chin% colnames(dge_lfc_mat)][order(match(id, colnames(dge_lfc_mat)))]
 
-# extract the components
-dge_lfc_pca_df <- as.data.table(pca_dge_lfc$x, keep.rownames = "condition")
-dre_lfc_pca_df <- as.data.table(pca_dre_lfc$x, keep.rownames = "condition")
-dge_fdr_pca_df <- as.data.table(pca_dge_fdr$x, keep.rownames = "condition")
-dre_fdr_pca_df <- as.data.table(pca_dre_fdr$x, keep.rownames = "condition")
-dge_rank_pca_df <- as.data.table(pca_dge_rank$x, keep.rownames = "condition")
-dre_rank_pca_df <- as.data.table(pca_dre_rank$x, keep.rownames = "condition")
+# check if all rownames and colnames align
+all(metadata$id == colnames(dre_lfc_mat))
+
+# convert to data.frame with rownames for PCAtools
+metadata <- data.frame(as.matrix(metadata, rownames = "id"))
 ```
 
-### Get the percent variance explained
+## Combine into a SummarizedExperiment object
+
+This will help with managing filtering the datasets
 
 ```{r}
-factoextra::fviz_eig(pca_dge_lfc, addlabels = TRUE)
-factoextra::fviz_eig(pca_dge_rank, addlabels = TRUE)
-factoextra::fviz_eig(pca_dre_lfc, addlabels = TRUE)
-factoextra::fviz_eig(pca_dre_rank, addlabels = TRUE)
+library(SummarizedExperiment)
+
+
+dge_se <- SummarizedExperiment(
+  assays = list(lfc = dge_lfc_mat, fdr = dge_fdr_mat, rank = dge_rank_mat),
+  colData = metadata)
+
+dre_se <- SummarizedExperiment(
+  assays = list(lfc = dre_lfc_mat, fdr = dre_lfc_mat, rank = dre_rank_mat),
+  colData = metadata)
+```
+
+## Plot all experiments together
+
+```{r}
+library(PCAtools)
+
+
+pca.dge_lfc <- pca(dge_lfc_mat, metadata, center = TRUE, scale = FALSE, removeVar = 0.1)
+pca.dre_lfc <- pca(dre_lfc_mat, metadata, center = TRUE, scale = FALSE, removeVar = 0.1)
+pca.dge_rnk <- pca(dge_rank_mat, metadata, center = TRUE, scale = FALSE, removeVar = 0.1)
+pca.dre_rnk <- pca(dre_rank_mat, metadata, center = TRUE, scale = FALSE, removeVar = 0.1)
+
+drug2_cols <- c("#9f4a6b", "#5eb847", "#6b61c9", "#a8b635", "#b565c8", "#56802f",
+                "#d14395", "#808080", "#d24659", "#4cbcd1", "#d6542d", "#6986ca",
+                "#d69935", "#d885b0", "#388864", "#aa5a34", "#acb064", "#e19670",
+                "#846f2c")
+
+biplot(pca.dge_lfc, 
+       colby = "drug2",
+       lab = gsub("NA", "", paste(
+         pca.dge_lfc$metadata$drug, 
+         pca.dge_lfc$metadata$dose, 
+         pca.dge_lfc$metadata$time_hr)
+         ),
+       colkey = drug2_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "All Experiments",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control"
+       ) +
+  ggsave(here("results", "combined", "figures", "biplot-all-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+biplot(pca.dre_lfc, 
+       colby = "drug2",
+       lab = gsub("NA", "", paste(
+         pca.dge_lfc$metadata$drug, 
+         pca.dge_lfc$metadata$dose, 
+         pca.dge_lfc$metadata$time_hr)
+         ),
+       colkey = drug2_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "All Experiments",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control"
+       ) +
+  ggsave(here("results", "combined", "figures", "biplot-all-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+biplot(pca.dge_rnk, 
+       colby = "drug2",
+       lab = gsub("NA", "", paste(
+         pca.dge_lfc$metadata$drug, 
+         pca.dge_lfc$metadata$dose, 
+         pca.dge_lfc$metadata$time_hr)
+         ),
+       colkey = drug2_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "All Experiments",
+       subtitle = "Protein Coding Gene Differential Expression Rank"
+       ) +
+  ggsave(here("results", "combined", "figures", "biplot-all-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+biplot(pca.dre_rnk, 
+       colby = "drug2",
+       lab = gsub("NA", "", paste(
+         pca.dge_lfc$metadata$drug, 
+         pca.dge_lfc$metadata$dose, 
+         pca.dge_lfc$metadata$time_hr)
+         ),
+       colkey = drug2_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "All Experiments",
+       subtitle = "Repetitive Element Differential Expression Rank"
+       ) +
+  ggsave(here("results", "combined", "figures", "biplot-all-dre-rank.png"),
+         width = 12,
+         height = 7)
 ```
 
 
-## Join in manual annotation information
+## Colon Cell lines
+
+Remove Decitabine + combinations from downstream PCAs
 
 ```{r}
-exp_annot <- fread(here("doc", "2021_03_17-experiment-annotation.csv"))
-exp_annot[, condition := paste(experiment, contrast, sep = ".")]
+colon_dge <- dge_se[, dge_se$tissue %like% "[Cc]olon" & !dge_se$drug %like% "Decitabine \\+"]
+colon_dre <- dre_se[, dre_se$tissue %like% "[Cc]olon" & !dre_se$drug %like% "Decitabine \\+"]
+
+# general function for performing PCA on SummarizedExperiment 
+do_pca <- function(se, assay_name, ...) {
+  pca(mat = assay(se, assay_name),
+      metadata = colData(se),
+      ...)
+}
+
+pca.colon_dge_lfc <- do_pca(colon_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.colon_dge_rnk <- do_pca(colon_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.colon_dre_lfc <- do_pca(colon_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.colon_dre_rnk <- do_pca(colon_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
 ```
 
-## Create PCA plots
+### Plot PCAs
 
 ```{r}
+# specify a distinct color pallette for ALL colon drugs (some may be excluded in plots)
+# iWantHue 17-colors
+colon_cols <- c("#9e4365", "#5db645", "#885ccd", "#a2b046", "#ce53b0", "#5cbc82",
+                "#d6425f", "#3fbfbc", "#cf552a", "#5773c3", "#d59b3c", "#62a0d8",
+                "#827430", "#ae7bc1", "#467e45", "#dd80a0", "#c47655")
+
+# Protein Coding Genes - LFC
+biplot(pca.colon_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.colon_dge_lfc$metadata$drug, 
+         pca.colon_dge_lfc$metadata$dose, 
+         pca.colon_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = colon_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 7,
+       title = "Colon Cancer Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-colon-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.colon_dre_lfc, 
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.colon_dge_lfc$metadata$drug, 
+         pca.colon_dge_lfc$metadata$dose, 
+         pca.colon_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = colon_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Colon Cancer Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-colon-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.colon_dge_rnk, 
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.colon_dge_rnk$metadata$drug, 
+         pca.colon_dge_rnk$metadata$dose, 
+         pca.colon_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = colon_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+     legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 7,
+       title = "Colon Cancer Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-colon-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - Rank
+biplot(pca.colon_dre_rnk, 
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.colon_dge_rnk$metadata$drug, 
+         pca.colon_dge_rnk$metadata$dose, 
+         pca.colon_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = colon_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Colon Cancer Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-colon-dre-rank.png"),
+         width = 12,
+         height = 7)
+```
+
+### Loadings Plots
+
+```{r}
+plotloadings(
+  pca.colon_dge_lfc,
+  rangeRetain = 0.01,
+  labSize = 2,
+  title = 'Colon Cancer Cell Lines',
+  subtitle = 'Protein Coding Gene Log-Fold Change Relative to Control',
+  caption = 'Top 1% variables',
+  shape = 21,
+  shapeSizeRange = c(1, 4),
+  drawConnectors = TRUE) +
+  ggsave(here("results", "combined", "figures", "loadings-colon-dge-lfc.png"),
+         width = 8,
+         height = 5)
+
+plotloadings(
+  pca.colon_dre_lfc,
+  rangeRetain = 0.01,
+  labSize = 2,
+  title = 'Colon Cancer Cell Lines',
+  subtitle = 'Repetitive Element Log-Fold Change Relative to Control',
+  caption = 'Top 1% variables',
+  shape = 21,
+  shapeSizeRange = c(1, 4),
+  drawConnectors = TRUE) +
+  ggsave(here("results", "combined", "figures", "loadings-colon-dre-lfc.png"),
+         width = 8,
+         height = 5)
+
+plotloadings(
+  pca.colon_dge_rnk,
+  rangeRetain = 0.01,
+  labSize = 2,
+  title = 'Colon Cancer Cell Lines',
+  subtitle = 'Protein Coding Gene Differential Expression Rank',
+  caption = 'Top 1% variables',
+  shape = 21,
+  shapeSizeRange = c(1, 4),
+  drawConnectors = TRUE) +
+  ggsave(here("results", "combined", "figures", "loadings-colon-dge-rank.png"),
+         width = 8,
+         height = 5)
+
+plotloadings(
+  pca.colon_dre_rnk,
+  rangeRetain = 0.01,
+  labSize = 2,
+  title = 'Colon Cancer Cell Lines',
+  subtitle = 'Repetitive Element Differential Expression Rank',
+  caption = 'Top 1% variables',
+  shape = 21,
+  shapeSizeRange = c(1, 4),
+  drawConnectors = TRUE) +
+  ggsave(here("results", "combined", "figures", "loadings-colon-dre-rank.png"),
+         width = 8,
+         height = 5)
+```
+
+
+### 3D plots
+
+```{r eval=FALSE, include=FALSE}
+library(magrittr)
 library(plotly)
 
 
-df <- merge(dge_lfc_pca_df, exp_annot, by = "condition")
-fig1 <- plot_ly(df, 
-               x = ~PC1, 
-               y = ~PC2, 
-               z = ~PC3, 
-               color = ~drug,
-               colors = "Set1",
-               hovertext = paste("Cell Type:", df$cell_type, 
-                                 "<br> Drug:", df$drug,
-                                 "<br> Dose", df$dose,
-                                 "<br> Time", df$time_hr)) %>%
+colon_metadata_dt <- as.data.table(pca.colon_dge_lfc$metadata, keep.rownames = "condition")
+pca.colon_dge_lfc_dt <- as.data.table(pca.colon_dge_lfc$rotated, keep.rownames = "condition")
+pca.colon_dge_rnk_dt <- as.data.table(pca.colon_dge_rnk$rotated, keep.rownames = "condition")
+pca.colon_dre_lfc_dt <- as.data.table(pca.colon_dre_lfc$rotated, keep.rownames = "condition")
+pca.colon_dre_rnk_dt <- as.data.table(pca.colon_dre_rnk$rotated, keep.rownames = "condition")
+pca.colon_dge_lfc_dt <- merge(pca.colon_dge_lfc_dt, colon_metadata_dt, by = "condition")
+pca.colon_dge_rnk_dt <- merge(pca.colon_dge_rnk_dt, colon_metadata_dt, by = "condition")
+pca.colon_dre_lfc_dt <- merge(pca.colon_dre_lfc_dt, colon_metadata_dt, by = "condition")
+pca.colon_dre_rnk_dt <- merge(pca.colon_dre_rnk_dt, colon_metadata_dt, by = "condition")
+
+# Protein Coding Genes - LFC
+colon_3d.dge_lfc <- plot_ly(pca.colon_dge_lfc_dt, 
+                            x = ~PC1,
+                            y = ~PC2,
+                            z = ~PC3,
+                            color = ~drug,
+                            colors = colon_cols) %>% 
   add_markers() %>% 
-  layout(
-    title = list(text = "Protein Coding Gene Expression - logFC"),
-    scene = list(
-      xaxis = list(title = "PC1 (12.1%)"),
-      yaxis = list(title = "PC2 (10.1%)"),
-      zaxis = list(title = "PC3 (4.5%)")))
-
-# do the same for REs ----------------------------------------------------------
-df2 <- merge(dre_lfc_pca_df, exp_annot, by = "condition")
-fig2 <- plot_ly(df2, 
-               x = ~PC1, 
-               y = ~PC2, 
-               z = ~PC3, 
-               color = ~drug,
-               colors = "Set1",
-               hovertext = paste("Cell Type:", df2$cell_type, 
-                                 "<br> Drug:", df2$drug,
-                                 "<br> Dose", df2$dose,
-                                 "<br> Time", df2$time_hr)) %>%
-  add_markers() %>% 
-  layout(
-    title = list(text = "RE Expression - logFC"),
-    scene = list(
-      xaxis = list(title = "PC1 (34.8%)"),
-      yaxis = list(title = "PC2 (5.3%)"),
-      zaxis = list(title = "PC3 (3.1%)")))
+  layout(scene = list(xaxis = list(title = 'PC1 (31.6%)'),
+                      yaxis = list(title = 'PC2 (10.05)'),
+                      zaxis = list(title = 'PC3 (7.83%)')),
+         title = "Protein Coding Gene Log-Fold Change Relative to Control")
 ```
 
-Same deal but use rankings
+## Bone
 
 ```{r}
-df3 <- merge(dge_rank_pca_df, exp_annot, by = "condition")
-fig3 <- plot_ly(df3, 
-               x = ~PC1, 
-               y = ~PC2, 
-               z = ~PC3, 
-               color = ~drug,
-               colors = "Set1",
-               hovertext = paste("Cell Type:", df3$cell_type, 
-                                 "<br> Drug:", df3$drug,
-                                 "<br> Dose", df3$dose,
-                                 "<br> Time", df3$time_hr)) %>%
-  add_markers() %>% 
-    layout(
-    title = list(text = "Protein Coding Gene Expression - Gene Ranks"),
-    scene = list(
-      xaxis = list(title = "PC1 (23.3%)"),
-      yaxis = list(title = "PC2 (18.1%)"),
-      zaxis = list(title = "PC3 (8.8%%)")))
+bone_dge <- dge_se[, dge_se$tissue == "bone" & !dge_se$morphology %like% "primary"]
+bone_dre <- dre_se[, dre_se$tissue == "bone" & !dge_se$morphology %like% "primary"]
 
-# same with REs ----------------------------------------------------------------
-df4 <- merge(dre_rank_pca_df, exp_annot, by = "condition")
-fig4 <- plot_ly(df4, 
-               x = ~PC1, 
-               y = ~PC2, 
-               z = ~PC3, 
-               color = ~drug,
-               colors = "Set1",
-               hovertext = paste("Cell Type:", df4$cell_type, 
-                                 "<br> Drug:", df4$drug,
-                                 "<br> Dose", df4$dose,
-                                 "<br> Time", df4$time_hr)) %>%
-  add_markers() %>% 
-    layout(
-    title = list(text = "RE Expression - Gene Ranks"),
-    scene = list(
-      xaxis = list(title = "PC1 (66.4%)"),
-      yaxis = list(title = "PC2 (5.6%)"),
-      zaxis = list(title = "PC3 (4.8%%)")))
+pca.bone_dge_lfc <- do_pca(bone_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.bone_dge_rnk <- do_pca(bone_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.bone_dre_lfc <- do_pca(bone_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.bone_dre_rnk <- do_pca(bone_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
 ```
 
-## Save plots
-
-```{r message=FALSE, warning=FALSE}
-htmlwidgets::saveWidget(fig1, here("results", "combined", "figures", "dge-lfc-pca.html"))
-htmlwidgets::saveWidget(fig2, here("results", "combined", "figures", "dre-lfc-pca.html"))
-htmlwidgets::saveWidget(fig3, here("results", "combined", "figures", "dge-rank-pca.html"))
-htmlwidgets::saveWidget(fig4, here("results", "combined", "figures", "dre-rank-pca.html"))
-```
-
-## Dendrogram / Heatmap
-
-### Heatmap of most variable logFCs
+### Plot Biplots
 
 ```{r}
-library(matrixStats)
+bone_cols <- c("#c65c8a", "#70a845", "#b05cc6", "#b69040", "#6e7ecb", "#cc5a43", "#4bad90")
 
+# Protein Coding Genes - LFC
+biplot(pca.bone_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bone_dge_lfc$metadata$drug, 
+         pca.bone_dge_lfc$metadata$dose, 
+         pca.bone_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = bone_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Bone Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-bone-dge-lfc.png"),
+         width = 12,
+         height = 7)
 
-# calculate unsupervised variance across logFC values
-dge_lfc_vars <- rowVars(dge_lfc_mat, na.rm = TRUE)
-dge_lfc_o <- order(dge_lfc_vars, decreasing = TRUE)
-dge_lfc_top <- dge_lfc_mat[head(dge_lfc_o, n = 500), ]
+# RE - LFC
+biplot(pca.bone_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bone_dre_lfc$metadata$drug, 
+         pca.bone_dre_lfc$metadata$dose, 
+         pca.bone_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = bone_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Bone Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-bone-dre-lfc.png"),
+         width = 12,
+         height = 7)
 
-# cluster rows and columns
-dd_rows <- as.dendrogram(hclust(dist(dge_lfc_top, method = "euclidean"), method = "ward.D2"))
-dd_cols <- as.dendrogram(hclust(dist(t(dge_lfc_top), method = "euclidean"), method = "ward.D2"))
+# Protein Coding Genes - Rank
+biplot(pca.bone_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bone_dge_rnk$metadata$drug, 
+         pca.bone_dge_rnk$metadata$dose, 
+         pca.bone_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = bone_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Bone Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-bone-dge-rank.png"),
+         width = 12,
+         height = 7)
 
-# reorder the matrix by calculated clustering
-dge_lfc_top <- dge_lfc_top[order.dendrogram(dd_rows), order.dendrogram(dd_cols)]
-
-# match colnames from matrix with annotations
-hm_annot <- exp_annot[match(colnames(dge_lfc_top), condition), ]
-
-fig5 <- plot_ly(x = hm_annot$condition,
-                y = rownames(dge_lfc_top),
-                z = dge_lfc_top, 
-                type = "heatmap") %>% 
-  layout(title = list(text = "500 Most Variable Genes by logFC"))
+# RE - LFC
+biplot(pca.bone_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bone_dre_rnk$metadata$drug, 
+         pca.bone_dre_rnk$metadata$dose, 
+         pca.bone_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = bone_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Bone Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-bone-dre-rank.png"),
+         width = 12,
+         height = 7)
 ```
 
-Repeat for repeats
+## Blood
 
 ```{r}
-# calculate unsupervised variance across logFC values
-dre_lfc_vars <- rowVars(dre_lfc_mat, na.rm = TRUE)
-dre_lfc_o <- order(dre_lfc_vars, decreasing = TRUE)
-dre_lfc_top <- dre_lfc_mat[head(dre_lfc_o, n = 100), ]
+blood_dge <- dge_se[, dge_se$tissue == "blood" & !dge_se$morphology %like% "primary"]
+blood_dre <- dre_se[, dre_se$tissue == "blood" & !dge_se$morphology %like% "primary"]
 
-# cluster rows and columns
-dd_rows2 <- as.dendrogram(hclust(dist(dre_lfc_top, method = "euclidean"), method = "ward.D2"))
-dd_cols2 <- as.dendrogram(hclust(dist(t(dre_lfc_top), method = "euclidean"), method = "ward.D2"))
-
-# reorder the matrix by calculated clustering
-dre_lfc_top <- dre_lfc_top[order.dendrogram(dd_rows2), order.dendrogram(dd_cols2)]
-
-# match colnames from matrix with annotations
-hm_annot2 <- exp_annot[match(colnames(dre_lfc_top), condition), ]
-
-fig6 <- plot_ly(x = hm_annot2$condition,
-                y = rownames(dre_lfc_top),
-                z = dre_lfc_top, 
-                type = "heatmap") %>% 
-  layout(title = list(text = "100 Most Variable REs by logFC"))
+pca.blood_dge_lfc <- do_pca(blood_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.blood_dge_rnk <- do_pca(blood_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.blood_dre_lfc <- do_pca(blood_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.blood_dre_rnk <- do_pca(blood_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
 ```
 
-and for calculated ranks
+### Plot Biplots
 
 ```{r}
-# calculate unsupervised variance across logFC values
-dge_rank_vars <- rowVars(dge_rank_mat, na.rm = TRUE)
-dge_rank_o <- order(dge_rank_vars, decreasing = TRUE)
-dge_rank_top <- dge_rank_mat[head(dge_rank_o, n = 500), ]
+blood_cols <- c("#d08dce", "#65b54d", "#a758c7", "#c3ae40", "#5e70da", "#d05a2a",
+                "#59a0d5", "#d24c59", "#4bae8b", "#d04798", "#6f8038", "#7962a6",
+                "#bf7f4b", "#b45e74")
 
-# cluster rows and columns
-dd_rows3 <- as.dendrogram(hclust(dist(dge_rank_top, method = "euclidean"), method = "ward.D2"))
-dd_cols3 <- as.dendrogram(hclust(dist(t(dge_rank_top), method = "euclidean"), method = "ward.D2"))
+# Protein Coding Genes - LFC
+biplot(pca.blood_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.blood_dge_lfc$metadata$drug, 
+         pca.blood_dge_lfc$metadata$dose, 
+         pca.blood_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = blood_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Blood Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-blood-dge-lfc.png"),
+         width = 12,
+         height = 7)
 
-# reorder the matrix by calculated clustering
-dge_rank_top <- dge_rank_top[order.dendrogram(dd_rows3), order.dendrogram(dd_cols3)]
+# RE - LFC
+biplot(pca.blood_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.blood_dre_lfc$metadata$drug, 
+         pca.blood_dre_lfc$metadata$dose, 
+         pca.blood_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = blood_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Blood Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-blood-dre-lfc.png"),
+         width = 12,
+         height = 7)
 
-# match colnames from matrix with annotations
-hm_annot3 <- exp_annot[match(colnames(dge_rank_top), condition), ]
+# Protein Coding Genes - Rank
+biplot(pca.blood_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.blood_dge_rnk$metadata$drug, 
+         pca.blood_dge_rnk$metadata$dose, 
+         pca.blood_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = blood_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Blood Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-blood-dge-rank.png"),
+         width = 12,
+         height = 7)
 
-fig7 <- plot_ly(x = hm_annot3$condition,
-                y = rownames(dge_rank_top),
-                z = dge_rank_top, 
-                type = "heatmap") %>% 
-  layout(title = list(text = "500 Most Variable Genes by Rank"))
+# RE - LFC
+biplot(pca.blood_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.blood_dre_rnk$metadata$drug, 
+         pca.blood_dre_rnk$metadata$dose, 
+         pca.blood_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = blood_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Blood Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-blood-dre-rank.png"),
+         width = 12,
+         height = 7)
 ```
 
-repeats by rank
- 
+## Breast
+
 ```{r}
-# calculate unsupervised variance across logFC values
-dre_rank_vars <- rowVars(dre_rank_mat, na.rm = TRUE)
-dre_rank_o <- order(dre_rank_vars, decreasing = TRUE)
-dre_rank_top <- dre_rank_mat[head(dre_rank_o, n = 100), ]
+breast_dge <- dge_se[, dge_se$tissue == "breast" & !dge_se$morphology %like% "primary"]
+breast_dre <- dre_se[, dre_se$tissue == "breast" & !dge_se$morphology %like% "primary"]
 
-# cluster rows and columns
-dd_rows4 <- as.dendrogram(hclust(dist(dre_rank_top, method = "euclidean"), method = "ward.D2"))
-dd_cols4 <- as.dendrogram(hclust(dist(t(dre_rank_top), method = "euclidean"), method = "ward.D2"))
-
-# reorder the matrix by calculated clustering
-dre_rank_top <- dre_rank_top[order.dendrogram(dd_rows4), order.dendrogram(dd_cols4)]
-
-# match colnames from matrix with annotations
-hm_annot4 <- exp_annot[match(colnames(dre_rank_top), condition), ]
-
-fig8 <- plot_ly(x = hm_annot4$condition,
-                y = rownames(dre_rank_top),
-                z = dre_rank_top, 
-                type = "heatmap") %>% 
-  layout(title = list(text = "100 Most Variable REs by Rank"))
+pca.breast_dge_lfc <- do_pca(breast_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.breast_dge_rnk <- do_pca(breast_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.breast_dre_lfc <- do_pca(breast_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.breast_dre_rnk <- do_pca(breast_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
 ```
 
-## Save widgets
+### Plot Biplots
 
-```{r message=FALSE, warning=FALSE}
-htmlwidgets::saveWidget(fig5, here("results", "combined", "figures", "dge-lfc-hm.html"))
-htmlwidgets::saveWidget(fig6, here("results", "combined", "figures", "dge-rank-hm.html"))
-htmlwidgets::saveWidget(fig7, here("results", "combined", "figures", "dre-lfc-hm.html"))
-htmlwidgets::saveWidget(fig8, here("results", "combined", "figures", "dre-rank-hm.html"))
+```{r}
+breast_cols <- c("#cb5756", "#60a862", "#ba5fb2", "#b6923e", "#6a7fcf")
+
+# Protein Coding Genes - LFC
+biplot(pca.breast_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.breast_dge_lfc$metadata$drug, 
+         pca.breast_dge_lfc$metadata$dose, 
+         pca.breast_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = breast_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Breast Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-breast-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.breast_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.breast_dre_lfc$metadata$drug, 
+         pca.breast_dre_lfc$metadata$dose, 
+         pca.breast_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = breast_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Breast Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-breast-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.breast_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.breast_dge_rnk$metadata$drug, 
+         pca.breast_dge_rnk$metadata$dose, 
+         pca.breast_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = breast_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Breast Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-breast-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.breast_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.breast_dre_rnk$metadata$drug, 
+         pca.breast_dre_rnk$metadata$dose, 
+         pca.breast_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = breast_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Breast Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-breast-dre-rank.png"),
+         width = 12,
+         height = 7)
 ```
 
-## Correlation analysis
+## Pancreas; small bowel; rectum
 
-```{r message=FALSE, warning=FALSE}
-dge_rank_cor_mat <- cor(dge_rank_mat)
-dd_rows5 <- as.dendrogram(hclust(dist(dge_rank_cor_mat, method = "euclidean"), method = "ward.D2"))
-dd_cols5 <- as.dendrogram(hclust(dist(t(dge_rank_cor_mat), method = "euclidean"), method = "ward.D2"))
-dge_rank_cor_mat <- dge_rank_cor_mat[order.dendrogram(dd_rows5), order.dendrogram(dd_cols5)]
+```{r}
+bowel_dge <- dge_se[, dge_se$tissue %like% "pancreas" & !dge_se$morphology %like% "primary"]
+bowel_dre <- dre_se[, dre_se$tissue %like% "pancreas" & !dge_se$morphology %like% "primary"]
 
-fig9 <- plot_ly(z = dge_rank_cor_mat, 
-        x = rownames(dge_rank_cor_mat),
-        y = colnames(dge_rank_cor_mat),
-        type = "heatmap") %>% 
-  layout(title = list(text = "Correlation by Gene Rank"))
-
-htmlwidgets::saveWidget(fig9, here("results", "combined", "figures", "dge-rank-corr.html"))
+pca.bowel_dge_lfc <- do_pca(bowel_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.bowel_dge_rnk <- do_pca(bowel_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.25)
+pca.bowel_dre_lfc <- do_pca(bowel_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.bowel_dre_rnk <- do_pca(bowel_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.25)
 ```
 
+### Plot Biplots
+
+```{r}
+# Protein Coding Genes - LFC
+biplot(pca.bowel_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bowel_dge_lfc$metadata$drug, 
+         pca.bowel_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Pancreas; Bowel; Rectum Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-bowel-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.bowel_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bowel_dre_lfc$metadata$drug, 
+         pca.bowel_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Pancreas; Bowel; Rectum Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-bowel-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.bowel_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bowel_dge_rnk$metadata$drug,
+         pca.bowel_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Pancreas; Bowel; Rectum Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-bowel-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.bowel_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.bowel_dre_rnk$metadata$drug, 
+         pca.bowel_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Pancreas; Bowel; Rectum Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-bowel-dre-rank.png"),
+         width = 12,
+         height = 7)
+```
+
+## Skin
+
+```{r}
+skin_dge <- dge_se[, dge_se$tissue %like% "skin" & !dge_se$morphology %like% "primary" & !is.na(dge_se$drug)]
+skin_dre <- dre_se[, dre_se$tissue %like% "skin" & !dge_se$morphology %like% "primary" & !is.na(dre_se$drug)]
+
+pca.skin_dge_lfc <- do_pca(skin_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.skin_dge_rnk <- do_pca(skin_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.skin_dre_lfc <- do_pca(skin_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.skin_dre_rnk <- do_pca(skin_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+```
+
+### Plot Biplots
+
+```{r}
+skin_cols <- c("#737a34", "#a365c5", "#77b544", "#d4468d", "#52ae87", "#c95938",
+               "#6587cd", "#cc9b46", "#c26276")
+
+# Protein Coding Genes - LFC
+biplot(pca.skin_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.skin_dge_lfc$metadata$drug, 
+         pca.skin_dge_lfc$metadata$dose, 
+         pca.skin_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = skin_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Skin Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-skin-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.skin_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.skin_dre_lfc$metadata$drug, 
+         pca.skin_dre_lfc$metadata$dose, 
+         pca.skin_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = skin_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Skin Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-skin-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.skin_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.skin_dge_rnk$metadata$drug, 
+         pca.skin_dge_rnk$metadata$dose, 
+         pca.skin_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = skin_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Skin Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-skin-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.skin_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.skin_dre_rnk$metadata$drug, 
+         pca.skin_dre_rnk$metadata$dose, 
+         pca.skin_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = skin_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Skin Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-skin-dre-rank.png"),
+         width = 12,
+         height = 7)
+```
+
+## Lung
+
+```{r}
+lung_dge <- dge_se[, dge_se$tissue %like% "lung" & !dge_se$morphology %like% "primary"]
+lung_dre <- dre_se[, dre_se$tissue %like% "lung" & !dge_se$morphology %like% "primary"]
+
+pca.lung_dge_lfc <- do_pca(lung_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.lung_dge_rnk <- do_pca(lung_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.lung_dre_lfc <- do_pca(lung_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.lung_dre_rnk <- do_pca(lung_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+```
+
+### Plot Biplots
+
+```{r}
+lung_cols <- c("#9ab63e", "#7b62cb", "#5aba54", "#c163b9", "#428b54", "#cf4a40",
+               "#52c1ab", "#c75980", "#cea340", "#688ccd", "#c17547", "#7b8139")
+
+# Protein Coding Genes - LFC
+biplot(pca.lung_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.lung_dge_lfc$metadata$drug, 
+         pca.lung_dge_lfc$metadata$dose, 
+         pca.lung_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = lung_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Lung Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-lung-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.lung_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.lung_dre_lfc$metadata$drug, 
+         pca.lung_dre_lfc$metadata$dose, 
+         pca.lung_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = lung_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Lung Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-lung-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.lung_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.lung_dge_rnk$metadata$drug, 
+         pca.lung_dge_rnk$metadata$dose, 
+         pca.lung_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = lung_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Lung Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-lung-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.lung_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.lung_dre_rnk$metadata$drug, 
+         pca.lung_dre_rnk$metadata$dose, 
+         pca.lung_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       colkey = lung_cols,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Lung Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-lung-dre-rank.png"),
+         width = 12,
+         height = 7)
+```
+
+## Kidney
+
+```{r}
+kidney_dge <- dge_se[, dge_se$tissue %like% "kidney" & !dge_se$morphology %like% "primary"]
+kidney_dre <- dre_se[, dre_se$tissue %like% "kidney" & !dge_se$morphology %like% "primary"]
+
+pca.kidney_dge_lfc <- do_pca(kidney_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.kidney_dge_rnk <- do_pca(kidney_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.kidney_dre_lfc <- do_pca(kidney_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.kidney_dre_rnk <- do_pca(kidney_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+```
+
+### Plot Biplots
+
+```{r}
+# Protein Coding Genes - LFC
+biplot(pca.kidney_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.kidney_dge_lfc$metadata$drug, 
+         pca.kidney_dge_lfc$metadata$dose, 
+         pca.kidney_dge_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Kidney Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-kidney-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.kidney_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.kidney_dre_lfc$metadata$drug, 
+         pca.kidney_dre_lfc$metadata$dose, 
+         pca.kidney_dre_lfc$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Kidney Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-kidney-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.kidney_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.kidney_dge_rnk$metadata$drug, 
+         pca.kidney_dge_rnk$metadata$dose, 
+         pca.kidney_dge_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Kidney Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-kidney-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.kidney_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.kidney_dre_rnk$metadata$drug, 
+         pca.kidney_dre_rnk$metadata$dose, 
+         pca.kidney_dre_rnk$metadata$time_hr)
+         ),
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Kidney Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-kidney-dre-rank.png"),
+         width = 12,
+         height = 7)
+```

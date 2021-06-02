@@ -12,10 +12,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-library(here)
-library(magrittr)
-library(data.table)
 ```
 
 # Meta-analysis on within-experiment gene/RE counts
@@ -26,6 +22,11 @@ Read in the expression matrices from each study and combine into a single
 dataframe. This might get huge so maybe a SQLite db is in order. IDK yet...
 
 ```{r}
+library(here)
+library(data.table)
+library(magrittr)
+
+
 gene_mat_files <- list.files(
   path = here("results"),
   pattern = "gene-lcpms.rds",
@@ -75,6 +76,24 @@ saveRDS(re_lcpm_dt, here("results", "combined", "rds-files", "re-lcpm-dt.rds"))
 # cast wide and save
 wide_gene_lcpm_dt <- dcast(gene_lcpm_dt, feature ~ sample_name, value.var = "logCPM", fill = 0)
 wide_re_lcpm_dt <- dcast(re_lcpm_dt, feature ~ sample_name, value.var = "logCPM", fill = 0)
+```
+
+## Calculate distance between all pairs of samples
+
+```{r}
+library(rdist)
+
+
+gene_mat <- as.matrix(wide_gene_lcpm_dt, rownames = "feature")
+re_mat <- as.matrix(wide_re_lcpm_dt, rownames = "feature")
+
+# calculate sample-sample distances
+gene_dist <- rdist(t(gene_mat), metric = "euclidean")
+re_dist <- rdist(t(re_mat), metric = "euclidean")
+
+# calculate sample-sample correlations
+gene_cor <- cor(gene_mat, method = "spearman")
+re_cor <- cor(re_mat, method = "spearman")
 ```
 
 ## Read in the parsed metadata files
