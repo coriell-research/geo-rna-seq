@@ -124,7 +124,7 @@ fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-an
 ## After manual editing, read in the contrast metadata
 
 ```{r}
-metadata <- fread(here("doc", "2021-05-25-experiment-annotation.csv"))
+metadata <- fread(here("doc", "2021-06-09-experiment-annotation.csv"))
 metadata[, id := paste(experiment, contrast, sep = ".")]
 
 head(metadata)
@@ -219,6 +219,14 @@ dge_se <- SummarizedExperiment(
 dre_se <- SummarizedExperiment(
   assays = list(lfc = dre_lfc_mat, fdr = dre_lfc_mat, rank = dre_rank_mat),
   colData = metadata)
+```
+
+## Create a function for assigning random colors
+
+```{r}
+random_rgb <- function(n, transparency = 0.8) {
+  rgb(red = runif(n), green = runif(n), blue = runif(n), alpha = transparency)
+}
 ```
 
 ## Plot all experiments together
@@ -363,11 +371,8 @@ pca.colon_dre_rnk <- do_pca(colon_dre, "rank", center = TRUE, scale = FALSE, rem
 ### Plot PCAs
 
 ```{r}
-# specify a distinct color pallette for ALL colon drugs (some may be excluded in plots)
-# iWantHue 17-colors
-colon_cols <- c("#9e4365", "#5db645", "#885ccd", "#a2b046", "#ce53b0", "#5cbc82",
-                "#d6425f", "#3fbfbc", "#cf552a", "#5773c3", "#d59b3c", "#62a0d8",
-                "#827430", "#ae7bc1", "#467e45", "#dd80a0", "#c47655")
+# random color palette for drugs in colon samples
+colon_cols <- random_rgb(n = length(unique(pca.colon_dge_lfc$metadata$drug)))
 
 # Protein Coding Genes - LFC
 biplot(pca.colon_dge_lfc,
@@ -530,7 +535,6 @@ plotloadings(
          height = 5)
 ```
 
-
 ### 3D plots
 
 ```{r eval=FALSE, include=FALSE}
@@ -577,7 +581,7 @@ pca.bone_dre_rnk <- do_pca(bone_dre, "rank", center = TRUE, scale = FALSE, remov
 ### Plot Biplots
 
 ```{r}
-bone_cols <- c("#c65c8a", "#70a845", "#b05cc6", "#b69040", "#6e7ecb", "#cc5a43", "#4bad90")
+bone_cols <- random_rgb(length(unique(pca.bone_dge_lfc$metadata$drug)))
 
 # Protein Coding Genes - LFC
 biplot(pca.bone_dge_lfc,
@@ -695,9 +699,7 @@ pca.blood_dre_rnk <- do_pca(blood_dre, "rank", center = TRUE, scale = FALSE, rem
 ### Plot Biplots
 
 ```{r}
-blood_cols <- c("#d08dce", "#65b54d", "#a758c7", "#c3ae40", "#5e70da", "#d05a2a",
-                "#59a0d5", "#d24c59", "#4bae8b", "#d04798", "#6f8038", "#7962a6",
-                "#bf7f4b", "#b45e74")
+blood_cols <- random_rgb(length(unique(pca.blood_dge_lfc$metadata$drug)))
 
 # Protein Coding Genes - LFC
 biplot(pca.blood_dge_lfc,
@@ -815,7 +817,7 @@ pca.breast_dre_rnk <- do_pca(breast_dre, "rank", center = TRUE, scale = FALSE, r
 ### Plot Biplots
 
 ```{r}
-breast_cols <- c("#cb5756", "#60a862", "#ba5fb2", "#b6923e", "#6a7fcf")
+breast_cols <- random_rgb(length(unique(pca.breast_dge_lfc$metadata$drug)))
 
 # Protein Coding Genes - LFC
 biplot(pca.breast_dge_lfc,
@@ -933,6 +935,8 @@ pca.bowel_dre_rnk <- do_pca(bowel_dre, "rank", center = TRUE, scale = FALSE, rem
 ### Plot Biplots
 
 ```{r}
+bowel_cols <- random_rgb(length(unique(pca.bowel_dge_lfc$metadata$drug)))
+
 # Protein Coding Genes - LFC
 biplot(pca.bowel_dge_lfc,
        colby = "drug",
@@ -940,6 +944,7 @@ biplot(pca.bowel_dge_lfc,
          pca.bowel_dge_lfc$metadata$drug, 
          pca.bowel_dge_lfc$metadata$time_hr)
          ),
+       colkey = bowel_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -962,6 +967,7 @@ biplot(pca.bowel_dre_lfc,
          pca.bowel_dre_lfc$metadata$drug, 
          pca.bowel_dre_lfc$metadata$time_hr)
          ),
+       colkey = bowel_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -984,6 +990,7 @@ biplot(pca.bowel_dge_rnk,
          pca.bowel_dge_rnk$metadata$drug,
          pca.bowel_dge_rnk$metadata$time_hr)
          ),
+       colkey = bowel_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -1006,6 +1013,7 @@ biplot(pca.bowel_dre_rnk,
          pca.bowel_dre_rnk$metadata$drug, 
          pca.bowel_dre_rnk$metadata$time_hr)
          ),
+       colkey = bowel_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -1037,8 +1045,7 @@ pca.skin_dre_rnk <- do_pca(skin_dre, "rank", center = TRUE, scale = FALSE, remov
 ### Plot Biplots
 
 ```{r}
-skin_cols <- c("#737a34", "#a365c5", "#77b544", "#d4468d", "#52ae87", "#c95938",
-               "#6587cd", "#cc9b46", "#c26276")
+skin_cols <- random_rgb(length(unique(pca.skin_dge_lfc$metadata$drug)))
 
 # Protein Coding Genes - LFC
 biplot(pca.skin_dge_lfc,
@@ -1156,8 +1163,7 @@ pca.lung_dre_rnk <- do_pca(lung_dre, "rank", center = TRUE, scale = FALSE, remov
 ### Plot Biplots
 
 ```{r}
-lung_cols <- c("#9ab63e", "#7b62cb", "#5aba54", "#c163b9", "#428b54", "#cf4a40",
-               "#52c1ab", "#c75980", "#cea340", "#688ccd", "#c17547", "#7b8139")
+lung_cols <- random_rgb(length(unique(pca.lung_dge_lfc$metadata$drug)))
 
 # Protein Coding Genes - LFC
 biplot(pca.lung_dge_lfc,
@@ -1275,6 +1281,8 @@ pca.kidney_dre_rnk <- do_pca(kidney_dre, "rank", center = TRUE, scale = FALSE, r
 ### Plot Biplots
 
 ```{r}
+kidney_cols <- random_rgb(length(unique(pca.kidney_dge_lfc$metadata$drug)))
+
 # Protein Coding Genes - LFC
 biplot(pca.kidney_dge_lfc,
        colby = "drug",
@@ -1283,6 +1291,7 @@ biplot(pca.kidney_dge_lfc,
          pca.kidney_dge_lfc$metadata$dose, 
          pca.kidney_dge_lfc$metadata$time_hr)
          ),
+       colkey = kidney_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -1307,6 +1316,7 @@ biplot(pca.kidney_dre_lfc,
          pca.kidney_dre_lfc$metadata$dose, 
          pca.kidney_dre_lfc$metadata$time_hr)
          ),
+       colkey = kidney_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -1331,6 +1341,7 @@ biplot(pca.kidney_dge_rnk,
          pca.kidney_dge_rnk$metadata$dose, 
          pca.kidney_dge_rnk$metadata$time_hr)
          ),
+       colkey = kidney_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -1355,6 +1366,7 @@ biplot(pca.kidney_dre_rnk,
          pca.kidney_dre_rnk$metadata$dose, 
          pca.kidney_dre_rnk$metadata$time_hr)
          ),
+       colkey = kidney_cols,
        labSize = 2.5,
        hline = 0, 
        hlineType = 2, 
@@ -1368,6 +1380,124 @@ biplot(pca.kidney_dre_rnk,
        title = "Kidney Cell Lines",
        subtitle = "Repetitive Element Differential Expression Rank") +
   ggsave(here("results", "combined", "figures", "biplot-kidney-dre-rank.png"),
+         width = 12,
+         height = 7)
+```
+
+## Leukemia specific
+
+```{r}
+leukemia_dge <- dge_se[, dge_se$disease %like% "leukemia"]
+leukemia_dre <- dre_se[, dre_se$disease %like% "leukemia"]
+
+pca.leukemia_dge_lfc <- do_pca(leukemia_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.leukemia_dge_rnk <- do_pca(leukemia_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.leukemia_dre_lfc <- do_pca(leukemia_dre, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
+pca.leukemia_dre_rnk <- do_pca(leukemia_dre, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
+```
+
+### Plot Biplots
+
+```{r}
+leukemia_cols <- random_rgb(length(unique(pca.leukemia_dge_lfc$metadata$drug)))
+
+# Protein Coding Genes - LFC
+biplot(pca.leukemia_dge_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.leukemia_dge_lfc$metadata$drug, 
+         pca.leukemia_dge_lfc$metadata$dose, 
+         pca.leukemia_dge_lfc$metadata$time_hr)
+         ),
+       colkey = leukemia_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 15,
+       title = "Leukemia Cell Lines",
+       subtitle = "Protein Coding Gene Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-leukemia-dge-lfc.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.leukemia_dre_lfc,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.leukemia_dre_lfc$metadata$drug, 
+         pca.leukemia_dre_lfc$metadata$dose, 
+         pca.leukemia_dre_lfc$metadata$time_hr)
+         ),
+       colkey = leukemia_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Leukemia Cell Lines",
+       subtitle = "Repetitive Element Log-Fold Change Relative to Control") +
+  ggsave(here("results", "combined", "figures", "biplot-leukemia-dre-lfc.png"),
+         width = 12,
+         height = 7)
+
+# Protein Coding Genes - Rank
+biplot(pca.leukemia_dge_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.leukemia_dge_rnk$metadata$drug, 
+         pca.leukemia_dge_rnk$metadata$dose, 
+         pca.leukemia_dge_rnk$metadata$time_hr)
+         ),
+       colkey = leukemia_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Leukemia Cell Lines",
+       subtitle = "Protein Coding Gene Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-leukemia-dge-rank.png"),
+         width = 12,
+         height = 7)
+
+# RE - LFC
+biplot(pca.leukemia_dre_rnk,
+       colby = "drug",
+       lab = gsub("NA", "", paste(
+         pca.leukemia_dre_rnk$metadata$drug, 
+         pca.leukemia_dre_rnk$metadata$dose, 
+         pca.leukemia_dre_rnk$metadata$time_hr)
+         ),
+       colkey = leukemia_cols,
+       labSize = 2.5,
+       hline = 0, 
+       hlineType = 2, 
+       vline = 0, 
+       vlineType = 2,
+       legendPosition = "bottom",
+       legendLabSize = 8,
+       legendIconSize = 2,
+       legendTitleSize = 10,
+       maxoverlapsConnectors = 10,
+       title = "Leukemia Cell Lines",
+       subtitle = "Repetitive Element Differential Expression Rank") +
+  ggsave(here("results", "combined", "figures", "biplot-leukemia-dre-rank.png"),
          width = 12,
          height = 7)
 ```
