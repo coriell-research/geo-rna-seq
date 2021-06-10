@@ -117,14 +117,14 @@ differentiated better on plots.
 **I will have to manually edit this file since its information is not readily
 available when downloading the datasets from GEO**
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-annotation.csv"))
 ```
 
 ## After manual editing, read in the contrast metadata
 
 ```{r}
-metadata <- fread(here("doc", "2021-06-09-experiment-annotation.csv"))
+metadata <- fread(here("doc", "2021-06-10-experiment-annotation.csv"))
 metadata[, id := paste(experiment, contrast, sep = ".")]
 
 head(metadata)
