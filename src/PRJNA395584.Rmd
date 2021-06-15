@@ -1,0 +1,137 @@
+---
+title: "PRJNA395584 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r message=FALSE}
+library(tidyverse)
+library(here)
+library(SummarizedExperiment)
+
+
+se <- read_rds(here("data", "PRJNA395584", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## DE pipeline
+
+```{r message=FALSE}
+library(edgeR)
+library(coriell)
+
+
+design <- model.matrix(~0 + group, data = colData(se))
+colnames(design) <- str_remove(colnames(design), "^group")
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+```{r}
+contrast.matrix <- makeContrasts(
+  HL_60.BI00894999.35nM = HL_60.BI00894999.35nM - HL_60.DMSO.NA,
+  KASUMI_1.BI00894999.35nM = KASUMI_1.BI00894999.35nM - KASUMI_1.DMSO.NA,
+  MOLM_13.BI00894999.35nM = MOLM_13.BI00894999.35nM - MOLM_13.DMSO.NA,
+  NCI_H2171.BI00894999.100nM = NCI_H2171.BI00894999.100nM - NCI_H2171.DMSO.NA,
+  OCI_AML3.BI00894999.35nM = OCI_AML3.BI00894999.35nM - OCI_AML3.DMSO.NA,
+  
+  MV_4_11_B.BI00894999.1000nM = MV_4_11_B.BI00894999.1000nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.100nM = MV_4_11_B.BI00894999.100nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.1nM = MV_4_11_B.BI00894999.1nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.35nM = MV_4_11_B.BI00894999.35nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999_EX00101218.35nM_5uM = MV_4_11_B.BI00894999_EX00101218.35nM_5uM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.EX00101218.5uM = MV_4_11_B.EX00101218.5uM - MV_4_11_B.DMSO.NA,
+  
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+titles <- c("HL_60.BI00894999.35nM",
+            "KASUMI_1.BI00894999.35nM",
+            "MOLM_13.BI00894999.35nM",
+            "NCI_H2171.BI00894999.100nM",
+            "OCI_AML3.BI00894999.35nM",
+            "MV_4_11_B.BI00894999.1000nM",
+            "MV_4_11_B.BI00894999.100nM",
+            "MV_4_11_B.BI00894999.1nM",
+            "MV_4_11_B.BI00894999.35nM",
+            "MV_4_11_B.BI00894999_EX00101218.35nM_5uM",
+            "MV_4_11_B.EX00101218.5uM")
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+sig <- 0.1
+
+# map over and extract results
+de_results <- map2(.x = cons, 
+                   .y = titles, 
+                   .f = get_de_results, 
+                    contrast_matrix = contrast.matrix,
+                    fdr = sig,
+                    fc = fc,
+                    glm_fit = fit)
+
+# extract all results and bind to single df
+df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA395584", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA395584", "data-files", "dre.tsv"))
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA395584", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA395584", "rds-files", "re-lcpms.rds"))
+```

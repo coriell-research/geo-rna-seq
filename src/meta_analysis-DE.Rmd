@@ -124,7 +124,7 @@ fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-an
 ## After manual editing, read in the contrast metadata
 
 ```{r}
-metadata <- fread(here("doc", "2021-06-10-experiment-annotation.csv"))
+metadata <- fread(here("doc", "2021-06-15-experiment-annotation.csv"))
 metadata[, id := paste(experiment, contrast, sep = ".")]
 
 head(metadata)
@@ -569,8 +569,8 @@ colon_3d.dge_lfc <- plot_ly(pca.colon_dge_lfc_dt,
 ## Bone
 
 ```{r}
-bone_dge <- dge_se[, dge_se$tissue == "bone" & !dge_se$morphology %like% "primary"]
-bone_dre <- dre_se[, dre_se$tissue == "bone" & !dge_se$morphology %like% "primary"]
+bone_dge <- dge_se[, dge_se$tissue == "bone"]
+bone_dre <- dre_se[, dre_se$tissue == "bone"]
 
 pca.bone_dge_lfc <- do_pca(bone_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.bone_dge_rnk <- do_pca(bone_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
@@ -687,8 +687,8 @@ biplot(pca.bone_dre_rnk,
 ## Blood
 
 ```{r}
-blood_dge <- dge_se[, dge_se$tissue == "blood" & !dge_se$morphology %like% "primary"]
-blood_dre <- dre_se[, dre_se$tissue == "blood" & !dge_se$morphology %like% "primary"]
+blood_dge <- dge_se[, dge_se$tissue == "blood"]
+blood_dre <- dre_se[, dre_se$tissue == "blood"]
 
 pca.blood_dge_lfc <- do_pca(blood_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.blood_dge_rnk <- do_pca(blood_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
@@ -805,8 +805,8 @@ biplot(pca.blood_dre_rnk,
 ## Breast
 
 ```{r}
-breast_dge <- dge_se[, dge_se$tissue == "breast" & !dge_se$morphology %like% "primary"]
-breast_dre <- dre_se[, dre_se$tissue == "breast" & !dge_se$morphology %like% "primary"]
+breast_dge <- dge_se[, dge_se$tissue == "breast"]
+breast_dre <- dre_se[, dre_se$tissue == "breast"]
 
 pca.breast_dge_lfc <- do_pca(breast_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.breast_dge_rnk <- do_pca(breast_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
@@ -923,8 +923,8 @@ biplot(pca.breast_dre_rnk,
 ## Pancreas; small bowel; rectum
 
 ```{r}
-bowel_dge <- dge_se[, dge_se$tissue %like% "pancreas" & !dge_se$morphology %like% "primary"]
-bowel_dre <- dre_se[, dre_se$tissue %like% "pancreas" & !dge_se$morphology %like% "primary"]
+bowel_dge <- dge_se[, dge_se$tissue %like% "pancreas"]
+bowel_dre <- dre_se[, dre_se$tissue %like% "pancreas"]
 
 pca.bowel_dge_lfc <- do_pca(bowel_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.bowel_dge_rnk <- do_pca(bowel_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.25)
@@ -1033,8 +1033,8 @@ biplot(pca.bowel_dre_rnk,
 ## Skin
 
 ```{r}
-skin_dge <- dge_se[, dge_se$tissue %like% "skin" & !dge_se$morphology %like% "primary" & !is.na(dge_se$drug)]
-skin_dre <- dre_se[, dre_se$tissue %like% "skin" & !dge_se$morphology %like% "primary" & !is.na(dre_se$drug)]
+skin_dge <- dge_se[, dge_se$tissue %like% "skin" & !is.na(dge_se$drug)]
+skin_dre <- dre_se[, dre_se$tissue %like% "skin" & !is.na(dre_se$drug)]
 
 pca.skin_dge_lfc <- do_pca(skin_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.skin_dge_rnk <- do_pca(skin_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
@@ -1151,8 +1151,8 @@ biplot(pca.skin_dre_rnk,
 ## Lung
 
 ```{r}
-lung_dge <- dge_se[, dge_se$tissue %like% "lung" & !dge_se$morphology %like% "primary"]
-lung_dre <- dre_se[, dre_se$tissue %like% "lung" & !dge_se$morphology %like% "primary"]
+lung_dge <- dge_se[, dge_se$tissue %like% "lung"]
+lung_dre <- dre_se[, dre_se$tissue %like% "lung"]
 
 pca.lung_dge_lfc <- do_pca(lung_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.lung_dge_rnk <- do_pca(lung_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
@@ -1269,8 +1269,8 @@ biplot(pca.lung_dre_rnk,
 ## Kidney
 
 ```{r}
-kidney_dge <- dge_se[, dge_se$tissue %like% "kidney" & !dge_se$morphology %like% "primary"]
-kidney_dre <- dre_se[, dre_se$tissue %like% "kidney" & !dge_se$morphology %like% "primary"]
+kidney_dge <- dge_se[, dge_se$tissue %like% "kidney"]
+kidney_dre <- dre_se[, dre_se$tissue %like% "kidney"]
 
 pca.kidney_dge_lfc <- do_pca(kidney_dge, "lfc", center = TRUE, scale = FALSE, removeVar = 0.05)
 pca.kidney_dge_rnk <- do_pca(kidney_dge, "rank", center = TRUE, scale = FALSE, removeVar = 0.05)
