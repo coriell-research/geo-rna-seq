@@ -219,6 +219,10 @@ dge_se <- SummarizedExperiment(
 dre_se <- SummarizedExperiment(
   assays = list(lfc = dre_lfc_mat, fdr = dre_lfc_mat, rank = dre_rank_mat),
   colData = metadata)
+
+# save objects out to be read into interactive visualization
+saveRDS(dge_se, here("results", "combined", "rds-files", "dge_se.rds"), compress = FALSE)
+saveRDS(dre_se, here("results", "combined", "rds-files", "dre_se.rds"), compress = FALSE)
 ```
 
 ## Create a function for assigning random colors
