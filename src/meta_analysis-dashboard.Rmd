@@ -1,0 +1,259 @@
+---
+title: "GEO RNA-Seq Dashboard"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(shinyWidgets)
+library(SummarizedExperiment)
+library(data.table)
+library(plotly)
+library(here)
+library(PCAtools)
+library(magrittr)
+
+
+dge <- readRDS(here("data", "dge_se.rds"))
+dre <- readRDS(here("data", "dre_se.rds"))
+```
+
+Sidebar {.sidebar data-width=500}
+=======================================================================
+
+### Select Dataset
+
+```{r}
+radioButtons("dataset",
+             label = "Datasets",
+             choices = c("Protein Coding Genes", "Repetitive Elements"),
+             selected = "Protein Coding Genes")
+```
+
+### Select values for PCA
+
+```{r}
+radioButtons("data",
+             label = "Data",
+             choices = c("Log2FC" = "lfc", "FDR" = "fdr", "Rank" = "rank"),
+             selected = "lfc")
+```
+
+### Select Conditions
+
+```{r}
+pickerInput("contrasts",
+            label = "Conditions",
+            choices = unique(colData(dge)$contrast),
+            selected = unique(colData(dge)$contrast),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE))
+```
+
+### Select Experiments
+
+```{r}
+pickerInput("experiments",
+            label = "Experiments",
+            choices = unique(colData(dge)$experiment),
+            selected = unique(colData(dge)$experiment),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE))
+```
+
+### Select Cell Lines
+
+```{r}
+pickerInput("cell_lines",
+            label = "Cell lines",
+            choices = unique(colData(dge)$cell_line),
+            selected = unique(colData(dge)$cell_line),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE))
+```
+
+### Select Drugs
+
+```{r}
+pickerInput("drugs",
+            label = "Drugs",
+            choices = unique(colData(dge)$drug),
+            selected = unique(colData(dge)$drug),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE))
+```
+
+### Select Tissue
+
+```{r}
+pickerInput("tissues",
+            label = "Tissues",
+            choices = unique(colData(dge)$tissue),
+            selected = unique(colData(dge)$tissue),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE))
+```
+
+### Select Disease
+
+```{r}
+pickerInput("diseases",
+            label = "Diseases",
+            choices = unique(colData(dge)$disease),
+            selected = unique(colData(dge)$disease),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE))
+```
+
+---
+
+### PCA Parameters
+
+```{r}
+numericInput("var",
+             label = "Remove Variance",
+             value = 0.1,
+             min = 0,
+             max = 0.95,
+             step = 0.05)
+checkboxInput("scale",
+              label = "Scale Data",
+              value = FALSE)
+checkboxInput("center",
+              label = "Center Data",
+              value = TRUE)
+```
+
+---
+
+### Run PCA
+
+```{r}
+actionBttn("run",
+           label = "Run")
+
+# filter and run PCA after run button is clicked
+pca_data <- eventReactive(input$run, {
+  
+  # Select the dataset based on user input
+  d <- dge
+  if (input$dataset == 'Repetitive Elements') {
+    d <- dre
+  }
+  
+  # filter dataset based on input
+  d_filtered <- d[ ,d$contrast %in% input$contrasts &
+                    d$experiment %in% input$experiments &
+                    d$cell_line %in% input$cell_lines &
+                    d$drug %in% input$drugs &
+                    d$tissue %in% input$tissues &
+                    d$disease %in% input$diseases]
+  
+  # perform PCA using PCAtools
+  pca_res <- pca(
+    mat = assay(d_filtered, input$data),
+    metadata = as.data.frame(colData(d_filtered)),
+    scale = input$scale,
+    center = input$center,
+    removeVar = input$var
+  )
+  
+  return(pca_res)
+
+})
+```
+
+PCA Biplot {style="position:relative;"}
+=======================================================================
+
+Column {style="height:100pc;"}
+-----------------------------------------------------------------------
+
+```{r}
+# Create options for modifying biplot
+selectInput("col",
+            label = "Color by:",
+            choices = c("tissue", "cell_line", "drug", "disease", "experiment"),
+            selected = "tissue")
+selectInput("x_axis",
+            label = "x-axis",
+            choices = paste0("PC", 1:10),
+            selected = "PC1")
+selectInput("y_axis",
+            label = "y-axis",
+            choices = paste0("PC", 1:10),
+            selected = "PC2")
+
+
+dt <- reactive({
+  pca_dt <- as.data.table(pca_data()$rotated, keep.rownames = "sample_name")
+  meta_dt <- as.data.table(pca_data()$metadata, keep.rownames = "sample_name")
+  dt <- merge.data.table(x = pca_dt, y = meta_dt, by = "sample_name", all.x = TRUE)
+  dt
+})
+
+output$biplot <- renderPlotly({
+  dt <- dt()
+  plot_ly(
+    dt,
+    x = ~get(input$x_axis),
+    y = ~get(input$y_axis), 
+    color = ~get(input$col),
+    colors = "Set1",
+    hovertext = paste("BioProject:", dt$experiment,
+                     "<br>Cell Line:", dt$cell_line,
+                     "<br>Disease:", dt$disease,
+                     "<br>Drug:", dt$drug,
+                     "<br>Dose", dt$dose,
+                     "<br>Time", dt$time_hr)) %>%
+    add_markers(size = 180) %>%
+    layout(dragmode = "lasso", 
+           xaxis = list(title = paste(input$x_axis)),
+           yaxis = list(title = paste(input$y_axis)))
+})
+
+# show output ---------------------------------------------------------
+plotlyOutput("biplot")
+
+DT::renderDT({
+    d <- event_data("plotly_selected")
+    if (!is.null(d)) {
+      xmin <- min(d$x)
+      xmax <- max(d$x)
+      ymin <- min(d$y)
+      ymax <- max(d$y)
+      dt <- dt()
+      dt[between(get(input$x_axis), xmin, xmax, incbounds = TRUE) & 
+         between(get(input$y_axis), ymin, ymax, incbounds = TRUE), 
+         .(experiment, tissue, cell_line, disease, drug, dose, time_hr)]
+    }
+  })
+```
+
+PCA Loadings
+=======================================================================
+
+```{r}
+renderPlot({
+  plotloadings(pca_data(), 
+               components = 1:5, 
+               labSize = 4, 
+               drawConnectors = TRUE)
+})
+```
+
+Scree Plot
+=======================================================================
+
+```{r}
+renderPlot({
+  screeplot(pca_data(), 
+            components = 1:10, 
+            drawCumulativeSumLine = TRUE, 
+            drawCumulativeSumPoints = TRUE)
+})
+```
+
+
