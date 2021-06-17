@@ -220,10 +220,10 @@ plotlyOutput("biplot")
 DT::renderDT({
     d <- event_data("plotly_selected")
     if (!is.null(d)) {
-      xmin <- min(d$x)
-      xmax <- max(d$x)
-      ymin <- min(d$y)
-      ymax <- max(d$y)
+      xmin <- min(d$x) - 0.000001
+      xmax <- max(d$x) + 0.000001
+      ymin <- min(d$y) - 0.000001
+      ymax <- max(d$y) + 0.000001
       dt <- dt()
       dt[between(get(input$x_axis), xmin, xmax, incbounds = TRUE) & 
          between(get(input$y_axis), ymin, ymax, incbounds = TRUE), 
