@@ -124,7 +124,7 @@ fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-an
 ## After manual editing, read in the contrast metadata
 
 ```{r}
-metadata <- fread(here("doc", "2021-06-15-experiment-annotation.csv"))
+metadata <- fread(here("doc", "2021-06-18-experiment-annotation.csv"))
 metadata[, id := paste(experiment, contrast, sep = ".")]
 
 head(metadata)
@@ -224,6 +224,10 @@ dre_se <- SummarizedExperiment(
 saveRDS(dge_se, here("results", "combined", "rds-files", "dge_se.rds"), compress = FALSE)
 saveRDS(dre_se, here("results", "combined", "rds-files", "dre_se.rds"), compress = FALSE)
 ```
+
+----
+
+# Analysis Below is Replaced By GEO RNA-seq app
 
 ## Create a function for assigning random colors
 

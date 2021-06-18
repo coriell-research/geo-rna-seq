@@ -8,10 +8,11 @@ runtime: shiny
 library(flexdashboard)
 library(shiny)
 library(shinyWidgets)
-library(SummarizedExperiment)
-library(data.table)
-library(plotly)
+
 library(here)
+library(data.table)
+library(SummarizedExperiment)
+library(plotly)
 library(PCAtools)
 library(magrittr)
 
@@ -135,7 +136,8 @@ actionBttn("run",
            label = "Run")
 
 # filter and run PCA after run button is clicked
-pca_data <- eventReactive(input$run, {
+# return a list so that the filtered Matrix and the PCA results are returned 
+data <- eventReactive(input$run, {
   
   # Select the dataset based on user input
   d <- dge
@@ -151,16 +153,17 @@ pca_data <- eventReactive(input$run, {
                     d$tissue %in% input$tissues &
                     d$disease %in% input$diseases]
   
+  M <- assay(d_filtered, input$data)
   # perform PCA using PCAtools
   pca_res <- pca(
-    mat = assay(d_filtered, input$data),
+    mat = M,
     metadata = as.data.frame(colData(d_filtered)),
     scale = input$scale,
     center = input$center,
     removeVar = input$var
   )
   
-  return(pca_res)
+  list("PCA" = pca_res, "M" = M)
 
 })
 ```
@@ -188,8 +191,8 @@ selectInput("y_axis",
 
 
 dt <- reactive({
-  pca_dt <- as.data.table(pca_data()$rotated, keep.rownames = "sample_name")
-  meta_dt <- as.data.table(pca_data()$metadata, keep.rownames = "sample_name")
+  pca_dt <- as.data.table(data()[["PCA"]]$rotated, keep.rownames = "sample_name")
+  meta_dt <- as.data.table(data()[["PCA"]]$metadata, keep.rownames = "sample_name")
   dt <- merge.data.table(x = pca_dt, y = meta_dt, by = "sample_name", all.x = TRUE)
   dt
 })
@@ -237,7 +240,7 @@ PCA Loadings
 
 ```{r}
 renderPlot({
-  plotloadings(pca_data(), 
+  plotloadings(data()[["PCA"]], 
                components = 1:5, 
                labSize = 4, 
                drawConnectors = TRUE)
@@ -249,11 +252,9 @@ Scree Plot
 
 ```{r}
 renderPlot({
-  screeplot(pca_data(), 
+  screeplot(data()[["PCA"]], 
             components = 1:10, 
             drawCumulativeSumLine = TRUE, 
             drawCumulativeSumPoints = TRUE)
 })
 ```
-
-

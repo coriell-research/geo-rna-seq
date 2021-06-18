@@ -1,0 +1,509 @@
+experiment,contrast,cell_line,morphology,tissue,disease,drug,target,dose,time_hr
+PRJNA316529,deazaneplanocinA,HL-60,promyeloblast,blood,acute promyelocytic leukemia,3-deazaneplanocin A,Adenosylhomocysteinase (AHCY),1000nM,72
+PRJNA391270,a498_4gy,A498,epithelial,kidney,Carcinoma,4Gy IR,radiation,,3
+PRJNA391270,a549_4gy,A459,epithelial,lung,Carcinoma,4Gy IR,radiation,,3
+PRJNA391270,gy4.3hr,Combined Cell Lines,,,,4Gy IR,radiation,,3
+PRJNA391270,h460_4gy,H460,epithelial,lung,Carcinoma,4Gy IR,radiation,,3
+PRJNA391270,hct116_4gy,HCT116,epithelial,large intestine; colon,Carcinoma; Colorectal,4Gy IR,radiation,,3
+PRJNA391270,lox_4gy,LOXIMVI,epithelial,skin,Malignant Melanoma,4Gy IR,radiation,,3
+PRJNA391270,malme3_4gy,MALME3M,fibroblast,skin,Malignant Melanoma,4Gy IR,radiation,,3
+PRJNA391270,skmel5_4gy,SKMEL5,melanocyte,skin,Malignant Melanoma,4Gy IR,radiation,,3
+PRJNA391270,u2os_4gy,U2OS,epithelial,bone,Osteosarcoma,4Gy IR,radiation,,3
+PRJNA391270,uacc257_4gy,UACC257,epithelial,skin,Malignant Melanoma,4Gy IR,radiation,,3
+PRJNA391270,uo31_4gy,UO31,epithelial,kidney,Carcinoma,4Gy IR,radiation,,3
+PRJNA391270,mcf7_4gy,MCF7,epithelial,breast,Adenocarcinoma,4Gy IR + Decitabine,radiation +  Human Deoxyribonucleic acid (hDNA),2uM,3
+PRJNA417314,hc29_5fu,HT-29,epithelial,large intestine; colon,Adenocarcinoma,5-FU,Candida Thymidylate synthase (Candi TMP1); Dihydrothymine dehydrogenase (DPYD); TERT messenger RNA (TERT mRNA); Thymidylate synthase messenger RNA (TYMS mRNA),20uM,72
+PRJNA603369,abbv075.100nM,AML,primary human cells,blood,Acute myeloid leukemia,ABBV-075,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),100nM,24
+PRJNA603369,kasumi.abbv075.100nM,Kasumi-1,myeloblast,blood,Acute myeloblastic leukemia,ABBV-075,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),100nM,24
+PRJNA603369,mv411.abbv075.100nM,MV-4-11,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,ABBV-075,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),100nM,24
+PRJNA603369,nci_h1299.abbv075.100nM,NCI-H1299,epithelial,lung,Carcinoma,ABBV-075,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),100nM,24
+PRJNA603369,skm.abbv075.100nM,SKM-1,myeloblast,blood,Acute myeloid leukemia,ABBV-075,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),100nM,24
+PRJNA603369,abbv744.200nM,AML,primary human cells,blood,Acute myeloid leukemia,ABBV-744,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),200nM,24
+PRJNA603369,kasumi.abbv744.200nM,Kasumi-1,myeloblast,blood,Acute myeloblastic leukemia,ABBV-744,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),200nM,24
+PRJNA603369,mv411.abbv744.200nM,MV-4-11,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,ABBV-744,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),200nM,24
+PRJNA603369,nci_h1299.abbv744.200nM,NCI-H1299,epithelial,lung,Carcinoma,ABBV-744,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),200nM,24
+PRJNA603369,skm.abbv744.200nM,SKM-1,myeloblast,blood,Acute myeloid leukemia,ABBV-744,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),200nM,24
+PRJNA379584,afatinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,afatinib,Epidermal growth factor receptor (EGFR); Erbb2 tyrosine kinase receptor (HER2),ED20 and 1/10 of it,24
+PRJNA379584,afatinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,afatinib,Epidermal growth factor receptor (EGFR); Erbb2 tyrosine kinase receptor (HER2),ED20 and 1/10 of it,6
+PRJNA379584,alisertib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,alisertib,Oral aurora kinase inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,alisertib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,alisertib,Oral aurora kinase inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,arachidonyl.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,arachidonyl,Cannabinoid receptor 1 (CB1),ED20 and 1/10 of it,24
+PRJNA379584,arachidonyl.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,arachidonyl,Cannabinoid receptor 1 (CB1),ED20 and 1/10 of it,6
+PRJNA379584,at13387.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,at13387,Heat shock protein 90 alpha (HSP90A),ED20 and 1/10 of it,24
+PRJNA379584,at13387.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,at13387,Heat shock protein 90 alpha (HSP90A),ED20 and 1/10 of it,6
+PRJNA379584,auy922.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,auy922,Heat shock protein 90 alpha (HSP90A),ED20 and 1/10 of it,24
+PRJNA379584,auy922.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,auy922,Heat shock protein 90 alpha (HSP90A),ED20 and 1/10 of it,6
+PRJNA352461,Azacitidine,BM MNC,patient-derived AML,blood,Acute myeloid leukemia,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),NA,NA
+PRJNA610784,Azacitidine,IDH1mut BM,patient-derived AML,blood,Acute myeloid leukemia,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),500nM,96
+PRJNA670901,azacitidine_125nM,TCL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),125nM,NA
+PRJNA670901,azacitidine_250nM,TCL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),250nM,NA
+PRJNA670901,azacitidine_50nM,TCL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),50nM,NA
+PRJNA670901,HH.azacitidine,HH,lymphoblast,blood,Lymphoma,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),50/125/250nM,NA
+PRJNA670901,HH.azacitidine_125nM,HH,lymphoblast,blood,Lymphoma,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),125nM,NA
+PRJNA670901,HH.azacitidine_250nM,HH,lymphoblast,blood,Lymphoma,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),250nM,NA
+PRJNA670901,HH.azacitidine_50nM,HH,lymphoblast,blood,Lymphoma,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),50nM,NA
+PRJNA670901,PF382.azacitidine,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),50/125/250nM,NA
+PRJNA670901,PF382.azacitidine_125nM,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),125nM,NA
+PRJNA670901,PF382.azacitidine_250nM,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),250nM,NA
+PRJNA670901,PF382.azacitidine_500nM,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),500nM,NA
+PRJNA670901,TLOm1.azacitidine,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),50/125/250nM,NA
+PRJNA670901,TLOm1.azacitidine_125nM,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),125nM,NA
+PRJNA670901,TLOm1.azacitidine_250nM,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),250nM,NA
+PRJNA670901,TLOm1.azacitidine_500nM,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Azacitidine,DNA [cytosine-5]-methyltransferase (DNMT),500nM,NA
+PRJNA379584,azd6482.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,azd6482,PI3-kinase beta (PIK3CB),ED20 and 1/10 of it,24
+PRJNA379584,azd6482.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,azd6482,PI3-kinase beta (PIK3CB),ED20 and 1/10 of it,6
+PRJNA379584,azd7762.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,azd7762,Checkpoint kinase-1 (CHK1),ED20 and 1/10 of it,24
+PRJNA379584,azd7762.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,azd7762,Checkpoint kinase-1 (CHK1),ED20 and 1/10 of it,6
+PRJNA379584,azd8055.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,azd8055,Serine/threonine-protein kinase mTOR (mTOR),ED20 and 1/10 of it,24
+PRJNA379584,azd8055.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,azd8055,Serine/threonine-protein kinase mTOR (mTOR),ED20 and 1/10 of it,6
+PRJNA379584,bafetinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bafetinib,Fusion protein Bcr-Abl (Bcr-Abl); Tyrosine-protein kinase Lyn (JTK8),ED20 and 1/10 of it,24
+PRJNA379584,bafetinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bafetinib,Fusion protein Bcr-Abl (Bcr-Abl); Tyrosine-protein kinase Lyn (JTK8),ED20 and 1/10 of it,6
+PRJNA379584,bardoxolone_methyl.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bardoxolone_methyl,iNOS inhibitor; COX-2 inhibitor; MMP-1 and MMP-13 inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,bardoxolone_methyl.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bardoxolone_methyl,iNOS inhibitor; COX-2 inhibitor; MMP-1 and MMP-13 inhibitor,ED20 and 1/10 of it,6
+PRJNA610784,BAY1436032,IDH1mut BM,patient-derived AML,blood,Acute myeloid leukemia,BAY1436032,Mutated oxalosuccinate decarboxylase (mIDH1),50nM,120
+PRJNA610784,BAY1436032_Azacitidine_seq,IDH1mut BM,patient-derived AML,blood,Acute myeloid leukemia,BAY1436032_Azacitidine_seq,Mutated oxalosuccinate decarboxylase (mIDH1),50nM+500nM,216
+PRJNA610784,BAY1436032_Azacitidine_sim,IDH1mut BM,patient-derived AML,blood,Acute myeloid leukemia,BAY1436032_Azacitidine_sim,Mutated oxalosuccinate decarboxylase (mIDH1),50nM+500nM,120
+PRJNA379584,belinostat.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,belinostat,Histone deacetylase (HDAC),ED20 and 1/10 of it,24
+PRJNA379584,belinostat.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,belinostat,Histone deacetylase (HDAC),ED20 and 1/10 of it,6
+PRJNA379584,bexarotene.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bexarotene,Retinoic acid receptor RXR-alpha (RXRA),ED20 and 1/10 of it,24
+PRJNA379584,bexarotene.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bexarotene,Retinoic acid receptor RXR-alpha (RXRA),ED20 and 1/10 of it,6
+PRJNA379584,bgj398.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bgj398,Fibroblast growth factor receptor (FGFR); Fibroblast growth factor receptor 1 (FGFR1),ED20 and 1/10 of it,24
+PRJNA379584,bgj398.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bgj398,Fibroblast growth factor receptor (FGFR); Fibroblast growth factor receptor 1 (FGFR1),ED20 and 1/10 of it,6
+PRJNA379584,bi.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bi,Human Deoxyribonucleic acid (hDNA),ED20 and 1/10 of it,6
+PRJNA379584,bi_2536.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bi_2536,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,24
+PRJNA379584,bi_2536.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bi_2536,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,6
+PRJNA400080,BI00894999.1nM.24,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),1nM,24
+PRJNA400080,BI00894999.1nM.4,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),1nM,4
+PRJNA400080,BI00894999.35nM.24,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,24
+PRJNA400080,BI00894999.35nM.4,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,4
+PRJNA395584,HL_60.BI00894999.35nM,HL-60,promyeloblast,blood,acute promyelocytic leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,
+PRJNA395584,KASUMI_1.BI00894999.35nM,Kasumi-1,myeloblast,blood,Acute myeloblastic leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,
+PRJNA395584,MOLM_13.BI00894999.35nM,MOLM13,myeloblast,blood,Acute myeloid leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,
+PRJNA395584,MV_4_11_B.BI00894999.1000nM,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),1000nM,
+PRJNA395584,MV_4_11_B.BI00894999.100nM,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),100nM,
+PRJNA395584,MV_4_11_B.BI00894999.1nM,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),1nM,
+PRJNA395584,MV_4_11_B.BI00894999.35nM,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,
+PRJNA395584,NCI_H2171.BI00894999.100nM,NCI-H2171,lymphoblast,lung,Carcinoma,BI 00894999,Bromodomain and extraterminal domain protein (BET),100nM,
+PRJNA395584,OCI_AML3.BI00894999.35nM,OCI-AML3,myeloblast,blood,Acute myeloid leukemia,BI 00894999,Bromodomain and extraterminal domain protein (BET),35nM,
+PRJNA400080,BI00894999_Volasertib.1nM_20nM.24,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999 + Volasertib,Bromodomain and extraterminal domain protein (BET);   Polo-like kinase 1 (PLK1),1nM + 20nM,24
+PRJNA400080,BI00894999_Volasertib.1nM_20nM.4,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999 + Volasertib,Bromodomain and extraterminal domain protein (BET);   Polo-like kinase 1 (PLK1),1nM + 20nM,4
+PRJNA400080,BI00894999_Volasertib.35nM_20nM.24,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999 + Volasertib,Bromodomain and extraterminal domain protein (BET);   Polo-like kinase 1 (PLK1),35nM + 20nM,24
+PRJNA400080,BI00894999_Volasertib.35nM_20nM.4,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999 + Volasertib,Bromodomain and extraterminal domain protein (BET);   Polo-like kinase 1 (PLK1),35nM + 20nM,4
+PRJNA395584,MV_4_11_B.BI00894999_EX00101218.35nM_5uM,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,BI 00894999_EX00101218,Bromodomain and extraterminal domain protein (BET),35nM + 5uM,
+PRJNA379584,bio.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bio,Glycogen synthase kinase-3 alpha (GSK-3A),ED20 and 1/10 of it,24
+PRJNA379584,bio.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bio,Glycogen synthase kinase-3 alpha (GSK-3A),ED20 and 1/10 of it,6
+PRJNA379584,bkm120.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bkm120,PI3-kinase alpha (PIK3CA); PI3-kinase beta (PIK3CB); PI3-kinase delta (PIK3CD); PI3-kinase gamma (PIK3CG),ED20 and 1/10 of it,24
+PRJNA379584,bkm120.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bkm120,PI3-kinase alpha (PIK3CA); PI3-kinase beta (PIK3CB); PI3-kinase delta (PIK3CD); PI3-kinase gamma (PIK3CG),ED20 and 1/10 of it,6
+PRJNA379584,bms.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bms,SLAM family member 7 SLAMF7 (CS1),ED20 and 1/10 of it,6
+PRJNA379584,bms_754807.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bms_754807,SLAM family member 7 SLAMF7 (CS1),ED20 and 1/10 of it,24
+PRJNA379584,bms_754807.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bms_754807,SLAM family member 7 SLAMF7 (CS1),ED20 and 1/10 of it,6
+PRJNA379584,bortezomib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bortezomib,Cationic trypsinogen (PRSS1); Kallikrein-related peptidase (KLK); Proteasome (PS),ED20 and 1/10 of it,24
+PRJNA379584,bortezomib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,bortezomib,Cationic trypsinogen (PRSS1); Kallikrein-related peptidase (KLK); Proteasome (PS),ED20 and 1/10 of it,6
+PRJNA379584,brefeldin_a.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,brefeldin_a,Antibacterial agent,ED20 and 1/10 of it,24
+PRJNA379584,brefeldin_a.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,brefeldin_a,Antibacterial agent,ED20 and 1/10 of it,6
+PRJNA379584,brivanib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,brivanib,Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,24
+PRJNA379584,brivanib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,brivanib,Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,6
+PRJNA533647,PCIA_Bu,HFSC,primary human cells,scalp,Normal,Busulfan,Human Deoxyribonucleic acid (hDNA),20mg/kg/day,
+PRJNA533647,PCIA_BuCy,HFSC,primary human cells,scalp,Normal,Busulfan + Cyclophosphamide,Human Deoxyribonucleic acid (hDNA),20mg/kg/day + 100mg/kg/day,
+PRJNA379584,byl719.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,byl719,Phosphatidylinositol-4-kinase alpha (PI4KA); PI3-kinase alpha (PIK3CA),ED20 and 1/10 of it,24
+PRJNA379584,byl719.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,byl719,Phosphatidylinositol-4-kinase alpha (PI4KA); PI3-kinase alpha (PIK3CA),ED20 and 1/10 of it,6
+PRJNA392914,carboplatin.50uM_72hr,PC9,epithelial,lung,Carcinoma,Carboplatin,Human Deoxyribonucleic acid (hDNA),50uM,72
+PRJNA379584,cay10618_in_methanol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cay10618_in_methanol,NMPRTase Inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,cay10618_in_methanol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cay10618_in_methanol,NMPRTase Inhibitor,ED20 and 1/10 of it,6
+PRJNA474537,CC122.24,OSU-CLL,EBV-transformed lymphoblastoid cell line,blood,Chronic lymphocytic leukemia,CC-122,Modulates cereblon E3 ligase activity,1uM,24
+PRJNA474537,CC122.5,OSU-CLL,EBV-transformed lymphoblastoid cell line,blood,Chronic lymphocytic leukemia,CC-122,Modulates cereblon E3 ligase activity,0.1uM,5
+PRJNA379584,cd.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cd,Retinoic acid receptor gamma (RARG),ED20 and 1/10 of it,6
+PRJNA379584,cd_437.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cd_437,Retinoic acid receptor gamma (RARG),ED20 and 1/10 of it,24
+PRJNA379584,cd_437.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cd_437,Retinoic acid receptor gamma (RARG),ED20 and 1/10 of it,6
+PRJNA379584,cerulenin.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cerulenin,Fatty acid synthase (FASN),ED20 and 1/10 of it,24
+PRJNA379584,cerulenin.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,cerulenin,Fatty acid synthase (FASN),ED20 and 1/10 of it,6
+PRJNA379584,chm.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,chm,Monoamine oxidase type A (MAO-A); Stress-activated protein kinase JNK3 (JNK3),ED20 and 1/10 of it,24
+PRJNA379584,chm_1.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,chm_1,Monoamine oxidase type A (MAO-A); Stress-activated protein kinase JNK3 (JNK3),ED20 and 1/10 of it,24
+PRJNA379584,chm_1.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,chm_1,Monoamine oxidase type A (MAO-A); Stress-activated protein kinase JNK3 (JNK3),ED20 and 1/10 of it,6
+PRJNA379584,ciclopirox.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ciclopirox,HIF-prolyl hydroxylase (HPH),ED20 and 1/10 of it,24
+PRJNA379584,ciclopirox.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ciclopirox,HIF-prolyl hydroxylase (HPH),ED20 and 1/10 of it,6
+PRJNA685849,CDDP_50uM_10hr,A375p,epithelial,skin,Malignant Melanoma,Cisplatin,Human Deoxyribonucleic acid (hDNA),NA,10
+PRJNA685849,CDDP_50uM_20hr,A375p,epithelial,skin,Malignant Melanoma,Cisplatin,Human Deoxyribonucleic acid (hDNA),NA,20
+PRJNA685849,CDDP_50uM_4hr,A375p,epithelial,skin,Malignant Melanoma,Cisplatin,Human Deoxyribonucleic acid (hDNA),NA,4
+PRJNA657067,Cotyledon_orbiculata_extract,HCT116,epithelial,large intestine; colon,Carcinoma,Cotyledon_orbiculata_extract,Splice Modulator,Cotyledon orbiculata extract,
+PRJNA379584,crizotinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,crizotinib,ALK tyrosine kinase receptor (ALK); HGF/Met signaling pathway (HGF/Met pathway); Proto-oncogene c-Met (MET); Proto-oncogene c-Ros (ROS1),ED20 and 1/10 of it,24
+PRJNA379584,crizotinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,crizotinib,ALK tyrosine kinase receptor (ALK); HGF/Met signaling pathway (HGF/Met pathway); Proto-oncogene c-Met (MET); Proto-oncogene c-Ros (ROS1),ED20 and 1/10 of it,6
+PRJNA340369,TF_1.Cyclocreatine,TF-1,lymphoblast,bone,Erythroleukemia,Cyclocreatine,Protein kinase (PK),3mM,24
+PRJNA340369,UCSD_AML1.Cyclocreatine,UCSD-AML1,lymphoblast,bone,Acute myeloid leukemia,Cyclocreatine,Protein kinase (PK),3mM,24
+PRJNA340369,UT_7.Cyclocreatine,UT-7,lymphoblast,bone,Acute myeloid leukemia,Cyclocreatine,Protein kinase (PK),3mM,24
+PRJNA379584,d_be_q.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,d_be_q,Progesterone receptor (PGR),ED20 and 1/10 of it,24
+PRJNA379584,d_be_q.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,d_be_q,Progesterone receptor (PGR),ED20 and 1/10 of it,6
+PRJNA379584,dasatinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,dasatinib,Fusion protein Bcr-Abl (Bcr-Abl); Fyn tyrosine protein kinase (FYN); LCK tyrosine protein kinase (LCK); Proto-oncogene c-Src (SRC),ED20 and 1/10 of it,24
+PRJNA379584,dasatinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,dasatinib,Fusion protein Bcr-Abl (Bcr-Abl); Fyn tyrosine protein kinase (FYN); LCK tyrosine protein kinase (LCK); Proto-oncogene c-Src (SRC),ED20 and 1/10 of it,6
+PRJNA315414,MOLT4.dBET6.2,MOLT-4,lymphoblast,blood,Acute lymphoblastic leukemia ,dBET6,Bromodomain and extraterminal domain protein (BET),,2
+PRJNA315414,MOLT4.dBET6.6,MOLT-4,lymphoblast,blood,Acute lymphoblastic leukemia ,dBET6,Bromodomain and extraterminal domain protein (BET),,6
+PRJNA315414,primary_T_cell.dBET6.0,T-ALL,primary human cells,blood,Acute lymphoblastic leukemia ,dBET6,Bromodomain and extraterminal domain protein (BET),,
+PRJNA315414,T_ALL_PDX.dBET6.0,T-ALL_PDX,primary human cells,blood,Acute lymphoblastic leukemia ,dBET6,Bromodomain and extraterminal domain protein (BET),,
+PRJNA260377,cmml1_resonder,BM MNC,primary human cells,bone,chronic myelomonocytic leukemia ,Decitabine,Human Deoxyribonucleic acid (hDNA),20 mg/m2/day i.v.,3 cycles 5d/28d
+PRJNA260377,cmml2_respnder,BM MNC,primary human cells,bone,chronic myelomonocytic leukemia ,Decitabine,Human Deoxyribonucleic acid (hDNA),20 mg/m2/day i.v.,3 cycles 5d/28d
+PRJNA596778,dac,786-0,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),300/100nM,120
+PRJNA318019,dac,GBM,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),1uM,72
+PRJNA642730,dac,GSC,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA316529,dac,HL-60,promyeloblast,blood,acute promyelocytic leukemia,Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,72
+PRJNA607909,dac,LUAD,,lung,,Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,72
+PRJNA265187,dac,SW48,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649431,dac,T-ALL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649432,dac,T-ALL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+proa,dac,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,48
+tak,dac,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,96
+PRJNA596778,dac_100nM.786,786-0,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,120
+PRJNA670901,dac_12.5nM,TCL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),12.5nM,NA
+PRJNA670901,dac_25nM,TCL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),25nM,NA
+PRJNA596778,dac_300nM.786,786-0,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),300nM,120
+PRJNA670901,dac_5nM,TCL,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),5nM,NA
+hh1,dac_96hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine,Human Deoxyribonucleic acid (hDNA),NA,96
+PRJNA596778,dac.100nM,786-0,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,120
+PRJNA596778,dac.300nM,786-0,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),300nM,120
+PRJNA670901,HH.dac,HH,lymphoblast,blood,Lymphoma,Decitabine,Human Deoxyribonucleic acid (hDNA),5/12.5/25nM,NA
+PRJNA670901,HH.dac_12.5nM,HH,lymphoblast,blood,Lymphoma,Decitabine,Human Deoxyribonucleic acid (hDNA),12.5nM,NA
+PRJNA670901,HH.dac_25nM,HH,lymphoblast,blood,Lymphoma,Decitabine,Human Deoxyribonucleic acid (hDNA),25nM,NA
+PRJNA670901,HH.dac_5nM,HH,lymphoblast,blood,Lymphoma,Decitabine,Human Deoxyribonucleic acid (hDNA),5nM,NA
+PRJNA596778,HKC.dac_100nM,HKC,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),100nM,120
+PRJNA596778,HKC.dac_300nM,HKC,epithelial,kidney,Adenocarcinoma,Decitabine,Human Deoxyribonucleic acid (hDNA),300nM,120
+PRJNA318019,lnt_dac,LNT-299,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),1uM,72
+PRJNA649432,Loucy.dac,Loucy,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649432,MOLT_16.dac,MOLT,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA642730,NCH1681.dac,NCH1681,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA642730,NCH612.dac,NCH612,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649431,PDX_TALL1.dac,T-ALL1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649431,PDX_TALL2.dac,T-ALL2,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649432,PEER.dac,PEER,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA649432,PER_117.dac,PER,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA670901,PF382.dac,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),5/12.5/25nM,NA
+PRJNA670901,PF382.dac_12.5nM,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),12.5nM,NA
+PRJNA670901,PF382.dac_25nM,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),25nM,NA
+PRJNA670901,PF382.dac_5nM,PF-382,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),5nM,NA
+PRJNA260377,responder,BM MNC,primary human cells,bone,chronic myelomonocytic leukemia ,Decitabine,Human Deoxyribonucleic acid (hDNA),20 mg/m2/day i.v.,3 cycles 5d/28d
+PRJNA642730,SU_AO3.dac,SU-AO3,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA318019,t98g_dac,T98G,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),1uM,72
+PRJNA649432,TALL_1.dac,T-ALL1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA657045,Till_CAR.dac_14d_vs_7d,CAR T,PBMC,blood,,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,336
+PRJNA657045,Till_dCAR.dac_14d_vs_7d,CAR T,PBMC,blood,,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,336
+PRJNA670901,TLOm1.dac,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),5/12.5/25nM,NA
+PRJNA670901,TLOm1.dac_12.5nM,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),12.5nM,NA
+PRJNA670901,TLOm1.dac_25nM,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),25nM,NA
+PRJNA670901,TLOm1.dac_5nM,TLOm1,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Decitabine,Human Deoxyribonucleic acid (hDNA),5nM,NA
+PRJNA642730,TS603.dac,TS603,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),NA,NA
+PRJNA318019,u87_dac,U-87,epithelial,brain,Glioblastoma,Decitabine,Human Deoxyribonucleic acid (hDNA),1uM,72
+PRJNA316529,dac_deazaneplanocinA,HL-60,promyeloblast,blood,acute promyelocytic leukemia,Decitabine + 3-deazaneplanocin A,Human Deoxyribonucleic acid (hDNA); Adenosylhomocysteinase (AHCY),100nM + 1000nM,72
+tak,dac_depsi,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + Depsipeptide,Human Deoxyribonucleic acid (hDNA); Histone deacetylase 1 (HDAC1),100nM + 20nM,96
+tak,dac_gsk343,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + GSK343,Human Deoxyribonucleic acid (hDNA);  Enhancer of zeste homolog 1 (EZH1); Enhancer of zeste homolog 2 (EZH2),100nM + 1uM,96
+hh1,dac_hh1_10um_96hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + HH1,Human Deoxyribonucleic acid (hDNA); Cyclin-dependent kinase 9 (CDK9) ,10uM,96
+hh1,dac_hh1_25um_96hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + HH1,Human Deoxyribonucleic acid (hDNA); Cyclin-dependent kinase 9 (CDK9) ,25uM,96
+proa,dac_proa,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + Proscillaridin A,Human Deoxyribonucleic acid (hDNA); Enzyme inhibitors; Cardiotonic agents,100nM + 50nM,48
+PRJNA657045,dCAR.dac_Raij_vs_dac,CAR,PBMC,blood,,Decitabine + Raij coculture,Human Deoxyribonucleic acid (hDNA),NA,336
+tak,dac_s2102,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + S2101,Human Deoxyribonucleic acid (hDNA); Lysine-Specific Demethylase 1 (LSD1) Inhibitor,100nM + 10uM,96
+PRJNA265187,dac_siCHD4,SW48,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + siCHD4,Human Deoxyribonucleic acid (hDNA),NA,NA
+tak,dac_unc0628,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Decitabine + UNC0638,Human Deoxyribonucleic acid (hDNA); Euchromatic histone-lysine N-methyltransferase 1 (EHMT1); Histone-lysine N-methyltransferase EHMT2 (EHMT2),100nM + 1uM,96
+tak,depsi,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Depsipeptide,Histone deacetylase 1 (HDAC1),20nM,96
+PRJNA379584,dinaciclib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,dinaciclib,Cyclin-dependent kinase 1 (CDK1); Cyclin-dependent kinase 2 (CDK2); Cyclin-dependent kinase 9 (CDK9),ED20 and 1/10 of it,24
+PRJNA379584,dinaciclib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,dinaciclib,Cyclin-dependent kinase 1 (CDK1); Cyclin-dependent kinase 2 (CDK2); Cyclin-dependent kinase 9 (CDK9),ED20 and 1/10 of it,6
+PRJNA379584,dmso.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,dmso,FK506-binding protein 1A (FKBP1A),ED20 and 1/10 of it,24
+PRJNA379584,dmso.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,dmso,FK506-binding protein 1A (FKBP1A),ED20 and 1/10 of it,6
+PRJNA379584,docetaxel.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,docetaxel,Tubulin (TUB),ED20 and 1/10 of it,24
+PRJNA379584,docetaxel.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,docetaxel,Tubulin (TUB),ED20 and 1/10 of it,6
+PRJNA335388,bc_dox,MDA-MB231,epithelial,breast,Adenocarcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),1uM,72
+PRJNA555350,doxorubicin,HEL,lymphoblast,bone,Erythroleukemia,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),3mg/kg,120
+PRJNA335388,doxorubicin.1uM,Breast/Osteosarcoma,epithelial,breast + bone,,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),1uM,72
+PRJNA379584,doxorubicin.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),ED20 and 1/10 of it,24
+PRJNA315294,doxorubicin.300nM.16h,CRC,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA379584,doxorubicin.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),ED20 and 1/10 of it,6
+PRJNA315294,hct_dox,HCT116,epithelial,large intestine; colon,Carcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,hct_ko_dox,HCT116_p53_KO,epithelial,large intestine; colon,Carcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,hct_wt_dox,HCT116_p53_WT,epithelial,large intestine; colon,Carcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA335388,os_dox,U2OS,epithelial,bone,Osteosarcoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),1uM,72
+PRJNA315294,rko_dox,RKO,epithelial,large intestine; colon,Carcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,rko_ko_dox,RKO_p53_KO,epithelial,large intestine; colon,Carcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,rko_wt_dox,RKO_p53_WT,epithelial,large intestine; colon,Carcinoma,Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,sw48_dox,SW48,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,sw48_ko_dox,SW48_p53_KO,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA315294,sw48_wt_dox,SW48_p53_WT,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Doxorubicin,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA),300nM,16
+PRJNA555350,doxorubicin_cytabine,HEL,lymphoblast,bone,Erythroleukemia,Doxorubicin + Cytarabine,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA); Herpes simplex virus DNA polymerase UL30 (HSV UL30),3mg/kg + 100mg/kg,120
+PRJNA555350,doxorubicin_cytabine_decitabine,HEL,lymphoblast,bone,Erythroleukemia,Doxorubicin + Cytarabine + Decitibine,DNA topoisomerase II (TOP2); TERT messenger RNA (TERT mRNA); Herpes simplex virus DNA polymerase UL30 (HSV UL30); Human Deoxyribonucleic acid (hDNA),3mg/kg + 100mg/kg + 0.5mg/kg,120
+PRJNA379584,entinostat.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,entinostat,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),ED20 and 1/10 of it,24
+PRJNA379584,entinostat.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,entinostat,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),ED20 and 1/10 of it,6
+PRJNA379584,epigallocatechin_gallate.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,epigallocatechin_gallate,Fatty acid synthase (FASN); Human immunodeficiency virus Reverse transcriptase (HIV RT); Matrix metalloproteinase-14 (MMP-14); Matrix metalloproteinase-2 (MMP-2); Neutrophil elastase (NE); Plasmodium Beta-hydroxyacyl-ACP dehydratase (Malaria FabZ); Plasmodium Enoyl-ACP reductase (Malaria fabI); Plasmodium Oxoacyl-[acyl-carrier protein] reductase (Malaria fabG); Squalene monooxygenase (SQLE),ED20 and 1/10 of it,24
+PRJNA379584,epigallocatechin_gallate.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,epigallocatechin_gallate,Fatty acid synthase (FASN); Human immunodeficiency virus Reverse transcriptase (HIV RT); Matrix metalloproteinase-14 (MMP-14); Matrix metalloproteinase-2 (MMP-2); Neutrophil elastase (NE); Plasmodium Beta-hydroxyacyl-ACP dehydratase (Malaria FabZ); Plasmodium Enoyl-ACP reductase (Malaria fabI); Plasmodium Oxoacyl-[acyl-carrier protein] reductase (Malaria fabG); Squalene monooxygenase (SQLE),ED20 and 1/10 of it,6
+PRJNA379584,erastin.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,erastin,VDAC activator,ED20 and 1/10 of it,24
+PRJNA379584,erastin.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,erastin,VDAC activator,ED20 and 1/10 of it,6
+PRJNA392914,erlotinib.1uM_24hr,PC9,epithelial,lung,Carcinoma,Erlotinib,Epidermal growth factor receptor (EGFR),1um,24
+PRJNA379584,ethanol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ethanol,GABA(A) receptor alpha-1 (GABRA1),ED20 and 1/10 of it,24
+PRJNA379584,ethanol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ethanol,GABA(A) receptor alpha-1 (GABRA1),ED20 and 1/10 of it,6
+PRJNA335388,bc_eto,MDA-MB231,epithelial,breast,Adenocarcinoma,Etoposide,DNA topoisomerase II (TOP2),20uM,72
+PRJNA387040,etoposide,IMR90,fibroblast,lung,Normal,Etoposide,DNA topoisomerase II (TOP2),100uM,48
+PRJNA335388,etoposide.20uM,Breast/Osteosarcoma,epithelial,breast + bone,,Etoposide,DNA topoisomerase II (TOP2),20uM,72
+PRJNA387040,ko_eto,IMR90_shNTC,fibroblast,lung,Normal,Etoposide,DNA topoisomerase II (TOP2),100uM,48
+PRJNA335388,os_eto,U2OS,epithelial,bone,Osteosarcoma,Etoposide,DNA topoisomerase II (TOP2),20uM,72
+PRJNA387040,wt_eto,IMR90_shCGAS,fibroblast,lung,Normal,Etoposide,DNA topoisomerase II (TOP2),100uM,48
+PRJNA395584,MV_4_11_B.EX00101218.5uM,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,EX00101218,Bromodomain and extraterminal domain protein (BET),5uM,
+PRJNA379584,fingolimod.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,fingolimod,Sphingosine-1-phosphate receptor 1 (S1PR1),ED20 and 1/10 of it,24
+PRJNA379584,fingolimod.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,fingolimod,Sphingosine-1-phosphate receptor 1 (S1PR1),ED20 and 1/10 of it,6
+PRJNA379584,fk866.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,fk866,Nicotinamide phosphoribosyltransferase (NAMPT),ED20 and 1/10 of it,24
+PRJNA379584,fk866.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,fk866,Nicotinamide phosphoribosyltransferase (NAMPT),ED20 and 1/10 of it,6
+PRJNA379584,flavopiridol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,flavopiridol,Cyclin-dependent kinase (CDK); Cyclin-dependent kinase 9 (CDK9); Myophosphorylase (PYGM),ED20 and 1/10 of it,24
+PRJNA379584,flavopiridol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,flavopiridol,Cyclin-dependent kinase (CDK); Cyclin-dependent kinase 9 (CDK9); Myophosphorylase (PYGM),ED20 and 1/10 of it,6
+PRJNA379584,fluvastatin.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,fluvastatin,HMG-CoA reductase (HMGCR),ED20 and 1/10 of it,24
+PRJNA379584,fluvastatin.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,fluvastatin,HMG-CoA reductase (HMGCR),ED20 and 1/10 of it,6
+PRJNA379584,foretinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,foretinib,Proto-oncogene c-Met (MET);  Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,24
+PRJNA379584,foretinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,foretinib,Proto-oncogene c-Met (MET);  Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,6
+PRJNA641077,x1874,HCT116,epithelial,large intestine; colon,Carcinoma,GB1874,β-catenin (β-cat)-TCF4 protein-protein interaction (PPI),50uM,24
+PRJNA641077,x6853,HCT116,epithelial,large intestine; colon,Carcinoma,GB6853,β-catenin (β-cat)-TCF4 protein-protein interaction (PPI),50uM,24
+PRJNA641077,x8679,HCT116,epithelial,large intestine; colon,Carcinoma,GB8679,β-catenin (β-cat)-TCF4 protein-protein interaction (PPI),50uM,24
+PRJNA379584,gdc.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gdc,PI3-kinase gamma (PIK3CG),ED20 and 1/10 of it,6
+PRJNA379584,gdc_0941.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gdc_0941,PI3-kinase gamma (PIK3CG),ED20 and 1/10 of it,24
+PRJNA379584,gdc_0941.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gdc_0941,PI3-kinase gamma (PIK3CG),ED20 and 1/10 of it,6
+PRJNA379584,gemcitabine.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gemcitabine,Ribonucleoside-diphosphate reductase M2 (RRM2),ED20 and 1/10 of it,24
+PRJNA379584,gemcitabine.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gemcitabine,Ribonucleoside-diphosphate reductase M2 (RRM2),ED20 and 1/10 of it,6
+PRJNA379584,gossypol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gossypol,Apoptosis regulator Bcl-2 (BCL-2),ED20 and 1/10 of it,24
+PRJNA379584,gossypol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gossypol,Apoptosis regulator Bcl-2 (BCL-2),ED20 and 1/10 of it,6
+PRJNA379584,gsk1210151a.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gsk1210151a,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),ED20 and 1/10 of it,24
+PRJNA379584,gsk1210151a.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gsk1210151a,Bromodomain-containing protein 2 (BRD2); Bromodomain-containing protein 3 (BRD3); Bromodomain-containing protein 4 (BRD4),ED20 and 1/10 of it,6
+tak,gsk343,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",GSK343,Enhancer of zeste homolog 1 (EZH1); Enhancer of zeste homolog 2 (EZH2),1uM,96
+PRJNA379584,gsk461364.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gsk461364,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,24
+PRJNA379584,gsk461364.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gsk461364,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,6
+PRJNA379584,gw.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gw,CB2 receptor partial agonist,ED20 and 1/10 of it,6
+PRJNA379584,gw_405833.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gw_405833,CB2 receptor partial agonist,ED20 and 1/10 of it,24
+PRJNA379584,gw_405833.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,gw_405833,CB2 receptor partial agonist,ED20 and 1/10 of it,6
+hh1,hh1_24hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",HH1,Cyclin-dependent kinase 9 (CDK9) ,10uM,24
+hh1,hh1_25um_96hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",HH1,Cyclin-dependent kinase 9 (CDK9) ,25uM,96
+hh1,hh1_2hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",HH1,Cyclin-dependent kinase 9 (CDK9) ,10uM,2
+hh1,hh1_4hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",HH1,Cyclin-dependent kinase 9 (CDK9) ,10uM,4
+hh1,hh1_8hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",HH1,Cyclin-dependent kinase 9 (CDK9) ,10uM,8
+hh1,hh1_96hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",HH1,Cyclin-dependent kinase 9 (CDK9) ,10uM,96
+PRJNA379584,hmn.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,hmn,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,6
+PRJNA379584,hmn_214.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,hmn_214,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,24
+PRJNA379584,hmn_214.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,hmn_214,Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,6
+PRJNA685849,Hypercin_150nM_irradiation_10hr,A375p,epithelial,skin,Malignant Melanoma,Hyp-PDT,Enzyme inhibitor; Immunosuppressive agent; Antiviral agent; Radiation-sensitizing agent; Antineoplastic agent,NA,10
+PRJNA685849,Hypercin_150nM_irradiation_20hr,A375p,epithelial,skin,Malignant Melanoma,Hyp-PDT,Enzyme inhibitor; Immunosuppressive agent; Antiviral agent; Radiation-sensitizing agent; Antineoplastic agent,NA,20
+PRJNA685849,Hypercin_150nM_irradiation_4hr,A375p,epithelial,skin,Malignant Melanoma,Hyp-PDT,Enzyme inhibitor; Immunosuppressive agent; Antiviral agent; Radiation-sensitizing agent; Antineoplastic agent,NA,4
+PRJNA379584,ibrutinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ibrutinib,Tyrosine-protein kinase BTK (ATK),ED20 and 1/10 of it,24
+PRJNA379584,ibrutinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ibrutinib,Tyrosine-protein kinase BTK (ATK),ED20 and 1/10 of it,6
+PRJNA641077,iCRT3,HCT116,epithelial,large intestine; colon,Carcinoma,iCRT3,Wnt/β-catenin antagonist,20nM,48
+PRJNA379584,imatinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,imatinib,Fusion protein Bcr-Abl (Bcr-Abl); Mcl-1 messenger RNA (MCL-1 mRNA); Platelet-derived growth factor receptor (PDGFR); Tyrosine-protein kinase Kit (KIT),ED20 and 1/10 of it,24
+PRJNA379584,imatinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,imatinib,Fusion protein Bcr-Abl (Bcr-Abl); Mcl-1 messenger RNA (MCL-1 mRNA); Platelet-derived growth factor receptor (PDGFR); Tyrosine-protein kinase Kit (KIT),ED20 and 1/10 of it,6
+PRJNA379584,inc280.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,inc280,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,24
+PRJNA379584,inc280.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,inc280,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,6
+PRJNA379584,istradefylline.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,istradefylline,Adenosine A2a receptor (ADORA2A),ED20 and 1/10 of it,24
+PRJNA379584,istradefylline.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,istradefylline,Adenosine A2a receptor (ADORA2A),ED20 and 1/10 of it,6
+PRJNA379584,jnj.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,jnj,HDM2 ubiquitin ligase antagonis,ED20 and 1/10 of it,6
+PRJNA379584,jnj_26854165.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,jnj_26854165,HDM2 ubiquitin ligase antagonis,ED20 and 1/10 of it,24
+PRJNA379584,jnj_26854165.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,jnj_26854165,HDM2 ubiquitin ligase antagonis,ED20 and 1/10 of it,6
+PRJNA315414,MOLT4.JQ1.2,MOLT-4,lymphoblast,blood,Acute lymphoblastic leukemia ,JQ1,Bromodomain-containing protein 2 (BRD2),,2
+PRJNA315414,MOLT4.JQ1.6,MOLT-4,lymphoblast,blood,Acute lymphoblastic leukemia ,JQ1,Bromodomain-containing protein 2 (BRD2),,6
+PRJNA315414,primary_T_cell.JQ1.0,T-ALL,primary human cells,blood,Acute lymphoblastic leukemia ,JQ1,Bromodomain-containing protein 2 (BRD2),,
+PRJNA315414,T_ALL_PDX.JQ1.0,T-ALL_PDX,primary human cells,blood,Acute lymphoblastic leukemia ,JQ1,Bromodomain-containing protein 2 (BRD2),,
+PRJNA379584,khs101.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,khs101,Mitochondrial chaperone heat shock protein family D member 1 (HSPD1),ED20 and 1/10 of it,24
+PRJNA379584,khs101.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,khs101,Mitochondrial chaperone heat shock protein family D member 1 (HSPD1),ED20 and 1/10 of it,6
+PRJNA379584,ku.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ku,mTORC1 and mTORC2 inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,ku_0063794.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ku_0063794,mTORC1 and mTORC2 inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,ku_0063794.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ku_0063794,mTORC1 and mTORC2 inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,kw.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,kw,"Multikinase inhibitor of FLT3, ABL, ABL-T315I, and Aurora kinase",ED20 and 1/10 of it,6
+PRJNA379584,kw_2449.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,kw_2449,"Multikinase inhibitor of FLT3, ABL, ABL-T315I, and Aurora kinase",ED20 and 1/10 of it,24
+PRJNA379584,kw_2449.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,kw_2449,"Multikinase inhibitor of FLT3, ABL, ABL-T315I, and Aurora kinase",ED20 and 1/10 of it,6
+PRJNA379584,kx2.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,kx2,Src tyrosine kinase signaling pathway (Src pathway); Tubulin polymerization (TubP),ED20 and 1/10 of it,24
+PRJNA379584,kx2_391.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,kx2_391,Src tyrosine kinase signaling pathway (Src pathway); Tubulin polymerization (TubP),ED20 and 1/10 of it,24
+PRJNA379584,kx2_391.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,kx2_391,Src tyrosine kinase signaling pathway (Src pathway); Tubulin polymerization (TubP),ED20 and 1/10 of it,6
+PRJNA379584,ldk378.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ldk378,ALK tyrosine kinase receptor (ALK),ED20 and 1/10 of it,24
+PRJNA379584,ldk378.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ldk378,ALK tyrosine kinase receptor (ALK),ED20 and 1/10 of it,6
+PRJNA379584,lee011.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,lee011,Cyclin-dependent kinase 4 (CDK4); Cyclin-dependent kinase 6 (CDK6),ED20 and 1/10 of it,24
+PRJNA379584,lee011.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,lee011,Cyclin-dependent kinase 4 (CDK4); Cyclin-dependent kinase 6 (CDK6),ED20 and 1/10 of it,6
+PRJNA474537,LEN.24,OSU-CLL,EBV-transformed lymphoblastoid cell line,blood,Chronic lymphocytic leukemia,Lenalidomide,Tumor necrosis factor (TNF),1uM,24
+PRJNA474537,LEN.5,OSU-CLL,EBV-transformed lymphoblastoid cell line,blood,Chronic lymphocytic leukemia,Lenalidomide,Tumor necrosis factor (TNF),1uM,5
+PRJNA379584,leptomycin_b_in_ethanol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,leptomycin_b_in_ethanol,CRM1 (exportin 1) inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,leptomycin_b_in_ethanol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,leptomycin_b_in_ethanol,CRM1 (exportin 1) inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,linifanib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,linifanib,Vascular endothelial growth factor receptor 3 (FLT-4),ED20 and 1/10 of it,24
+PRJNA379584,linifanib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,linifanib,Vascular endothelial growth factor receptor 3 (FLT-4),ED20 and 1/10 of it,6
+PRJNA352461,LSD1i,BM MNC,patient-derived AML,blood,Acute myeloid leukemia,LSD1i,Lysine-specific demethylase 1 (LSD1/KDM1A),NA,NA
+PRJNA352461,LSD1i_Azacitidine,BM MNC,patient-derived AML,blood,Acute myeloid leukemia,LSD1i_Azacitidine,Lysine-specific demethylase 1 (LSD1/KDM1A); DNA [cytosine-5]-methyltransferase (DNMT),NA,NA
+PRJNA379584,ly.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ly,Endocannabinoid reuptake inhibitor; FAAH inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,ly_2183240.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ly_2183240,Endocannabinoid reuptake inhibitor; FAAH inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,ly_2183240.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ly_2183240,Endocannabinoid reuptake inhibitor; FAAH inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,manumycin_a.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,manumycin_a,CAAX farnesyltransferase beta (FNTB); Farnesyl protein transferase (Ftase),ED20 and 1/10 of it,24
+PRJNA379584,manumycin_a.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,manumycin_a,CAAX farnesyltransferase beta (FNTB); Farnesyl protein transferase (Ftase),ED20 and 1/10 of it,6
+PRJNA379584,methanol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,methanol,Alcohol dehydrogenase (ADH),ED20 and 1/10 of it,24
+PRJNA379584,methanol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,methanol,Alcohol dehydrogenase (ADH),ED20 and 1/10 of it,6
+PRJNA379584,methylstat.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,methylstat,Jumonji C domain-containing histone trimethyl demethylases (JHDMs) inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,methylstat.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,methylstat,Jumonji C domain-containing histone trimethyl demethylases (JHDMs) inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,mg.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mg,Proteasome inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,mg_132.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mg_132,Proteasome inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,mg_132.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mg_132,Proteasome inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,mithramycin_a.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mithramycin_a,RNA-binding protein Musashi-2 (MSI2),ED20 and 1/10 of it,24
+PRJNA379584,mithramycin_a.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mithramycin_a,RNA-binding protein Musashi-2 (MSI2),ED20 and 1/10 of it,6
+PRJNA636096,MCC,BLCA,epithelial,bladder,Bladder Carcinoma,Mitomycin C,Human Deoxyribonucleic acid (hDNA),30uM,48
+PRJNA636096,MCC.5637,5637,epithelial,bladder,Bladder Carcinoma,Mitomycin C,Human Deoxyribonucleic acid (hDNA),30uM,48
+PRJNA636096,MCC.CLS_439,CLS-439,epithelial,bladder,Bladder Carcinoma,Mitomycin C,Human Deoxyribonucleic acid (hDNA),30uM,48
+PRJNA636096,MCC.T24,T24,epithelial,bladder,Transitional cell carcinoma,Mitomycin C,Human Deoxyribonucleic acid (hDNA),30uM,48
+PRJNA636096,MCC.TCC_SUP,TCC-SUP,epithelial,bladder,Carcinoma,Mitomycin C,Human Deoxyribonucleic acid (hDNA),30uM,48
+PRJNA379584,mitomycin_c.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,Mitomycin C,Human Deoxyribonucleic acid (hDNA),ED20 and 1/10 of it,24
+PRJNA379584,mitomycin_c.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,Mitomycin C,Human Deoxyribonucleic acid (hDNA),ED20 and 1/10 of it,6
+PRJNA685849,MTX_1um_10hr,A375p,epithelial,skin,Malignant Melanoma,Mitoxantrone,DNA topoisomerase II (TOP2),NA,10
+PRJNA685849,MTX_1um_20hr,A375p,epithelial,skin,Malignant Melanoma,Mitoxantrone,DNA topoisomerase II (TOP2),NA,20
+PRJNA685849,MTX_1um_4hr,A375p,epithelial,skin,Malignant Melanoma,Mitoxantrone,DNA topoisomerase II (TOP2),NA,4
+PRJNA379584,mk.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mk,Wee1-like protein kinase (WEE1); PI3K/Akt inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,mk.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mk,Wee1-like protein kinase (WEE1); PI3K/Akt inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,mk_1775.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mk_1775,Wee1-like protein kinase (WEE1),ED20 and 1/10 of it,24
+PRJNA379584,mk_1775.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mk_1775,Wee1-like protein kinase (WEE1),ED20 and 1/10 of it,6
+PRJNA379584,mk_2206.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mk_2206,PI3K/Akt inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,mk_2206.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mk_2206,PI3K/Akt inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,ml210.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ml210,Glutathione peroxidase 4 (GPX4) inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,ml210.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ml210,Glutathione peroxidase 4 (GPX4) inhibitor,ED20 and 1/10 of it,6
+PRJNA335388,bc_mms,MDA-MB231,epithelial,breast,Adenocarcinoma,MMS,Human Deoxyribonucleic acid (hDNA),40 ug/mL,72
+PRJNA335388,mms.40ug_ml,Breast/Osteosarcoma,epithelial,breast + bone,,MMS,Human Deoxyribonucleic acid (hDNA),40 ug/mL,72
+PRJNA335388,os_mms,U2OS,epithelial,bone,Osteosarcoma,MMS,Human Deoxyribonucleic acid (hDNA),40 ug/mL,72
+PRJNA422779,G12V.MS275.1,CaCO-2et KRAS G12V,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,1
+PRJNA422779,G12V.MS275.24,CaCO-2et KRAS G12V,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,24
+PRJNA422779,G12V.MS275.6,CaCO-2et KRAS G12V,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,6
+PRJNA422779,G12V.MS275.72,CaCO-2et KRAS G12V,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,72
+PRJNA422779,WT.MS275.1,CaCO-2et KRAS WT,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,1
+PRJNA422779,WT.MS275.24,CaCO-2et KRAS WT,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,24
+PRJNA422779,WT.MS275.6,CaCO-2et KRAS WT,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,6
+PRJNA422779,WT.MS275.72,CaCO-2et KRAS WT,epithelial,large intestine; colon,Adenocarcinoma,MS-275,Histone deacetylase (HDAC); Histone deacetylase 1 (HDAC1),NA,72
+PRJNA379584,mst.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mst,Telomerase Inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,mst_312.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mst_312,Telomerase Inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,mst_312.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,mst_312,Telomerase Inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,n_ilotinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,n_ilotinib,Fusion protein Bcr-Abl (Bcr-Abl),ED20 and 1/10 of it,24
+PRJNA379584,n_ilotinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,n_ilotinib,Fusion protein Bcr-Abl (Bcr-Abl),ED20 and 1/10 of it,6
+PRJNA392914,dtp,PC9,epithelial,lung,Carcinoma,,,,
+PRJNA497893,hpv16,NOK,epithelial,skin,Carcinoma,,,,
+PRJNA497893,hpv16_e2,NOK,epithelial,skin,Carcinoma,,,,
+PRJNA471642,mec1_vs_gm12878,MEC1,lymphoblast,blood,Chronic lymphocytic leukemia,,,,
+PRJNA379584,necrosulfonamide.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,necrosulfonamide,Blocks necrosis downstream of the activation of RIP3 ,ED20 and 1/10 of it,24
+PRJNA379584,necrosulfonamide.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,necrosulfonamide,Blocks necrosis downstream of the activation of RIP3 ,ED20 and 1/10 of it,6
+PRJNA379584,neratinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,neratinib,Epidermal growth factor receptor (EGFR); Erbb2 tyrosine kinase receptor (HER2),ED20 and 1/10 of it,24
+PRJNA379584,neratinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,neratinib,Epidermal growth factor receptor (EGFR); Erbb2 tyrosine kinase receptor (HER2),ED20 and 1/10 of it,6
+PRJNA379584,nutlin.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,nutlin,Cellular tumor antigen p53 (TP53); Mdm2 messenger RNA (MDM2 mRNA),ED20 and 1/10 of it,6
+PRJNA379584,nutlin_3.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,nutlin_3,Cellular tumor antigen p53 (TP53); Mdm2 messenger RNA (MDM2 mRNA),ED20 and 1/10 of it,24
+PRJNA379584,nutlin_3.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,nutlin_3,Cellular tumor antigen p53 (TP53); Mdm2 messenger RNA (MDM2 mRNA),ED20 and 1/10 of it,6
+PRJNA391270,a549_nut,A459,epithelial,lung,Carcinoma,Nutlin3A,Cellular tumor antigen p53 (TP53); Mdm2 messenger RNA (MDM2 mRNA),5uM,NA
+PRJNA391270,a549_tgfb_nut,A459,epithelial,lung,Carcinoma,Nutlin3A + TGFB,Cellular tumor antigen p53 (TP53); Mdm2 messenger RNA (MDM2 mRNA),5uM + 2.5ng/ml,120
+PRJNA379584,nvp.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,nvp,Ceramide kinase (CERK),ED20 and 1/10 of it,6
+PRJNA379584,nvp_231.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,nvp_231,Ceramide kinase (CERK),ED20 and 1/10 of it,24
+PRJNA379584,nvp_231.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,nvp_231,Ceramide kinase (CERK),ED20 and 1/10 of it,6
+PRJNA379584,obatoclax.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,obatoclax,Apoptosis regulator Bcl-2 (BCL-2); Apoptosis regulator Bcl-xL (BCL-xL); Induced myeloid leukemia cell differentiation protein Mcl-1 (MCL1),ED20 and 1/10 of it,24
+PRJNA379584,obatoclax.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,obatoclax,Apoptosis regulator Bcl-2 (BCL-2); Apoptosis regulator Bcl-xL (BCL-xL); Induced myeloid leukemia cell differentiation protein Mcl-1 (MCL1),ED20 and 1/10 of it,6
+PRJNA379584,pac.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pac,Caspase-3 (CASP3),ED20 and 1/10 of it,24
+PRJNA379584,pac_1.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pac_1,Caspase-3 (CASP3),ED20 and 1/10 of it,24
+PRJNA379584,pac_1.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pac_1,Caspase-3 (CASP3),ED20 and 1/10 of it,6
+PRJNA335388,bc_pac,MDA-MB231,epithelial,breast,Adenocarcinoma,Paclitaxel,Apoptosis regulator Bcl-2 (BCL-2); Tubulin beta (TUBB),0.2uM,72
+PRJNA335388,os_pac,U2OS,epithelial,bone,Osteosarcoma,Paclitaxel,Apoptosis regulator Bcl-2 (BCL-2); Tubulin beta (TUBB),0.2uM,72
+PRJNA335388,paclitaxel.02uM,Breast/Osteosarcoma,epithelial,breast + bone,,Paclitaxel,Apoptosis regulator Bcl-2 (BCL-2); Tubulin beta (TUBB),0.2uM,72
+PRJNA379584,paclitaxel.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,Paclitaxel,Apoptosis regulator Bcl-2 (BCL-2); Tubulin beta (TUBB),ED20 and 1/10 of it,24
+PRJNA379584,paclitaxel.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,Paclitaxel,Apoptosis regulator Bcl-2 (BCL-2); Tubulin beta (TUBB),ED20 and 1/10 of it,6
+PRJNA379584,panobinostat.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,panobinostat,Histone deacetylase 1 (HDAC1),ED20 and 1/10 of it,24
+PRJNA379584,panobinostat.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,panobinostat,Histone deacetylase 1 (HDAC1),ED20 and 1/10 of it,6
+PRJNA379584,parbendazole.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,parbendazole,Antinematodal agent,ED20 and 1/10 of it,24
+PRJNA379584,parbendazole.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,parbendazole,Antinematodal agent,ED20 and 1/10 of it,6
+PRJNA379584,parthenolide.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,parthenolide,Inhibitor of nuclear factor kappa-B kinase beta (IKKB); Nuclear factor NF-kappa-B (NFKB),ED20 and 1/10 of it,24
+PRJNA379584,parthenolide.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,parthenolide,Inhibitor of nuclear factor kappa-B kinase beta (IKKB); Nuclear factor NF-kappa-B (NFKB),ED20 and 1/10 of it,6
+PRJNA379584,pf.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pf,p21-activated kinase 4 inhibitor; ATP-competitive inhibitor of FAK ,ED20 and 1/10 of it,6
+PRJNA379584,pf_3758309.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pf_3758309,p21-activated kinase 4 inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,pf_3758309.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pf_3758309,p21-activated kinase 4 inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,pf_573228.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pf_573228,ATP-competitive inhibitor of FAK,ED20 and 1/10 of it,24
+PRJNA379584,pf_573228.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pf_573228,ATP-competitive inhibitor of FAK,ED20 and 1/10 of it,6
+PRJNA379584,pha.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pha,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,6
+PRJNA379584,pha_665752.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pha_665752,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,24
+PRJNA379584,pha_665752.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pha_665752,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,6
+PRJNA254756,pIND_shMiz1.minusDox_BI8622,LS174T,epithelial,large intestine; colon,Carcinoma,pIND_shMiz1.minusDox_BI8622,MYC-dependent transactivation inhibitor,10uM,NA
+PRJNA254756,pIND_shMiz1.plusDox_BI8622,LS174T,epithelial,large intestine; colon,Carcinoma,pIND_shMiz1.plusDox_BI8622,MYC-dependent transactivation inhibitor,10uM,NA
+PRJNA379584,piperlongumine.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,piperlongumine,Cytotoxic,ED20 and 1/10 of it,24
+PRJNA379584,piperlongumine.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,piperlongumine,Cytotoxic,ED20 and 1/10 of it,6
+PRJNA379584,pkc412.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pkc412,Mcl-1 messenger RNA (MCL-1 mRNA),ED20 and 1/10 of it,24
+PRJNA379584,pkc412.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pkc412,Mcl-1 messenger RNA (MCL-1 mRNA),ED20 and 1/10 of it,6
+pladb,pladb_10nM,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Pladienolide B,mRNA splicing inhibitor,10nM,72
+pladb,pladb_150nM,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Pladienolide B,mRNA splicing inhibitor,150nM,72
+PRJNA254756,pLKO_empty.BI8622,LS174T,epithelial,large intestine; colon,Carcinoma,pLKO_empty.BI8622,Ubiquitin ligase HUWE1 inhibitor,10uM,NA
+PRJNA379584,pluripotin.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pluripotin,ERK1 and RasGAP inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,pluripotin.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,pluripotin,ERK1 and RasGAP inhibitor,ED20 and 1/10 of it,6
+proa,proa,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Proscillaridin A,Enzyme inhibitors; Cardiotonic agents,50nM,48
+PRJNA379584,rad001.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,rad001,Serine/threonine-protein kinase mTOR (mTOR),ED20 and 1/10 of it,24
+PRJNA379584,rad001.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,rad001,Serine/threonine-protein kinase mTOR (mTOR),ED20 and 1/10 of it,6
+PRJNA657045,CAR.Raij,CAR,PBMC,blood,,Raij coculture,,NA,336
+PRJNA379584,rigosertib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,rigosertib,PI3-kinase gamma (PIK3CG); Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,24
+PRJNA379584,rigosertib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,rigosertib,PI3-kinase gamma (PIK3CG); Polo-like kinase 1 (PLK1),ED20 and 1/10 of it,6
+PRJNA379584,rosiglitazone.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,rosiglitazone,Peroxisome proliferator-activated receptor gamma (PPAR-gamma),ED20 and 1/10 of it,24
+PRJNA379584,rosiglitazone.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,rosiglitazone,Peroxisome proliferator-activated receptor gamma (PPAR-gamma),ED20 and 1/10 of it,6
+tak,s2102,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",S2101,Lysine-Specific Demethylase 1 (LSD1) Inhibitor,10uM,96
+PRJNA379584,sb.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sb,Selective CXCR2 antagonist; kinesin spindle protein (KSP) inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,sb_225002.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sb_225002,Selective CXCR2 antagonist ,ED20 and 1/10 of it,24
+PRJNA379584,sb_225002.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sb_225002,Selective CXCR2 antagonist ,ED20 and 1/10 of it,6
+PRJNA379584,sb_743921.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sb_743921,Kinesin spindle protein (KSP) inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,sb_743921.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sb_743921,Kinesin spindle protein (KSP) inhibitor,ED20 and 1/10 of it,6
+PRJNA670855,sbi756.4hr,non-Hogkin lymphoma,lymphoblast,lymph node,Large cell Lymphoma,SBI-756,eIF4G1 inhibitor,NA,4
+PRJNA379584,sch.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sch,Restores mutant p53 activity ; PAR1 antagonist,ED20 and 1/10 of it,24
+PRJNA379584,sch.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sch,Restores mutant p53 activity ; PAR1 antagonist,ED20 and 1/10 of it,6
+PRJNA379584,sch_529074.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sch_529074,Restores mutant p53 activity ,ED20 and 1/10 of it,24
+PRJNA379584,sch_529074.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sch_529074,Restores mutant p53 activity ,ED20 and 1/10 of it,6
+PRJNA379584,sch_79797.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sch_79797,PAR1 antagonist,ED20 and 1/10 of it,24
+PRJNA379584,sch_79797.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sch_79797,PAR1 antagonist,ED20 and 1/10 of it,6
+PRJNA471642,SD6.125nm.24hr,CLL,lymphoblast,blood,Chronic lymphocytic leukemia,SD6,Splicing factor modulator,125nM,24
+PRJNA471642,SD6.125nm.2hr,CLL,lymphoblast,blood,Chronic lymphocytic leukemia,SD6,Splicing factor modulator,125nM,2
+PRJNA471642,SD6.125nm.6hr,CLL,lymphoblast,blood,Chronic lymphocytic leukemia,SD6,Splicing factor modulator,125nM,6
+PRJNA254756,shHUWE1.BI8622,LS174T,epithelial,large intestine; colon,Carcinoma,shHUWE1.BI8622,Ubiquitin ligase HUWE1 inhibitor,10uM,NA
+PRJNA265187,siCHD4,SW48,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",siCHD4,siCHD4,NA,NA
+PRJNA641077,siCTNNB1,HCT116,epithelial,large intestine; colon,Carcinoma,siCTNNB1,siCTNNB1,20nM,48
+PRJNA265187,siDMNT1,SW48,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",siDMNT1,siDMNT1,NA,NA
+PRJNA265187,siDNMT1_siCHD4,SW48,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",siDNMT1 + siCHD4,siDNMT1 + siCHD4,NA,NA
+PRJNA641077,siNeg,HCT116,epithelial,large intestine; colon,Carcinoma,siNeg,siNeg,20nM,48
+PRJNA379584,snx.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,snx,Selectively binds to the ATP pocket of HSP90α and HSP90β,ED20 and 1/10 of it,6
+PRJNA379584,snx_2112.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,snx_2112,Selectively binds to the ATP pocket of HSP90α and HSP90β,ED20 and 1/10 of it,24
+PRJNA379584,snx_2112.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,snx_2112,Selectively binds to the ATP pocket of HSP90α and HSP90β,ED20 and 1/10 of it,6
+PRJNA379584,sorafenib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sorafenib,Epidermal growth factor receptor (EGFR); Platelet-derived growth factor receptor beta (PDGFRB); Tyrosine-protein kinase Kit (KIT); Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,24
+PRJNA379584,sorafenib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sorafenib,Epidermal growth factor receptor (EGFR); Platelet-derived growth factor receptor beta (PDGFRB); Tyrosine-protein kinase Kit (KIT); Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,6
+PRJNA379584,su11274.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,su11274,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,24
+PRJNA379584,su11274.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,su11274,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,6
+PRJNA379584,sunitinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sunitinib,Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,24
+PRJNA379584,sunitinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,sunitinib,Vascular endothelial growth factor receptor 2 (KDR),ED20 and 1/10 of it,6
+PRJNA560975,tedizolid.5uM.4d,MOLM13,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Tedizolid,Bacterial 50S ribosomal RNA (Bact 50S rRNA),5uM,96
+hh1,tetOff,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",tetOff,,NA,72
+PRJNA391270,a549_tgfb,A459,epithelial,lung,Carcinoma,TGFB,Transforming growth factor beta (TGF-β),2.5ng/ml,120
+PRJNA477352,j4.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),250nM,6
+PRJNA477352,j4.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),50nM,6
+PRJNA477352,l10.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),250nM,6
+PRJNA477352,l10.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),50nM,6
+PRJNA477352,l20.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),250nM,6
+PRJNA477352,l20.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),50nM,6
+PRJNA477352,par.thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),250nM,6
+PRJNA477352,par.thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),50nM,6
+PRJNA477352,thz1_250nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),250nM,6
+PRJNA477352,thz1_50nM_6hr,HBL-2 MCL ABT-199 DTP,epithelial,blood,Mantle cell lymphoma,THZ1,Cyclin-dependent kinase 7 (CDK7),50nM,6
+PRJNA379584,tivantinib.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,tivantinib,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,24
+PRJNA379584,tivantinib.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,tivantinib,Proto-oncogene c-Met (MET),ED20 and 1/10 of it,6
+PRJNA379584,topotecan.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,topotecan,DNA topoisomerase I (TOP1),ED20 and 1/10 of it,24
+PRJNA379584,topotecan.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,topotecan,DNA topoisomerase I (TOP1),ED20 and 1/10 of it,6
+toyo,toyo_10hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Toyocamycin,Antimetabolite; antineoplastic agent; bacterial metabolite; apoptosis inducer,NA,10
+toyo,toyo_24hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Toyocamycin,Antimetabolite; antineoplastic agent; bacterial metabolite; apoptosis inducer,NA,24
+toyo,toyo_2hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Toyocamycin,Antimetabolite; antineoplastic agent; bacterial metabolite; apoptosis inducer,NA,2
+toyo,toyo_48hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Toyocamycin,Antimetabolite; antineoplastic agent; bacterial metabolite; apoptosis inducer,NA,48
+toyo,toyo_72hr,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",Toyocamycin,Antimetabolite; antineoplastic agent; bacterial metabolite; apoptosis inducer,NA,72
+PRJNA614994,trc105_vs_igg,AML,primary human cells,blood,Acute myeloid leukemia,TRC105,Endoglin CD105 (ENG),NA,NA
+PRJNA392914,dtp_tsa,PC9 DTP,epithelial,lung,Carcinoma,TSA,Histone deacetylase (HDAC),50nM,5
+PRJNA392914,tsa.50nM_5hr,PC9,epithelial,lung,Carcinoma,TSA,Histone deacetylase (HDAC),50nM,5
+PRJNA379584,tw.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,tw,Apoptosis regulator Bcl-2 (BCL-2),ED20 and 1/10 of it,6
+PRJNA379584,tw_37.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,tw_37,Apoptosis regulator Bcl-2 (BCL-2),ED20 and 1/10 of it,24
+PRJNA379584,tw_37.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,tw_37,Apoptosis regulator Bcl-2 (BCL-2),ED20 and 1/10 of it,6
+tak,unc0628,YB5,epithelial,large intestine; colon,"Adenocarcinoma; Colorectal; Dukes' type C, grade IV",UNC0628,Euchromatic histone-lysine N-methyltransferase 1 (EHMT1); Histone-lysine N-methyltransferase EHMT2 (EHMT2),1uM,96
+PRJNA560975,venetoclax.500nM.4d,MOLM13,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Venetoclax,Apoptosis regulator Bcl-2 (BCL-2),500nM,96
+PRJNA479415,venetoclax_azacitidine_6hr,AML,primary human cells,blood,Acute myeloid leukemia,Venetoclax + Azacitidine,Apoptosis regulator Bcl-2 (BCL-2); DNA [cytosine-5]-methyltransferase (DNMT),500nM + 2.5uM,6
+PRJNA560975,venetoclax.500nM_tedizolid.5uM.4d,MOLM13,lymphoblast,blood,Acute lymphoblastic leukemia ALL,Venetoclax + Tedizolid,Apoptosis regulator Bcl-2 (BCL-2); Bacterial 50S ribosomal RNA (Bact 50S rRNA),500nM + 5uM,96
+PRJNA379584,vincristine.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,vincristine,Tubulin (TUB),ED20 and 1/10 of it,24
+PRJNA379584,vincristine.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,vincristine,Tubulin (TUB),ED20 and 1/10 of it,6
+PRJNA400080,Volasertib.20nM.24,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,Volasertib,Polo-like kinase 1 (PLK1),20nM,24
+PRJNA400080,Volasertib.20nM.4,MV-4-11B,lymphoblast,blood,Biphenotypic B Myelomonocytic Leukemia,Volasertib,Polo-like kinase 1 (PLK1),20nM,4
+PRJNA379584,vorinostat.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,vorinostat,Histone deacetylase 1 (HDAC1),ED20 and 1/10 of it,24
+PRJNA379584,vorinostat.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,vorinostat,Histone deacetylase 1 (HDAC1),ED20 and 1/10 of it,6
+PRJNA379584,x5z_7_oxozeanol.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,x5z_7_oxozeanol,Transforming growth factor β-activated kinase 1 (TAK1) inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,x5z_7_oxozeanol.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,x5z_7_oxozeanol,Transforming growth factor β-activated kinase 1 (TAK1) inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,y.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,y,Coagulation factor IIa (F2); Rho-associated protein kinase (ROCK),ED20 and 1/10 of it,6
+PRJNA379584,y_27632.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,y_27632,Coagulation factor IIa (F2); Rho-associated protein kinase (ROCK),ED20 and 1/10 of it,24
+PRJNA379584,y_27632.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,y_27632,Coagulation factor IIa (F2); Rho-associated protein kinase (ROCK),ED20 and 1/10 of it,6
+PRJNA379584,yk_4.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,yk_4,EWS-FLI1 binding to RNA helicase A (RHA) inibitor,ED20 and 1/10 of it,6
+PRJNA379584,yk_4_279.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,yk_4_279,EWS-FLI1 binding to RNA helicase A (RHA) inibitor,ED20 and 1/10 of it,24
+PRJNA379584,yk_4_279.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,yk_4_279,EWS-FLI1 binding to RNA helicase A (RHA) inibitor,ED20 and 1/10 of it,6
+PRJNA379584,ym.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ym,Survivin promoter inhibitor,ED20 and 1/10 of it,6
+PRJNA379584,ym_155.24,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ym_155,Survivin promoter inhibitor,ED20 and 1/10 of it,24
+PRJNA379584,ym_155.6,H-STS NET,EBV-transformed lymphoblastoid cell line,pancreas; small bowel; rectum,Gastroenteropancreatic neuroendocrine tumors,ym_155,Survivin promoter inhibitor,ED20 and 1/10 of it,6
