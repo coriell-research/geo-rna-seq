@@ -118,13 +118,15 @@ differentiated better on plots.
 available when downloading the datasets from GEO**
 
 ```{r}
-fwrite(unique(dge[, .(experiment, contrast)]), file = here("doc", "experiment-annotation.csv"))
+fwrite(unique(dge[, .(experiment, contrast)]), 
+       file = here("doc", "raw-experiment-annotation.csv")
+       )
 ```
 
 ## After manual editing, read in the contrast metadata
 
 ```{r}
-metadata <- fread(here("doc", "2021-06-18-experiment-annotation.csv"))
+metadata <- fread(here("doc", "experiment-annotation.csv"))
 metadata[, id := paste(experiment, contrast, sep = ".")]
 
 head(metadata)
@@ -208,7 +210,7 @@ metadata <- data.frame(as.matrix(metadata, rownames = "id"))
 
 This will help with managing filtering the datasets
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(SummarizedExperiment)
 
 
