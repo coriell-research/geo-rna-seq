@@ -137,13 +137,13 @@ meta_df <- mapply(clean_meta_txt,
   bind_rows()
 
 # write out
-write_tsv(meta_df, here("results", "combined", "data-files", "run-metadata.tsv"))
+write_tsv(meta_df, here("results", "combined", "data-files", "raw-run-metadata.tsv"))
 ```
 
 ## Read in the manual sample-level annotation
 
 ```{r}
-sample_metadata <- fread(here("doc", "2021-04-20_run-metadata.tsv"), sep = "\t")
+sample_metadata <- fread(here("doc", "run-annotation.tsv"), sep = "\t")
 
 # update sample name to match matrix sample names
 sample_metadata[, sample_name := paste0(bio_project, "__", sample_name)]
