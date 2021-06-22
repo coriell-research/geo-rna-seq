@@ -43,33 +43,37 @@ dre_files <- list.files(
 library(data.table)
 
 
-dge <- setDT(vroom::vroom(dge_files,
-  id = "fpath",
-  delim = "\t",
-  col_types = list(
-    contrast = "c",
-    feature_id = "c",
-    logFC = "d",
-    unshrunk.logFC = "d",
-    logCPM = "d",
-    PValue = "d",
-    FDR = "d"
+dge <- setDT(
+  vroom::vroom(
+    dge_files,
+    id = "fpath",
+    delim = "\t",
+    col_types = list(
+      contrast = "c",
+      feature_id = "c",
+      logFC = "d",
+      unshrunk.logFC = "d",
+      logCPM = "d",
+      PValue = "d",
+      FDR = "d")
   )
-))
+)
 
-dre <- setDT(vroom::vroom(dre_files,
-  id = "fpath",
-  delim = "\t",
-  col_types = list(
-    contrast = "c",
-    feature_id = "c",
-    logFC = "d",
-    unshrunk.logFC = "d",
-    logCPM = "d",
-    PValue = "d",
-    FDR = "d"
+dre <- setDT(
+  vroom::vroom(
+    dre_files,
+    id = "fpath",
+    delim = "\t",
+    col_types = list(
+      contrast = "c",
+      feature_id = "c",
+      logFC = "d",
+      unshrunk.logFC = "d",
+      logCPM = "d",
+      PValue = "d",
+      FDR = "d")
   )
-))
+)
 ```
 
 ## Clean and add variables
@@ -82,31 +86,35 @@ clean_fpath = function(s) { gsub("/data-files/", "",
                             regexpr("\\/results\\/.*\\/", s)))) 
 }
 
-# create an experiment variable
+# create an experiment variable by extracting project ID from path
 dge[, experiment := clean_fpath(fpath)]
 dre[, experiment := clean_fpath(fpath)]
+dge[, fpath := NULL]
+dre[, fpath := NULL]
 
 # combine the contrast and the experiment into a new column
 # (used to differentiate same conditions in different experiments)
-dge[, condition := paste(experiment, contrast, sep = ".")]
-dre[, condition := paste(experiment, contrast, sep = ".")]
+dge[, id := paste(experiment, contrast, sep = ".")]
+dre[, id := paste(experiment, contrast, sep = ".")]
 
 # Filter REs to be same sets (Satellites and Simple repeats were removed from most analyses)
 dre <- dre[!feature_id %like% "Satellite|Simple_repeat|Unknown|Low_complexity"]
 
-# write the results out after removing fpath column
-dge[, fpath := NULL]
-dre[, fpath := NULL]
+# write the results out
 fwrite(dge, here("results", "combined", "data-files", "dge-all-experiments.csv"))
 fwrite(dre, here("results", "combined", "data-files", "dre-all-experiments.csv"))
+```
 
+## Create ranking metrics
+
+```{r}
 # create an additional column based on the feature's ranking within each condition
-dge[, rank := frank(logFC, ties.method = "random"), by = condition]
-dre[, rank := frank(logFC, ties.method = "random"), by = condition]
-dge[, max_rank := max(rank), by = condition]
-dre[, max_rank := max(rank), by = condition]
-dge[, norm_rank := (rank - 1) / (max_rank - 1), by = condition]
-dre[, norm_rank := (rank - 1) / (max_rank - 1), by = condition]
+dge[, rank := frank(logFC, ties.method = "random"), by = id]
+dre[, rank := frank(logFC, ties.method = "random"), by = id]
+dge[, max_rank := max(rank), by = id]
+dre[, max_rank := max(rank), by = id]
+dge[, norm_rank := (rank - 1) / (max_rank - 1), by = id]
+dre[, norm_rank := (rank - 1) / (max_rank - 1), by = id]
 ```
 
 ## Write the unique conditions out for manual annotation
@@ -135,35 +143,35 @@ head(metadata)
 ## Cast DE values into matrices
 
 ```{r}
-dge_lfc_mat <- as.matrix(dcast(dge[, .(feature_id, condition, logFC)],
-  feature_id ~ condition,
+dge_lfc_mat <- as.matrix(dcast(dge[, .(feature_id, id, logFC)],
+  feature_id ~ id,
   value.var = "logFC"
 ), rownames = "feature_id")
 
-dre_lfc_mat <- as.matrix(dcast(dre[, .(feature_id, condition, logFC)],
-  feature_id ~ condition,
+dre_lfc_mat <- as.matrix(dcast(dre[, .(feature_id, id, logFC)],
+  feature_id ~ id,
   value.var = "logFC"
 ), rownames = "feature_id")
 
 # repeat for FDR values
-dge_fdr_mat <- as.matrix(dcast(dge[, .(feature_id, condition, FDR)],
-  feature_id ~ condition,
+dge_fdr_mat <- as.matrix(dcast(dge[, .(feature_id, id, FDR)],
+  feature_id ~ id,
   value.var = "FDR"
 ), rownames = "feature_id")
 
-dre_fdr_mat <- as.matrix(dcast(dre[, .(feature_id, condition, FDR)],
-  feature_id ~ condition,
+dre_fdr_mat <- as.matrix(dcast(dre[, .(feature_id, id, FDR)],
+  feature_id ~ id,
   value.var = "FDR"
 ), rownames = "feature_id")
 
 # repeat for normalized ranks
-dge_rank_mat <- as.matrix(dcast(dge[, .(feature_id, condition, norm_rank)],
-  feature_id ~ condition,
+dge_rank_mat <- as.matrix(dcast(dge[, .(feature_id, id, norm_rank)],
+  feature_id ~ id,
   value.var = "norm_rank"
 ), rownames = "feature_id")
 
-dre_rank_mat <- as.matrix(dcast(dre[, .(feature_id, condition, norm_rank)],
-  feature_id ~ condition,
+dre_rank_mat <- as.matrix(dcast(dre[, .(feature_id, id, norm_rank)],
+  feature_id ~ id,
   value.var = "norm_rank"
 ), rownames = "feature_id")
 ```
@@ -204,6 +212,9 @@ all(metadata$id == colnames(dre_lfc_mat))
 
 # convert to data.frame with rownames for PCAtools
 metadata <- data.frame(as.matrix(metadata, rownames = "id"))
+
+# double-check
+all(rownames(metadata) == colnames(dge_lfc_mat))
 ```
 
 ## Combine into a SummarizedExperiment object
