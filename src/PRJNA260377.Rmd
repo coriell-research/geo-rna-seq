@@ -61,8 +61,8 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  cmml1_resonder = responder.CMML1 - non_responder.CMML1,
-  cmml2_respnder = responder.CMML2 - non_responder.CMML2,
+  cmml1_responder = responder.CMML1 - non_responder.CMML1,
+  cmml2_responder = responder.CMML2 - non_responder.CMML2,
   responder = (responder.CMML1 + responder.CMML2) / 2 - (non_responder.CMML1 + non_responder.CMML2) / 2,
   levels = design
 )
@@ -104,7 +104,7 @@ dre <- df %>%
 
 ## Create plots for each contrast 
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -154,7 +154,7 @@ write_rds(lcpms.re, here("results", "PRJNA260377", "rds-files", "re-lcpms.rds"))
 
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -224,7 +224,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("response_to_decitabine", "chronic_leukemia_type")] %>% 
   as.data.frame()
@@ -259,7 +259,7 @@ lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
 
 ## Create Patchwork
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
