@@ -12,13 +12,11 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-
-source("helpers/helpers.R")
 ```
 
 ## Read in SummarizedExperiment Object
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(here)
 library(SummarizedExperiment)
@@ -39,536 +37,414 @@ cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
 se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
 ```
 
-## DE pipeline
+## Split SummarizedExperiment by batch
 
-```{r}
+```{r message=FALSE}
+# split by batch
+batches <- unique(colData(se)$batch)
+se_1 <- se[, colData(se)$batch == "1"]
+se_2 <- se[, colData(se)$batch == "2"]
+se_3 <- se[, colData(se)$batch == "3"]
+se_4 <- se[, colData(se)$batch == "4"]
+se_5 <- se[, colData(se)$batch == "5"]
+se_6 <- se[, colData(se)$batch == "6"]
+se_7 <- se[, colData(se)$batch == "7"]
+se_8 <- se[, colData(se)$batch == "8"]
+se_9 <- se[, colData(se)$batch == "9"]
+se_10A <- se[, colData(se)$batch == "10A"]
+se_10B <- se[, colData(se)$batch == "10B"]
+se_11A <- se[, colData(se)$batch == "11A"]
+se_11B <- se[, colData(se)$batch == "11B"]
+se_12A <- se[, colData(se)$batch == "12A"]
+se_12B <- se[, colData(se)$batch == "12B"]
+se_12C <- se[, colData(se)$batch == "12C"]
+
+# drop unused factor levels (don't know why this won't work in lapply...)
+se_1$group <- droplevels(se_1$group)
+se_2$group <- droplevels(se_2$group)
+se_3$group <- droplevels(se_3$group)
+se_4$group <- droplevels(se_4$group)
+se_5$group <- droplevels(se_5$group)
+se_6$group <- droplevels(se_6$group)
+se_7$group <- droplevels(se_7$group)
+se_8$group <- droplevels(se_8$group)
+se_9$group <- droplevels(se_9$group)
+se_10A$group <- droplevels(se_10A$group)
+se_10B$group <- droplevels(se_10B$group)
+se_11A$group <- droplevels(se_11A$group)
+se_11B$group <- droplevels(se_11B$group)
+se_12A$group <- droplevels(se_12A$group)
+se_12B$group <- droplevels(se_12B$group)
+se_12C$group <- droplevels(se_12C$group)
+
+# combine into single list
+experiments <- list("1" = se_1, "2" = se_2, "3" = se_3, "4" = se_4, "5" = se_5, 
+                    "6" = se_6, "7" = se_7, "8" = se_8, "9" = se_9, "10A" = se_10A,
+                    "10B" = se_10B, "11A" = se_11A, "11B" = se_11B, "12A" = se_12A, 
+                    "12B" = se_12B, "12C" = se_12C)
+```
+
+## DE pipeline per-batch
+
+Apply the `edgeR` pipeline separately over each batch. Since one of the batches
+is generating a full rank error, run each individually.
+
+```{r message=FALSE}
 library(edgeR)
-library(coriell)
 
 
-design <- model.matrix(~0 + group, data = colData(se))
-colnames(design) <- str_remove(colnames(design), "^group")
-y <- DGEList(counts = assay(se, "counts"),
-             samples = colData(se))
-keep <- filterByExpr(y, design = design)
-y <- y[keep,, keep.lib.sizes = FALSE]
-y <- calcNormFactors(y, design = design, method = "TMM")
-y <- estimateDisp(y, design = design, robust = TRUE)
-fit <- glmQLFit(y, design = design, robust = TRUE)
+pipeline <- function(x) {
+  design <- model.matrix(~0 + group, data = colData(x))
+  colnames(design) <- str_remove(colnames(design), "^group")
+  y <- DGEList(counts = assay(x, "counts"),
+               samples = colData(x))
+  keep <- filterByExpr(y, design = design)
+  y <- y[keep,, keep.lib.sizes = FALSE]
+  y <- calcNormFactors(y, design = design, method = "TMM")
+  y <- estimateDisp(y, design = design, robust = TRUE)
+  fit <- glmQLFit(y, design = design, robust = TRUE)
+  list("y" = y, "fit" = fit, "design" = design)
+}
+
+pipeline_res <- mclapply(experiments, pipeline, mc.cores = 16)
 ```
 
 ## DE testing
 
-Perform simple time matched comparisons
+Create a contrast matrix for each batch
 
 ```{r}
-contrast.matrix <- makeContrasts(
-  afatinib.24 = afatinib.24 - dmso.24,
-  afatinib.6 = afatinib.6 - dmso.6,
-  #afatinib = (afatinib.24 + afatinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  alisertib.24 = alisertib.24 - dmso.24,
-  alisertib.6 = alisertib.6 - dmso.6,
-  #alisertib = (alisertib.24 + alisertib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  arachidonyl.24 = arachidonyl.24 - dmso.24,
-  arachidonyl.6 = arachidonyl.6 - dmso.6,
-  #arachidonyl = (arachidonyl.24 + arachidonyl.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  at13387.24 = at13387.24 - dmso.24,
-  at13387.6 = at13387.6 - dmso.6,
-  #at13387 = (at13387.24 + at13387.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  auy922.24 = auy922.24 - dmso.24,
-  auy922.6 = auy922.6 - dmso.6,
-  #auy922 = (auy922.24 + auy922.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  azd6482.24 = azd6482.24 - dmso.24,
-  azd6482.6 = azd6482.6 - dmso.6,
-  #azd6482 = (azd6482.24 + azd6482.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  azd7762.24 = azd7762.24 - dmso.24,
-  azd7762.6 = azd7762.6 - dmso.6,
-  #azd7762 = (azd7762.24 + azd7762.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  azd8055.24 = azd8055.24 - dmso.24,
-  azd8055.6 = azd8055.6 - dmso.6,
-  #azd8055 = (azd8055.24 + azd8055.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bafetinib.24 = bafetinib.24 - dmso.24,
-  bafetinib.6 = bafetinib.6 - dmso.6,
-  #bafetinib = (bafetinib.24 + bafetinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bardoxolone_methyl.24 = bardoxolone_methyl.24 - dmso.24,
-  bardoxolone_methyl.6 = bardoxolone_methyl.6 - dmso.6,
-  #bardoxolone_methyl = (bardoxolone_methyl.24 + bardoxolone_methyl.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  belinostat.24 = belinostat.24 - dmso.24,
-  belinostat.6 = belinostat.6 - dmso.6,
-  #belinostat = (belinostat.24 + belinostat.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bexarotene.24 = bexarotene.24 - dmso.24,
-  bexarotene.6 = bexarotene.6 - dmso.6,
-  #bexarotene = (bexarotene.24 + bexarotene.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bgj398.24 = bgj398.24 - dmso.24,
-  bgj398.6 = bgj398.6 - dmso.6,
-  #bgj398 = (bgj398.24 + bgj398.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bi.6 = bi.6 - dmso.6,
-  
-  bi_2536.24 = bi_2536.24 - dmso.24,
-  bi_2536.6 = bi_2536.6 - dmso.6,
-  #bi_2536 = (bi_2536.24 + bi_2536.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bio.24 = bio.24 - dmso.24,
-  bio.6 = bio.6 - dmso.6,
-  #bio = (bio.24 + bio.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bkm120.24 = bkm120.24 - dmso.24,
-  bkm120.6 = bkm120.6 - dmso.6,
-  #bkm120 = (bkm120.24 + bkm120.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bms.6 = bms.6 - dmso.6,
-  
-  bms_754807.24 = bms_754807.24 - dmso.24,
-  bms_754807.6 = bms_754807.6 - dmso.6,
-  #bms_754807 = (bms_754807.24 + bms_754807.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  bortezomib.24 = bortezomib.24 - dmso.24,
-  bortezomib.6 = bortezomib.6 - dmso.6,
-  #bortezomib = (bortezomib.24 + bortezomib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  brefeldin_a.24 = brefeldin_a.24 - dmso.24,
-  brefeldin_a.6 = brefeldin_a.6 - dmso.6,
-  #brefeldin_a = (brefeldin_a.24 + brefeldin_a.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  brivanib.24 = brivanib.24 - dmso.24,
-  brivanib.6 = brivanib.6 - dmso.6,
-  #brivanib = (brivanib.24 + brivanib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  byl719.24 = byl719.24 - dmso.24,
-  byl719.6 = byl719.6 - dmso.6,
-  #byl719 = (byl719.24 + byl719.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  cay10618_in_methanol.24 = cay10618_in_methanol.24 - dmso.24,
-  cay10618_in_methanol.6 = cay10618_in_methanol.6 - dmso.6,
-  #cay10618_in_methanol = (cay10618_in_methanol.24 + cay10618_in_methanol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  cd.6 = cd.6 - dmso.6,
-  
-  cd_437.24 = cd_437.24 - dmso.24,
-  cd_437.6 = cd_437.6 - dmso.6,
-  #cd_437 = (cd_437.24 + cd_437.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  cerulenin.24 = cerulenin.24 - dmso.24,
-  cerulenin.6 = cerulenin.6 - dmso.6,
-  #cerulenin = (cerulenin.24 + cerulenin.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  chm.24 = chm.24 - dmso.24,
-  
-  chm_1.24 = chm_1.24 - dmso.24,
-  chm_1.6 = chm_1.6 - dmso.6,
-  #chm_1 = (chm_1.24 + chm_1.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ciclopirox.24 = ciclopirox.24 - dmso.24,
-  ciclopirox.6 = ciclopirox.6 - dmso.6,
-  #ciclopirox = (ciclopirox.24 + ciclopirox.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  crizotinib.24 = crizotinib.24 - dmso.24,
-  crizotinib.6 = crizotinib.6 - dmso.6,
-  #crizotinib = (crizotinib.24 + crizotinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  d_be_q.24 = d_be_q.24 - dmso.24,
-  d_be_q.6 = d_be_q.6 - dmso.6,
-  #d_be_q = (d_be_q.24 + d_be_q.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  dasatinib.24 = dasatinib.24 - dmso.24,
-  dasatinib.6 = dasatinib.6 - dmso.6,
-  #dasatinib = (dasatinib.24 + dasatinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  dinaciclib.24 = dinaciclib.24 - dmso.24,
-  dinaciclib.6 = dinaciclib.6 - dmso.6,
-  #dinaciclib = (dinaciclib.24 + dinaciclib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  docetaxel.24 = docetaxel.24 - dmso.24,
-  docetaxel.6 = docetaxel.6 - dmso.6,
-  #docetaxel = (docetaxel.24 + docetaxel.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  doxorubicin.24 = doxorubicin.24 - dmso.24,
-  doxorubicin.6 = doxorubicin.6 - dmso.6,
-  #doxorubicin = (doxorubicin.24 + doxorubicin.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  entinostat.24 = entinostat.24 - dmso.24,
-  entinostat.6 = entinostat.6 - dmso.6,
-  #entinostat = (entinostat.24 + entinostat.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  epigallocatechin_gallate.24 = epigallocatechin_gallate.24 - dmso.24,
-  epigallocatechin_gallate.6 = epigallocatechin_gallate.6 - dmso.6,
-  #epigallocatechin_gallate = (epigallocatechin_gallate.24 + epigallocatechin_gallate.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  erastin.24 = erastin.24 - dmso.24,
-  erastin.6 = erastin.6 - dmso.6,
-  #erastin = (erastin.24 + erastin.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ethanol.24 = ethanol.24 - dmso.24,
-  ethanol.6 = ethanol.6 - dmso.6,
-  #ethanol = (ethanol.24 + ethanol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  fingolimod.24 = fingolimod.24 - dmso.24,
-  fingolimod.6 = fingolimod.6 - dmso.6,
-  #fingolimod = (fingolimod.24 + fingolimod.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  fk866.24 = fk866.24 - dmso.24,
-  fk866.6 = fk866.6 - dmso.6,
-  #fk866 = (fk866.24 + fk866.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  flavopiridol.24 = flavopiridol.24 - dmso.24,
-  flavopiridol.6 = flavopiridol.6 - dmso.6,
-  #flavopiridol = (flavopiridol.24 + flavopiridol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  fluvastatin.24 = fluvastatin.24 - dmso.24,
-  fluvastatin.6 = fluvastatin.6 - dmso.6,
-  #fluvastatin = (fluvastatin.24 + fluvastatin.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  foretinib.24 = foretinib.24 - dmso.24,
-  foretinib.6 = foretinib.6 - dmso.6,
-  #foretinib = (foretinib.24 + foretinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  gdc.6 = gdc.6 - dmso.6,
-  
-  gdc_0941.24 = gdc_0941.24 - dmso.24,
-  gdc_0941.6 = gdc_0941.6 - dmso.6,
-  #gdc_0941 = (gdc_0941.24 + gdc_0941.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  gemcitabine.24 = gemcitabine.24 - dmso.24,
-  gemcitabine.6 = gemcitabine.6 - dmso.6,
-  #gemcitabine = (gemcitabine.24 + gemcitabine.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  gossypol.24 = gossypol.24 - dmso.24,
-  gossypol.6 = gossypol.6 - dmso.6,
-  #gossypol = (gossypol.24 + gossypol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  gsk1210151a.24 = gsk1210151a.24 - dmso.24,
-  gsk1210151a.6 = gsk1210151a.6 - dmso.6,
-  #gsk1210151a = (gsk1210151a.24 + gsk1210151a.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  gsk461364.24 = gsk461364.24 - dmso.24,
-  gsk461364.6 = gsk461364.6 - dmso.6,
-  #gsk461364 = (gsk461364.24 + gsk461364.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  gw.6 = gw.6 - dmso.6,
-  
-  gw_405833.24 = gw_405833.24 - dmso.24,
-  gw_405833.6 = gw_405833.6 - dmso.6,
-  #gw_405833 = (gw_405833.24 + gw_405833.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  hmn.6 = hmn.6 - dmso.6,
-  
-  hmn_214.24 = hmn_214.24 - dmso.24,
-  hmn_214.6 = hmn_214.6 - dmso.6,
-  #hmn_214 = (hmn_214.24 = hmn_214.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ibrutinib.24 = ibrutinib.24 - dmso.24,
-  ibrutinib.6 = ibrutinib.6 - dmso.6,
-  #ibrutinib = (ibrutinib.24 + ibrutinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  imatinib.24 = imatinib.24 - dmso.24,
-  imatinib.6 = imatinib.6 - dmso.6,
-  #imatinib = (imatinib.24 + imatinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  inc280.24 = inc280.24 - dmso.24,
-  inc280.6 = inc280.6 - dmso.6,
-  #inc280 = (inc280.24 + inc280.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  istradefylline.24 = istradefylline.24 - dmso.24,
-  istradefylline.6 = istradefylline.6 - dmso.6,
-  #istradefylline = (istradefylline.24 + istradefylline.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  jnj.6 = jnj.6 - dmso.6,
-  
-  jnj_26854165.24 = jnj_26854165.24 - dmso.24,
-  jnj_26854165.6 = jnj_26854165.6 - dmso.6,
-  #jnj_26854165 = (jnj_26854165.24 + jnj_26854165.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  khs101.24 = khs101.24 - dmso.24,
-  khs101.6 = khs101.6 - dmso.6,
-  #khs101 = (khs101.24 + khs101.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ku.6 = ku.6 - dmso.6,
-  
-  ku_0063794.24 = ku_0063794.24 - dmso.24,
-  ku_0063794.6 = ku_0063794.6 - dmso.6,
-  #ku_0063794 = (ku_0063794.24 = ku_0063794.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  kw.6 = kw.6 - dmso.6,
-  
-  kw_2449.24 = kw_2449.24 - dmso.24,
-  kw_2449.6 = kw_2449.6 - dmso.6,
-  #kw_2449 = (kw_2449.24 + kw_2449.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  kx2.24 = kx2.24 - dmso.24,
-  
-  kx2_391.24 = kx2_391.24 - dmso.24,
-  kx2_391.6 = kx2_391.6 - dmso.6,
-  #kx2_391 = (kx2_391.24 + kx2_391.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ldk378.24 = ldk378.24 - dmso.24,
-  ldk378.6 = ldk378.6 - dmso.6,
-  #ldk378 = (ldk378.24 + ldk378.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  lee011.24 = lee011.24 - dmso.24,
-  lee011.6 = lee011.6 - dmso.6,
-  #lee011 = (lee011.24 + lee011.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  leptomycin_b_in_ethanol.24 = leptomycin_b_in_ethanol.24 - dmso.24,
-  leptomycin_b_in_ethanol.6 = leptomycin_b_in_ethanol.6 - dmso.6,
-  #leptomycin_b_in_ethanol = (leptomycin_b_in_ethanol.24 + leptomycin_b_in_ethanol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  linifanib.24 = linifanib.24 - dmso.24,
-  linifanib.6 = linifanib.6 - dmso.6,
-  #linifanib = (linifanib.24 + linifanib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ly.6 = ly.6 - dmso.6,
-  
-  ly_2183240.24 = ly_2183240.24 - dmso.24,
-  ly_2183240.6 = ly_2183240.6 - dmso.6,
-  #ly_2183240 = (ly_2183240.24 + ly_2183240.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  manumycin_a.24 = manumycin_a.24 - dmso.24,
-  manumycin_a.6 = manumycin_a.6 - dmso.6,
-  #manumycin_a = (manumycin_a.24 + manumycin_a.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  methanol.24 = methanol.24 - dmso.24,
-  methanol.6 = methanol.6 - dmso.6,
-  #methanol = (methanol.24 + methanol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  methylstat.24 = methylstat.24 - dmso.24,
-  methylstat.6 = methylstat.6 - dmso.6,
-  #methylstat = (methylstat.24 + methylstat.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mg.6 = mg.6 - dmso.6,
-  
-  mg_132.24 = mg_132.24 - dmso.24,
-  mg_132.6 = mg_132.6 - dmso.6,
-  #mg_132 = (mg_132.24 + mg_132.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mithramycin_a.24 = mithramycin_a.24 - dmso.24,
-  mithramycin_a.6 = mithramycin_a.6 - dmso.6,
-  #mithramycin_a = (mithramycin_a.24 + mithramycin_a.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mitomycin_c.24 = mitomycin_c.24 - dmso.24,
-  mitomycin_c.6 = mitomycin_c.6 - dmso.6,
-  #mitomycin_c = (mitomycin_c.24 + mitomycin_c.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mk.24 = mk.24 - dmso.24,
-  mk.6 = mk.6 - dmso.6,
-  #mk = (mk.24 + mk.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mk_1775.24 = mk_1775.24 - dmso.24,
-  mk_1775.6 = mk_1775.6 - dmso.6,
-  #mk_1775 = (mk_1775.24 + mk_1775.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mk_2206.24 = mk_2206.24 - dmso.24,
-  mk_2206.6 = mk_2206.6 - dmso.6,
-  #mk_2206 = (mk_2206.24 + mk_2206.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ml210.24 = ml210.24 - dmso.24,
-  ml210.6 = ml210.6 - dmso.6,
-  #ml210 = (ml210.24 + ml210.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  mst.6 = mst.6 - dmso.6,
-  
-  mst_312.24 = mst_312.24 - dmso.24,
-  mst_312.6 = mst_312.6 - dmso.6,
-  #mst_312 = (mst_312.24 + mst_312.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  n_ilotinib.24 = n_ilotinib.24 - dmso.24,
-  n_ilotinib.6 = n_ilotinib.6 - dmso.6,
-  #n_ilotinib = (n_ilotinib.24 + n_ilotinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  necrosulfonamide.24 = necrosulfonamide.24 - dmso.24,
-  necrosulfonamide.6 = necrosulfonamide.6 - dmso.6,
-  #necrosulfonamide = (necrosulfonamide.24 + necrosulfonamide.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  neratinib.24 = neratinib.24 - dmso.24,
-  neratinib.6 = neratinib.6 - dmso.6,
-  #neratinib = (neratinib.24 + neratinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  nutlin.6 = nutlin.6 - dmso.6,
-  
-  nutlin_3.24 = nutlin_3.24 - dmso.24,
-  nutlin_3.6 = nutlin_3.6 - dmso.6,
-  #nutlin_3 = (nutlin_3.24 + nutlin_3.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  nvp.6 = nvp.6 - dmso.6,
-  
-  nvp_231.24 = nvp_231.24 - dmso.24,
-  nvp_231.6 = nvp_231.6 - dmso.6,
-  #nvp_231 = (nvp_231.24 + nvp_231.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  obatoclax.24 = obatoclax.24 - dmso.24,
-  obatoclax.6 = obatoclax.6 - dmso.6,
-  #obatoclax = (obatoclax.24 + obatoclax.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  pac.24 = pac.24 - dmso.24,
-  
-  pac_1.24 = pac_1.24 - dmso.24,
-  pac_1.6 = pac_1.6 - dmso.6,
-  #pac_1 = (pac_1.24 + pac_1.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  paclitaxel.24 = paclitaxel.24 - dmso.24,
-  paclitaxel.6 = paclitaxel.6 - dmso.6,
-  #paclitaxel = (paclitaxel.24 + paclitaxel.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  panobinostat.24 = panobinostat.24 - dmso.24,
-  panobinostat.6 = panobinostat.6 - dmso.6,
-  #panobinostat = (panobinostat.24 + panobinostat.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  parbendazole.24 = parbendazole.24 - dmso.24,
-  parbendazole.6 = parbendazole.6 - dmso.6,
-  #parbendazole = (parbendazole.24 + parbendazole.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  parthenolide.24 = parthenolide.24 - dmso.24,
-  parthenolide.6 = parthenolide.6 - dmso.6,
-  #parthenolide = (parthenolide.24 + parthenolide.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  pf.6 = pf.6 - dmso.6,
-  
-  pf_3758309.24 = pf_3758309.24 - dmso.24,
-  pf_3758309.6 = pf_3758309.6 - dmso.6,
-  #pf_3758309 = (pf_3758309.24 + pf_3758309.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  pf_573228.24 = pf_573228.24 - dmso.24,
-  pf_573228.6 = pf_573228.6 - dmso.6,
-  #pf_573228 = (pf_573228.24 + pf_573228.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  pha.6 = pha.6 - dmso.6,
-  
-  pha_665752.24 = pha_665752.24 - dmso.24,
-  pha_665752.6 = pha_665752.6 - dmso.6,
-  #pha_665752 = (pha_665752.24 + pha_665752.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  piperlongumine.24 = piperlongumine.24 - dmso.24,
-  piperlongumine.6 = piperlongumine.6 - dmso.6,
-  #piperlongumine = (piperlongumine.24 + piperlongumine.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  pkc412.24 = pkc412.24 - dmso.24,
-  pkc412.6 = pkc412.6 - dmso.6,
-  #pkc412 = (pkc412.24 + pkc412.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  pluripotin.24 = pluripotin.24 - dmso.24,
-  pluripotin.6 = pluripotin.6 - dmso.6,
-  #pluripotin = (pluripotin.24 + pluripotin.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  rad001.24 = rad001.24 - dmso.24,
-  rad001.6 = rad001.6 - dmso.6,
-  #rad001 = (rad001.24 + rad001.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  rigosertib.24 = rigosertib.24 - dmso.24,
-  rigosertib.6 = rigosertib.6 - dmso.6,
-  #rigosertib = (rigosertib.24 + rigosertib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  rosiglitazone.24 = rosiglitazone.24 - dmso.24,
-  rosiglitazone.6 = rosiglitazone.6 - dmso.6,
-  #rosiglitazone = (rosiglitazone.24 + rosiglitazone.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sb.6 = sb.6 - dmso.6,
-  
-  sb_225002.24 = sb_225002.24 - dmso.24,
-  sb_225002.6 = sb_225002.6 - dmso.6,
-  #sb_225002 = (sb_225002.24 + sb_225002.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sb_743921.24 = sb_743921.24 - dmso.24,
-  sb_743921.6 = sb_743921.6 - dmso.6,
-  #sb_743921 = (sb_743921.24 + sb_743921.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sch.24 = sch.24 - dmso.6,
-  sch.6 = sch.6 - dmso.6,
-  #sch = (sch.24 + sch.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sch_529074.24 = sch_529074.24 - dmso.24,
-  sch_529074.6 = sch_529074.6 - dmso.6,
-  #sch_529074 = (sch_529074.24 + sch_529074.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sch_79797.24 = sch_79797.24 - dmso.24,
-  sch_79797.6 = sch_79797.6 - dmso.6,
-  #sch_79797 = (sch_79797.24 + sch_79797.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  snx.6 = snx.6 - dmso.6,
-  
-  snx_2112.24 = snx_2112.24 - dmso.24,
-  snx_2112.6 = snx_2112.6 - dmso.6,
-  #snx_2112 = (snx_2112.24 + snx_2112.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sorafenib.24 = sorafenib.24 - dmso.24,
-  sorafenib.6 = sorafenib.6 - dmso.6,
-  #sorafenib = (sorafenib.24 + sorafenib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  su11274.24 = su11274.24 - dmso.24,
-  su11274.6 = su11274.6 - dmso.6,
-  #su11274 = (su11274.24 + su11274.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  sunitinib.24 = sunitinib.24 - dmso.24,
-  sunitinib.6 = sunitinib.6 - dmso.6,
-  #sunitinib = (sunitinib.24 + sunitinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  tivantinib.24 = tivantinib.24 - dmso.24,
-  tivantinib.6 = tivantinib.6 - dmso.6,
-  #tivantinib = (tivantinib.24 + tivantinib.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  topotecan.24 = topotecan.24 - dmso.24,
-  topotecan.6 = topotecan.6 - dmso.6,
-  #topotecan = (topotecan.24 + topotecan.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  tw.6 = tw.6 - dmso.6,
-  
-  tw_37.24 = tw_37.24 - dmso.24,
-  tw_37.6 = tw_37.6 - dmso.6,
-  #tw_37 = (tw_37.24 + tw_37.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  vincristine.24 = vincristine.24 - dmso.24,
-  vincristine.6 = vincristine.6 - dmso.6,
-  #vincristine = (vincristine.24 + vincristine.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  vorinostat.24 = vorinostat.24 - dmso.24,
-  vorinostat.6 = vorinostat.6 - dmso.6,
-  #vorinostat = (vorinostat.24 + vorinostat.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  x5z_7_oxozeanol.24 = x5z_7_oxozeanol.24 - dmso.24,
-  x5z_7_oxozeanol.6 = x5z_7_oxozeanol.6 - dmso.6,
-  #x5z_7_oxozeanol = (x5z_7_oxozeanol.24 + x5z_7_oxozeanol.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  y.6 = y.6 - dmso.6,
-  
-  y_27632.24 = y_27632.24 - dmso.24,
-  y_27632.6 = y_27632.6 - dmso.6,
-  #y_27632 = (y_27632.24 + y_27632.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  yk_4.6 = yk_4.6 - dmso.6,
-  
-  yk_4_279.24 = yk_4_279.24 - dmso.24,
-  yk_4_279.6 = yk_4_279.6 - dmso.6,
-  #yk_4_279 = (yk_4_279.24 + yk_4_279.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  ym.6 = ym.6 - dmso.6,
-  
-  ym_155.24 = ym_155.24 - dmso.24,
-  ym_155.6 = ym_155.6 - dmso.6,
-  #ym_155 = (ym_155.24 + ym_155.6) / 2 - (dmso.24 + dmso.6) / 2,
-  
-  levels = design
-
+contrast.matrix.1 <- makeContrasts(
+  AZD8055.6 = AZD8055.6 - DMSO.6,
+  AZD8055.24 = (AZD8055.24 - AZD8055.6) - (DMSO.24 - DMSO.6),
+  Belinostat.6 = Belinostat.6 - DMSO.6,
+  Belinostat.24 = (Belinostat.24 - Belinostat.6) - (DMSO.24 - DMSO.6),
+  Entinostat.6 = Entinostat.6 - DMSO.6,
+  Entinostat.24 = (Entinostat.24 - Entinostat.6) - (DMSO.24 - DMSO.6),
+  Imatinib.6 = Imatinib.6 - DMSO.6,
+  Imatinib.24 = (Imatinib.24 - Imatinib.6) - (DMSO.24 - DMSO.6),
+  MK_2206.6 = MK_2206.6 - DMSO.6,
+  MK_2206.24 = (MK_2206.24 - MK_2206.6) - (DMSO.24 - DMSO.6),
+  Tivantinib.6 = Tivantinib.6 - DMSO.6,
+  Tivantinib.24 = (Tivantinib.24 - Tivantinib.6) - (DMSO.24 - DMSO.6),
+  Topotecan.6 = Topotecan.6 - DMSO.6,
+  Topotecan.24 = (Topotecan.24 - Topotecan.6) - (DMSO.24 - DMSO.6),
+  YK_4_279.6 = YK_4_279.6 - DMSO.6,
+  YK_4_279.24 = (YK_4_279.24 - YK_4_279.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["1"]]$design
 )
 
-# create inputs to map over (titles are same as above)
-cons <- colnames(contrast.matrix)
-names(cons) <- cons
-titles <- names(cons)
+contrast.matrix.2 <- makeContrasts(
+  Alisertib.6 = Alisertib.6 - DMSO.6,
+  Methylstat.6 = Methylstat.6 - DMSO.6,
+  NVP_231.6 = NVP_231.6 - DMSO.6, 
+  Obatoclax.6 = Obatoclax.6 - DMSO.6,
+  SNX_2112.6 = SNX_2112.6 - DMSO.6,
+  Sunitinib.6 = Sunitinib.6 - DMSO.6,
+  YM_155.6 = YM_155.6 - DMSO.6,
+  
+  levels = pipeline_res[["2"]]$design
+)
 
-# set global significance levels (used in all downstream plots/analyses)
-fc <- 1.5
-sig <- 0.1
+# can't get control for changes over time (trts from different batch)
+contrast.matrix.3 <- makeContrasts(
+  Alisertib.24 = Alisertib.24 - DMSO.24,
+  Methylstat.24 = Methylstat.24 - DMSO.24,
+  NVP_231.24 = NVP_231.24 - DMSO.24,
+  Obatoclax.24 = Obatoclax.24 - DMSO.24,
+  SNX_2112.24 = SNX_2112.24 - DMSO.24,
+  Sunitinib.24 = Sunitinib.24 - DMSO.24,
+  YM_155.24 = YM_155.24 - DMSO.24,
+  
+  levels = pipeline_res[["3"]]$design
+)
+
+contrast.matrix.4 <- makeContrasts(
+  At13387.6 = At13387.6 - DMSO.6,
+  At13387.24 = (At13387.24 - At13387.6) - (DMSO.24 - DMSO.6),
+  BI_2536.6 = BI_2536.6 - DMSO.6,
+  BI_2536.24 = (BI_2536.24 - BI_2536.6) - (DMSO.24 - DMSO.6),
+  BMS_754807.6 = BMS_754807.6 - DMSO.6,
+  BMS_754807.24 = (BMS_754807.24 - BMS_754807.6) - (DMSO.24 - DMSO.6),
+  Bortezomib.6 = Bortezomib.6 - DMSO.6,
+  Brefeldin_A.6 = Brefeldin_A.6 - DMSO.6,
+  Brefeldin_A.24 = (Brefeldin_A.24 - Brefeldin_A.6) - (DMSO.24 - DMSO.6),
+  CD_437.6 = CD_437.6 - DMSO.6,
+  CD_437.24 = (CD_437.24 - CD_437.6) - (DMSO.24 - DMSO.6),
+  DBeQ.6 = DBeQ.6 - DMSO.6,
+  DBeQ.24 = (DBeQ.24 - DBeQ.6) - (DMSO.24 - DMSO.6),
+  Fingolimod.6 = Fingolimod.6 - DMSO.6,
+  Fingolimod.24 = (Fingolimod.24 - Fingolimod.6) - (DMSO.24 - DMSO.6),
+  Flavopiridol.6 = Flavopiridol.6 - DMSO.6,
+  Flavopiridol.24 = (Flavopiridol.24 - Flavopiridol.6) - (DMSO.24 - DMSO.6),
+  Fluvastatin.6 = Fluvastatin.6 - DMSO.6,
+  Fluvastatin.24 = (Fluvastatin.24 - Fluvastatin.6) - (DMSO.24 - DMSO.6),
+  Parthenolide.6 = Parthenolide.6 - DMSO.6,
+  Parthenolide.24 = (Parthenolide.24 - Parthenolide.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["4"]]$design
+)
+
+contrast.matrix.5 <- makeContrasts(
+  Foretinib.6 = Foretinib.6 - DMSO.6,
+  Foretinib.24 = (Foretinib.24 - Foretinib.6) - (DMSO.24 - DMSO.6),
+  GDC_0941.6 = GDC_0941.6 - DMSO.6,
+  GDC_0941.24 = (GDC_0941.24 - GDC_0941.6) - (DMSO.24 - DMSO.6),
+  GSK1210151A.6 = GSK1210151A.6 - DMSO.6,
+  GSK1210151A.24 = (GSK1210151A.24 - GSK1210151A.6) - (DMSO.24 - DMSO.6),
+  GSK461364.6 = GSK461364.6 - DMSO.6,
+  GSK461364.24 = (GSK461364.24 - GSK461364.6) - (DMSO.24 - DMSO.6),
+  JNJ_26854165.6 = JNJ_26854165.6 - DMSO.6,
+  JNJ_26854165.24 = (JNJ_26854165.24 - JNJ_26854165.6) - (DMSO.24 - DMSO.6),
+  KHS101.6 = KHS101.6 - DMSO.6,
+  KHS101.24 = (KHS101.24 - KHS101.6) - (DMSO.24 - DMSO.6),
+  KW_2449.6 = KW_2449.6 - DMSO.6,
+  KW_2449.24 = (KW_2449.24 - KW_2449.6) - (DMSO.24 - DMSO.6),
+  MST_312.6 = MST_312.6 - DMSO.6,
+  MST_312.24 = (MST_312.24 - MST_312.6) - (DMSO.24 - DMSO.6),
+  Panobinostat.6 = Panobinostat.6 - DMSO.6,
+  Panobinostat.24 = (Panobinostat.24 - Panobinostat.6) - (DMSO.24 - DMSO.6),
+  Piperlongumine.6 = Piperlongumine.6 - DMSO.6,
+  Piperlongumine.24 = (Piperlongumine.24 - Piperlongumine.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["5"]]$design
+)
+
+contrast.matrix.6 <- makeContrasts(
+  AZD6482.6 = AZD6482.6 - DMSO.6,
+  AZD6482.24 = (AZD6482.24 - AZD6482.6) - (DMSO.24 - DMSO.6),
+  AZD7762.6 = AZD7762.6 - DMSO.6,
+  AZD7762.24 = (AZD7762.24 - AZD7762.6) - (DMSO.24 - DMSO.6),
+  Afatinib.6 = Afatinib.6 - DMSO.6,
+  Afatinib.24 = (Afatinib.24 - Afatinib.6) - (DMSO.24 - DMSO.6),
+  Bafetinib.6 = Bafetinib.6 - DMSO.6,
+  Bafetinib.24 = (Bafetinib.24 - Bafetinib.6) - (DMSO.24 - DMSO.6),
+  Bardoxolone_methyl.6 = Bardoxolone_methyl.6 - DMSO.6,
+  Bardoxolone_methyl.24 = (Bardoxolone_methyl.24 - Bardoxolone_methyl.6) - (DMSO.24 - DMSO.6),
+  Bexarotene.6 = Bexarotene.6 - DMSO.6,
+  Bexarotene.24 = (Bexarotene.24 - Bexarotene.6) - (DMSO.24 - DMSO.6),
+  Brivanib.6 = Brivanib.6 - DMSO.6,
+  Brivanib.24 = (Brivanib.24 - Brivanib.6) - (DMSO.24 - DMSO.6),
+  CHM_1.6 = CHM_1.6 - DMSO.6,
+  CHM_1.24 = (CHM_1.24 - CHM_1.6) - (DMSO.24 - DMSO.6),
+  Cerulenin.6 = Cerulenin.6 - DMSO.6,
+  Cerulenin.24 = (Cerulenin.24 - Cerulenin.6) - (DMSO.24 - DMSO.6),
+  Ciclopirox.6 = Ciclopirox.6 - DMSO.6,
+  Ciclopirox.24 = (Ciclopirox.24 - Ciclopirox.6) - (DMSO.24 - DMSO.6),
+  x5Zx_7_Oxozeanol.6 = x5Zx_7_Oxozeanol.6 - DMSO.6,
+  x5Zx_7_Oxozeanol.24 = (x5Zx_7_Oxozeanol.24 - x5Zx_7_Oxozeanol.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["6"]]$design
+)
+
+contrast.matrix.7 <- makeContrasts(
+  Crizotinib.6 = Crizotinib.6 - DMSO.6,
+  Crizotinib.24 = (Crizotinib.24 - Crizotinib.6) - (DMSO.24 - DMSO.6),
+  Dasatinib.6 = Dasatinib.6 - DMSO.6,
+  Dasatinib.24 = (Dasatinib.24 - Dasatinib.6) - (DMSO.24 - DMSO.6),
+  Dinaciclib.6 = Dinaciclib.6 - DMSO.6,
+  Dinaciclib.24 = (Dinaciclib.24 - Dinaciclib.6) - (DMSO.24 - DMSO.6),
+  Docetaxel.6 = Docetaxel.6 - DMSO.6,
+  Docetaxel.24 = (Docetaxel.24 - Docetaxel.6) - (DMSO.24 - DMSO.6),
+  Doxorubicin.6 = Doxorubicin.6 - DMSO.6,
+  Doxorubicin.24 = (Doxorubicin.24 - Doxorubicin.6) - (DMSO.24 - DMSO.6),
+  Erastin.6 = Erastin.6 - DMSO.6, 
+  Erastin.24 = (Erastin.24 - Erastin.6) - (DMSO.24 - DMSO.6),
+  GW_405833.6 = GW_405833.6 - DMSO.6, 
+  GW_405833.24 = (GW_405833.24 - GW_405833.6) - (DMSO.24 - DMSO.6),
+  Gemcitabine.6 = Gemcitabine.6 - DMSO.6,
+  Gemcitabine.24 = (Gemcitabine.24 - Gemcitabine.6) - (DMSO.24 - DMSO.6),
+  Gossypol.6 = Gossypol.6 - DMSO.6,
+  Gossypol.24 = (Gossypol.24 - Gossypol.6) - (DMSO.24 - DMSO.6),
+  HMN_214.6 = HMN_214.6 - DMSO.6,
+  HMN_214.24 = (HMN_214.24 - HMN_214.6) - (DMSO.24 - DMSO.6),
+  Ibrutinib.6 = Ibrutinib.6 - DMSO.6,
+  Ibrutinib.24 = (Ibrutinib.24 - Ibrutinib.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["7"]]$design
+)
+
+contrast.matrix.8 <- makeContrasts(
+  KX2_391.6 = KX2_391.6 - DMSO.6,
+  KX2_391.24 = (KX2_391.24 - KX2_391.6) - (DMSO.24 - DMSO.6),
+  Linifanib.6 = Linifanib.6 - DMSO.6,
+  Linifanib.24 = (Linifanib.24 - Linifanib.6) - (DMSO.24 - DMSO.6),
+  Manumycin_A.6 = Manumycin_A.6 - DMSO.6,
+  Manumycin_A.24 = (Manumycin_A.24 - Manumycin_A.6) - (DMSO.24 - DMSO.6),
+  MG_132.6 = MG_132.6 - DMSO.6,
+  MG_132.24 = (MG_132.24 - MG_132.6) - (DMSO.24 - DMSO.6),
+  Mithramycin_A.6 = Mithramycin_A.6 - DMSO.6,
+  Mithramycin_A.24 = (Mithramycin_A.24 - Mithramycin_A.6) - (DMSO.24 - DMSO.6),
+  Mitomycin_C.6 = Mitomycin_C.6 - DMSO.6,
+  Mitomycin_C.24 = (Mitomycin_C.24 - Mitomycin_C.6) - (DMSO.24 - DMSO.6),
+  MK_1775.6 = MK_1775.6 - DMSO.6,
+  MK_1775.24 = (MK_1775.24 - MK_1775.6) - (DMSO.24 - DMSO.6),
+  ML210.6 = ML210.6 - DMSO.6,
+  ML210.24 = (ML210.24 - ML210.6) - (DMSO.24 - DMSO.6),
+  Necrosulfonamide.6 = Necrosulfonamide.6 - DMSO.6, 
+  Necrosulfonamide.24 = (Necrosulfonamide.24 - Necrosulfonamide.6) - (DMSO.24 - DMSO.6),
+  Neratinib.6 = Neratinib.6 - DMSO.6, 
+  Neratinib.24 = (Neratinib.24 - Neratinib.6) - (DMSO.24 - DMSO.6),
+  Nutlin_3.6 = Nutlin_3.6 - DMSO.6,
+  Nutlin_3.24 = (Nutlin_3.24 - Nutlin_3.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["8"]]$design
+)
+
+contrast.matrix.9 <- makeContrasts(
+  FK866.6 = FK866.6 - DMSO.6,
+  FK866.24 = (FK866.24 - FK866.6) - (DMSO.24 - DMSO.6),
+  Istradefylline.6 = Istradefylline.6 - DMSO.6,
+  Istradefylline.24 = (Istradefylline.24 - Istradefylline.6) - (DMSO.24 - DMSO.6),
+  PAC_1.6 = PAC_1.6 - DMSO.6,
+  PAC_1.24 = (PAC_1.24 - PAC_1.6) - (DMSO.24 - DMSO.6),
+  Paclitaxel.6 = Paclitaxel.6 - DMSO.6,
+  Paclitaxel.24 = (Paclitaxel.24 - Paclitaxel.6) - (DMSO.24 - DMSO.6),
+  PF_3758309.6 = PF_3758309.6 - DMSO.6,
+  PF_3758309.24 = (PF_3758309.24 - PF_3758309.6) - (DMSO.24 - DMSO.6),
+  PHA_665752.6 = PHA_665752.6 - DMSO.6, 
+  PHA_665752.24 = (PHA_665752.24 - PHA_665752.6) - (DMSO.24 -  DMSO.6),
+  Rigosertib.6 =  Rigosertib.6 - DMSO.6,
+  Rigosertib.24 = (Rigosertib.24 - Rigosertib.6) - (DMSO.24 - DMSO.6),
+  SB_225002.6 = SB_225002.6 - DMSO.6, 
+  SB_225002.24 = (SB_225002.24 - SB_225002.6) - (DMSO.24 - DMSO.6),
+  SB_743921.6 = SB_743921.6 - DMSO.6,
+  SB_743921.24 = (SB_743921.24 - SB_743921.6) - (DMSO.24 - DMSO.6),
+  SCH_529074.6 = SCH_529074.6 - DMSO.6,
+  SCH_529074.24 = (SCH_529074.24 - SCH_529074.6) - (DMSO.24 - DMSO.6),
+  SCH_79797.6 = SCH_79797.6 - DMSO.6,
+  SCH_79797.24 = (SCH_79797.24 - SCH_79797.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["9"]]$design
+)
+
+contrast.matrix.10a <- makeContrasts(
+  Bortezomib.6 = Bortezomib.6 - DMSO.6,
+  Bortezomib.24 = (Bortezomib.24 - Bortezomib.6) - (DMSO.24 - DMSO.6),
+  Erastin.6 = Erastin.6 - DMSO.6, 
+  Erastin.24 = (Erastin.24 - Erastin.6) - (DMSO.24 - DMSO.6),
+  Gemcitabine.6 = Gemcitabine.6 -  DMSO.6,
+  Gemcitabine.24 = (Gemcitabine.24 - Gemcitabine.6) - (DMSO.24 - DMSO.6),
+  GSK1210151A.6 = GSK1210151A.6 - DMSO.6, 
+  GSK1210151A.24 = (GSK1210151A.24 - GSK1210151A.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["10A"]]$design
+)
+
+contrast.matrix.10b <- makeContrasts(
+  Bortezomib.6 = Bortezomib.6 - DMSO.6,
+  Bortezomib.24 = (Bortezomib.24 - Bortezomib.6) - (DMSO.24 - DMSO.6),
+  GSK461364.6 = GSK461364.6 - DMSO.6, 
+  GSK461364.24 = (GSK461364.24 - GSK461364.6) - (DMSO.24 - DMSO.6),
+  Pluripotin.6 = Pluripotin.6 - DMSO.6, 
+  Pluripotin.24 = (Pluripotin.24 - Pluripotin.6) - (DMSO.24 - DMSO.6),
+  Sorafenib.6 = Sorafenib.6 - DMSO.6,
+  Sorafenib.24 = (Sorafenib.24 - Sorafenib.6) - (DMSO.24 - DMSO.6),
+  TW_37.6 = TW_37.6 - DMSO.6,
+  TW_37.24 = (TW_37.24 - TW_37.6) - (DMSO.24 - DMSO.6),
+  Vorinostat.6 = Vorinostat.6 - DMSO.6, 
+  Vorinostat.24 = (Vorinostat.24 - Vorinostat.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["10B"]]$design
+)
+
+contrast.matrix.11a <- makeContrasts(
+  Arachidonyl.6 = Arachidonyl.6 - DMSO.6, 
+  Arachidonyl.24 = (Arachidonyl.24 - Arachidonyl.6) - (DMSO.24 - DMSO.6), 
+  Epigallocatechin_gallate.6 = Epigallocatechin_gallate.6 - DMSO.6, 
+  Epigallocatechin_gallate.24 = (Epigallocatechin_gallate.24 - Epigallocatechin_gallate.6) - (DMSO.24 - DMSO.6),
+  Parbendazole.6 = Parbendazole.6 - DMSO.6, 
+  Parbendazole.24 = (Parbendazole.24 - Parbendazole.6) - (DMSO.24 - DMSO.6),
+  Rosiglitazone.6 = Rosiglitazone.6 - DMSO.6, 
+  Rosiglitazone.24 = (Rosiglitazone.24 - Rosiglitazone.6) - (DMSO.24 - DMSO.6),
+  Vincristine.6 = Vincristine.6 -  DMSO.6, 
+  Vincristine.24 = (Vincristine.24 - Vincristine.6) - (DMSO.24 - DMSO.6), 
+  Y_27632.6 = Y_27632.6 - DMSO.6, 
+  Y_27632.24 = (Y_27632.24 - Y_27632.6) - (DMSO.24 - DMSO.6),
+  
+  levels = pipeline_res[["11A"]]$design
+)
+
+contrast.matrix.11b <- makeContrasts(
+  BIO.6 = BIO.6 - DMSO.6, 
+  KU_0063794.6 = KU_0063794.6 - DMSO.6, 
+  LY_2183240.6 = LY_2183240.6 - DMSO.6, 
+  PF_573228.6 = PF_573228.6 - DMSO.6,
+  
+  levels = pipeline_res[["11B"]]$design
+)
+
+contrast.matrix.12a <- makeContrasts(
+  AUY922.6 = AUY922.6 - DMSO.6, 
+  AUY922.24 = (AUY922.24 - AUY922.6) - (DMSO.24 - DMSO.6), 
+  BGJ398.6 = BGJ398.6 - DMSO.6, 
+  BGJ398.24 = (BGJ398.24 - BGJ398.6) - (DMSO.24 - DMSO.6), 
+  BIO.6 = BIO.6 - DMSO.6, 
+  BIO.24 = (BIO.24 - BIO.6) - (DMSO.24 - DMSO.6), 
+  BKM120.6 = BKM120.6 - DMSO.6, 
+  BKM120.24 = (BKM120.24 - BKM120.6) - (DMSO.24 - DMSO.6), 
+  BYL719.6 = BYL719.6 - DMSO.6, 
+  BYL719.24 = (BYL719.24 - BYL719.6) - (DMSO.24 - DMSO.6),
+  Ciclopirox.24 = Ciclopirox.24 - DMSO.24, 
+  INC280.6 = INC280.6 - DMSO.6,
+  INC280.24 = (INC280.24 - INC280.6) - (DMSO.24 - DMSO.6),
+  KU_0063794.24 = KU_0063794.24 - DMSO.24,
+  LDK378.6 = LDK378.6 - DMSO.6, 
+  LDK378.24 = (LDK378.24 - LDK378.6) - (DMSO.24 - DMSO.6),
+  LEE011.6 = LEE011.6 - DMSO.6, 
+  LEE011.24 = (LEE011.24 - LEE011.6) - (DMSO.24 - DMSO.6),
+  LY_2183240.24 = LY_2183240.24 - DMSO.24, 
+  Manumycin_A.6 = Manumycin_A.6 - DMSO.6, 
+  NIlotinib.6 = NIlotinib.6 - DMSO.6, 
+  NIlotinib.24 = (NIlotinib.24 - NIlotinib.6) - (DMSO.24 - DMSO.6),
+  PF_573228.24 = PF_573228.24 - DMSO.24, 
+  Piperlongumine.6 = Piperlongumine.6 - DMSO.6, 
+  PKC412.6 = PKC412.6 - DMSO.6, 
+  PKC412.24 = (PKC412.24 - PKC412.6) - (DMSO.24 - DMSO.6),
+  Pluripotin.24 = Pluripotin.24 - DMSO.24,
+  RAD001.6 = RAD001.6 - DMSO.6, 
+  RAD001.24 = (RAD001.24 - RAD001.6) - (DMSO.24 - DMSO.6), 
+  SCH_79797.24 = SCH_79797.24 - DMSO.24,
+  SU11274.6 = SU11274.6 - DMSO.6, 
+  SU11274.24 = (SU11274.24 - SU11274.6) - (DMSO.24 - DMSO.6),
+  Y_27632.6 = Y_27632.6 - DMSO.6,
+  
+  levels = pipeline_res[["12A"]]$design
+)
+
+contrast.matrix.12b <- makeContrasts(
+  CAY10618_in_Methanol.6 = CAY10618_in_Methanol.6 - Methanol.6, 
+  CAY10618_in_Methanol.24 = (CAY10618_in_Methanol.24 - CAY10618_in_Methanol.6) - (Methanol.24 - Methanol.6),
+  
+  levels = pipeline_res[["12B"]]$design
+)
+
+contrast.matrix.12c <- makeContrasts(
+  Leptomycin_B_in_Ethanol.6 = Leptomycin_B_in_Ethanol.6 - Ethanol.6, 
+  Leptomycin_B_in_Ethanol.24 = (Leptomycin_B_in_Ethanol.24 - Leptomycin_B_in_Ethanol.6) - (Ethanol.24 - Ethanol.6),
+  
+  levels = pipeline_res[["12C"]]$design
+)
+
+contrast_mats <- list(
+  "1" = contrast.matrix.1,
+  "2" = contrast.matrix.2,
+  "3" = contrast.matrix.3,
+  "4" = contrast.matrix.4,
+  "5" = contrast.matrix.5,
+  "6" = contrast.matrix.6,
+  "7" = contrast.matrix.7,
+  "8" = contrast.matrix.8,
+  "9" = contrast.matrix.9,
+  "10A" = contrast.matrix.10a,
+  "10B" = contrast.matrix.10b,
+  "11A" = contrast.matrix.11a,
+  "11B" = contrast.matrix.11b,
+  "12A" = contrast.matrix.12a,
+  "12B" = contrast.matrix.12b,
+  "12C" = contrast.matrix.12c
+)
 ```
 
 Create modified version of get_de_results function that doesn't produce any plots
@@ -576,34 +452,42 @@ and displays the execution time of each step. To be run in R console session on
 tmux.
 
 ```{r}
+# inner function -- operates on contrast level
 get_de_results <- function(contrast_name, glm_fit, contrast_matrix, fc = 1.5) {
-  res_df <- glmTreat(glm_fit, contrast = contrast_matrix[, contrast_name], lfc = log2(fc)) %>% coriell::edger_to_df()
+  res_df <- glmTreat(
+    glm_fit, 
+    contrast = contrast_matrix[, contrast_name], 
+    lfc = log2(fc)
+    ) %>% coriell::edger_to_df()
+  
   list("table" = res_df)
 }
 
-# copied into tmux R session
-de_results <- parallel::mclapply(X = cons, 
-                                 FUN = get_de_results, 
-                                 glm_fit = fit, 
-                                 contrast_matrix = contrast.matrix, 
-                                 fc = fc,
-                                 mc.cores = 24)
+# outer function - operates on batch level
+get_batch_results <- function(x) {
+  contrasts <- colnames(contrast_mats[[x]])
+  names(contrasts) <- contrasts
+  
+  batch_res <- mclapply(
+    X = contrasts,
+    FUN = get_de_results,
+    glm_fit = pipeline_res[[x]]$fit,
+    contrast_matrix = contrast_mats[[x]],
+    fc = 1.5,
+    mc.cores = 12
+  )
+  
+  res_df <- map(batch_res, pluck, "table") %>% 
+    bind_rows(.id = "contrast") %>% 
+    mutate(batch_id = x)
+  
+  res_df
+}
 
-# takes a long time to process -- save results
-save.image(here("results", "PRJNA379584", "PRJNA379584.RData"))
-
-# OLD -- used when there were fewer contrasts
-# map over and extract results
-# de_results <- map2(.x = cons, 
-#                    .y = titles, 
-#                    .f = get_de_results, 
-#                     contrast_matrix = contrast.matrix,
-#                     fdr = sig,
-#                     fc = fc,
-#                     glm_fit = fit)
-
-# extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+de_results <- lapply(X = names(pipeline_res), FUN = get_batch_results)
+df <- bind_rows(de_results) %>% 
+  mutate(contrast = str_c(contrast, batch_id, sep = ".")) %>% 
+  select(-batch_id)
 ```
 
 ## Write results out
@@ -622,13 +506,13 @@ dre <- df %>%
 ## Calculate normalized counts
 
 ```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+lcpms <- lapply(pipeline_res, function(x) {cpm(x$y, log = TRUE, prior.count = 2)})
+lcpms.gene <- lapply(lcpms, function(x) {subset(x, rownames(x) %in% cds$gene_name)})
+lcpms.re <- lapply(lcpms, function(x) {subset(x, !rownames(x) %in% cds$gene_name)})
 
 # Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA379584", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA379584", "rds-files", "re-lcpms.rds"))
+for (batch in names(lcpms)) {
+  write_rds(lcpms.gene[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-gene-lcpms.rds")))
+  write_rds(lcpms.re[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-re-lcpms.rds")))
+}
 ```
