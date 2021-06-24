@@ -24,6 +24,20 @@ get_de_results <- function(contrast_name,
   list("table" = res_df, "vplot" = vplot, "mdplot" = md_plot)
 }
 
+# version without the plots
+get_de_results2 <- function(contrast_name, 
+                            glm_fit, 
+                            contrast_matrix, 
+                            fc = 1.5) {
+  res_df <- glmTreat(
+    glm_fit, 
+    contrast = contrast_matrix[, contrast_name], 
+    lfc = log2(fc)
+    ) %>%
+    coriell::edger_to_df()
+  
+  list("table" = res_df)
+}
 
 # create dotplots of RE expression ---------------------------------------------
 plot_fam_counts = function(df, con, n_dots = 25) {
