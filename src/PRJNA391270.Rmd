@@ -13,13 +13,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
+library(here)
+library(tidyverse)
 source("helpers/helpers.R")
 ```
 
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(here)
 library(SummarizedExperiment)
 
 
@@ -60,80 +61,64 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  a498_4gy = A498.4GY_3hr - A498.control,
-  a549_4gy = A549.4GY_3hr - A549.control,
-  a549_nut = A549.NUT - A549.control,
-  a549_tgfb = A549.TGFB - A549.control,
-  a549_tgfb_nut = A549.TGFB_NUT - A549.control,
-  h460_4gy = H460.4GY_3hr - H460.control,
-  hct116_4gy = HCT116.4GY_3hr - HCT116.control,
-  lox_4gy = LOXIMVI.4GY_3hr - LOXIMVI.control,
-  malme3_4gy = MALME3.4GY_3hr - MALME3.control,
-  mcf7_4gy = MCF7.4GY_3hr - MCF7.control,
-  skmel5_4gy = SKMEL5.4GY_3hr - SKMEL5.control,
-  u2os_4gy = U2OS.4GY_3hr - U2OS.control,
-  uacc257_4gy = UACC257.4GY_3hr - UACC257.control,
-  uo31_4gy = UO31.4GY_3hr - UO31.control,
+  A498.4GY_vs_A498.Control = A498.4GY_3hr - A498.control,
+  A549.4GY_vs_A549.Control = A549.4GY_3hr - A549.control,
+  A549.Nutlin_vs_A549.Control = A549.NUT - A549.control,
+  A549.TGFB_vs_A549.Control = A549.TGFB - A549.control,
+  A549.TGFB_Nutlin_vs_A549.Control = A549.TGFB_NUT - A549.control,
+  H460.4GY_vs_H460.Control = H460.4GY_3hr - H460.control,
+  HCT116.4GY_vs_HCT116.Control = HCT116.4GY_3hr - HCT116.control,
+  LOXIMVI.4GY_vs_LOXIMVI.Control = LOXIMVI.4GY_3hr - LOXIMVI.control,
+  MALME3.4GY_vs_MALME3.Control = MALME3.4GY_3hr - MALME3.control,
+  MCF7.4GY_vs_MCF7.Control = MCF7.4GY_3hr - MCF7.control,
+  SKMEL5.4GY_vs_SKMEL5.Control = SKMEL5.4GY_3hr - SKMEL5.control,
+  U2OS.4GY_vs_U2OS.Control = U2OS.4GY_3hr - U2OS.control,
+  UACC257.4GY_vs_UACC257.Control = UACC257.4GY_3hr - UACC257.control,
+  UO31.4GY_vs_UO31.Control = UO31.4GY_3hr - UO31.control,
   
-  gy4.3hr = ((A498.4GY_3hr + 
-             A549.4GY_3hr + 
-             H460.4GY_3hr + 
-             HCT116.4GY_3hr + 
-             LOXIMVI.4GY_3hr +
-             MALME3.4GY_3hr +
-             MCF7.4GY_3hr + 
-             SKMEL5.4GY_3hr +
-             U2OS.4GY_3hr +
-             UACC257.4GY_3hr +
-             UO31.4GY_3hr) / 11) - 
-           ((A498.control +
-             A549.control +
-             H460.control +
-             HCT116.control +
-             LOXIMVI.control +
-             MALME3.control +
-             MCF7.control +
-             SKMEL5.control +
-             U2OS.control +
-             UACC257.control +
-             UO31.control) / 11),
+  x4GY_vs_Control = ((A498.4GY_3hr + 
+                      A549.4GY_3hr + 
+                      H460.4GY_3hr + 
+                      HCT116.4GY_3hr + 
+                      LOXIMVI.4GY_3hr +
+                      MALME3.4GY_3hr +
+                      MCF7.4GY_3hr + 
+                      SKMEL5.4GY_3hr +
+                      U2OS.4GY_3hr +
+                      UACC257.4GY_3hr +
+                      UO31.4GY_3hr) / 11) - 
+                    ((A498.control +
+                      A549.control +
+                      H460.control +
+                      HCT116.control +
+                      LOXIMVI.control +
+                      MALME3.control +
+                      MCF7.control +
+                      SKMEL5.control +
+                      U2OS.control +
+                      UACC257.control +
+                      UO31.control) / 11),
   levels = design
 )
 
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("A498 + 4GY vs A498 Control",
-            "A549 + 4GY vs A549 Control",
-            "A549 + NUT vs A549 Control",
-            "A549 + TGFB vs A549 Control",
-            "A549 + TGFB_NUT vs A549 Control",
-            "H460 + 4GY vs H460 Control",
-            "HCT116 + 4GY vs Control",
-            "LOXIMVI + 4GY vs LOXIMVI Control",
-            "MALME3 + 4GY vs MALME3 Control",
-            "MCF7 + 4GY vs MCF7 Control",
-            "SKMEL5 + 4GY vs Control",
-            "U2OS + 4GY vs Control",
-            "UACC257 + 4GY vs Control",
-            "UO31 + 4GY vs Control",
-            "4GY All vs Control")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -149,9 +134,27 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA391270", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA391270", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA391270", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -185,23 +188,9 @@ for (i in seq_along(coi)) {
 }
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA391270", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA391270", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -273,7 +262,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("group"), drop = FALSE] %>%
   as.data.frame() %>% 
@@ -312,7 +301,7 @@ quickmap(lcpms.sig_res,
 
 ## Create Patchworks
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
@@ -459,7 +448,7 @@ ggsave(here("results", "PRJNA391270", "figures", "re-mdplots-3.png"),
 
 ## Create Family-Level Dotplots for significant REs
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 dotplots <- vector("list", length(names(de_results)))
 for (i in seq_along(names(de_results))) {
   dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)

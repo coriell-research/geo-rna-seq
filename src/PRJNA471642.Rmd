@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -77,10 +76,10 @@ time_6hr <- glmTreat(fit, coef = 4, lfc = log2(fc)) %>% edger_to_df()
 time_24hr <- glmTreat(fit, coef = 5, lfc = log2(fc)) %>% edger_to_df()
 
 # bind results into single df
-results_list <- list("mec1_vs_gm12878" = mec1,
-                     "SD6.125nm.2hr" = time_2hr,
-                     "SD6.125nm.6hr" = time_6hr,
-                     "SD6.125nm.24hr" = time_24hr)
+results_list <- list("MEC1_vs_GM12878" = mec1,
+                     "SD6.2hr_vs_SD6.0hr" = time_2hr,
+                     "SD6.6hr_vs_SD6.0hr" = time_6hr,
+                     "SD6.24hr_vs_SD6.0hr" = time_24hr)
 
 df <- bind_rows(results_list, .id = "contrast")
 ```
@@ -98,9 +97,27 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA471642", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA471642", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA471642", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
@@ -190,23 +207,9 @@ m3.re <- plot_md({time_24hr %>%
          height = 10)
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA471642", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA471642", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -278,7 +281,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("cell_line", "time_hr")] %>% 
   as.data.frame()
@@ -313,7 +316,7 @@ quickmap(lcpms.sig_res,
 
 ## Create family level dotplots for RE
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 d1 <- plot_fam_counts(dre, "SD6.125nm.6hr")
 d2 <- plot_fam_counts(dre, "SD6.125nm.24hr")
 

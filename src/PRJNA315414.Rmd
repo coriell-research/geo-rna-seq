@@ -13,14 +13,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
+library(tidyverse)
+library(here)
 source("helpers/helpers.R")
 ```
 
 ## Read in SummarizedExperiment Object
 
 ```{r message=FALSE}
-library(tidyverse)
-library(here)
 library(SummarizedExperiment)
 
 
@@ -61,14 +61,14 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  MOLT4.JQ1.2 = MOLT4.JQ1.2 - MOLT4.DMSO.2,
-  MOLT4.JQ1.6 = (MOLT4.JQ1.6 - MOLT4.JQ1.2) - (MOLT4.DMSO.6 - MOLT4.DMSO.2),
-  MOLT4.dBET6.2 = MOLT4.dBET6.2 - MOLT4.DMSO.2,
-  MOLT4.dBET6.6 = (MOLT4.dBET6.6 - MOLT4.dBET6.2) - (MOLT4.DMSO.6 - MOLT4.DMSO.2),
-  T_ALL_PDX.JQ1.0 = T_ALL_PDX.JQ1.0 - T_ALL_PDX.DMSO.0,
-  T_ALL_PDX.dBET6.0 = T_ALL_PDX.dBET6.0 - T_ALL_PDX.DMSO.0,
-  primary_T_cell.JQ1.0 = primary_T_cell.JQ1.0 - primary_T_cell.DMSO.0,
-  primary_T_cell.dBET6.0 = primary_T_cell.dBET6.0 - primary_T_cell.DMSO.0,
+  MOLT4.JQ1_vs_MOLT4.DMSO_2hr = MOLT4.JQ1.2 - MOLT4.DMSO.2,
+  MOLT4.JQ1_vs_MOLT4.DMSO_6hr = (MOLT4.JQ1.6 - MOLT4.JQ1.2) - (MOLT4.DMSO.6 - MOLT4.DMSO.2),
+  MOLT4.dBET6_vs_MOLT4.DMSO_2hr = MOLT4.dBET6.2 - MOLT4.DMSO.2,
+  MOLT4.dBET6_vs_MOLT4.DMSO_6hr = (MOLT4.dBET6.6 - MOLT4.dBET6.2) - (MOLT4.DMSO.6 - MOLT4.DMSO.2),
+  TALL_PDX.JQ1_vs_TALL_PDX.DMSO = T_ALL_PDX.JQ1.0 - T_ALL_PDX.DMSO.0,
+  TALL_PDX.dBET6_vs_TALL_PDX.DMSO = T_ALL_PDX.dBET6.0 - T_ALL_PDX.DMSO.0,
+  primary_T_cell.JQ1_vs_primary_T_cell.DMSO = primary_T_cell.JQ1.0 - primary_T_cell.DMSO.0,
+  primary_T_cell.dBET6_vs_primary_T_cell.DMSO = primary_T_cell.dBET6.0 - primary_T_cell.DMSO.0,
   
   levels = design
 )
@@ -76,30 +76,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("MOLT4.JQ1.2", 
-            "MOLT4.JQ1.6",
-            "MOLT4.dBET6.2",
-            "MOLT4.dBET6.6",
-            "T_ALL_PDX.JQ1.0",
-            "T_ALL_PDX.dBET6.0",
-            "primary_T_cell.JQ1.0",
-            "primary_T_cell.dBET6.0")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out

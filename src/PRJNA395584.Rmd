@@ -14,13 +14,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 source("helpers/helpers.R")
+library(here)
 ```
 
 ## Read in SummarizedExperiment Object
 
 ```{r message=FALSE}
-library(tidyverse)
-library(here)
 library(SummarizedExperiment)
 
 
@@ -61,18 +60,18 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  HL_60.BI00894999.35nM = HL_60.BI00894999.35nM - HL_60.DMSO.NA,
-  KASUMI_1.BI00894999.35nM = KASUMI_1.BI00894999.35nM - KASUMI_1.DMSO.NA,
-  MOLM_13.BI00894999.35nM = MOLM_13.BI00894999.35nM - MOLM_13.DMSO.NA,
-  NCI_H2171.BI00894999.100nM = NCI_H2171.BI00894999.100nM - NCI_H2171.DMSO.NA,
-  OCI_AML3.BI00894999.35nM = OCI_AML3.BI00894999.35nM - OCI_AML3.DMSO.NA,
+  HL_60.BI00894999.35nM_vs_HL_60.DMSO = HL_60.BI00894999.35nM - HL_60.DMSO.NA,
+  KASUMI_1.BI00894999.35nM_vs_KASUMI_1.DMSO = KASUMI_1.BI00894999.35nM - KASUMI_1.DMSO.NA,
+  MOLM_13.BI00894999.35nM_vs_OLM_13.DMSO = MOLM_13.BI00894999.35nM - MOLM_13.DMSO.NA,
+  NCI_H2171.BI00894999.100nM_vs_NCI_H2171.DMSO = NCI_H2171.BI00894999.100nM - NCI_H2171.DMSO.NA,
+  OCI_AML3.BI00894999.35nM_vs_OCI_AML3.DMSO = OCI_AML3.BI00894999.35nM - OCI_AML3.DMSO.NA,
   
-  MV_4_11_B.BI00894999.1000nM = MV_4_11_B.BI00894999.1000nM - MV_4_11_B.DMSO.NA,
-  MV_4_11_B.BI00894999.100nM = MV_4_11_B.BI00894999.100nM - MV_4_11_B.DMSO.NA,
-  MV_4_11_B.BI00894999.1nM = MV_4_11_B.BI00894999.1nM - MV_4_11_B.DMSO.NA,
-  MV_4_11_B.BI00894999.35nM = MV_4_11_B.BI00894999.35nM - MV_4_11_B.DMSO.NA,
-  MV_4_11_B.BI00894999_EX00101218.35nM_5uM = MV_4_11_B.BI00894999_EX00101218.35nM_5uM - MV_4_11_B.DMSO.NA,
-  MV_4_11_B.EX00101218.5uM = MV_4_11_B.EX00101218.5uM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.1000nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.1000nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.100nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.100nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.1nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.1nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999.35nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.35nM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.BI00894999_EX00101218.35nM_5uM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999_EX00101218.35nM_5uM - MV_4_11_B.DMSO.NA,
+  MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO = MV_4_11_B.EX00101218.5uM - MV_4_11_B.DMSO.NA,
   
   levels = design
 )
@@ -80,33 +79,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("HL_60.BI00894999.35nM",
-            "KASUMI_1.BI00894999.35nM",
-            "MOLM_13.BI00894999.35nM",
-            "NCI_H2171.BI00894999.100nM",
-            "OCI_AML3.BI00894999.35nM",
-            "MV_4_11_B.BI00894999.1000nM",
-            "MV_4_11_B.BI00894999.100nM",
-            "MV_4_11_B.BI00894999.1nM",
-            "MV_4_11_B.BI00894999.35nM",
-            "MV_4_11_B.BI00894999_EX00101218.35nM_5uM",
-            "MV_4_11_B.EX00101218.5uM")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out

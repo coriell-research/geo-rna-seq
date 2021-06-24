@@ -13,14 +13,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
+library(tidyverse)
+library(here)
 source("helpers/helpers.R")
 ```
 
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
-library(here)
 library(SummarizedExperiment)
 
 
@@ -61,34 +61,31 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  wt_eto = wt.etoposide - wt.control,
-  ko_eto = ko_cGAS.etoposide - wt.control,
-  etoposide = ((wt.etoposide + ko_cGAS.etoposide) / 2) - wt.control,
+  cGAS_WT.Etoposide_vs_cGAS_WT.Control = wt.etoposide - wt.control,
+  cGAS_KO.Etoposide_vs_cGAS_WT.Control = ko_cGAS.etoposide - wt.control,
+  Etoposide_vs_Control = ((wt.etoposide + ko_cGAS.etoposide) / 2) - wt.control,
+  
   levels = design
 )
 
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("Lung Cancer (IMR90 cells) - cGAS KO + Etoposide",
-            "Lung Cancer (IMR90 cells) - WT + Etoposide",
-            "Etoposide")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons,
+  get_de_results2, 
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -104,9 +101,27 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA387040", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA387040", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA387040", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -140,23 +155,9 @@ for (i in seq_along(coi)) {
 }
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA387040", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA387040", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -228,7 +229,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se) %>%
   as.data.frame() %>% 
@@ -265,7 +266,7 @@ quickmap(lcpms.sig_res,
 
 ## Create patchworks
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
@@ -306,7 +307,7 @@ plot_layout(guides = "collect") +
 
 ## Create Family-Level Dotplots for significant REs
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 dotplots <- vector("list", length(names(de_results)))
 for (i in seq_along(names(de_results))) {
   dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)

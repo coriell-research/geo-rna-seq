@@ -133,6 +133,8 @@ fwrite(unique(dge[, .(experiment, contrast)]),
 
 ## After manual editing, read in the contrast metadata
 
+This file comes from the shared Google Doc
+
 ```{r}
 metadata <- fread(here("doc", "experiment-annotation.csv"))
 metadata[, id := paste(experiment, contrast, sep = ".")]

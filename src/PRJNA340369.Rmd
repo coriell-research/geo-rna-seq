@@ -13,14 +13,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
+library(tidyverse)
+library(here)
 source("helpers/helpers.R")
 ```
 
 ## Read in SummarizedExperiment Object
 
 ```{r message=FALSE}
-library(tidyverse)
-library(here)
 library(SummarizedExperiment)
 
 
@@ -61,9 +61,12 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  TF_1.Cyclocreatine = TF_1.Cyclocreatine - TF_1.Vehicle,
-  UCSD_AML1.Cyclocreatine = UCSD_AML1.Cyclocreatine - UCSD_AML1.Vehicle,
-  UT_7.Cyclocreatine = UT_7.Cyclocreatine - UT_7.Vehicle,
+  TF1.Cyclocreatine_vs_TF1.Vehicle = TF_1.Cyclocreatine - TF_1.Vehicle,
+  UCSD_AML1.Cyclocreatine_vs_UCSD_AML1.Vehicle = UCSD_AML1.Cyclocreatine - UCSD_AML1.Vehicle,
+  UT7.Cyclocreatine_vs_UT7.Vehicle = UT_7.Cyclocreatine - UT_7.Vehicle,
+  
+  Cyclocreatine_vs_Vehicle = (TF_1.Cyclocreatine + UCSD_AML1.Cyclocreatine + UT_7.Cyclocreatine) / 3 - 
+                             (TF_1.Vehicle + UCSD_AML1.Vehicle + UT_7.Vehicle) / 3, 
   
   levels = design
 )
@@ -71,25 +74,22 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("TF_1.Cyclocreatine", 
-            "UCSD_AML1.Cyclocreatine",
-            "UT_7.Cyclocreatine")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
 sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out

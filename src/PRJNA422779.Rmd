@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -61,15 +60,15 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  G12V.MS275.1 = G12V.MS275.1 - G12V.DMSO.1,
-  G12V.MS275.6 = (G12V.MS275.6 - G12V.MS275.1) - (G12V.DMSO.6 - G12V.DMSO.1),
-  G12V.MS275.24 = (G12V.MS275.24 - G12V.MS275.1) - (G12V.DMSO.24 - G12V.DMSO.1),
-  G12V.MS275.72 = (G12V.MS275.72 - G12V.MS275.1) - (G12V.DMSO.72 - G12V.DMSO.1),
+  KRAS_G12V.MS275_vs_KRAS_G12V.DMSO_1hr = G12V.MS275.1 - G12V.DMSO.1,
+  KRAS_G12V.MS275_vs_KRAS_G12V.DMSO_6hr = (G12V.MS275.6 - G12V.MS275.1) - (G12V.DMSO.6 - G12V.DMSO.1),
+  KRAS_G12V.MS275_vs_KRAS_G12V.DMSO_24hr = (G12V.MS275.24 - G12V.MS275.1) - (G12V.DMSO.24 - G12V.DMSO.1),
+  KRAS_G12V.MS275_vs_KRAS_G12V.DMSO_72hr = (G12V.MS275.72 - G12V.MS275.1) - (G12V.DMSO.72 - G12V.DMSO.1),
   
-  WT.MS275.1 = WT.MS275.1 - WT.DMSO.1,
-  WT.MS275.6 = (WT.MS275.6 - WT.MS275.1) - (WT.DMSO.6 - WT.DMSO.1),
-  WT.MS275.24 = (WT.MS275.24 - WT.MS275.1) - (WT.DMSO.24 - WT.DMSO.1),
-  WT.MS275.72 = (WT.MS275.72 - WT.MS275.1) - (WT.DMSO.72 - WT.DMSO.1),
+  KRAS_WT.MS275_vs_KRAS_WT.DMSO_1hr = WT.MS275.1 - WT.DMSO.1,
+  KRAS_WT.MS275_vs_KRAS_WT.DMSO_6hr = (WT.MS275.6 - WT.MS275.1) - (WT.DMSO.6 - WT.DMSO.1),
+  KRAS_WT.MS275_vs_KRAS_WT.DMSO_24hr = (WT.MS275.24 - WT.MS275.1) - (WT.DMSO.24 - WT.DMSO.1),
+  KRAS_WT.MS275_vs_KRAS_WT.DMSO_72hr = (WT.MS275.72 - WT.MS275.1) - (WT.DMSO.72 - WT.DMSO.1),
   
   levels = design
 )
@@ -77,30 +76,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("G12V.MS275 vs DMSO 1hr", 
-            "G12V.MS275 vs DMSO 6hr", 
-            "G12V.MS275 vs DMSO 24hr", 
-            "G12V.MS275 vs DMSO 72hr", 
-            "WT.MS275 vs DMSO 1hr", 
-            "WT.MS275 vs DMSO 6hr", 
-            "WT.MS275 vs DMSO 24hr", 
-            "WT.MS275 vs DMSO 72hr")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
