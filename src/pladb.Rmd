@@ -1,0 +1,43 @@
+---
+title: "PladB Clean Contrasts"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read in original DE files
+
+renamed to '...original.tsv'
+
+```{r}
+library(data.table)
+library(here)
+
+
+dge <- fread(here("results", "pladb", "data-files", "dge.original.tsv"))
+dre <- fread(here("results", "pladb", "data-files", "dre.original.tsv"))
+```
+
+## Rename contrasts
+
+```{r}
+dge[, contrast := fcase(
+  contrast == "pladb_150nM", "PladienolideB.150nM_vs_DMSO",
+  contrast == "pladb_10nM", "PladienolideB.10nM_vs_DMSO",
+  default = "UNKNOWN")]
+
+dre[, contrast := fcase(
+  contrast == "pladb_150nM", "PladienolideB.150nM_vs_DMSO",
+  contrast == "pladb_10nM", "PladienolideB.10nM_vs_DMSO",
+  default = "UNKNOWN")]
+```
+
+## Write out
+
+```{r}
+fwrite(dge, here("results", "pladb", "data-files", "dge.tsv"), sep = "\t")
+fwrite(dre, here("results", "pladb", "data-files", "dre.tsv"), sep = "\t")
+```
+
