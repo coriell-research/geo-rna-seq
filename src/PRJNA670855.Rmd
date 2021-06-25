@@ -44,7 +44,6 @@ se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_
 se <- se[, colData(se)$rna_type == "Total RNA"]
 ```
 
-
 ## DE pipeline
 
 ```{r}
@@ -67,30 +66,28 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  sbi756.4hr = total.sbi756.4hr - total.untreated,
+  SBI756_vs_Untreated_4hr = total.sbi756.4hr - total.untreated,
   levels = design
 )
 
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("SBI-756 vs DMSO at 4hr")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -106,9 +103,27 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA670855", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA670855", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA670855", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -142,23 +157,9 @@ for (i in seq_along(coi)) {
 }
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA670855", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA670855", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -228,7 +229,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("drug"), drop = FALSE] %>% 
   as.data.frame() %>% 
@@ -265,7 +266,7 @@ lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
 
 ## Plots
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 

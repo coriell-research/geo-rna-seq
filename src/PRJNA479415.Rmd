@@ -74,7 +74,7 @@ venetoclax_azacitidine_6hr <- glmTreat(fit, coef = 4, lfc = log2(fc))
 ```{r}
 # split DE results into gene and RE results and write out (add contrast column for consistency)
 df <- edger_to_df(venetoclax_azacitidine_6hr) %>% 
-  mutate(contrast = "venetoclax_azacitidine_6hr") %>% 
+  mutate(contrast = "Venetoclax_Azacitidine_vs_DMSO_6hr") %>% 
   select(contrast, everything())
 
 dge <- df %>% 
@@ -86,9 +86,25 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA479415", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA479415", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA479415", "rds-files", "re-lcpms.rds"))
+```
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
@@ -116,30 +132,16 @@ m1.re <- plot_md(dre, lfc = log2(fc), fdr = sig) +
          height = 7)
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA479415", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA479415", "rds-files", "re-lcpms.rds"))
-```
-
 ## Calculate Batch-normalized counts for visualization
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 lcpms.gene.c <- removeBatchEffect(lcpms.gene, batch = factor(c(1, 1, 2, 2, 3, 3)))
 lcpms.re.c <- removeBatchEffect(lcpms.re, batch = factor(c(1, 1, 2, 2, 3, 3)))
 ```
 
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -209,7 +211,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, "group", drop = FALSE] %>%
   as.data.frame()

@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -65,15 +64,15 @@ time.
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  CDDP_50uM_4hr = CDDP_50uM_4hr - untreated_4hr,
-  CDDP_50uM_10hr = (CDDP_50uM_10hr - CDDP_50uM_4hr) - (untreated_10hr - untreated_4hr),
-  CDDP_50uM_20hr = (CDDP_50uM_20hr - CDDP_50uM_4hr) - (untreated_20hr - untreated_4hr),
-  Hypercin_150nM_irradiation_4hr = Hypercin_150nM_irradiation_4hr - untreated_4hr,
-  Hypercin_150nM_irradiation_10hr = (Hypercin_150nM_irradiation_10hr - Hypercin_150nM_irradiation_4hr) - (untreated_10hr - untreated_4hr),
-  Hypercin_150nM_irradiation_20hr = (Hypercin_150nM_irradiation_20hr - Hypercin_150nM_irradiation_4hr) - (untreated_20hr - untreated_4hr),
-  MTX_1um_4hr = MTX_1um_4hr - untreated_4hr,
-  MTX_1um_10hr = (MTX_1um_10hr - MTX_1um_4hr) - (untreated_10hr - untreated_4hr),
-  MTX_1um_20hr = (MTX_1um_20hr - MTX_1um_4hr) - (untreated_20hr - untreated_4hr),
+  Cisplatin.50uM_vs_Untreated_4hr = CDDP_50uM_4hr - untreated_4hr,
+  Cisplatin.50uM_vs_Untreated_10hr = (CDDP_50uM_10hr - CDDP_50uM_4hr) - (untreated_10hr - untreated_4hr),
+  Cisplatin.50uM_vs_Untreated_20hr = (CDDP_50uM_20hr - CDDP_50uM_4hr) - (untreated_20hr - untreated_4hr),
+  Hypercin.150nM_irradiation_vs_Untreated_4hr = Hypercin_150nM_irradiation_4hr - untreated_4hr,
+  Hypercin.150nM_irradiation_vs_Untreated_10hr = (Hypercin_150nM_irradiation_10hr - Hypercin_150nM_irradiation_4hr) -                                                   (untreated_10hr - untreated_4hr),
+  Hypercin.150nM_irradiation_vs_Untreated_20hr = (Hypercin_150nM_irradiation_20hr - Hypercin_150nM_irradiation_4hr) -                                                   (untreated_20hr - untreated_4hr),
+  Mitoxantrone.1um_4hr = MTX_1um_4hr - untreated_4hr,
+  Mitoxantrone.1um_10hr = (MTX_1um_10hr - MTX_1um_4hr) - (untreated_10hr - untreated_4hr),
+  Mitoxantrone.1um_20hr = (MTX_1um_20hr - MTX_1um_4hr) - (untreated_20hr - untreated_4hr),
 
   levels = design
 )
@@ -81,31 +80,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("CPPP 50uM vs Untreated at 4hrs",
-            "CPPP 50uM vs Untreated at 10hrs",
-            "CPPP 50uM vs Untreated at 20hrs",
-            "Hypercin 150nM + irradiation vs Untreated at 4hrs",
-            "Hypercin 150nM + irradiation vs Untreated at 10hrs",
-            "Hypercin 150nM + irradiation vs Untreated at 20hrs",
-            "MTX 1uM vs Untreated at 4hrs",
-            "MTX 1uM vs Untreated at 10hrs",
-            "MTX 1uM vs Untreated at 20hrs")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -121,9 +110,27 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA685849", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA685849", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA685849", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -157,23 +164,9 @@ for (i in seq_along(coi)) {
 }
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA685849", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA685849", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -247,7 +240,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("treatment", "recovery_time"), drop = FALSE] %>%
   as.data.frame() %>% 
@@ -285,7 +278,7 @@ quickmap(lcpms.sig_res,
 
 ## Create Patchworks
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
@@ -370,7 +363,7 @@ library(patchwork)
 
 ## Create Family-Level Dotplots for significant REs
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 dotplots <- vector("list", length(names(de_results)))
 for (i in seq_along(names(de_results))) {
   dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)

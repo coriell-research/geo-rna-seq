@@ -64,14 +64,52 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 ## DE testing
 
 ```{r}
-library(patchwork)
-
 # define global significant cutoffs
 fc = 1.5
-sig = 0.1
 
 # test for overall differences 
 dac <- glmTreat(fit, lfc = log2(fc))
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- edger_to_df(dac) %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  mutate(contrast = "Decitabine_vs_PBS") %>% 
+  select(contrast, everything()) %>% 
+  write_tsv(here("results", "PRJNA607909", "data-files", "dge.tsv"))
+
+dre <- edger_to_df(dac) %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  mutate(contrast = "Decitabine_vs_PBS") %>% 
+  select(contrast, everything()) %>% 
+  write_tsv(here("results", "PRJNA607909", "data-files", "dre.tsv"))
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA607909", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA607909", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create Patchwork
+
+```{r eval=FALSE, include=FALSE}
+library(patchwork)
 
 # volcano plots
 v1 <- edger_to_df(dac) %>%
@@ -103,40 +141,9 @@ ggsave(here("results", "PRJNA607909", "figures", "patchwork.png"),
        height = 7)
 ```
 
-## Write results out
-
-```{r}
-# split DE results into gene and RE results and write out
-dge <- edger_to_df(dac) %>% 
-  filter(feature_id %in% cds$gene_name) %>% 
-  mutate(contrast = "dac") %>% 
-  select(contrast, everything()) %>% 
-  write_tsv(here("results", "PRJNA607909", "data-files", "dge.tsv"))
-
-dre <- edger_to_df(dac) %>% 
-  filter(!feature_id %in% cds$gene_name) %>% 
-  mutate(contrast = "dac") %>% 
-  select(contrast, everything()) %>% 
-  write_tsv(here("results", "PRJNA607909", "data-files", "dre.tsv"))
-```
-
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA607909", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA607909", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -206,7 +213,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("cell_type", "treatment")] %>%
   as.data.frame() %>% 
@@ -244,7 +251,7 @@ quickmap(lcpms.sig_res,
 
 ## Create Family-Level Dotplots for significant REs
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 de_df <- edger_to_df(dac) %>% 
   filter(!feature_id %in% cds$gene_name) %>% 
   mutate(contrast = "dac")

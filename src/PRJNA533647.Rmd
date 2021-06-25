@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -65,8 +64,8 @@ time.
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  PCIA_BuCy = PCIA_BuCy - Control,
-  PCIA_Bu = PCIA_Bu - Control,
+  PCIA.Busulfan_Cyclophosphamide_vs_Control = PCIA_BuCy - Control,
+  PCIA.Busulfan_vs_Control = PCIA_Bu - Control,
   
   levels = design
 )
@@ -74,24 +73,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("Busulfan + Cyclophosphamide (50 μmol/L, 40 μmol/L) vs Control - 72 hrs",
-            "Busulfan 50 μmol/L vs Control - 72hrs")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -121,9 +117,13 @@ write_rds(lcpms.gene, here("results", "PRJNA533647", "rds-files", "gene-lcpms.rd
 write_rds(lcpms.re, here("results", "PRJNA533647", "rds-files", "re-lcpms.rds"))
 ```
 
+---
+
+# OLD CODE
+
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -193,7 +193,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, "group", drop = FALSE] %>%
   as.data.frame()

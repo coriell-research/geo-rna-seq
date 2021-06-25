@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -61,12 +60,12 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  iCRT3 = iCRT3 - DMSO,
-  siCTNNB1 = siCTNNB1 - DMSO,
-  siNeg = siNeg - DMSO,
-  x1874 = x1874 - DMSO,
-  x6853 = x6853 - DMSO,
-  x8679 = x8679 - DMSO,
+  iCRT3.50uM_vs_DMSO_48hr = iCRT3 - DMSO,
+  siCTNNB1.20nM_vs_DMSO_48hr = siCTNNB1 - DMSO,
+  siNeg.20nM_vs_DMSO_48hr = siNeg - DMSO,
+  GB1874.50uM_vs_DMSO_48hr = x1874 - DMSO,
+  GB6853.50uM_vs_DMSO_48hr = x6853 - DMSO,
+  GB8679.50uM_vs_DMSO_48hr = x8679 - DMSO,
   
   levels = design
 )
@@ -74,24 +73,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("iCRT3 vs DMSO", "siCTNNB1 vs DMSO", "siNeg vs DMSO", 
-            "1874 vs DMSO", "6853 vs DMSO", "8679 vs DMSO")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -121,9 +117,13 @@ write_rds(lcpms.gene, here("results", "PRJNA641077", "rds-files", "gene-lcpms.rd
 write_rds(lcpms.re, here("results", "PRJNA641077", "rds-files", "re-lcpms.rds"))
 ```
 
+---
+
+# OLD CODE
+
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -193,7 +193,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, "group", drop = FALSE] %>%
   as.data.frame()

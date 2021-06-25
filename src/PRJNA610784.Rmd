@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -61,10 +60,10 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  Azacitidine = Azacitidine - Vehicle,
-  BAY1436032 = BAY1436032 - Vehicle,
-  BAY1436032_Azacitidine_seq = BAY1436032_Azacitidine_seq - Vehicle,
-  BAY1436032_Azacitidine_sim = BAY1436032_Azacitidine_sim - Vehicle,
+  Azacitidine_vs_Vehicle = Azacitidine - Vehicle,
+  BAY1436032_vs_Vehicle = BAY1436032 - Vehicle,
+  BAY1436032_Azacitidine_seq_vs_Vehicle = BAY1436032_Azacitidine_seq - Vehicle,
+  BAY1436032_Azacitidine_sim_vs_Vehicle = BAY1436032_Azacitidine_sim - Vehicle,
   
   levels = design
 )
@@ -72,23 +71,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("Azacitidine", "BAY1436032", "BAY1436032_Azacitidine_seq", "BAY1436032_Azacitidine_sim")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out

@@ -60,18 +60,18 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  kasumi.abbv075.100nM = kasumi.abbv075.100nM - kasumi.dmso,
-  kasumi.abbv744.200nM = kasumi.abbv744.200nM - kasumi.dmso,
-  mv411.abbv075.100nM = mv411.abbv075.100nM - mv411.dmso,
-  mv411.abbv744.200nM = mv411.abbv744.200nM - mv411.dmso,
-  nci_h1299.abbv075.100nM = nci_h1299.abbv075.100nM - nci_h1299.dmso,
-  nci_h1299.abbv744.200nM = nci_h1299.abbv744.200nM - nci_h1299.dmso,
-  skm.abbv075.100nM = skm.abbv075.100nM - skm.dmso,
-  skm.abbv744.200nM = skm.abbv744.200nM - skm.dmso,
+  Kasumi.ABBV_075.100nM_vs_Kasumi.DMSO = kasumi.abbv075.100nM - kasumi.dmso,
+  Kasumi.ABBV_744.200nM_vs_Kasumi.DMSO = kasumi.abbv744.200nM - kasumi.dmso,
+  MV411B.ABBV_075.100nM_vs_MV411B.DMSO = mv411.abbv075.100nM - mv411.dmso,
+  MV411B.ABBV_744.200nM_vs_MV411B.DMSO = mv411.abbv744.200nM - mv411.dmso,
+  NCI_H1299.ABBV_075.100nM_vs_NCI_H1299.DMSO = nci_h1299.abbv075.100nM - nci_h1299.dmso,
+  NCI_H1299.ABVV_744.200nM_vs_NCI_H1299.DMSO = nci_h1299.abbv744.200nM - nci_h1299.dmso,
+  SKM.ABBV_075.100nM_vs_SKM.DMSO = skm.abbv075.100nM - skm.dmso,
+  SKM.ABBV_744.200nM_vs_SKM.DMSO = skm.abbv744.200nM - skm.dmso,
   
-  abbv075.100nM = ((kasumi.abbv075.100nM + mv411.abbv075.100nM + nci_h1299.abbv075.100nM + skm.abbv075.100nM) / 4) - 
+  ABBV_075.100nM_vs_DMSO = ((kasumi.abbv075.100nM + mv411.abbv075.100nM + nci_h1299.abbv075.100nM + skm.abbv075.100nM) / 4) - 
                   ((kasumi.dmso + mv411.dmso + nci_h1299.dmso + skm.dmso) / 4),
-  abbv744.200nM = ((kasumi.abbv744.200nM + mv411.abbv744.200nM + nci_h1299.abbv744.200nM + skm.abbv744.200nM) / 4) -
+  ABBV_744.200nM_vs_DMSO = ((kasumi.abbv744.200nM + mv411.abbv744.200nM + nci_h1299.abbv744.200nM + skm.abbv744.200nM) / 4) -
                   ((kasumi.dmso + mv411.dmso + nci_h1299.dmso + skm.dmso) / 4),
   
   levels = design
@@ -80,32 +80,21 @@ contrast.matrix <- makeContrasts(
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("ABBV-075 100nM vs DMSO - Kasumi Cells",
-            "ABVV-744 20nM vs DMSO - Kasumi Cells",
-            "ABBV-075 100nM vs DMSO - MV-4-11 Cells",
-            "ABBV-0744 200nM vs DMSO - MV-4-11 Cells",
-            "ABBV-075 100nM vs DMSO - NCI-H1299 Cells",
-            "ABBV-744 200nM vs DMSO - NCI-H1299 Cells",
-            "ABBV-075 100nM vs DMSO - SKM Cells",
-            "ABBV-744 200nM vs DMSO - SKM Cells",
-            "ABBV-075 100nM vs DMSO",
-            "ABBV-744 200nM vs DMSO")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2,
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -121,9 +110,27 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA603369", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA603369", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA603369", "rds-files", "re-lcpms.rds"))
+```
+
+---
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -157,23 +164,9 @@ for (i in seq_along(coi)) {
 }
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA603369", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA603369", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -243,7 +236,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("cell_type", "treatment")] %>% 
   as.data.frame() %>% 
@@ -281,7 +274,7 @@ quickmap(lcpms.sig_res,
 
 ## Create Patchworks
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 # Genes
@@ -309,7 +302,7 @@ library(patchwork)
 
 ## Create Family-Level Dotplots for significant REs
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 dotplots <- vector("list", length(names(de_results)))
 for (i in seq_along(names(de_results))) {
   dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)

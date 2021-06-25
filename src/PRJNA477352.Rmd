@@ -19,7 +19,6 @@ source("helpers/helpers.R")
 ## Read in SummarizedExperiment Object
 
 ```{r}
-library(tidyverse)
 library(here)
 library(SummarizedExperiment)
 
@@ -67,51 +66,41 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  j4.thz1_250nM_6hr = j4.thz1_250nM_6hr - j4.dmso,
-  j4.thz1_50nM_6hr = j4.thz1_50nM_6hr - j4.dmso,
-  l10.thz1_250nM_6hr = l10.thz1_250nM_6hr - l10.dmso,
-  l10.thz1_50nM_6hr = l10.thz1_50nM_6hr - l10.dmso,
-  l20.thz1_250nM_6hr = l20.thz1_250nM_6hr - l20.dmso,
-  l20.thz1_50nM_6hr = l20.thz1_50nM_6hr - l20.dmso,
-  par.thz1_250nM_6hr = par.thz1_250nM_6hr - par.dmso,
-  par.thz1_50nM_6hr = par.thz1_50nM_6hr - par.dmso,
+  J4.THZ1.250nM_vs_J4.DMSO_6hr = j4.thz1_250nM_6hr - j4.dmso,
+  J4.THZ1.50nM_vs_J4.DMSO_6hr = j4.thz1_50nM_6hr - j4.dmso,
+  L10.THZ1.250nM_vs_L10.DMSO_6hr = l10.thz1_250nM_6hr - l10.dmso,
+  L10.THZ1.50nM_vs_L10.DMSO_6hr = l10.thz1_50nM_6hr - l10.dmso,
+  L20.THZ1.250nM_vs_L20.DMSO_6hr = l20.thz1_250nM_6hr - l20.dmso,
+  L20.THZ1.50nM_vs_L20.DMSO_6hr = l20.thz1_50nM_6hr - l20.dmso,
+  PAR.THZ1.250nM_vs_PAR.DMSO_6hr = par.thz1_250nM_6hr - par.dmso,
+  PAR.THZ1.50nM_vs_PAR.DMSO_6hr = par.thz1_50nM_6hr - par.dmso,
   
-  thz1_250nM_6hr = ((j4.thz1_250nM_6hr + l10.thz1_250nM_6hr + l20.thz1_250nM_6hr + par.thz1_250nM_6hr) / 4) - 
-                   ((j4.dmso + l10.dmso + l20.dmso + par.dmso) / 4),
-  thz1_50nM_6hr = ((j4.thz1_50nM_6hr + l10.thz1_50nM_6hr + l20.thz1_50nM_6hr + par.thz1_50nM_6hr) / 4) -
-                  ((j4.dmso + l10.dmso + l20.dmso + par.dmso) / 4),
+  THZ1.250nM_vs_DMSO_6hr = ((j4.thz1_250nM_6hr + l10.thz1_250nM_6hr + l20.thz1_250nM_6hr + par.thz1_250nM_6hr) / 4) - 
+                           ((j4.dmso + l10.dmso + l20.dmso + par.dmso) / 4),
+  THZ1.50nM_vs_DMSO_6hr = ((j4.thz1_50nM_6hr + l10.thz1_50nM_6hr + l20.thz1_50nM_6hr + par.thz1_50nM_6hr) / 4) -
+                          ((j4.dmso + l10.dmso + l20.dmso + par.dmso) / 4),
+     
   levels = design
 )
 
 # create inputs to map over (titles are same as above)
 cons <- colnames(contrast.matrix)
 names(cons) <- cons
-titles <- c("J4 THZ1 250nM 6hr vs DMSO",
-            "J4 THZ1 50nM 6hr vs DMSO",
-            "L10 THZ1 250nM 6hr vs DMSO",
-            "L10 THZ1 50nM 6hr vs DMSO",
-            "L20 THZ1 250nM 6hr vs DMSO",
-            "L20 THZ1 50nM 6hr vs DMSO",
-            "PAR THZ1 250nM 6hr vs DMSO",
-            "PAR THZ1 50nM 6hr vs DMSO",
-            "THZ1 250nM 6hr vs DMSO",
-            "THZ1 50nM 6hr vs DMSO")
 
 # set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
-sig <- 0.1
 
 # map over and extract results
-de_results <- map2(.x = cons, 
-                   .y = titles, 
-                   .f = get_de_results, 
-                    contrast_matrix = contrast.matrix,
-                    fdr = sig,
-                    fc = fc,
-                    glm_fit = fit)
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  contrast_matrix = contrast.matrix,
+  fc = fc,
+  glm_fit = fit
+)
 
 # extract all results and bind to single df
-df <- map(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
 ```
 
 ## Write results out
@@ -127,9 +116,25 @@ dre <- df %>%
   write_tsv(here("results", "PRJNA477352", "data-files", "dre.tsv"))
 ```
 
-## Create plots for each contrast 
+## Calculate normalized counts
 
 ```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA477352", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA477352", "rds-files", "re-lcpms.rds"))
+```
+
+# OLD CODE
+
+## Create plots for each contrast 
+
+```{r eval=FALSE, include=FALSE}
 coi <- names(de_results)
 gene_vplots <- vector("list", length(coi))
 gene_mdplots <- vector("list", length(coi))
@@ -163,23 +168,9 @@ for (i in seq_along(coi)) {
 }
 ```
 
-## Calculate normalized counts
-
-```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA477352", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA477352", "rds-files", "re-lcpms.rds"))
-```
-
 ## PCA
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(FactoMineR)
 library(factoextra)
 
@@ -249,7 +240,7 @@ ind.re$coord %>%
 
 ## Heatmaps
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # create column annotation
 col_df <- colData(se)[, c("drug", "dtep"), drop = FALSE] %>%
   as.data.frame() %>% 
@@ -287,7 +278,7 @@ quickmap(lcpms.sig_res,
 
 ## Create Patchworks
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(patchwork)
 
 
@@ -314,7 +305,7 @@ library(patchwork)
 
 ## Create Family-Level Dotplots for significant REs
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 dotplots <- vector("list", length(names(de_results)))
 for (i in seq_along(names(de_results))) {
   dotplots[[i]] <- plot_fam_counts(dre, names(de_results)[[i]], n_dots = 20)
