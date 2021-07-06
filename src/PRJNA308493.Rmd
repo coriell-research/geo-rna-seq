@@ -1,0 +1,96 @@
+---
+title: "PRJNA308493 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+library(tidyverse)
+library(here)
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r}
+library(SummarizedExperiment)
+
+
+se <- read_rds(here("data", "PRJNA308493", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## DE pipeline
+
+```{r}
+library(edgeR)
+library(coriell)
+
+
+# add a drug column
+colData(se)$drug <- factor(rep(c("EPZ004777", "DMSO"), 2), levels = c("DMSO", "EPZ004777"))
+design <- model.matrix(~patient_id + drug, data = colData(se))
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+```{r}
+res <- glmTreat(fit, coef = 3, lfc = log2(1.5))
+
+df <- edger_to_df(res) %>% 
+  mutate(contrast = "EPZ004777_vs_DMSO") %>% 
+  select(contrast, everything())
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA308493", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA308493", "data-files", "dre.tsv"))
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA308493", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA308493", "rds-files", "re-lcpms.rds"))
+```

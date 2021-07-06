@@ -1,0 +1,126 @@
+---
+title: "PRJNA244098 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+
+library(tidyverse)
+library(here)
+source("helpers/helpers.R")
+```
+
+## Read in SummarizedExperiment Object
+
+```{r}
+library(SummarizedExperiment)
+
+
+se <- read_rds(here("data", "PRJNA244098", "summarized_experiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Filter out RNA REs from counts assay
+
+```{r}
+se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+```
+
+## DE pipeline
+
+```{r}
+library(edgeR)
+library(coriell)
+
+
+design <- model.matrix(~0 + group, data = colData(se))
+colnames(design) <- str_remove(colnames(design), "^group")
+y <- DGEList(counts = assay(se, "counts"),
+             samples = colData(se))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+```{r}
+contrast.matrix <- makeContrasts(
+  JJN3.5.AZA_vs_JJN3.Control_4hr = JJN3.5.AZA.4hr - JJN3.Control.4hr,
+  JJN3.5.AZA_vs_JJN3.Control_24hr = (JJN3.5.AZA.24hr - JJN3.5.AZA.4hr) - (JJN3.Control.24hr - JJN3.Control.4hr),
+  JJN3.Combo_vs_JJN3.Control_4hr = JJN3.Combo.4hr - JJN3.Control.4hr,
+  JJN3.Combo_vs_JJN3.Control_24hr = (JJN3.Combo.24hr - JJN3.Combo.4hr) - (JJN3.Control.24hr - JJN3.Control.4hr),
+  JJN3.LBH.589_vs_JJN3.Control_4hr = JJN3.LBH.589.4hr - JJN3.Control.4hr,
+  JJN3.LBH.589_vs_JJN3.Control_24hr = (JJN3.LBH.589.24hr - JJN3.LBH.589.4hr) - (JJN3.Control.24hr - JJN3.Control.4hr),
+  
+  U266.5.AZA_vs_U266.Control_4hr = U266.5.AZA.4hr - U266.Control.4hr,
+  U266.5.AZA_vs_U266.Control_24hr = (U266.5.AZA.24hr - U266.5.AZA.4hr) - (U266.Control.24hr - U266.Control.4hr),
+  U266.Combo_vs_U266.Control_4hr = U266.Combo.4hr - U266.Control.4hr,
+  U266.Combo_vs_U266.Control_24hr = (U266.Combo.24hr - U266.Combo.4hr) - (U266.Control.24hr - U266.Control.4hr),
+  U266.LBH.589_vs_U266.Control_4hr = U266.LBH.589.4hr - U266.Control.4hr,
+  U266.LBH.589_vs_U266.Control_24hr = (U266.LBH.589.24hr - U266.LBH.589.4hr) - (U266.Control.24hr - U266.Control.4hr),
+  
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+
+# map over and extract results
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  glm_fit = fit, 
+  contrast_matrix = contrast.matrix,
+  fc = fc
+)
+
+# extract all results and bind to single df
+df <- lapply(de_results, pluck, "table") %>% bind_rows(.id = "contrast")
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+dge <- df %>% 
+  filter(feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA244098", "data-files", "dge.tsv"))
+
+dre <- df %>% 
+  filter(!feature_id %in% cds$gene_name) %>% 
+  write_tsv(here("results", "PRJNA244098", "data-files", "dre.tsv"))
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+write_rds(lcpms.gene, here("results", "PRJNA244098", "rds-files", "gene-lcpms.rds"))
+write_rds(lcpms.re, here("results", "PRJNA244098", "rds-files", "re-lcpms.rds"))
+```

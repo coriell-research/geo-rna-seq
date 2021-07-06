@@ -101,8 +101,8 @@ dre[, id := paste(experiment, contrast, sep = ".")]
 dre <- dre[!feature_id %like% "Satellite|Simple_repeat|Unknown|Low_complexity"]
 
 # write the results out
-fwrite(dge, here("results", "combined", "data-files", "dge-all-experiments.csv"))
-fwrite(dre, here("results", "combined", "data-files", "dre-all-experiments.csv"))
+fwrite(dge, here("results", "combined", "data-files", "dge-all-experiments.csv.gz"))
+fwrite(dre, here("results", "combined", "data-files", "dre-all-experiments.csv.gz"))
 ```
 
 ## Create ranking metrics
@@ -126,9 +126,7 @@ differentiated better on plots.
 available when downloading the datasets from GEO**
 
 ```{r}
-fwrite(unique(dge[, .(experiment, contrast)]), 
-       file = here("doc", "raw-experiment-annotation.csv")
-       )
+fwrite(unique(dge[, .(id, experiment, contrast)]), file = here("doc", "raw-experiment-annotation.csv"))
 ```
 
 ## After manual editing, read in the contrast metadata
@@ -136,10 +134,25 @@ fwrite(unique(dge[, .(experiment, contrast)]),
 This file comes from the shared Google Doc
 
 ```{r}
-metadata <- fread(here("doc", "experiment-annotation.csv"))
-metadata[, id := paste(experiment, contrast, sep = ".")]
+metadata <- fread(here("doc", "metadata.tsv"))
+drugs <- fread(here("doc", "drugs.tsv"))
+cells <- fread(here("doc", "cells.tsv"))
 
-head(metadata)
+# left join drug info onto metadata
+metadata <- merge.data.table(x = metadata, 
+                             y = drugs,
+                             by.x = "drug",
+                             by.y = "drug",
+                             all.x = TRUE,
+                             all.y = FALSE)
+
+# left join cell_info onto metadata
+metadata <- merge.data.table(x = metadata,
+                             y = cells,
+                             by.x = "cell_line",
+                             by.y = "cell_line",
+                             all.x = TRUE,
+                             all.y = FALSE)
 ```
 
 ## Cast DE values into matrices
