@@ -1,0 +1,1746 @@
+---
+title: "SPORE & Lab Meeting figures"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read in the meta-analysis se objects
+
+```{r message=FALSE, warning=FALSE}
+library(here)
+library(SummarizedExperiment)
+
+
+dge <- readRDS(here("results", "combined", "rds-files", "dge_se.rds"))
+dre <- readRDS(here("results", "combined", "rds-files", "dre_se.rds"))
+```
+
+## Remove outlier sample and unlabelled epigenetic classes
+
+One of the samples is an extreme outlier on the PCA. Some treatments aren't between
+drug classes either.
+
+```{r}
+dge <- dge[, dge$contrast != "Bortezomib_vs_DMSO_24hr.10A" &
+             !is.na(dge$epigenetic_class)]
+
+dre <- dre[, dre$contrast != "Bortezomib_vs_DMSO_24hr.10A" &
+             !is.na(dre$epigenetic_class)]
+```
+
+## Extract matrices of logFCs and clean metadata
+
+```{r}
+# extract the logFC matrix for each
+dge_mat <- assay(dge, "lfc")
+dre_mat <- assay(dre, "lfc")
+
+# extract and modify some of the metadata for better plot labels
+meta <- as.data.frame(colData(dge))
+meta$time_hr <- trimws(ifelse(is.na(meta$time_hr), "", paste0(meta$time_hr, "hr")))
+meta$dose <- trimws(ifelse(is.na(meta$dose), "", meta$dose))
+```
+
+### meta-analysis summary stats
+
+```{r}
+library(data.table)
+
+
+meta_dt <- as.data.table(meta, keep.rownames = "id")
+
+# number of studies
+length(unique(meta_dt$experiment))
+
+# number of tissues
+length(unique(meta_dt$tissue))
+
+# diseases
+length(unique(meta_dt$disease))
+
+# drugs
+length(unique(meta_dt$drug))
+
+# cell lines
+length(unique(meta_dt$cell_line))
+
+# contrasts
+length(unique(meta_dt$id))
+```
+
+## Heatmap of Interferon Genes
+
+```{r}
+library(pheatmap)
+
+
+# read in list of IFN alpha hallmark genes
+ifn_alpha <- fread('grep -v "^>" ../doc/HALLMARK_INTERFERON_ALPHA_RESPONSE.txt')
+ifn_mat <- subset(dge_mat, rownames(dge_mat) %in% ifn_alpha$HALLMARK_INTERFERON_ALPHA_RESPONSE)
+
+# define column annotations
+col_df <- meta[, c("epigenetic_class"), drop = FALSE]
+
+# cutree cuts
+K <- 5
+
+# plot heatmap
+hm <- pheatmap(
+  ifn_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = TRUE, 
+  show_colnames = FALSE,
+  annotation_col = col_df,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "correlation",
+  clustering_distance_cols = "euclidean",
+  main = "Hallmark Interferon Alpha Genes logFC",
+  cutree_cols = K
+  )
+
+# extract tree labels from hm object
+cluster_labels <- cutree(hm$tree_col, k = K)
+
+# replot heatmep with cluster labels
+all(rownames(col_df) == names(cluster_labels))
+col_df$cluster <- factor(cluster_labels)
+
+# define distinct color palette for epigenetic classes
+epi_pal <- c(
+  "NOT-EPIGENETIC" = "#808080", 
+  "COMBINATION" = "#a664c4", 
+  "DNMTi" = "#58a865",
+  "HDACi" = "#FFD700",
+  "HMTi" = "#648ace",
+  "PAHi" = "#d35238",
+  "OTHER" = "#be7d42"
+  )
+
+cluster_pal <- c(
+  "1" = "#c75a93",
+  "2" = "#5ba966",
+  "3" = "#8176cc", 
+  "4" = "#ac973e",
+  "5" = "#cc5f43"
+  )
+
+# define the color palettes for column labels
+col_codes <- list(epigenetic_class = epi_pal, cluster = cluster_pal)
+
+pheatmap(
+  ifn_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = TRUE, 
+  show_colnames = FALSE,
+  annotation_col = col_df,
+  annotation_colors = col_codes,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "correlation",
+  clustering_distance_cols = "euclidean",
+  main = "Hallmark Interferon Alpha Genes logFC",
+  cutree_cols = K,
+  filename = here("results", "combined", "figures", "spore", "heatmap_ifn_alpha.png")
+  )
+```
+
+### Heatmap of the repetitive elements, with IFN cluster labels
+
+```{r}
+# check if cluster labels still align with colnames
+all(colnames(dre_mat) == rownames(col_df))
+
+pheatmap(
+  dre_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = FALSE, 
+  show_colnames = FALSE,
+  annotation_col = col_df,
+  annotation_colors = col_codes,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "euclidean",
+  clustering_distance_cols = "euclidean",
+  main = "Transposable Elements Do Not Follow IFN Alpha Clustering",
+  filename = here("results", "combined", "figures", "spore", "dre_heatmap-ifn_alpha.png")
+  )
+```
+
+## Add the cluster information to the PCA metadata
+
+```{r}
+# add cluster information to metadata
+all(rownames(meta) == names(cluster_labels))
+meta$cluster <- factor(cluster_labels)
+```
+
+## Perform PCA on logFC of all features
+
+```{r}
+library(PCAtools)
+
+
+dge_pca <- pca(
+  mat = dge_mat,
+  metadata = meta, 
+  center = TRUE, 
+  scale = FALSE, 
+  removeVar = 0.25
+  )
+
+dre_pca <- pca(
+  mat = dre_mat,
+  metadata = meta, 
+  center = TRUE, 
+  scale = FALSE, 
+  removeVar = 0.25
+  )
+```
+
+### Plot PCA biplots
+
+All samples, all conditions
+
+```{r}
+biplot(
+  dge_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 10,
+  lab = paste(dge_pca$metadata$drug, dge_pca$metadata$dose, dge_pca$metadata$time_hr),
+  title = "Protein Coding Gene Expression Shows Clustering by Epigenetic Drug Class",
+  subtitle = "PCA on logFC of protein coding genes across all experiments and conditions",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(filename = here("results", "combined", "figures", "spore", "dge-biplot_by_epiClass.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+# same biplot w/o names
+biplot(
+  dge_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  lab = NULL,
+  title = "Protein Coding Gene Expression Shows Clustering by Epigenetic Drug Class",
+  subtitle = "PCA on logFC of protein coding genes across all experiments and conditions",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(filename = here("results", "combined", "figures", "spore", "dge-biplot_by_epiClass-noLab.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+# RE ---
+biplot(
+  dre_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 5,
+  lab = paste(dre_pca$metadata$drug, dre_pca$metadata$dose, dre_pca$metadata$time_hr),
+  title = "Transposable Element Expression is driven by 'Extreme' Epigenetic Regulators",
+  subtitle = "PCA on logFC of TEs across all experiments and conditions",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "spore", "dre-biplot_by_epiClass.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+biplot(
+  dre_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  lab = NULL,
+  title = "Transposable Element Expression is driven by 'Extreme' Epigenetic Regulators",
+  subtitle = "PCA on logFC of TEs across all experiments and conditions",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "spore", "dre-biplot_by_epiClass-noLab.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+```
+
+### Recreate PCA but color by cluster labels
+
+```{r}
+biplot(
+  dge_pca, 
+  colby = "cluster",
+  colkey = cluster_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 15,
+  lab = paste(dge_pca$metadata$drug, dge_pca$metadata$dose, dge_pca$metadata$time_hr),
+  title = "Protein Coding Gene Expression May Follow IFN Alpha Heatmap Clusters",
+  subtitle = "PCA on logFC of protein coding genes across all experiments and conditions",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "spore", "dge-biplot_by_cluster.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+# same but no labels
+biplot(
+  dge_pca, 
+  colby = "cluster",
+  colkey = cluster_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  lab = NULL,
+  title = "Protein Coding Gene Expression May Follow IFN Alpha Heatmap Clusters",
+  subtitle = "PCA on logFC of protein coding genes across all experiments and conditions",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "spore", "dge-biplot_by_cluster-noLab.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+# RE ----
+biplot(
+  dre_pca, 
+  colby = "cluster",
+  colkey = cluster_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 15,
+  lab = paste(dge_pca$metadata$drug, dge_pca$metadata$dose, dge_pca$metadata$time_hr),
+  title = "Transposable Elements Expression Does Not Follow IFN Alpha Clusters",
+  subtitle = "PCA on logFC of TEs across all experiments and conditions",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "spore", "dre-biplot_by_cluster.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+biplot(
+  dre_pca, 
+  colby = "cluster",
+  colkey = cluster_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  lab = NULL,
+  title = "Transposable Elements Expression Does Not Follow IFN Alpha Clusters",
+  subtitle = "PCA on logFC of TEs across all experiments and conditions",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "spore", "dre-biplot_by_cluster-noLab.png"), 
+         dpi = 500,
+         width = 18,
+         height = 10)
+```
+
+## Loadings plots
+
+```{r}
+plotloadings(
+  dge_pca, 
+  components = 1:5,
+  labSize = 3,
+  drawConnectors = FALSE,
+  shapeSizeRange = c(5, 5),
+  title = "Protein Coding Genes Loadings",
+  subtitle = "PCA on logFC of protein coding genes across all experiments and conditions"
+  ) +
+  ggsave(here("results", "combined", "figures", "spore", "dge-loadings.png"), 
+         dpi = 500,
+         width = 11,
+         height = 7)
+
+# RE ------
+plotloadings(
+  dre_pca, 
+  components = 1:5,
+  labSize = 3,
+  drawConnectors = TRUE,
+  shapeSizeRange = c(5, 5),
+  title = "Transposable Elements Loadings",
+  subtitle = "PCA on logFC of TEs across all experiments and conditions"
+  ) +
+  ggsave(here("results", "combined", "figures", "spore", "dre-loadings.png"), 
+         dpi = 500,
+         width = 11,
+         height = 7)
+```
+
+---
+
+# Leukemia samples
+
+## Subset only the leukemia data and re-plot
+
+```{r}
+ldge <- dge[, dge$disease %like% "[L|l]eukemia"]
+ldre <- dre[, dre$disease %like% "[L|l]eukemia"]
+
+# extract the logFC matrix for each
+ldge_mat <- assay(ldge, "lfc")
+ldre_mat <- assay(ldre, "lfc")
+lmeta <- subset(meta, rownames(meta) %in% colnames(ldge_mat))
+```
+
+### Leukemia metadata
+
+```{r}
+lmeta_dt <- as.data.table(lmeta, keep.rownames = "id")
+
+# number of studies
+length(unique(lmeta_dt$experiment))
+
+# number of tissues
+length(unique(lmeta_dt$tissue))
+
+# diseases
+length(unique(lmeta_dt$disease))
+
+# drugs
+length(unique(lmeta_dt$drug))
+
+# cell lines
+length(unique(lmeta_dt$cell_line))
+
+# contrasts
+length(unique(lmeta_dt$id))
+```
+
+## Heatmap of IFN Alpha response in Leukemia samples
+
+```{r}
+lifn_mat <- subset(ifn_mat, select = colnames(ldge_mat))
+lcol_df <- subset(col_df, rownames(col_df) %in% colnames(ldge_mat), select = c("epigenetic_class"))
+
+# plot heatmap
+K2 <- 6
+hm2 <- pheatmap(
+  lifn_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = TRUE, 
+  show_colnames = FALSE,
+  annotation_col = lcol_df,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "correlation",
+  clustering_distance_cols = "euclidean",
+  main = "Hallmark Interferon Alpha Genes logFC",
+  cutree_cols = K2
+  )
+
+# extract tree labels from hm object
+cluster_labels2 <- cutree(hm2$tree_col, k = K2)
+
+# replot heatmep with cluster labels
+all(rownames(lcol_df) == names(cluster_labels2))
+lcol_df$cluster <- factor(cluster_labels2)
+
+cluster_pal2 <- c(
+  "1" = "#648ace",
+  "2" = "#b1963f",
+  "3" = "#a863c3",
+  "4" = "#60a85f",
+  "5" = "#c9557e",
+  "6" = "#cb613f"
+  )
+
+# define the color palettes for column labels
+col_codes2 <- list(epigenetic_class = epi_pal, cluster = cluster_pal2)
+
+pheatmap(
+  lifn_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = TRUE, 
+  show_colnames = FALSE,
+  annotation_col = lcol_df,
+  annotation_colors = col_codes2,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "correlation",
+  clustering_distance_cols = "euclidean",
+  main = "Hallmark Interferon Alpha Genes logFC",
+  cutree_cols = K2,
+  filename = here("results", "combined", "figures", "spore", "heatmap-ifn_alpha-leukemia_samples.png")
+  )
+```
+
+## Add the cluster information to the PCA metadata
+
+```{r}
+# add cluster information to metadata
+all(rownames(lmeta) == names(cluster_labels2))
+lmeta$cluster <- factor(cluster_labels2)
+```
+
+## Perform PCA on Leukeia samples
+
+```{r}
+# perform PCA
+ldge_pca <- pca(
+  mat = ldge_mat,
+  metadata = lmeta, 
+  center = TRUE, 
+  scale = FALSE, 
+  removeVar = 0.1
+  )
+
+ldre_pca <- pca(
+  mat = ldre_mat,
+  metadata = lmeta, 
+  center = TRUE, 
+  scale = FALSE, 
+  removeVar = 0.1
+  )
+```
+
+## PCA biplots of Leukemia samples
+
+### Manually define point labels
+
+```{r}
+# datapasta::vector_paste_vertical(trimws(paste(ldge_pca$metadata$drug, ldge_pca$metadata$dose, ldge_pca$metadata$time_hr)))
+
+leukemia_labs <- c("",
+  "",
+  "",
+  "JQ1 2hr",
+  "JQ1 6hr",
+  "dBET6 2hr",
+  "dBET6 6hr",
+  "JQ1",
+  "dBET6",
+  "JQ1",
+  "dBET6",
+  "Deazaneplanocin A",
+  "Decitabine + Deazaneplanocin A",
+  "Decitabine",
+  "",
+  "",
+  "",
+  "Azacitidine",
+  "Azacitidine + GSK2879552",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "Venetoclax + Azacitidine  6hr",
+  "",
+  "Doxorobicin + Cytarabine 1.8uM + 6uM 72hr",
+  "",
+  "",
+  "Venetoclax + Tedizolid 500nM + 5uM 96hr",
+  "Venetoclax 500nM 96hr",
+  "",
+  "ABBV-744 200nM 24hr",
+  "",
+  "ABBV-744 200nM 24hr",
+  "",
+  "ABBV-744 200nM 24hr",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "")
+```
+
+```{r}
+biplot(
+  ldge_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 25,
+  lab = leukemia_labs,
+  title = "Protein Coding Gene Expression Shows Clustering by Epigenetic Drug Class",
+  subtitle = "PCA on logFC of protein coding genes across all Leukemia datasets",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "spore", "dge_leukemia-biplot-by_epiClass.png"),
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+# REs ----
+biplot(
+  ldre_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 20,
+  lab = leukemia_labs,
+  title = "Transposable Element Expression in Leukemia Samples is Less Ordered",
+  subtitle = "PCA on logFC of TEs across Leukemia samples",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "spore", "dre_leukemia-biplot-by_epiClass.png"),
+         dpi = 500,
+         width = 18,
+         height = 10)
+```
+
+### Color by heatmap clusters
+
+```{r}
+biplot(
+  ldge_pca, 
+  colby = "cluster",
+  colkey = cluster_pal2,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 20,
+  lab = leukemia_labs,
+  title = "Protein Coding Gene Expression by IFN Alpha Heatmap Clusters",
+  subtitle = "PCA on logFC of protein coding genes across all experiments and conditions",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "spore", "dge_leukemia-biplot-by_cluster.png"),
+    width = 18,
+    height = 10,
+    dpi = 500)
+
+# REs ----
+biplot(
+  ldre_pca, 
+  colby = "cluster",
+  colkey = cluster_pal2,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 20,
+  lab = leukemia_labs,
+  title = "Transposable Elements Expression Does Not Follow IFN Alpha Clusters",
+  subtitle = "PCA on logFC of TEs across all experiments and conditions",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "spore", "dre_leukemia-biplot-by_cluster.png"),
+         width = 18,
+         height = 10,
+         dpi = 500)
+```
+
+## Plot Loadings for Leukemia samples
+
+```{r}
+plotloadings(
+  ldge_pca, 
+  components = 1:5,
+  labSize = 3,
+  drawConnectors = FALSE,
+  shapeSizeRange = c(5, 5),
+  title = "Protein Coding Genes Loadings",
+  subtitle = "PCA on logFC of protein coding genes across all Leukemia samples"
+  ) +
+  ggsave(here("results", "combined", "figures", "spore", "dge_leukemia-loadings.png"), 
+       width = 11,
+       height = 7)
+
+# REs ----
+plotloadings(
+  ldre_pca, 
+  components = 1:5,
+  labSize = 3,
+  drawConnectors = TRUE,
+  shapeSizeRange = c(5, 5),
+  title = "Transposable Elements Loadings",
+  subtitle = "PCA on logFC of TEs across all Leukemia samples"
+  ) +
+  ggsave(here("results", "combined", "figures", "spore", "dre_leukemia-loadings.png"), 
+       width = 11,
+       height = 7)
+```
+
+## MetaVolcanoR on Leukemia samples
+
+## Read in DE data
+
+```{r}
+dge_dt <- fread(here("results", "combined", "data-files", "dge-all-experiments.csv.gz"))
+dre_dt <- fread(here("results", "combined", "data-files", "dre-all-experiments.csv.gz"))
+```
+
+## filter for leukemia contrasts
+
+```{r}
+# coerce metadata toi data.table
+meta_dt <- as.data.table(lmeta, keep.rownames = "id")
+
+# filter for only leukemia contrasts
+leukemia_dge <- dge_dt[id %chin% meta_dt$id]
+leukemia_dre <- dre_dt[id %chin% meta_dt$id]
+
+# coerce id to factor variable
+leukemia_dge[, id := factor(id)]
+leukemia_dre[, id := factor(id)]
+
+# join on metadata
+leukemia_dge <- merge.data.table(
+  x = leukemia_dge, 
+  y = meta_dt, 
+  by.x = "id", 
+  by.y = "id", 
+  all.x = TRUE, 
+  all.y = FALSE
+  )
+
+leukemia_dre <- merge.data.table(
+  x = leukemia_dre,
+  y = meta_dt, 
+  by.x = "id",
+  by.y = "id",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+# split by id
+dge_list <- split(leukemia_dge, by = "id")
+dre_list <- split(leukemia_dre, by = "id")
+```
+
+## Plot number of deg per study
+
+```{r}
+library(forcats)
+
+
+# calculate up/down genes for each contrast
+dge_summary <- lapply(dge_list, coriell::summarize_dge, fdr = 0.1)
+dre_summary <- lapply(dre_list, coriell::summarize_dge, fdr = 0.1)
+
+# collapse back into data.table
+dge_summary <- rbindlist(dge_summary, idcol = "id")
+dre_summary <- rbindlist(dre_summary, idcol = "id")
+
+# clean variables
+dge_summary[, `:=`(id = factor(id), dge = factor(dge, levels = c("up", "non-dge", "down")))]
+dre_summary[, `:=`(id = factor(id), dge = factor(dge, levels = c("up", "non-dge", "down")))]
+dge_summary[, total := sum(n), by = "id"]
+dre_summary[, total := sum(n), by = "id"]
+dge_summary[dge == "non-dge", perc_non := perc, by = "id"]
+dre_summary[dge == "non-dge", perc_non := perc, by = "id"]
+
+# join on metadata information
+dge_summary <- merge.data.table(
+  x = dge_summary,
+  y = meta_dt, 
+  by.x = "id",
+  by.y = "id",
+  all.x = TRUE, 
+  all.y = FALSE
+  )
+
+dre_summary <- merge.data.table(
+  x = dre_summary,
+  y = meta_dt, 
+  by.x = "id",
+  by.y = "id",
+  all.x = TRUE, 
+  all.y = FALSE
+  )
+```
+
+## Create barplots
+
+```{r}
+# get axis labels
+axis_levels <- levels(fct_reorder(dge_summary$id, dge_summary$perc_non, .fun = sum, na.rm = TRUE))
+axis_labels <- gsub("PRJNA[0-9]+\\.", "", axis_levels)
+axis_labels <- gsub("_vs_.*", "", axis_labels)
+
+# create separate point dataframe to add colored points over bars
+point_dt <- data.table(id = axis_levels, axis_label = axis_labels)
+point_dt[, label_pos := -0.05]
+point_dt <- merge(point_dt, meta_dt, by = "id", all.x = TRUE, all.y = FALSE)[, .(id, axis_label, label_pos, epigenetic_class)]
+
+# plot ---
+ggplot(
+  dge_summary, 
+  aes(x = fct_reorder(id, perc_non, .fun = sum, na.rm = TRUE), y = n)) +
+  geom_col(aes(fill = dge), position = "fill") +
+  geom_point(data = point_dt, aes(x = factor(id), y = label_pos, color = epigenetic_class), size = 2) +
+  scale_fill_manual(values = c("up" = "firebrick", "non-dge" = "grey", "down" = "steelblue")) +
+  scale_x_discrete(labels = axis_labels) +
+  scale_color_manual(values = epi_pal) +
+  labs(title = "Proportion of DEG in Leukemia samples",
+       x = "Treatment Relative to Control",
+       y = "Proportion of Genes",
+       fill = "Regulation",
+       color = "Epigenetic Class") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  ggsave(here("results", "combined", "figures", "spore", "dge_leukemia-deg_barplot.png"),
+         width = 11, 
+         height = 7)
+```
+
+repeat for repeats
+
+```{r}
+# get axis labels
+axis_levels2 <- levels(fct_reorder(dre_summary$id, dre_summary$perc_non, .fun = sum, na.rm = TRUE))
+axis_labels2 <- gsub("PRJNA[0-9]+\\.", "", axis_levels2)
+axis_labels2 <- gsub("_vs_.*", "", axis_labels2)
+
+# create separate point dataframe to add colored points over bars
+point_dt2 <- data.table(id = axis_levels2, axis_label = axis_labels2)
+point_dt2[, label_pos := -0.05]
+point_dt2 <- merge(point_dt2, meta_dt, by = "id", all.x = TRUE, all.y = FALSE)[, .(id, axis_label, label_pos, epigenetic_class)]
+
+# REs
+ggplot(
+  dre_summary, 
+  aes(x = fct_reorder(id, perc_non, .fun = sum, na.rm = TRUE), y = n)) +
+  geom_col(aes(fill = dge), position = "fill") +
+  geom_point(data = point_dt, aes(x = factor(id), y = label_pos, color = epigenetic_class), size = 2) +
+  scale_fill_manual(values = c("up" = "firebrick", "non-dge" = "grey", "down" = "steelblue")) +
+  scale_x_discrete(labels = axis_labels2) +
+  scale_color_manual(values = epi_pal) +
+  labs(title = "Proportion of DE TEs in Leukemia samples",
+       x = "Treatment Relative to Control",
+       y = "Proportion of REs",
+       fill = "Regulation",
+       color = "Epigenetic Class") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  ggsave(here("results", "combined", "figures", "spore", "dre_leukemia-deg_barplot.png"),
+         width = 11, 
+         height = 7)
+```
+
+## Try metaVolcanoR
+
+```{r}
+library(MetaVolcanoR)
+
+
+meta_degs_vote <- votecount_mv(
+  diffexp = dge_list,
+  pcriteria = 'FDR',
+  foldchangecol = 'logFC',
+  genenamecol = 'feature_id',
+  geneidcol = NULL,
+  pvalue = 0.1,
+  foldchange = 0, 
+  metathr = 0.01,
+  collaps = FALSE,
+  jobname = "MetaVolcano", 
+  outputfolder = here("results", "combined", "figures", "spore"),
+  draw = 'HTML'
+)
+
+# extract the meta volcano plot
+meta_degs_vote@MetaVolcano +
+  ggrepel::geom_text_repel(
+    data = meta_degs_vote@metaresult[meta_degs_vote@metaresult$degvcount != "1.Unperturbed", ], 
+    aes(label = feature_id), 
+    size = 2.5,
+    max.overlaps = 8) +
+  labs(title = "Common Perturbed Genes Across All Leukemia Samples") +
+  scale_x_continuous(breaks = seq(-35, 35, by = 2)) +
+  ggsave(here("results", "combined", "figures", "spore", "dge-metavolcano.png"),
+         width = 11,
+         height = 7)
+
+# REs
+meta_ders_vote <- votecount_mv(
+  diffexp = dre_list,
+  pcriteria = 'FDR',
+  foldchangecol = 'logFC',
+  genenamecol = 'feature_id',
+  geneidcol = NULL,
+  pvalue = 0.1,
+  foldchange = 0, 
+  metathr = 0.01,
+  collaps = FALSE,
+  jobname = "MetaVolcano2", 
+  outputfolder = here("results", "combined", "figures", "spore"),
+  draw = 'HTML'
+)
+
+# extract the meta volcano plot
+meta_ders_vote@MetaVolcano +
+  ggrepel::geom_text_repel(
+    data = meta_ders_vote@metaresult[meta_ders_vote@metaresult$degvcount != "1.Unperturbed", ], 
+    aes(label = feature_id), 
+    size = 2.5,
+    max.overlaps = 15) +
+  labs(title = "Common Perturbed TEs Across All Leukemia Samples") +
+  scale_x_continuous(breaks = seq(-10, 20, by = 2)) +
+  ggsave(here("results", "combined", "figures", "spore", "dre-metavolcano.png"),
+         width = 11,
+         height = 7)
+```
+
+## What do the vote-counting results look like?
+
+```{r eval=FALSE, include=FALSE}
+dge_meta_res <- as.data.table(meta_degs_vote@metaresult)
+
+head(dge_meta_res)
+
+# perform GO analysis on the perturbed genes
+dge_genes <- dge_meta_res[degvcount != "1.Unperturbed", feature_id]
+dge_go <- coriell::panther_go(dge_genes, "9606", "biological_process")
+
+# plot top GO terms
+go_dt <- as.data.table(dge_go$table)
+go_dt[fdr < 0.1]
+
+ggplot(go_dt[fdr < 0.1], 
+       aes(x = fct_reorder(description, -log10(fdr)), y = -log10(fdr))) +
+  geom_col(position = "identity") +
+  coord_flip() +
+  labs(titles = "Top GO Terms For Common Perturbed Genes",
+       subtitle = "PANTHER Biological Process Database",
+       x = NULL,
+       y = "-log10(FDR)") +
+  theme_minimal() +
+  ggsave(here("results", "combined", "figures", "spore", "metavolcano-topGO.png"),
+         width = 8,
+         height = 5)
+```
+
+---
+
+# Colon Samples
+
+## Subset Colon samples from main SE object
+
+```{r}
+cdge <- dge[, dge$tissue %like% "[C|c]olon"]
+cdre <- dre[, dre$tissue %like% "[C|c]olon"]
+
+# extract the logFC matrix for each
+cdge_mat <- assay(cdge, "lfc")
+cdre_mat <- assay(cdre, "lfc")
+cmeta <- subset(meta, rownames(meta) %in% colnames(cdge_mat))
+```
+
+## Get colon metadata as data.table
+
+```{r}
+cmeta_dt <- as.data.table(cmeta, keep.rownames = "id")
+
+# number of studies
+length(unique(cmeta_dt$experiment))
+
+# number of tissues
+length(unique(cmeta_dt$tissue))
+
+# diseases
+length(unique(cmeta_dt$disease))
+
+# drugs
+length(unique(cmeta_dt$drug))
+
+# cell lines
+length(unique(cmeta_dt$cell_line))
+
+# contrasts
+length(unique(cmeta_dt$id))
+```
+
+## Heatmap of IFN Alpha response in Leukemia samples
+
+```{r}
+cifn_mat <- subset(ifn_mat, select = colnames(cdge_mat))
+ccol_df <- subset(col_df, rownames(col_df) %in% colnames(cdge_mat), select = c("epigenetic_class"))
+
+# plot heatmap
+hm3 <- pheatmap(
+  cifn_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = TRUE, 
+  show_colnames = FALSE,
+  annotation_col = ccol_df,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "correlation",
+  clustering_distance_cols = "euclidean",
+  main = "Colon - Hallmark Interferon Alpha Genes logFC",
+  cutree_cols = 4
+  )
+
+# extract tree labels from hm object
+cluster_labels3 <- cutree(hm3$tree_col, k = 4)
+
+# replot heatmep with cluster labels
+all(rownames(ccol_df) == names(cluster_labels3))
+ccol_df$cluster <- factor(cluster_labels3)
+
+cluster_pal3 <- c(
+  "1" = "#90ba00",
+  "2" = "#f51e85",
+  "3" = "#006947",
+  "4" = "#ff9e40"
+  )
+
+# define the color palettes for column labels
+col_codes3 <- list(epigenetic_class = epi_pal, cluster = cluster_pal3)
+
+pheatmap(
+  cifn_mat, 
+  scale = "none",
+  color = colorRampPalette(c("dodgerblue3", "grey99", "firebrick3"))(50),
+  breaks = seq(-5, 5, by = 0.2),
+  show_rownames = TRUE, 
+  show_colnames = FALSE,
+  annotation_col = ccol_df,
+  annotation_colors = col_codes3,
+  fontsize_row = 4,
+  clustering_method = "ward.D2",
+  clustering_distance_rows = "correlation",
+  clustering_distance_cols = "euclidean",
+  main = "Colon - Hallmark Interferon Alpha Genes logFC",
+  cutree_cols = 4,
+  cutree_rows = 2,
+  filename = here("results", "combined", "figures", "lab-meeting", "heatmap-ifn_alpha-colon.png")
+  )
+```
+
+## Add the cluster information to the PCA metadata
+
+```{r}
+# add cluster information to metadata
+all(rownames(cmeta) == names(cluster_labels3))
+cmeta$cluster <- factor(cluster_labels3)
+```
+
+## Perform PCA on colon samples
+
+```{r}
+cdge_pca <- pca(
+  mat = cdge_mat,
+  metadata = cmeta, 
+  center = TRUE, 
+  scale = FALSE, 
+  removeVar = 0.1
+  )
+
+cdre_pca <- pca(
+  mat = cdre_mat,
+  metadata = cmeta, 
+  center = TRUE, 
+  scale = FALSE, 
+  removeVar = 0.1
+  )
+```
+
+## PCA biplots of colon samples
+
+```{r}
+biplot(
+  cdge_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 25,
+  lab = trimws(paste(cdge_pca$metadata$drug, cdge_pca$metadata$dose, cdge_pca$metadata$time_hr)),
+  title = "Protein Coding Gene Expression in Colon Samples",
+  subtitle = "PCA on logFC of protein coding genes across all colon datasets",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon-biplot-by_epiClass.png"),
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+biplot(
+  cdge_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  lab = NULL,
+  title = "Protein Coding Gene Expression in Colon Samples",
+  subtitle = "PCA on logFC of protein coding genes across all colon datasets",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon-biplot-by_epiClass-noLab.png"),
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+# REs ----
+biplot(
+  cdre_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 20,
+  lab = trimws(paste(cdre_pca$metadata$drug, cdre_pca$metadata$dose, cdge_pca$metadata$time_hr)),
+  title = "Transposable Element Expression in Colon Samples",
+  subtitle = "PCA on logFC of TEs across colon samples",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon-biplot-by_epiClass.png"),
+         dpi = 500,
+         width = 18,
+         height = 10)
+
+biplot(
+  cdre_pca, 
+  colby = "epigenetic_class",
+  colkey = epi_pal,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  lab = NULL,
+  title = "Transposable Element Expression in Colon Samples",
+  subtitle = "PCA on logFC of TEs across colon samples",
+  caption = "Drug class labels derived from The Human Epigenetic Drug Database (HEDD)"
+  ) +
+  labs(color = "Epigenetic Drug Class") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon-biplot-by_epiClass-noLab.png"),
+         dpi = 500,
+         width = 18,
+         height = 10)
+```
+
+### Color by heatmap clusters
+
+```{r}
+biplot(
+  cdge_pca, 
+  colby = "cluster",
+  colkey = cluster_pal3,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 20,
+  lab = trimws(paste(cdge_pca$metadata$drug, cdge_pca$metadata$dose, cdge_pca$metadata$time_hr)),
+  title = "Protein Coding Gene Expression by IFN Alpha Heatmap Clusters in Colon Samples",
+  subtitle = "PCA on logFC of protein coding genes across colon samples",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon-biplot-by_cluster.png"),
+    width = 18,
+    height = 10,
+    dpi = 500)
+
+# REs ----
+biplot(
+  cdre_pca, 
+  colby = "cluster",
+  colkey = cluster_pal3,
+  legendPosition = "bottom",
+  hline = 0,
+  vline = 0,
+  hlineType = "dashed",
+  vlineType = "dashed",
+  maxoverlapsConnectors = 20,
+  lab = trimws(paste(cdre_pca$metadata$drug, cdre_pca$metadata$dose, cdge_pca$metadata$time_hr)),
+  title = "Transposable Elements Expression by IFN Alpha Clusters in Colon Samples",
+  subtitle = "PCA on logFC of TEs across all colon samples",
+  caption = "IFN Alpha Genes from MSigDB Hallmark Interferon Alpha Pathway"
+  ) +
+  labs(color = "Heatmap IFN Alpha Cluster") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon-biplot-by_cluster.png"),
+         width = 18,
+         height = 10,
+         dpi = 500)
+```
+
+## Plot Loadings for colon PCA
+
+```{r}
+plotloadings(
+  cdge_pca, 
+  components = 1:5,
+  labSize = 3,
+  drawConnectors = FALSE,
+  shapeSizeRange = c(5, 5),
+  title = "Protein Coding Genes Loadings in Colon Samples",
+  subtitle = "PCA on logFC of protein coding genes across all colon samples"
+  ) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon-loadings.png"), 
+       width = 11,
+       height = 7)
+
+# REs ----
+plotloadings(
+  cdre_pca, 
+  components = 1:5,
+  labSize = 3,
+  drawConnectors = TRUE,
+  shapeSizeRange = c(5, 5),
+  title = "Transposable Elements Loadings in Colon Samples",
+  subtitle = "PCA on logFC of TEs across all colon samples"
+  ) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon-loadings.png"), 
+       width = 11,
+       height = 7)
+```
+
+## Filter for colon contrasts
+
+```{r}
+# coerce colon metadata to a data.table
+cmeta_dt <- as.data.table(cmeta, keep.rownames = "id")
+
+# filter for only colon ids
+colon_dge <- dge_dt[id %chin% cmeta_dt$id]
+colon_dre <- dre_dt[id %chin% cmeta_dt$id]
+
+# coerce id to factor variable
+colon_dge[, id := factor(id)]
+colon_dre[, id := factor(id)]
+
+# join on metadata
+colon_dge <- merge.data.table(
+  x = colon_dge, 
+  y = cmeta_dt, 
+  by.x = "id", 
+  by.y = "id", 
+  all.x = TRUE, 
+  all.y = FALSE
+  )
+
+colon_dre <- merge.data.table(
+  x = colon_dre,
+  y = cmeta_dt, 
+  by.x = "id",
+  by.y = "id",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+# split by id
+cdge_list <- split(colon_dge, by = "id")
+cdre_list <- split(colon_dre, by = "id")
+```
+
+## Plot number of deg per study
+
+```{r}
+# calculate up/down genes for each contrast
+cdge_summary <- lapply(cdge_list, coriell::summarize_dge, fdr = 0.1)
+cdre_summary <- lapply(cdre_list, coriell::summarize_dge, fdr = 0.1)
+
+# collapse back into data.table
+cdge_summary <- rbindlist(cdge_summary, idcol = "id")
+cdre_summary <- rbindlist(cdre_summary, idcol = "id")
+
+# clean variables
+cdge_summary[, `:=`(id = factor(id), dge = factor(dge, levels = c("up", "non-dge", "down")))]
+cdre_summary[, `:=`(id = factor(id), dge = factor(dge, levels = c("up", "non-dge", "down")))]
+cdge_summary[, total := sum(n), by = "id"]
+cdre_summary[, total := sum(n), by = "id"]
+cdge_summary[dge == "non-dge", perc_non := perc, by = "id"]
+cdre_summary[dge == "non-dge", perc_non := perc, by = "id"]
+
+# join on metadata information
+cdge_summary <- merge.data.table(
+  x = cdge_summary,
+  y = cmeta_dt, 
+  by.x = "id",
+  by.y = "id",
+  all.x = TRUE, 
+  all.y = FALSE
+  )
+
+cdre_summary <- merge.data.table(
+  x = cdre_summary,
+  y = cmeta_dt, 
+  by.x = "id",
+  by.y = "id",
+  all.x = TRUE, 
+  all.y = FALSE
+  )
+```
+
+## Create barplots
+
+```{r}
+# get axis labels
+caxis_levels <- levels(fct_reorder(cdge_summary$id, cdge_summary$perc_non, .fun = sum, na.rm = TRUE))
+caxis_labels <- gsub("PRJNA[0-9]+\\.|^tak\\.|^hh1\\.|^pladb\\.|^toyo\\.|^proa\\.", "", caxis_levels)
+caxis_labels <- gsub("_vs_.*", "", caxis_labels)
+
+# create separate point dataframe to add colored points over bars
+cpoint_dt <- data.table(id = caxis_levels, axis_label = caxis_labels)
+cpoint_dt[, label_pos := -0.05]
+cpoint_dt <- merge(cpoint_dt, cmeta_dt, by = "id", all.x = TRUE, all.y = FALSE)[, .(id, axis_label, label_pos, epigenetic_class)]
+
+# plot ---
+ggplot(
+  cdge_summary, 
+  aes(x = fct_reorder(id, perc_non, .fun = sum, na.rm = TRUE), y = n)) +
+  geom_col(aes(fill = dge), position = "fill") +
+  geom_point(data = cpoint_dt, aes(x = factor(id), y = label_pos, color = epigenetic_class), size = 2) +
+  scale_fill_manual(values = c("up" = "firebrick", "non-dge" = "grey", "down" = "steelblue")) +
+  scale_x_discrete(labels = caxis_labels) +
+  scale_color_manual(values = epi_pal) +
+  labs(title = "Proportion of DEG in Colon Samples",
+       x = "Treatment Relative to Control",
+       y = "Proportion of Genes",
+       fill = "Regulation",
+       color = "Epigenetic Class") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon-barplot.png"),
+         width = 11, 
+         height = 7)
+```
+
+repeat for repeats
+
+```{r}
+# get axis labels
+caxis_levels2 <- levels(fct_reorder(cdre_summary$id, cdre_summary$perc_non, .fun = sum, na.rm = TRUE))
+caxis_labels2 <- gsub("PRJNA[0-9]+\\.|^tak\\.|^hh1\\.|^pladb\\.|^toyo\\.|^proa\\.", "", caxis_levels2)
+caxis_labels2 <- gsub("_vs_.*", "", caxis_labels2)
+
+# create separate point dataframe to add colored points over bars
+cpoint_dt2 <- data.table(id = caxis_levels2, axis_label = caxis_labels2)
+cpoint_dt2[, label_pos := -0.05]
+cpoint_dt2 <- merge(cpoint_dt2, cmeta_dt, by = "id", all.x = TRUE, all.y = FALSE)[, .(id, axis_label, label_pos, epigenetic_class)]
+
+# REs
+ggplot(
+  cdre_summary, 
+  aes(x = fct_reorder(id, perc_non, .fun = sum, na.rm = TRUE), y = n)) +
+  geom_col(aes(fill = dge), position = "fill") +
+  geom_point(data = cpoint_dt, aes(x = factor(id), y = label_pos, color = epigenetic_class), size = 2) +
+  scale_fill_manual(values = c("up" = "firebrick", "non-dge" = "grey", "down" = "steelblue")) +
+  scale_x_discrete(labels = caxis_labels2) +
+  scale_color_manual(values = epi_pal) +
+  labs(title = "Proportion of DE TEs in Colon Samples",
+       x = "Treatment Relative to Control",
+       y = "Proportion of REs",
+       fill = "Regulation",
+       color = "Epigenetic Class") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon-barplot.png"),
+         width = 11, 
+         height = 7)
+```
+
+## Split by epigenetic or not and determine profiles
+
+```{r}
+# get ids of epigenetic and non-epigentic drugs in colon
+colon_notEpi <- rownames(colData(cdge[, cdge$epigenetic_class == "NOT-EPIGENETIC"]))
+colon_epi <- rownames(colData(cdge[, cdge$epigenetic_class != "NOT-EPIGENETIC" & cdge$epigenetic_class != "COMBINATION"]))
+
+# subset the data lists by drug type
+cdge_list_notEpi <- cdge_list[colon_notEpi]
+cdge_list_epi <- cdge_list[colon_epi]
+cdre_list_notEpi <- cdre_list[colon_notEpi]
+cdre_list_epi <- cdre_list[colon_epi]
+```
+
+## MetaVolcanoR on epigenetic and not-epigenetic drugs in colon
+
+```{r}
+library(MetaVolcanoR)
+
+
+# Common genes across epigenetic drugs
+colon_epi_mv <- votecount_mv(
+  diffexp = cdge_list_epi,
+  pcriteria = 'FDR',
+  foldchangecol = 'logFC',
+  genenamecol = 'feature_id',
+  geneidcol = NULL,
+  pvalue = 0.1,
+  foldchange = 0, 
+  metathr = 0.01,
+  collaps = FALSE,
+  jobname = "MetaVolcano-colon-epi", 
+  outputfolder = here("results", "combined", "figures", "lab-meeting"),
+  draw = 'HTML'
+)
+
+# extract the meta volcano plot
+p_dge_epi <- 
+  colon_epi_mv@MetaVolcano +
+  ggrepel::geom_text_repel(
+    data = colon_epi_mv@metaresult[colon_epi_mv@metaresult$degvcount != "1.Unperturbed", ], 
+    aes(label = feature_id), 
+    size = 2.5,
+    max.overlaps = 8) +
+  labs(title = "Epigenetic Drugs") +
+  scale_x_continuous(breaks = seq(-45, 45, by = 2)) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon_epi-metavolcano.png"),
+         width = 11,
+         height = 7)
+
+# Common genes across non-epigenetic drugs
+colon_notEpi_mv <- votecount_mv(
+  diffexp = cdge_list_notEpi,
+  pcriteria = 'FDR',
+  foldchangecol = 'logFC',
+  genenamecol = 'feature_id',
+  geneidcol = NULL,
+  pvalue = 0.1,
+  foldchange = 0, 
+  metathr = 0.01,
+  collaps = FALSE,
+  jobname = "MetaVolcano-colon-notEpi", 
+  outputfolder = here("results", "combined", "figures", "lab-meeting"),
+  draw = 'HTML'
+)
+
+# extract the meta volcano plot
+p_dge_notEpi <- 
+  colon_notEpi_mv@MetaVolcano +
+  ggrepel::geom_text_repel(
+    data = colon_notEpi_mv@metaresult[colon_notEpi_mv@metaresult$degvcount != "1.Unperturbed", ], 
+    aes(label = feature_id), 
+    size = 2.5,
+    max.overlaps = 8) +
+  labs(title = "Non-Epigenetic Drugs") +
+  scale_x_continuous(breaks = seq(-45, 45, by = 2)) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon_notEpi-metavolcano.png"),
+         width = 11,
+         height = 7)
+
+# REs ---
+colon_epi_mvRE <- votecount_mv(
+  diffexp = cdre_list_epi,
+  pcriteria = 'FDR',
+  foldchangecol = 'logFC',
+  genenamecol = 'feature_id',
+  geneidcol = NULL,
+  pvalue = 0.1,
+  foldchange = 0, 
+  metathr = 0.01,
+  collaps = FALSE,
+  jobname = "MetaVolcano2-colon-epiRE", 
+  outputfolder = here("results", "combined", "figures", "lab-meeting"),
+  draw = 'HTML'
+)
+
+# extract the meta volcano plot
+p_dre_epi <- 
+  colon_epi_mvRE@MetaVolcano +
+  ggrepel::geom_text_repel(
+    data = colon_epi_mvRE@metaresult[colon_epi_mvRE@metaresult$degvcount != "1.Unperturbed", ], 
+    aes(label = feature_id), 
+    size = 2.5,
+    max.overlaps = 15) +
+  labs(title = "Epigenetic Drugs") +
+  scale_x_continuous(breaks = seq(-10, 45, by = 2)) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon_epi-metavolcano.png"),
+         width = 11,
+         height = 7)
+
+# not epigentic REs
+colon_notEpi_mvRE <- votecount_mv(
+  diffexp = cdre_list_notEpi,
+  pcriteria = 'FDR',
+  foldchangecol = 'logFC',
+  genenamecol = 'feature_id',
+  geneidcol = NULL,
+  pvalue = 0.1,
+  foldchange = 0, 
+  metathr = 0.01,
+  collaps = FALSE,
+  jobname = "MetaVolcano2-colon-notEpiRE", 
+  outputfolder = here("results", "combined", "figures", "lab-meeting"),
+  draw = 'HTML'
+)
+
+# extract the meta volcano plot
+p_dre_notEpi <- 
+  colon_notEpi_mvRE@MetaVolcano +
+  ggrepel::geom_text_repel(
+    data = colon_notEpi_mvRE@metaresult[colon_notEpi_mvRE@metaresult$degvcount != "1.Unperturbed", ], 
+    aes(label = feature_id), 
+    size = 2.5,
+    max.overlaps = 15) +
+  labs(title = "Non-Epigenetic Drugs") +
+  scale_x_continuous(breaks = seq(-10, 45, by = 2)) +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon_notEpi-metavolcano.png"),
+         width = 11,
+         height = 7)
+```
+
+### Create patchwork of common perturbed genes
+
+```{r}
+library(patchwork)
+
+
+# Common genes in both conditions
+(p_dge_notEpi | p_dge_epi) +
+  plot_annotation(title = "Commonly Perturbed Genes in Colon Samples") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dge_colon-metavolcano.png"),
+         width = 20,
+         height = 8)
+
+# REs
+(p_dre_notEpi | p_dre_epi) +
+  plot_annotation(title = "Commonly Perturbed TEs in Colon Samples") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "dre_colon-metavolcano.png"),
+         width = 20,
+         height = 8)
+```
+
+## Create upset plots to show the commonalities
+
+```{r}
+library(UpSetR)
+
+
+# Convert the metaresults to data.tables
+dge_epi_dt <- as.data.table(colon_epi_mv@metaresult)
+dge_notEpi_dt <- as.data.table(colon_notEpi_mv@metaresult)
+dre_epi_dt <- as.data.table(colon_epi_mvRE@metaresult)
+dre_notEpi_dt <- as.data.table(colon_notEpi_mvRE@metaresult)
+
+# subset out the up/down genes and REs
+dge_epi_up <- dge_epi_dt[degvcount == "2.Up-regulated", feature_id]
+dge_epi_down <- dge_epi_dt[degvcount == "0.Down-regulated", feature_id]
+dge_notEpi_up <- dge_notEpi_dt[degvcount == "2.Up-regulated", feature_id]
+dge_notEpi_down <- dge_notEpi_dt[degvcount == "0.Down-regulated", feature_id]
+dre_epi_up <- dre_epi_dt[degvcount == "2.Up-regulated", feature_id]
+dre_epi_down <- dre_epi_dt[degvcount == "0.Down-regulated", feature_id]
+dre_notEpi_up <- dre_notEpi_dt[degvcount == "2.Up-regulated", feature_id]
+dre_notEpi_down <- dre_notEpi_dt[degvcount == "0.Down-regulated", feature_id]
+
+# coerce into list
+common_genes <- list(
+  "Epigenetic Up" = dge_epi_up,
+  "Epigenetic Down" = dge_epi_down,
+  "Not-Epigentic Up" = dge_notEpi_up,
+  "Not-Epigenetic Down" = dge_notEpi_down
+)
+
+common_re <- list(
+  "Epigenetic Up" = dre_epi_up,
+  "Epigenetic Down" = dre_epi_down,
+  "Not-Epigenetic Up" = dre_notEpi_up,
+  "Not-Epigenetic Down" = dre_notEpi_down
+)
+
+# save common genes and epi lists
+saveRDS(common_genes, here("results", "combined", "rds-files", "common-genes.rds"))
+saveRDS(common_re, here("results", "combined", "rds-files", "common-re.rds"))
+
+# Create and save upset plots
+png(here("results", "combined", "figures", "lab-meeting", "dge-upset.png"), width = 11, height = 7, units = "in", res = 300)
+upset(fromList(common_genes), 
+      order.by = "freq", 
+      nintersects = NA, 
+      empty.intersections = "on",
+      point.size = 2, 
+      mainbar.y.label = "Protein Coding Genes Intersections", 
+      sets.x.label = "Genes Per Class")
+dev.off()
+
+# REs
+png(here("results", "combined", "figures", "lab-meeting", "dre-upset.png"), width = 11, height = 7, units = "in", res = 300)
+upset(fromList(common_re), 
+      order.by = "freq", 
+      nintersects = NA, 
+      empty.intersections = "on",
+      point.size = 2, 
+      mainbar.y.label = "Transposable Elements Intersections", 
+      sets.x.label = "TEs Per Class")
+dev.off()
+```
+
+## What are the pathways from these sets?
+
+```{r}
+dge_epi_up_go <- coriell::panther_go(dge_epi_up, "9606", "biological_process")
+Sys.sleep(1)
+dge_epi_down_go <- coriell::panther_go(dge_epi_down, "9606", "biological_process")
+Sys.sleep(1)
+dge_notEpi_up_go <- coriell::panther_go(dge_notEpi_up, "9606", "biological_process")
+Sys.sleep(1)
+dge_notEpi_down_go <- coriell::panther_go(dge_notEpi_down, "9606", "biological_process")
+```
+
+convert to results data.tables
+
+```{r}
+go_epi_up_dt <- as.data.table(dge_epi_up_go$table)
+go_epi_down_dt <- as.data.table(dge_epi_down_go$table)
+go_notEpi_up_dt <- as.data.table(dge_notEpi_up_go$table)
+go_notEpi_down_dt <- as.data.table(dge_notEpi_down_go$table)
+
+p_epi_up <- 
+  ggplot(go_epi_up_dt[fdr < 0.01][1:10], 
+       aes(x = fct_reorder(description, -log10(fdr)),  y = -log10(fdr))) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 10)) +
+  theme_minimal() +
+  labs(title = "Up-Regulated in Epigenetic Drugs",
+       subtitle = "FDR < 0.01",
+       x = NULL,
+       y = NULL)
+
+p_epi_down <- 
+  ggplot(go_epi_down_dt[fdr < 0.01][1:10], 
+       aes(x = fct_reorder(description, -log10(fdr)),  y = -log10(fdr))) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 10)) +
+  labs(title = "Down-Regulated in Epigenetic Drugs",
+       subtitle = "FDR < 0.01",
+       x = NULL,
+       y = NULL)
+
+p_notEpi_up <- 
+  ggplot(go_notEpi_up_dt[fdr < 0.01][!is.na(description)], 
+       aes(x = fct_reorder(description, -log10(fdr)), y = -log10(fdr))) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 10)) +
+  labs(title = "Up-Regulated in Non-Epigenetic Drugs",
+       subtitle = "FDR < 0.01",
+       x = NULL,
+       y = "-Log10(FDR)")
+
+p_notEpi_down <- 
+  ggplot(go_notEpi_down_dt[fdr < 0.01][1:10], 
+       aes(x = fct_reorder(description, -log10(fdr)),  y = -log10(fdr))) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 10)) +
+  labs(title = "Down-Regulated in Non-Epigenetic Drugs",
+       subtitle = "FDR < 0.01",
+       x = NULL,
+       y = "-Log10(FDR)")
+
+# create patchwork of GO results
+(p_epi_up | p_epi_down) / (p_notEpi_up | p_notEpi_down) +
+  plot_annotation(title = "Top GO Terms for Epigenetic and Non-Epigentic Regulated Genes") +
+  plot_layout(guides = "collect") +
+  ggsave(here("results", "combined", "figures", "lab-meeting", "go-patchwork.png"),
+         width = 18,
+         height = 8)
+```

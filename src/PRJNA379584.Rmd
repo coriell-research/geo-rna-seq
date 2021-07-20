@@ -12,77 +12,114 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-
-library(tidyverse)
-library(here)
+source("helpers/helpers.R")
 ```
 
-## Read in SummarizedExperiment Object
+## Read in MultiAssayExperiment Object
 
-```{r message=FALSE, warning=FALSE}
-library(SummarizedExperiment)
+```{r}
+library(here)
+library(data.table)
+library(MultiAssayExperiment)
 
 
-se <- readRDS(here("data", "PRJNA379584", "summarized_experiment.rds"))
+mae <- readRDS(here("data", "PRJNA379584", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
 
 ```{r}
-cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
-## Filter out RNA REs from counts assay
+## Extract RE and Gene Counts as matrices
 
 ```{r}
-se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
 ```
 
-## Split SummarizedExperiment by batch
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix and add back to MAE
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
+```
+
+## Create new `mae` object from 'counts' matrix
+
+```{r}
+mae <- MultiAssayExperiment(
+  experiments = list("counts" = counts),
+  colData = colData(mae)
+  )
+
+# update group type
+colData(mae)$group <- factor(colData(mae)$group)
+```
+
+## Split MultiAssayexperiment by batch
 
 ```{r message=FALSE}
 # split by batch
-batches <- unique(colData(se)$batch)
-se_1 <- se[, colData(se)$batch == "1"]
-se_2 <- se[, colData(se)$batch == "2"]
-se_3 <- se[, colData(se)$batch == "3"]
-se_4 <- se[, colData(se)$batch == "4"]
-se_5 <- se[, colData(se)$batch == "5"]
-se_6 <- se[, colData(se)$batch == "6"]
-se_7 <- se[, colData(se)$batch == "7"]
-se_8 <- se[, colData(se)$batch == "8"]
-se_9 <- se[, colData(se)$batch == "9"]
-se_10A <- se[, colData(se)$batch == "10A"]
-se_10B <- se[, colData(se)$batch == "10B"]
-se_11A <- se[, colData(se)$batch == "11A"]
-se_11B <- se[, colData(se)$batch == "11B"]
-se_12A <- se[, colData(se)$batch == "12A"]
-se_12B <- se[, colData(se)$batch == "12B"]
-se_12C <- se[, colData(se)$batch == "12C"]
+batches <- unique(colData(mae)$batch)
+mae_1 <- mae[, colData(mae)$batch == "1"]
+mae_2 <- mae[, colData(mae)$batch == "2"]
+mae_3 <- mae[, colData(mae)$batch == "3"]
+mae_4 <- mae[, colData(mae)$batch == "4"]
+mae_5 <- mae[, colData(mae)$batch == "5"]
+mae_6 <- mae[, colData(mae)$batch == "6"]
+mae_7 <- mae[, colData(mae)$batch == "7"]
+mae_8 <- mae[, colData(mae)$batch == "8"]
+mae_9 <- mae[, colData(mae)$batch == "9"]
+mae_10A <- mae[, colData(mae)$batch == "10A"]
+mae_10B <- mae[, colData(mae)$batch == "10B"]
+mae_11A <- mae[, colData(mae)$batch == "11A"]
+mae_11B <- mae[, colData(mae)$batch == "11B"]
+mae_12A <- mae[, colData(mae)$batch == "12A"]
+mae_12B <- mae[, colData(mae)$batch == "12B"]
+mae_12C <- mae[, colData(mae)$batch == "12C"]
 
 # drop unused factor levels (don't know why this won't work in lapply...)
-se_1$group <- droplevels(se_1$group)
-se_2$group <- droplevels(se_2$group)
-se_3$group <- droplevels(se_3$group)
-se_4$group <- droplevels(se_4$group)
-se_5$group <- droplevels(se_5$group)
-se_6$group <- droplevels(se_6$group)
-se_7$group <- droplevels(se_7$group)
-se_8$group <- droplevels(se_8$group)
-se_9$group <- droplevels(se_9$group)
-se_10A$group <- droplevels(se_10A$group)
-se_10B$group <- droplevels(se_10B$group)
-se_11A$group <- droplevels(se_11A$group)
-se_11B$group <- droplevels(se_11B$group)
-se_12A$group <- droplevels(se_12A$group)
-se_12B$group <- droplevels(se_12B$group)
-se_12C$group <- droplevels(se_12C$group)
+mae_1$group <- droplevels(mae_1$group)
+mae_2$group <- droplevels(mae_2$group)
+mae_3$group <- droplevels(mae_3$group)
+mae_4$group <- droplevels(mae_4$group)
+mae_5$group <- droplevels(mae_5$group)
+mae_6$group <- droplevels(mae_6$group)
+mae_7$group <- droplevels(mae_7$group)
+mae_8$group <- droplevels(mae_8$group)
+mae_9$group <- droplevels(mae_9$group)
+mae_10A$group <- droplevels(mae_10A$group)
+mae_10B$group <- droplevels(mae_10B$group)
+mae_11A$group <- droplevels(mae_11A$group)
+mae_11B$group <- droplevels(mae_11B$group)
+mae_12A$group <- droplevels(mae_12A$group)
+mae_12B$group <- droplevels(mae_12B$group)
+mae_12C$group <- droplevels(mae_12C$group)
 
 # combine into single list
-experiments <- list("1" = se_1, "2" = se_2, "3" = se_3, "4" = se_4, "5" = se_5, 
-                    "6" = se_6, "7" = se_7, "8" = se_8, "9" = se_9, "10A" = se_10A,
-                    "10B" = se_10B, "11A" = se_11A, "11B" = se_11B, "12A" = se_12A, 
-                    "12B" = se_12B, "12C" = se_12C)
+experiments <- list("1" = mae_1, "2" = mae_2, "3" = mae_3, "4" = mae_4, "5" = mae_5, 
+                    "6" = mae_6, "7" = mae_7, "8" = mae_8, "9" = mae_9, "10A" = mae_10A,
+                    "10B" = mae_10B, "11A" = mae_11A, "11B" = mae_11B, "12A" = mae_12A, 
+                    "12B" = mae_12B, "12C" = mae_12C)
 ```
 
 ## DE pipeline per-batch
@@ -96,7 +133,7 @@ library(edgeR)
 
 pipeline <- function(x) {
   design <- model.matrix(~0 + group, data = colData(x))
-  colnames(design) <- str_remove(colnames(design), "^group")
+  colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
   y <- DGEList(counts = assay(x, "counts"),
                samples = colData(x))
   keep <- filterByExpr(y, design = design)
@@ -455,13 +492,15 @@ tmux.
 ```{r}
 # inner function -- operates on contrast level
 get_de_results <- function(contrast_name, glm_fit, contrast_matrix, fc = 1.5) {
-  res_df <- glmTreat(
-    glm_fit, 
-    contrast = contrast_matrix[, contrast_name], 
-    lfc = log2(fc)
-    ) %>% coriell::edger_to_df()
+  res_df <- coriell::edger_to_df(
+    glmTreat(
+      glm_fit, 
+      contrast = contrast_matrix[, contrast_name],
+      lfc = log2(fc)
+      )
+    )
   
-  list("table" = res_df)
+  return(list("table" = res_df))
 }
 
 # outer function - operates on batch level
@@ -478,30 +517,33 @@ get_batch_results <- function(x) {
     mc.cores = 12
   )
   
-  res_df <- map(batch_res, pluck, "table") %>% 
-    bind_rows(.id = "contrast") %>% 
-    mutate(batch_id = x)
+  res_df <- rbindlist(lapply(batch_res, function(x) x[["table"]]), idcol = "contrast")
+  res_df[, batch_id := x]
   
-  res_df
+  return(res_df)
 }
 
 de_results <- lapply(X = names(pipeline_res), FUN = get_batch_results)
-df <- bind_rows(de_results) %>% 
-  mutate(contrast = str_c(contrast, batch_id, sep = ".")) %>% 
-  select(-batch_id)
+df <- rbindlist(de_results)
+df[, `:=`(contrast = paste(contrast, batch_id, sep = "."), 
+          batch_id = NULL)]
 ```
 
 ## Write results out
 
 ```{r}
 # split DE results into gene and RE results and write out
-dge <- df %>% 
-  filter(feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA379584", "data-files", "dge.tsv"))
+fwrite(
+  x = df[feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA379584", "data-files", "dge.tsv"),
+  sep = "\t"
+  )
 
-dre <- df %>% 
-  filter(!feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA379584", "data-files", "dre.tsv"))
+fwrite(
+  x = df[!feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA379584", "data-files", "dre.tsv"),
+  sep = "\t"
+)
 ```
 
 ## Calculate normalized counts
@@ -513,7 +555,7 @@ lcpms.re <- lapply(lcpms, function(x) {subset(x, !rownames(x) %in% cds$gene_name
 
 # Write normalized counts out
 for (batch in names(lcpms)) {
-  write_rds(lcpms.gene[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-gene-lcpms.rds")))
-  write_rds(lcpms.re[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-re-lcpms.rds")))
+  saveRDS(lcpms.gene[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-gene-lcpms.rds")))
+  saveRDS(lcpms.re[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-re-lcpms.rds")))
 }
 ```
