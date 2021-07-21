@@ -12,47 +12,66 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-
 source("helpers/helpers.R")
 ```
 
-## Read in SummarizedExperiment Object
+## Read in MultiAssayExperiment Object
 
 ```{r}
 library(here)
-library(SummarizedExperiment)
+library(data.table)
+library(MultiAssayExperiment)
 
 
-se <- readRDS(here("data", "PRJNA471642", "summarized_experiment.rds"))
+mae <- readRDS(here("data", "PRJNA471642", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
 
 ```{r}
-cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
-## Filter out RNA REs from counts assay
+## Extract RE and Gene Counts as matrices
 
 ```{r}
-se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+```
+
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
 ```
 
 ## DE pipeline
 
-This DE analysis is modified because the study design is a time-series
-
 ```{r}
-library(edgeR)
-library(coriell)
-
-
-Cell_line <- factor(colData(se)$cell_line)
-Time <- factor(colData(se)$time_hr)
+Cell_line <- factor(colData(mae)$cell_line)
+Time <- factor(colData(mae)$time_hr)
 design <- model.matrix(~Cell_line + Time)
 
-y <- DGEList(counts = assay(se, "counts"),
-             samples = colData(se))
+y <- DGEList(counts = counts,
+             samples = colData(mae))
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")
@@ -67,13 +86,12 @@ Differential expression testing is set up differently for this dataset
 ```{r}
 # set global significance levels
 fc <- 1.5
-sig <- 0.1
 
 # perfom DE testing of each coefficient
-mec1 <- glmTreat(fit, coef = 2, lfc = log2(fc)) %>% edger_to_df()
-time_2hr <- glmTreat(fit, coef = 3, lfc = log2(fc)) %>% edger_to_df()
-time_6hr <- glmTreat(fit, coef = 4, lfc = log2(fc)) %>% edger_to_df()
-time_24hr <- glmTreat(fit, coef = 5, lfc = log2(fc)) %>% edger_to_df()
+mec1 <- coriell::edger_to_df(glmTreat(fit, coef = 2, lfc = log2(fc)))
+time_2hr <- coriell::edger_to_df(glmTreat(fit, coef = 3, lfc = log2(fc)))
+time_6hr <- coriell::edger_to_df(glmTreat(fit, coef = 4, lfc = log2(fc)))
+time_24hr <- coriell::edger_to_df(glmTreat(fit, coef = 5, lfc = log2(fc)))
 
 # bind results into single df
 results_list <- list("MEC1_vs_GM12878" = mec1,
@@ -81,20 +99,24 @@ results_list <- list("MEC1_vs_GM12878" = mec1,
                      "SD6.6hr_vs_SD6.0hr" = time_6hr,
                      "SD6.24hr_vs_SD6.0hr" = time_24hr)
 
-df <- bind_rows(results_list, .id = "contrast")
+df <- rbindlist(results_list, idcol = "contrast")
 ```
 
 ## Write results out
 
 ```{r}
 # split DE results into gene and RE results and write out
-dge <- df %>% 
-  filter(feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA471642", "data-files", "dge.tsv"))
+fwrite(
+  x = df[feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA471642", "data-files", "dge.tsv"),
+  sep = "\t"
+  )
 
-dre <- df %>% 
-  filter(!feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA471642", "data-files", "dre.tsv"))
+fwrite(
+  x = df[!feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA471642", "data-files", "dre.tsv"),
+  sep = "\t"
+)
 ```
 
 ## Calculate normalized counts
@@ -107,8 +129,8 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA471642", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA471642", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA471642", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA471642", "rds-files", "re-lcpms.rds"))
 ```
 
 ---

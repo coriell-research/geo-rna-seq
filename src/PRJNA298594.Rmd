@@ -1,5 +1,5 @@
 ---
-title: "PRJNA474537 Analysis"
+title: "PRJNA298594 Analysis"
 output:
   html_document:
     df_print: paged
@@ -23,7 +23,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA474537", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA298594", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -80,10 +80,16 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  CC122_vs_DMSO_5hr = CC122.5 - DMSO.5,
-  LEN_vs_DMSO_5hr = LEN.5 - DMSO.5,
-  CC122_vs_DMSO_24hr = (CC122.24 - CC122.5) - (DMSO.24 - DMSO.5),
-  LEN_vs_DMSO_24hr = (LEN.24 - LEN.5) - (DMSO.24 - DMSO.5),
+  YB5.Decitabine_Depsipeptide_vs_DMSO = dac_depsi - dmso,
+  YB5.Decitabine_GSK343_vs_DMSO = dac_gsk343 - dmso,
+  YB5.Decitabine_S2101_vs_DMSO = dac_s2101 - dmso,
+  YB5.Decitabine_UNC0638_vs_DMSO = dac_unc0638 - dmso,
+  
+  YB5.Decitabine_vs_DMSO = dac - dmso,
+  YB5.Depsipeptide_vs_DMSO = depsi - dmso,
+  YB5.GSK343_vs_DMSO = gsk343 - dmso,
+  YB5.S2101_vs_DMSO = s2101 - dmso,
+  YB5.UNC0638_vs_DMSO = unc0638 - dmso,
   
   levels = design
 )
@@ -99,9 +105,9 @@ fc <- 1.5
 de_results <- lapply(
   cons, 
   get_de_results2, 
+  glm_fit = fit, 
   contrast_matrix = contrast.matrix,
-  fc = fc,
-  glm_fit = fit
+  fc = fc
 )
 
 # extract all results and bind to single df
@@ -114,13 +120,13 @@ df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast"
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA474537", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA298594", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA474537", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA298594", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -135,6 +141,6 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA474537", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA474537", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA298594", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA298594", "rds-files", "re-lcpms.rds"))
 ```

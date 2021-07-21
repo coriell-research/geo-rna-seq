@@ -12,44 +12,68 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-
 source("helpers/helpers.R")
 ```
 
-## Read in SummarizedExperiment Object
+## Read in MultiAssayExperiment Object
 
 ```{r}
 library(here)
-library(SummarizedExperiment)
+library(data.table)
+library(MultiAssayExperiment)
 
 
-se <- readRDS(here("data", "PRJNA479415", "summarized_experiment.rds"))
+mae <- readRDS(here("data", "PRJNA479415", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
 
 ```{r}
-cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
-## Filter out RNA REs from counts assay
+## Extract RE and Gene Counts as matrices
 
 ```{r}
-se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+```
+
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
 ```
 
 ## DE pipeline
 
-```{r}
-library(edgeR)
-library(coriell)
+Control for batch effect.
 
+```{r}
 # add batch variable
-colData(se)$batch <- factor(c(1, 1, 2, 2, 3, 3))
-design <- model.matrix(~0 + batch + group, data = colData(se))
-colnames(design) <- str_remove(colnames(design), "^group")
-y <- DGEList(counts = assay(se, "counts"),
-             samples = colData(se))
+colData(mae)$batch <- factor(c(1, 1, 2, 2, 3, 3))
+design <- model.matrix(~0 + batch + group, data = colData(mae))
+colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
+y <- DGEList(counts = counts,
+             samples = colData(mae))
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")
@@ -59,31 +83,36 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ## DE testing
 
-
 ```{r}
 # set global significance values
 fc <- 1.5
-sig <- 0.1
 
 # test, controlling for batches
-venetoclax_azacitidine_6hr <- glmTreat(fit, coef = 4, lfc = log2(fc))
+venetoclax_azacitidine_6hr <- setDT(
+  coriell::edger_to_df(
+    glmTreat(fit, coef = 4, lfc = log2(fc))
+    )
+  )
 ```
 
 ## Write results out
 
 ```{r}
+venetoclax_azacitidine_6hr[, contrast := "Venetoclax_Azacitidine_vs_DMSO_6hr"]
+df <- dplyr::select(venetoclax_azacitidine_6hr, contrast, dplyr::everything())
+
 # split DE results into gene and RE results and write out (add contrast column for consistency)
-df <- edger_to_df(venetoclax_azacitidine_6hr) %>% 
-  mutate(contrast = "Venetoclax_Azacitidine_vs_DMSO_6hr") %>% 
-  select(contrast, everything())
+fwrite(
+  x = df[feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA479415", "data-files", "dge.tsv"),
+  sep = "\t"
+  )
 
-dge <- df %>% 
-  filter(feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA479415", "data-files", "dge.tsv"))
-
-dre <- df %>% 
-  filter(!feature_id %in% cds$gene_name) %>% 
-  write_tsv(here("results", "PRJNA479415", "data-files", "dre.tsv"))
+fwrite(
+  x = df[!feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA479415", "data-files", "dre.tsv"),
+  sep = "\t"
+)
 ```
 
 ## Calculate normalized counts
@@ -96,9 +125,11 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA479415", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA479415", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA479415", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA479415", "rds-files", "re-lcpms.rds"))
 ```
+
+---
 
 # OLD CODE
 

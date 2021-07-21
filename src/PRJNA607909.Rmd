@@ -12,30 +12,55 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-
 source("helpers/helpers.R")
 ```
 
-## Read in SummarizedExperiment Object
+## Read in MultiAssayExperiment Object
 
 ```{r}
 library(here)
-library(SummarizedExperiment)
+library(data.table)
+library(MultiAssayExperiment)
 
 
-se <- readRDS(here("data", "PRJNA607909", "summarized_experiment.rds"))
+mae <- readRDS(here("data", "PRJNA607909", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
 
 ```{r}
-cds <- read_rds(here("doc", "gencode.v26.annotation.cds.rds"))
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
 ```
 
-## Filter out RNA REs from counts assay
+## Extract RE and Gene Counts as matrices
 
 ```{r}
-se <- subset(se, !str_detect(rownames(se), "tRNA|snRNA|scRNA|rRNA|srpRNA|Simple_repeat|Low_complexity"))
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+```
+
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
 ```
 
 ## DE pipeline
@@ -45,15 +70,12 @@ only on replicate for each cell_type so we can't properly test for differences
 within cell_types. However we can test DAC vs DMSO controlling for cell_type.
 
 ```{r}
-library(edgeR)
-library(coriell)
-
-
-Treatment <- factor(colData(se)$treatment, levels = c("pbs", "dac"))
-Cell_type <- factor(colData(se)$cell_type)
+Treatment <- factor(colData(mae)$treatment, levels = c("pbs", "dac"))
+Cell_type <- factor(colData(mae)$cell_type)
 design <- model.matrix(~Cell_type + Treatment)
-y <- DGEList(counts = assay(se, "counts"),
-             samples = colData(se))
+
+y <- DGEList(counts = counts,
+             samples = colData(mae))
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")
@@ -68,24 +90,27 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 fc = 1.5
 
 # test for overall differences 
-dac <- glmTreat(fit, lfc = log2(fc))
+dac <- setDT(coriell::edger_to_df(glmTreat(fit, lfc = log2(fc))))
 ```
 
 ## Write results out
 
 ```{r}
 # split DE results into gene and RE results and write out
-dge <- edger_to_df(dac) %>% 
-  filter(feature_id %in% cds$gene_name) %>% 
-  mutate(contrast = "Decitabine_vs_PBS") %>% 
-  select(contrast, everything()) %>% 
-  write_tsv(here("results", "PRJNA607909", "data-files", "dge.tsv"))
+dac[, contrast := "Decitabine_vs_PBS"]
+df <- dplyr::select(dac, contrast, dplyr::everything())
 
-dre <- edger_to_df(dac) %>% 
-  filter(!feature_id %in% cds$gene_name) %>% 
-  mutate(contrast = "Decitabine_vs_PBS") %>% 
-  select(contrast, everything()) %>% 
-  write_tsv(here("results", "PRJNA607909", "data-files", "dre.tsv"))
+fwrite(
+  x = df[feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA607909", "data-files", "dge.tsv"),
+  sep = "\t"
+  )
+
+fwrite(
+  x = df[!feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA607909", "data-files", "dre.tsv"),
+  sep = "\t"
+)
 ```
 
 ## Calculate normalized counts
@@ -98,8 +123,8 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-write_rds(lcpms.gene, here("results", "PRJNA607909", "rds-files", "gene-lcpms.rds"))
-write_rds(lcpms.re, here("results", "PRJNA607909", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA607909", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA607909", "rds-files", "re-lcpms.rds"))
 ```
 
 ---

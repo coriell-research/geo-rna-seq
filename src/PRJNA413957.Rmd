@@ -1,5 +1,5 @@
 ---
-title: "PRJNA474537 Analysis"
+title: "PRJNA413957 Analysis"
 output:
   html_document:
     df_print: paged
@@ -23,7 +23,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA474537", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA413957", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -63,12 +63,24 @@ all(colnames(genes) == colnames(repeats))
 counts <- rbind(genes, repeats)
 ```
 
+## Sum technical replicates from different runs and collapse metadata
+
+```{r}
+counts2 <- sumTechReps(counts, ID = colData(mae)$bio_sample)
+
+metadata <- setDT(as.data.frame(colData(mae)))
+metadata <- unique(metadata, by = "bio_sample")
+setDF(metadata, rownames = metadata$bio_sample)
+
+all(colnames(counts2) == rownames(metadata))
+```
+
 ## DE pipeline
 
 ```{r}
-design <- model.matrix(~0 + group, data = colData(mae))
+design <- model.matrix(~0 + group, data = metadata)
 colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
-y <- DGEList(counts = counts, samples = colData(mae))
+y <- DGEList(counts = counts2, samples = metadata)
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")
@@ -80,10 +92,17 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  CC122_vs_DMSO_5hr = CC122.5 - DMSO.5,
-  LEN_vs_DMSO_5hr = LEN.5 - DMSO.5,
-  CC122_vs_DMSO_24hr = (CC122.24 - CC122.5) - (DMSO.24 - DMSO.5),
-  LEN_vs_DMSO_24hr = (LEN.24 - LEN.5) - (DMSO.24 - DMSO.5),
+  YB5.HH1.10uM_vs_DMSO_2hr = hh1.10uM.2 - dmso..2,
+  YB5.HH1.10uM_vs_DMSO_4hr = (hh1.10uM.4 - hh1.10uM.2) - (dmso..4 - dmso..2),
+  YB5.HH1.10uM_vs_DMSO_8hr = (hh1.10uM.8 - hh1.10uM.2) - (dmso..8 - dmso..2),
+  YB5.HH1.10uM_vs_DMSO_24hr = (hh1.10uM.24 - hh1.10uM.2) - (dmso..24 - dmso..2),
+  YB5.HH1.10uM_vs_DMSO_96hr = (hh1.10uM.96 - hh1.10uM.2) - (dmso..96 - dmso..2),
+  
+  YB5.Decitabine_vs_DMSO_96hr = dac_dmso..96 - dmso..96,
+  YB5.HH1.25uM_vs_DMSO_96hr = hh1.25uM.96 - dmso..96,
+  YB5.Decitabine_HH1.10uM_vs_DMSO_96hr = dac_hh1.10uM.96 - dmso..96,
+  YB5.Decitabine_HH1.25uM_vs_DMSO_96hr = dac_hh1.25uM.96 - dmso..96,
+  YB5.TetOff_vs_TetOn = tetOff..72 - tetOn..72,
   
   levels = design
 )
@@ -99,9 +118,9 @@ fc <- 1.5
 de_results <- lapply(
   cons, 
   get_de_results2, 
+  glm_fit = fit, 
   contrast_matrix = contrast.matrix,
-  fc = fc,
-  glm_fit = fit
+  fc = fc
 )
 
 # extract all results and bind to single df
@@ -114,13 +133,13 @@ df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast"
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA474537", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA413957", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA474537", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA413957", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -135,6 +154,6 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA474537", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA474537", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA413957", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA413957", "rds-files", "re-lcpms.rds"))
 ```
