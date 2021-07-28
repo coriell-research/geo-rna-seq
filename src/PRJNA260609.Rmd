@@ -81,15 +81,31 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 ## DE testing
 
 ```{r}
-bix.res <- setDT(coriell::edger_to_df(glmTreat(fit, coef = 3, lfc = log2(1.5))))
-bix.res[, contrast := "BIX01294_vs_Control"]
-bix.res <- dplyr::select(bix.res, contrast, dplyr::everything())
+contrast.matrix <- makeContrasts(
+  BIX01294_vs_Control = drugBIX01294,
+  Rapamycin_vs_Control = drugRapamycin,
+  
+  levels = design
+)
 
-rapa.res <- setDT(coriell::edger_to_df(glmTreat(fit, coef = 4, lfc = log2(1.5))))
-rapa.res[, contrast := "Rapamycin_vs_Control"]
-rapa.res <- dplyr::select(rapa.res, contrast, dplyr::everything())
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
 
-df <- rbindlist(list(bix.res, rapa.res))
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+
+# map over and extract results
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  glm_fit = fit, 
+  contrast_matrix = contrast.matrix,
+  fc = fc
+)
+
+# extract all results and bind to single df
+df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
 ## Write results out
@@ -127,5 +143,5 @@ saveRDS(lcpms.re, here("results", "PRJNA260609", "rds-files", "re-lcpms.rds"))
 
 ```{r}
 saveRDS(design, here("results", "PRJNA260609", "rds-files", "design.rds"))
-#saveRDS(contrast.matrix, here("results", "PRJNA260609", "rds-files", "contrast-matrix.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA260609", "rds-files", "contrast-matrix.rds"))
 ```

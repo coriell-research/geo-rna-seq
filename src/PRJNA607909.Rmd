@@ -71,6 +71,7 @@ within cell_types. However we can test DAC vs DMSO controlling for cell_type.
 
 ```{r}
 Treatment <- factor(colData(mae)$treatment, levels = c("pbs", "dac"))
+colData(mae)$cell_type <- gsub("-", "\\.", colData(mae)$cell_type)
 Cell_type <- factor(colData(mae)$cell_type)
 design <- model.matrix(~Cell_type + Treatment)
 
@@ -86,20 +87,35 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 ## DE testing
 
 ```{r}
-# define global significant cutoffs
-fc = 1.5
+contrast.matrix <- makeContrasts(
+  Decitabine_vs_PBS = Treatmentdac,
+  
+  levels = design
+)
 
-# test for overall differences 
-dac <- setDT(coriell::edger_to_df(glmTreat(fit, lfc = log2(fc))))
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+
+# map over and extract results
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  glm_fit = fit, 
+  contrast_matrix = contrast.matrix,
+  fc = fc
+)
+
+# extract all results and bind to single df
+df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
 ## Write results out
 
 ```{r}
-# split DE results into gene and RE results and write out
-dac[, contrast := "Decitabine_vs_PBS"]
-df <- dplyr::select(dac, contrast, dplyr::everything())
-
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
   file = here("results", "PRJNA607909", "data-files", "dge.tsv"),
@@ -131,7 +147,7 @@ saveRDS(lcpms.re, here("results", "PRJNA607909", "rds-files", "re-lcpms.rds"))
 
 ```{r}
 saveRDS(design, here("results", "PRJNA607909", "rds-files", "design.rds"))
-#saveRDS(contrast.matrix, here("results", "PRJNA607909", "rds-files", "contrast-matrix.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA607909", "rds-files", "contrast-matrix.rds"))
 ```
 
 ---

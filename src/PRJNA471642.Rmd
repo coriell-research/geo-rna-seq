@@ -84,22 +84,33 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 Differential expression testing is set up differently for this dataset
 
 ```{r}
-# set global significance levels
+contrast.matrix <- makeContrasts(
+  MEC1_vs_GM12878 = Cell_lineMEC1,
+  SD6.2hr_vs_SD6.0hr = Time2,
+  SD6.6hr_vs_SD6.0hr = Time6,
+  SD6.24hr_vs_SD6.0hr = Time24,
+  
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+
+# set global significance levels (used in all downstream plots/analyses)
 fc <- 1.5
 
-# perfom DE testing of each coefficient
-mec1 <- coriell::edger_to_df(glmTreat(fit, coef = 2, lfc = log2(fc)))
-time_2hr <- coriell::edger_to_df(glmTreat(fit, coef = 3, lfc = log2(fc)))
-time_6hr <- coriell::edger_to_df(glmTreat(fit, coef = 4, lfc = log2(fc)))
-time_24hr <- coriell::edger_to_df(glmTreat(fit, coef = 5, lfc = log2(fc)))
+# map over and extract results
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  glm_fit = fit, 
+  contrast_matrix = contrast.matrix,
+  fc = fc
+)
 
-# bind results into single df
-results_list <- list("MEC1_vs_GM12878" = mec1,
-                     "SD6.2hr_vs_SD6.0hr" = time_2hr,
-                     "SD6.6hr_vs_SD6.0hr" = time_6hr,
-                     "SD6.24hr_vs_SD6.0hr" = time_24hr)
-
-df <- rbindlist(results_list, idcol = "contrast")
+# extract all results and bind to single df
+df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
 ## Write results out
@@ -137,7 +148,7 @@ saveRDS(lcpms.re, here("results", "PRJNA471642", "rds-files", "re-lcpms.rds"))
 
 ```{r}
 saveRDS(design, here("results", "PRJNA471642", "rds-files", "design.rds"))
-#saveRDS(contrast.matrix, here("results", "PRJNA471642", "rds-files", "contrast-matrix.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA471642", "rds-files", "contrast-matrix.rds"))
 ```
 
 ---
