@@ -559,3 +559,14 @@ for (batch in names(lcpms)) {
   saveRDS(lcpms.re[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-re-lcpms.rds")))
 }
 ```
+
+## Save design and contrast matrix
+
+```{r}
+designs <- lapply(pipeline_res, function(x) x[["design"]])
+
+for (d in names(designs)) {
+  saveRDS(designs[[d]], here("results", "PRJNA379584", "rds-files", paste0("design-", d, ".rds")))
+  saveRDS(contrast_mats[[d]], here("results", "PRJNA379584", "rds-files", paste0("contrast-matrix-", d, ".rds")))
+}
+```

@@ -69,11 +69,11 @@ The sample_names come from multiple runs, these should be summed per biological
 sample
 
 ```{r}
-counts <- edgeR::sumTechReps(counts, ID = colData(mae)$id)
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
 
 metadata <- as.data.table(colData(mae))
-metadata <- unique(metadata[, .(id, cell_line, group, dose, time_hr)])
-setDF(metadata, rownames = metadata$id)
+metadata <- unique(metadata[, .(bio_sample, cell_line, group, dose, time_hr)])
+setDF(metadata, rownames = metadata$bio_sample)
 ```
 
 ## DE pipeline
@@ -148,4 +148,11 @@ lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 # Write normalized counts out
 saveRDS(lcpms.gene, here("results", "PRJNA270740", "rds-files", "gene-lcpms.rds"))
 saveRDS(lcpms.re, here("results", "PRJNA270740", "rds-files", "re-lcpms.rds"))
+```
+
+## Save design and contrast matrix
+
+```{r}
+saveRDS(design, here("results", "PRJNA270740", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA270740", "rds-files", "contrast-matrix.rds"))
 ```

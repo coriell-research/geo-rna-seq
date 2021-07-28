@@ -137,6 +137,13 @@ saveRDS(lcpms.gene, here("results", "PRJNA555350", "rds-files", "gene-lcpms.rds"
 saveRDS(lcpms.re, here("results", "PRJNA555350", "rds-files", "re-lcpms.rds"))
 ```
 
+## Save design and contrast matrix
+
+```{r}
+saveRDS(design, here("results", "PRJNA555350", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA555350", "rds-files", "contrast-matrix.rds"))
+```
+
 ---
 
 # OLD CODE

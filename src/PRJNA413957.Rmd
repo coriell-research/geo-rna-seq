@@ -157,3 +157,10 @@ lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 saveRDS(lcpms.gene, here("results", "PRJNA413957", "rds-files", "gene-lcpms.rds"))
 saveRDS(lcpms.re, here("results", "PRJNA413957", "rds-files", "re-lcpms.rds"))
 ```
+
+## Save design and contrast matrix
+
+```{r}
+saveRDS(design, here("results", "PRJNA413957", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA413957", "rds-files", "contrast-matrix.rds"))
+```
