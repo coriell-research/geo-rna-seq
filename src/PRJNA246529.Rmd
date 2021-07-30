@@ -7,7 +7,6 @@ output:
     theme: united
     toc: yes
     toc_depth: 4
-output: html_document
 ---
 
 ```{r setup, include=FALSE}

@@ -1,0 +1,188 @@
+---
+title: "PRJNA515531 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+source("helpers/helpers.R")
+```
+
+## Read in MultiAssayExperiment Object
+
+```{r}
+library(here)
+library(data.table)
+library(MultiAssayExperiment)
+
+
+mae <- readRDS(here("data", "PRJNA515531", "MultiAssayExperiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Extract RE and Gene Counts as matrices
+
+```{r}
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+```
+
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
+```
+
+## DE pipeline
+
+```{r}
+design <- model.matrix(~0 + group, data = colData(mae))
+colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
+y <- DGEList(counts = counts, samples = colData(mae))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+There may be different time points, however, the metadata in SRA does not contain 
+this information.
+
+```{r}
+contrast.matrix <- makeContrasts(
+  BT549.Abemaciclib_vs_BT549.DMSO = BT549.Abemaciclib - BT549.DMSO,
+  BT549.Alvocidib_vs_BT549.DMSO = BT549.Alvocidib - BT549.DMSO,
+  BT549.Palbociclib_vs_BT549.DMSO = BT549.Palbociclib - BT549.DMSO,
+  BT549.Ribociclib_vs_BT549.DMSO = BT549.Ribociclib - BT549.DMSO,
+
+  HCC1806.Abemaciclib_vs_HCC1806.DMSO = HCC1806.Abemaciclib - HCC1806.DMSO,
+  HCC1806.Alvocidib_vs_HCC1806.DMSO = HCC1806.Alvocidib - HCC1806.DMSO,
+  HCC1806.Palbociclib_vs_HCC1806.DMSO = HCC1806.Palbociclib - HCC1806.DMSO,
+  HCC1806.Ribociclib_vs_HCC1806.DMSO = HCC1806.Ribociclib - HCC1806.DMSO,
+  
+  Hs578T.Abemaciclib_vs_Hs578T.DMSO = Hs578T.Abemaciclib - Hs578T.DMSO,
+  Hs578T.Alvocidib_vs_Hs578T.DMSO = Hs578T.Alvocidib - Hs578T.DMSO,
+  Hs578T.Palbociclib_vs_Hs578T.DMSO = Hs578T.Palbociclib - Hs578T.DMSO,
+  Hs578T.Ribociclib_vs_Hs578T.DMSO = Hs578T.Ribociclib - Hs578T.DMSO,
+  
+  MCF7.Abemaciclib_vs_MCF7.DMSO = MCF7.Abemaciclib - MCF7.DMSO,
+  MCF7.Alvocidib_vs_MCF7.DMSO = MCF7.Alvocidib - MCF7.DMSO,
+  MCF7.Palbociclib_vs_MCF7.DMSO = MCF7.Palbociclib - MCF7.DMSO,
+  MCF7.Ribociclib_vs_MCF7.DMSO = MCF7.Ribociclib - MCF7.DMSO,
+  
+  PDX1258.Abemaciclib_vs_PDX1258.DMSO = PDX1258.Abemaciclib - PDX1258.DMSO,
+  PDX1258.Alvocidib_vs_PDX1258.DMSO = PDX1258.Alvocidib - PDX1258.DMSO,
+  PDX1258.Palbociclib_vs_PDX1258.DMSO = PDX1258.Palbociclib - PDX1258.DMSO,
+  PDX1258.Ribociclib_vs_PDX1258.DMSO = PDX1258.Ribociclib - PDX1258.DMSO,
+
+  PDXHCI002.Abemaciclib_vs_PDXHCI002.DMSO = PDXHCI002.Abemaciclib - PDXHCI002.DMSO,
+  PDXHCI002.Alvocidib_vs_PDXHCI002.DMSO = PDXHCI002.Alvocidib - PDXHCI002.DMSO,
+  PDXHCI002.Palbociclib_vs_PDXHCI002.DMSO = PDXHCI002.Palbociclib - PDXHCI002.DMSO,
+  PDXHCI002.Ribociclib_vs_PDXHCI002.DMSO = PDXHCI002.Ribociclib - PDXHCI002.DMSO,
+  
+  T47D.Abemaciclib_vs_T47D.DMSO = T47D.Abemaciclib - T47D.DMSO,
+  T47D.Alvocidib_vs_T47D.DMSO = T47D.Alvocidib - T47D.DMSO,
+  T47D.Palbociclib_vs_T47D.DMSO = T47D.Palbociclib - T47D.DMSO,
+  T47D.Ribociclib_vs_T47D.DMSO = T47D.Ribociclib - T47D.DMSO,
+  
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+
+# map over and extract results
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  glm_fit = fit, 
+  contrast_matrix = contrast.matrix,
+  fc = fc
+)
+
+# extract all results and bind to single df
+df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
+```
+
+## Create results directory for project
+
+```{r}
+if (!dir.exists(here("results", "PRJNA515531"))) {
+  dir.create(here("results", "PRJNA515531", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA515531", "data-files"))
+}
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+fwrite(
+  x = df[feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA515531", "data-files", "dge.tsv"),
+  sep = "\t"
+  )
+
+fwrite(
+  x = df[!feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA515531", "data-files", "dre.tsv"),
+  sep = "\t"
+)
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+saveRDS(lcpms.gene, here("results", "PRJNA515531", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA515531", "rds-files", "re-lcpms.rds"))
+```
+
+## Save design and contrast matrix
+
+```{r}
+saveRDS(design, here("results", "PRJNA515531", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA515531", "rds-files", "contrast-matrix.rds"))
+```

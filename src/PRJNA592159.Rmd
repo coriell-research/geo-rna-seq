@@ -1,5 +1,5 @@
 ---
-title: "PRJNA254756 Analysis"
+title: "PRJNA592159 Analysis"
 output:
   html_document:
     df_print: paged
@@ -7,7 +7,6 @@ output:
     theme: united
     toc: yes
     toc_depth: 4
-
 ---
 
 ```{r setup, include=FALSE}
@@ -23,7 +22,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA254756", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA592159", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -78,12 +77,17 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ## DE testing
 
+There may be different time points, however, the metadata in SRA does not contain 
+this information.
+
 ```{r}
 contrast.matrix <- makeContrasts(
-  pIND_shMiz1.minusDox_BI8622_vs_pIND_shMiz1.minusDox_DMSO = pIND_shMiz1.minusDox_BI8622 - pIND_shMiz1.minusDox_DMSO,
-  pIND_shMiz1.plusDox_BI8622_vs_pIND_shMiz1.plusDox_DMSO = pIND_shMiz1.plusDox_BI8622 - pIND_shMiz1.plusDox_DMSO,
-  pLKO_empty.BI8622_vs_pLKO_empty.DMSO = pLKO_empty.BI8622 - pLKO_empty.DMSO,
-  shHUWE1.BI8622_vs_shHUWE1.DMSO = shHUWE1.BI8622 - shHUWE1.DMSO,
+  CAPAN.Calcitriol_vs_CAPAN.DMSO = CAPAN.Calcitriol - CAPAN.DMSO,
+  HPAFII.Calcitriol_vs_HPAFII.DMSO = HPAFII.Calcitriol - HPAFII.DMSO,
+  MIAPACA2.Calcitriol_vs_MIAPACA2.DMSO = MIAPACA2.Calcitriol - MIAPACA2.DMSO,
+  PANC1.Calcitriol_vs_PANC1.DMSO = PANC1.Calcitriol - PANC1.DMSO,
+  PDAC.Calcitriol_vs_PDAC.DMSO = PDAC.Calcitriol - PDAC.DMSO,
+  PDAC.FFX_vs_PDAC.DMSO = PDAC.FFX - PDAC.DMSO,
   
   levels = design
 )
@@ -108,19 +112,28 @@ de_results <- lapply(
 df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
+## Create results directory for project
+
+```{r}
+if (!dir.exists(here("results", "PRJNA592159"))) {
+  dir.create(here("results", "PRJNA592159", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA592159", "data-files"))
+}
+```
+
 ## Write results out
 
 ```{r}
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA254756", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA592159", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA254756", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA592159", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -135,14 +148,13 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA254756", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA254756", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA592159", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA592159", "rds-files", "re-lcpms.rds"))
 ```
 
 ## Save design and contrast matrix
 
 ```{r}
-saveRDS(design, here("results", "PRJNA254756", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA254756", "rds-files", "contrast-matrix.rds"))
+saveRDS(design, here("results", "PRJNA592159", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA592159", "rds-files", "contrast-matrix.rds"))
 ```
-

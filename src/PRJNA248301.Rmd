@@ -1,5 +1,5 @@
 ---
-title: "PRJNA254756 Analysis"
+title: "PRJNA248301 Analysis"
 output:
   html_document:
     df_print: paged
@@ -7,7 +7,6 @@ output:
     theme: united
     toc: yes
     toc_depth: 4
-
 ---
 
 ```{r setup, include=FALSE}
@@ -23,7 +22,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA254756", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA248301", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -80,10 +79,15 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  pIND_shMiz1.minusDox_BI8622_vs_pIND_shMiz1.minusDox_DMSO = pIND_shMiz1.minusDox_BI8622 - pIND_shMiz1.minusDox_DMSO,
-  pIND_shMiz1.plusDox_BI8622_vs_pIND_shMiz1.plusDox_DMSO = pIND_shMiz1.plusDox_BI8622 - pIND_shMiz1.plusDox_DMSO,
-  pLKO_empty.BI8622_vs_pLKO_empty.DMSO = pLKO_empty.BI8622 - pLKO_empty.DMSO,
-  shHUWE1.BI8622_vs_shHUWE1.DMSO = shHUWE1.BI8622 - shHUWE1.DMSO,
+  mock.vorinostat_vs_mock.DMSO.4hr = mock.vorinostat.4hr - mock.DMSO.4hr,
+  mock.vorinostat_mock.DMSO.8hr = (mock.vorinostat.8hr - mock.vorinostat.4hr) - (mock.DMSO.8hr - mock.DMSO.4hr),
+  mock.vorinostat_mock.DMSO.12hr = (mock.vorinostat.12hr - mock.vorinostat.4hr) - (mock.DMSO.12hr - mock.DMSO.4hr),
+  
+  siGLI1.vorinostat_vs_siGLI1.DMSO.4hr = siGLI1.vorinostat.4hr - siGLI1.DMSO.4hr,
+  siGLI1.vorinostat_vs_siGLI1.DMSO.8hr = (siGLI1.vorinostat.8hr - siGLI1.vorinostat.4hr) - (siGLI1.DMSO.8hr - siGLI1.DMSO.4hr),
+  
+  siPSMD13.vorinostat_vs_siPSMD13.DMSO.8hr = siPSMD13.vorinostat.8hr - siPSMD13.DMSO.8hr,
+  siPSMD13.vorinostat_vs_siPSMD13.DMSO.12hr = (siPSMD13.vorinostat.12hr - siPSMD13.vorinostat.8hr) - (siPSDM13.DMSO.12hr - siPSMD13.DMSO.8hr),
   
   levels = design
 )
@@ -108,19 +112,28 @@ de_results <- lapply(
 df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
+## Create results directory for project
+
+```{r}
+if (!dir.exists(here("results", "PRJNA248301"))) {
+  dir.create(here("results", "PRJNA248301", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA248301", "data-files"))
+}
+```
+
 ## Write results out
 
 ```{r}
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA254756", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA248301", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA254756", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA248301", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -135,14 +148,13 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA254756", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA254756", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA248301", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA248301", "rds-files", "re-lcpms.rds"))
 ```
 
 ## Save design and contrast matrix
 
 ```{r}
-saveRDS(design, here("results", "PRJNA254756", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA254756", "rds-files", "contrast-matrix.rds"))
+saveRDS(design, here("results", "PRJNA248301", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA248301", "rds-files", "contrast-matrix.rds"))
 ```
-

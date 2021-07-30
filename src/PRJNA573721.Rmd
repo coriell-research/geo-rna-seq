@@ -1,5 +1,5 @@
 ---
-title: "PRJNA254756 Analysis"
+title: "PRJNA573721 Analysis"
 output:
   html_document:
     df_print: paged
@@ -7,7 +7,6 @@ output:
     theme: united
     toc: yes
     toc_depth: 4
-
 ---
 
 ```{r setup, include=FALSE}
@@ -23,7 +22,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA254756", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA573721", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -80,10 +79,21 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  pIND_shMiz1.minusDox_BI8622_vs_pIND_shMiz1.minusDox_DMSO = pIND_shMiz1.minusDox_BI8622 - pIND_shMiz1.minusDox_DMSO,
-  pIND_shMiz1.plusDox_BI8622_vs_pIND_shMiz1.plusDox_DMSO = pIND_shMiz1.plusDox_BI8622 - pIND_shMiz1.plusDox_DMSO,
-  pLKO_empty.BI8622_vs_pLKO_empty.DMSO = pLKO_empty.BI8622 - pLKO_empty.DMSO,
-  shHUWE1.BI8622_vs_shHUWE1.DMSO = shHUWE1.BI8622 - shHUWE1.DMSO,
+  CCRF_CEM.None.IL7_vs_CCRF_CEM.None.VEH_4hr = CCRF_CEM.None.IL7.4 - CCRF_CEM.None.VEH.,
+  CCRF_CEM.None.DEX_vs_CCRF_CEM.None.VEH_4hr = CCRF_CEM.None.DEX.4 - CCRF_CEM.None.VEH.,
+  CCRF_CEM.None.DEX_IL7_vs_CCRF_CEM.None.VEH_4hr = CCRF_CEM.None.DEX_IL7.4 - CCRF_CEM.None.VEH.,
+  
+  CCRF_CEM.None.IL7_vs_CCRF_CEM.None.VEH_16hr = CCRF_CEM.None.IL7.16 - CCRF_CEM.None.VEH.,
+  CCRF_CEM.None.DEX_vs_CCRF_CEM.None.VEH_16hr = CCRF_CEM.None.DEX.16 - CCRF_CEM.None.VEH.,
+  CCRF_CEM.None.DEX_IL7_vs_CCRF_CEM.None.VEH_16hr = CCRF_CEM.None.DEX_IL7.16 - CCRF_CEM.None.VEH.,
+  
+  CCRF_CEM.STAT5A_STAT5B.IL7_vs_CCRF_CEM.STAT5A_STAT5B.VEH_4hr = CCRF_CEM.STAT5A_STAT5B.IL7.4 - CCRF_CEM.STAT5A_STAT5B.VEH.,
+  CCRF_CEM.STAT5A_STAT5B.DEX_vs_CCRF_CEM.STAT5A_STAT5B.VEH_4hr = CCRF_CEM.STAT5A_STAT5B.DEX.4 - CCRF_CEM.STAT5A_STAT5B.VEH.,
+  CCRF_CEM.STAT5A_STAT5B.DEX_IL7_vs_CCRF_CEM.STAT5A_STAT5B.VEH_4hr = CCRF_CEM.STAT5A_STAT5B.DEX_IL7.4 - CCRF_CEM.STAT5A_STAT5B.VEH.,
+  
+  CCRF_CEM.STAT5A_STAT5B.IL7_vs_CCRF_CEM.STAT5A_STAT5B.VEH_16hr = CCRF_CEM.STAT5A_STAT5B.IL7.16 - CCRF_CEM.STAT5A_STAT5B.VEH.,
+  CCRF_CEM.STAT5A_STAT5B.DEX_vs_CCRF_CEM.STAT5A_STAT5B.VEH_16hr = CCRF_CEM.STAT5A_STAT5B.DEX.16 - CCRF_CEM.STAT5A_STAT5B.VEH.,
+  CCRF_CEM.STAT5A_STAT5B.DEX_IL7_vs_CCRF_CEM.STAT5A_STAT5B.VEH_16hr = CCRF_CEM.STAT5A_STAT5B.DEX_IL7.16 - CCRF_CEM.STAT5A_STAT5B.VEH.,
   
   levels = design
 )
@@ -108,19 +118,28 @@ de_results <- lapply(
 df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
+## Create results directory for project
+
+```{r}
+if (!dir.exists(here("results", "PRJNA573721"))) {
+  dir.create(here("results", "PRJNA573721", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA573721", "data-files"))
+}
+```
+
 ## Write results out
 
 ```{r}
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA254756", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA573721", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA254756", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA573721", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -135,14 +154,13 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA254756", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA254756", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA573721", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA573721", "rds-files", "re-lcpms.rds"))
 ```
 
 ## Save design and contrast matrix
 
 ```{r}
-saveRDS(design, here("results", "PRJNA254756", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA254756", "rds-files", "contrast-matrix.rds"))
+saveRDS(design, here("results", "PRJNA573721", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA573721", "rds-files", "contrast-matrix.rds"))
 ```
-
