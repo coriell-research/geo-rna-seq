@@ -1,0 +1,162 @@
+---
+title: "PRJNA523616 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+source("helpers/helpers.R")
+```
+
+## Read in MultiAssayExperiment Object
+
+```{r}
+library(here)
+library(data.table)
+library(MultiAssayExperiment)
+
+
+mae <- readRDS(here("data", "PRJNA523616", "MultiAssayExperiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Extract RE and Gene Counts as matrices
+
+```{r}
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+```
+
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
+```
+
+## DE pipeline
+
+```{r}
+design <- model.matrix(~0 + group, data = colData(mae))
+colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
+y <- DGEList(counts = counts, samples = colData(mae))
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+y <- calcNormFactors(y, design = design, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+```
+
+## DE testing
+
+```{r}
+contrast.matrix <- makeContrasts(
+  F36P.Etoposide_vs_Untreated = F36P.Etoposide - F36P.Untreated,
+  HL60.Etoposide_vs_untreated = HL60.Etoposide - HL60.Untreated,
+  KASUMI1.Etoposide_vs_Untreated = KASUMI1.Etoposide - KASUMI1.Untreated,
+  MOLM13.Etoposide_vs_untreated = MOLM13.Etoposide - MOLM13.Untreated,
+  MONOMAC6.Etoposide_vs_Untreated = MONOMAC6.Etoposide - MONOMAC6.Untreated,
+  MV411.Etoposide_vs_Untreated = MV411.Etoposide - MV411.Untreated,
+  NB4.Etoposide_vs_Untreated = NB4.Etoposide - NB4.Untreated,
+  NOMO1.Etoposide_vs_Untreated = NOMO1.Etoposide - NOMO1.Untreated,
+  OCIAML2.Etoposide_vs_Untreated = OCIAML2.Etoposide - OCIAML2.Untreated,
+  OCIAML3.Etoposide_vs_Untreated = OCIAML3.Etoposide - OCIAML3.Untreated,
+  THP1.Etoposide_vs_Untreated = THP1.Etoposide - THP1.Untreated,
+  
+  levels = design
+)
+
+# create inputs to map over (titles are same as above)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+
+# set global significance levels (used in all downstream plots/analyses)
+fc <- 1.5
+
+# map over and extract results
+de_results <- lapply(
+  cons, 
+  get_de_results2, 
+  glm_fit = fit, 
+  contrast_matrix = contrast.matrix,
+  fc = fc
+)
+
+# extract all results and bind to single df
+df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
+```
+
+## Create results directory for project
+
+```{r}
+if (!dir.exists(here("results", "PRJNA523616"))) {
+  dir.create(here("results", "PRJNA523616", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA523616", "data-files"))
+}
+```
+
+## Write results out
+
+```{r}
+# split DE results into gene and RE results and write out
+fwrite(
+  x = df[feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA523616", "data-files", "dge.tsv"),
+  sep = "\t"
+  )
+
+fwrite(
+  x = df[!feature_id %chin% cds$gene_name],
+  file = here("results", "PRJNA523616", "data-files", "dre.tsv"),
+  sep = "\t"
+)
+```
+
+## Calculate normalized counts
+
+```{r}
+lcpms <- cpm(y, log = TRUE, prior.count = 2)
+
+# split lcpms by gene and by RE
+lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
+lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
+
+# Write normalized counts out
+saveRDS(lcpms.gene, here("results", "PRJNA523616", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA523616", "rds-files", "re-lcpms.rds"))
+```
+
+## Save design and contrast matrix
+
+```{r}
+saveRDS(design, here("results", "PRJNA523616", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA523616", "rds-files", "contrast-matrix.rds"))
+```
