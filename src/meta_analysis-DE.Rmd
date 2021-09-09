@@ -21,7 +21,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(here)
 
-
 dge_files <- list.files(
   path = here("results"),
   pattern = "dge.tsv",
@@ -80,10 +79,11 @@ dre <- setDT(
 
 ```{r}
 # function for extracting the experiment name from the filepath
-clean_fpath = function(s) { gsub("/data-files/", "", 
-                            gsub("/results/", "", 
-                            regmatches(s, 
-                            regexpr("\\/results\\/.*\\/", s)))) 
+clean_fpath <- function(s) { 
+  gsub("/data-files/", "", 
+  gsub("/results/", "", 
+  regmatches(s, 
+  regexpr("\\/results\\/.*\\/", s)))) 
 }
 
 # create an experiment variable by extracting project ID from path
@@ -97,24 +97,9 @@ dre[, fpath := NULL]
 dge[, id := paste(experiment, contrast, sep = ".")]
 dre[, id := paste(experiment, contrast, sep = ".")]
 
-# Filter REs to be same sets (Satellites and Simple repeats were removed from most analyses)
-dre <- dre[!feature_id %like% "Satellite|Simple_repeat|Unknown|Low_complexity"]
-
 # write the results out
 fwrite(dge, here("results", "combined", "data-files", "dge-all-experiments.csv.gz"))
 fwrite(dre, here("results", "combined", "data-files", "dre-all-experiments.csv.gz"))
-```
-
-## Create ranking metrics
-
-```{r}
-# create an additional column based on the feature's ranking within each condition
-dge[, rank := frank(logFC, ties.method = "random"), by = id]
-dre[, rank := frank(logFC, ties.method = "random"), by = id]
-dge[, max_rank := max(rank), by = id]
-dre[, max_rank := max(rank), by = id]
-dge[, norm_rank := (rank - 1) / (max_rank - 1), by = id]
-dre[, norm_rank := (rank - 1) / (max_rank - 1), by = id]
 ```
 
 ## Write the unique conditions out for manual annotation
@@ -129,14 +114,79 @@ available when downloading the datasets from GEO**
 fwrite(unique(dge[, .(id, experiment, contrast)]), file = here("doc", "raw-experiment-annotation.csv"))
 ```
 
+## Read in contrast matrices
+
+the contrast matrices contain the group to contrast mappings. 
+
+```{r}
+contrasts <- list.files(
+  path = here("results"),
+  pattern = "contrast-matrix.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(contrasts) <- regmatches(contrasts, regexpr("PRJNA[0-9]+", contrasts))
+contrast_mats <- lapply(contrasts, readRDS)
+contrast_dts <- lapply(contrast_mats, as.data.table, keep.rownames = "group")
+
+# helper function for cleaning the contrast matrix dts
+clean_contrast <- function(dt) {
+  dt.m <- melt(dt, id.vars = "group", variable.name = "contrast", value.name = "present")
+  dt.m[present != 0, .(contrast, group, var = ifelse(present == 1, "condition", "control"))]
+}
+
+contrast_dt <- rbindlist(lapply(contrast_dts, clean_contrast), idcol = "experiment")
+head(contrast_dt)
+```
+
+## Read in design matrices
+
+The design matrices contain the sample to group mapping.
+
+```{r}
+designs <- list.files(
+  path = here("results"),
+  pattern = "design.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(designs) <- regmatches(designs, regexpr("PRJNA[0-9]+", designs))
+design_mats <- lapply(designs, readRDS)
+design_dts <- lapply(design_mats, as.data.table, keep.rownames = "sample_name")
+
+# helper function for cleaning design matrix
+clean_design <- function(dt) {
+  dt.m <- melt(dt, id.vars = "sample_name", variable.name = "group", value.name = "present")
+  dt.m[present == 1, .(sample_name, group)]
+}
+
+design_dt <- rbindlist(lapply(design_dts, clean_design), idcol = "experiment")
+
+head(design_dt)
+```
+
+## Create ranking metrics
+
+```{r}
+# create an additional column based on the feature's ranking within each condition
+dge[, rank := frank(logFC, ties.method = "random"), by = id]
+dre[, rank := frank(logFC, ties.method = "random"), by = id]
+dge[, max_rank := max(rank), by = id]
+dre[, max_rank := max(rank), by = id]
+dge[, norm_rank := (rank - 1) / (max_rank - 1), by = id]
+dre[, norm_rank := (rank - 1) / (max_rank - 1), by = id]
+```
+
 ## After manual editing, read in the contrast metadata
 
 This file comes from the shared Google Doc
 
 ```{r}
-metadata <- fread(here("doc", "metadata.tsv"))
-drugs <- fread(here("doc", "drugs.tsv"))
-cells <- fread(here("doc", "cells.tsv"))
+metadata <- fread(here("doc", "metadata.csv"))
+drugs <- fread(here("doc", "drugs.csv"))
+cells <- fread(here("doc", "cells.csv"))
 
 # left join drug info onto metadata
 metadata <- merge.data.table(x = metadata, 
@@ -220,13 +270,11 @@ dre_rank_mat[is.na(dre_rank_mat)] <- 0.5
 ## Reorder metadata by matrix colnames
 
 ```{r}
-metadata <- metadata[id %chin% colnames(dge_lfc_mat)][order(match(id, colnames(dge_lfc_mat)))]
-
-# check if all rownames and colnames align
-all(metadata$id == colnames(dre_lfc_mat))
-
 # convert to data.frame with rownames for PCAtools
 metadata <- data.frame(as.matrix(metadata, rownames = "id"))
+
+# reorder metadata to match col order of matrices
+metadata <- metadata[colnames(dge_lfc_mat), ]
 
 # double-check
 all(rownames(metadata) == colnames(dge_lfc_mat))
