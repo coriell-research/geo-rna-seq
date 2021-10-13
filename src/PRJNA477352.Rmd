@@ -69,12 +69,25 @@ all(colnames(genes) == colnames(repeats))
 counts <- rbind(genes, repeats)
 ```
 
+## Sum technical replicates across runs and collapse metadata (if present)
+
+Also has the effect of renaming the rows by the bio_sample accession.
+
+```{r}
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
+
+metadata <- as.data.table(colData(mae))
+metadata <- unique(metadata[, .(bio_sample, group)])
+setDF(metadata, rownames = metadata$bio_sample)
+all(colnames(counts) == rownames(metadata))
+```
+
 ## DE pipeline
 
 ```{r}
-design <- model.matrix(~0 + group, data = colData(mae))
+design <- model.matrix(~0 + group, data = metadata)
 colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
-y <- DGEList(counts = counts, samples = colData(mae))
+y <- DGEList(counts = counts, samples = metadata)
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")

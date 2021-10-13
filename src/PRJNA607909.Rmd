@@ -63,6 +63,19 @@ all(colnames(genes) == colnames(repeats))
 counts <- rbind(genes, repeats)
 ```
 
+## Sum technical replicates across runs and collapse metadata (if present)
+
+Also has the effect of renaming the rows by the bio_sample accession.
+
+```{r}
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
+
+metadata <- as.data.table(colData(mae))
+metadata <- unique(metadata[, .(bio_sample, group, treatment, cell_type)])
+setDF(metadata, rownames = metadata$bio_sample)
+all(colnames(counts) == rownames(metadata))
+```
+
 ## DE pipeline
 
 The design of this experiment is somewhat different from the others. There is 
@@ -70,13 +83,12 @@ only on replicate for each cell_type so we can't properly test for differences
 within cell_types. However we can test DAC vs DMSO controlling for cell_type.
 
 ```{r}
-Treatment <- factor(colData(mae)$treatment, levels = c("pbs", "dac"))
-colData(mae)$cell_type <- gsub("-", "\\.", colData(mae)$cell_type)
-Cell_type <- factor(colData(mae)$cell_type)
+Treatment <- factor(metadata$treatment, levels = c("pbs", "dac"))
+metadata$cell_type <- gsub("-", "\\.", colData(mae)$cell_type)
+Cell_type <- factor(metadata$cell_type)
 design <- model.matrix(~Cell_type + Treatment)
 
-y <- DGEList(counts = counts,
-             samples = colData(mae))
+y <- DGEList(counts = counts, samples = metadata)
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")

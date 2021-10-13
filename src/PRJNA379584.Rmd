@@ -63,12 +63,24 @@ all(colnames(genes) == colnames(repeats))
 counts <- rbind(genes, repeats)
 ```
 
+## Sum technical replicates across runs and collapse metadata (if present)
+
+Also has the effect of renaming the rows by the bio_sample accession.
+
+```{r}
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
+
+metadata <- as.data.table(colData(mae))
+metadata <- unique(metadata[, .(bio_sample, group, batch)])
+setDF(metadata, rownames = metadata$bio_sample)
+```
+
 ## Create new `mae` object from 'counts' matrix
 
 ```{r}
 mae <- MultiAssayExperiment(
   experiments = list("counts" = counts),
-  colData = colData(mae)
+  colData = metadata
   )
 
 # update group type

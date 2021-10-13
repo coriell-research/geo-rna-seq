@@ -1,5 +1,5 @@
 ---
-title: "PRJNA352353 Analysis"
+title: "PRJNA396985 Analysis"
 output:
   html_document:
     df_print: paged
@@ -22,7 +22,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA352353", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA396985", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -62,12 +62,25 @@ all(colnames(genes) == colnames(repeats))
 counts <- rbind(genes, repeats)
 ```
 
+## Sum technical replicates across runs and collapse metadata (if present)
+
+Also has the effect of renaming the rows by the bio_sample accession.
+
+```{r}
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
+
+metadata <- as.data.table(colData(mae))
+metadata <- unique(metadata[, .(bio_sample, group)])
+setDF(metadata, rownames = metadata$bio_sample)
+all(colnames(counts) == rownames(metadata))
+```
+
 ## DE pipeline
 
 ```{r}
-design <- model.matrix(~0 + group, data = colData(mae))
+design <- model.matrix(~0 + group, data = metadata)
 colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
-y <- DGEList(counts = counts, samples = colData(mae))
+y <- DGEList(counts = counts, samples = metadata)
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
 y <- calcNormFactors(y, design = design, method = "TMM")
@@ -79,16 +92,13 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  MM6_IRAK1_4i_vs_DMSO = MM6_IRAK1_4i - MM6_DMSO,
-  MM6_IRAK4i_vs_DMSO = MM6_IRAK4i - MM6_DMSO,
-  REH_IRAK1_4i_vs_DMSO = REH_IRAK1_4i - REH_DMSO,
-  REH_IRAK4i_vs_DMSO = REH_IRAK4i - REH_DMSO,
-  SEM_GFPi_vs_DMSO = SEM_GFPi - SEM_DMSO,
-  SEM_IRAK1_4i_vs_DMSO = SEM_IRAK1_4i - SEM_DMSO,
-  SEM_IRAK4i_vs_DMSO = SEM_IRAK4i - SEM_DMSO,
-  SEM_shAFF4_vs_DMSO = SEM_shAFF4 - SEM_DMSO,
-  SEM_shGFP_vs_DMSO = SEM_shGFP - SEM_DMSO,
-  SEM_shUBE2O_vs_SEM_DMSO = SEM_shUBE2O - SEM_DMSO,
+  KCL22.BEZ_vs_NDC = KCL22.BEZ - KCL22.NDC,
+  KCL22.PON_vs_NDC = KCL22.PON - KCL22.NDC,
+  KCL22.PON_BEZ_vs_NDC = KCL22.PON_BEZ - KCL22.NDC,
+  
+  KCL22.Pon_Res.BEZ_vs_Pon_Res.NDC = KCL22.Pon_Res.BEZ - KCL22.Pon_Res.NDC,
+  KCL22.Pon_Res.PON_vs_Pon_Res.NDC = KCL22.Pon_Res.PON - KCL22.Pon_Res.NDC,
+  KCL22.Pon_Res.PON_BEZ_vs_Pon_Res.NDC = KCL22.Pon_Res.PON_BEZ - KCL22.Pon_Res.NDC,
   
   levels = design
 )
@@ -116,9 +126,9 @@ df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast"
 ## Create results directory for project
 
 ```{r}
-if (!dir.exists(here("results", "PRJNA352353"))) {
-  dir.create(here("results", "PRJNA352353", "rds-files"), recursive = TRUE)
-  dir.create(here("results", "PRJNA352353", "data-files"))
+if (!dir.exists(here("results", "PRJNA396985"))) {
+  dir.create(here("results", "PRJNA396985", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA396985", "data-files"))
 }
 ```
 
@@ -128,13 +138,13 @@ if (!dir.exists(here("results", "PRJNA352353"))) {
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA352353", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA396985", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA352353", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA396985", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -149,13 +159,13 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA352353", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA352353", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA396985", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA396985", "rds-files", "re-lcpms.rds"))
 ```
 
 ## Save design and contrast matrix
 
 ```{r}
-saveRDS(design, here("results", "PRJNA352353", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA352353", "rds-files", "contrast-matrix.rds"))
+saveRDS(design, here("results", "PRJNA396985", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA396985", "rds-files", "contrast-matrix.rds"))
 ```
