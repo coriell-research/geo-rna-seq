@@ -65,14 +65,14 @@ counts <- rbind(genes, repeats)
 
 ## Sum technical replicates across runs and collapse metadata (if present)
 
-Also has the effect of renaming the rows by the bio_sample accession.
+Also has the effect of renaming the rows by the BioSample accession.
 
 ```{r}
-counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
 
 metadata <- as.data.table(colData(mae))
-metadata <- unique(metadata[, .(bio_sample, group, batch)])
-setDF(metadata, rownames = metadata$bio_sample)
+metadata <- unique(metadata[, .(BioSample, group, batch)])
+setDF(metadata, rownames = metadata$BioSample)
 ```
 
 ## Create new `mae` object from 'counts' matrix

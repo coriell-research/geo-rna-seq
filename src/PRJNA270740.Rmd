@@ -69,11 +69,11 @@ The sample_names come from multiple runs, these should be summed per biological
 sample
 
 ```{r}
-counts <- edgeR::sumTechReps(counts, ID = colData(mae)$bio_sample)
+counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
 
 metadata <- as.data.table(colData(mae))
-metadata <- unique(metadata[, .(bio_sample, cell_line, group, dose, time_hr)])
-setDF(metadata, rownames = metadata$bio_sample)
+metadata <- unique(metadata[, .(BioSample, cell_line, group, dose, time_hr)])
+setDF(metadata, rownames = metadata$BioSample)
 ```
 
 ## DE pipeline
