@@ -3,8 +3,58 @@
 #library(tidyverse)
 library(magrittr)
 library(edgeR)
+library(plotly)
+library(magrittr)
 
 
+# plotly function for plotting interactive dim reductions
+plot_dimReduction <- function(df, xvar, yvar, colBy, plot_title = NULL, x_lab = "Dim1", y_lab = "Dim2") {
+  plot_ly(
+    data = df,
+    x = ~get(xvar),
+    y = ~get(yvar),
+    color = ~get(colBy),
+    opacity = 0.8,
+    colors = "Set1",
+    type = "scatter",
+    mode = "markers",
+    hovertext = paste(
+      "BioProject:", df$BioProject,
+      "<br>BioSample:", df$BioSample,
+      "<br>Group:", df$group,
+      "<br>Cell Info:", df$CELL_INFO,
+      "<br>Tissue:", df$TISSUE,
+      "<br>Disease:", df$DISEASE,
+      "<br>Treatment:", df$TREATMENT_INFO,
+      "<br>Dose:", df$DOSE_INFO,
+      "<br>Time:", df$TIME_INFO
+    )
+  ) %>%
+    add_markers(size = 180) %>%
+    layout(
+      title = plot_title,
+      showlegend = FALSE,
+      xaxis = list(title = x_lab),
+      yaxis = list(title = y_lab)
+    )
+}
+
+# version without the plots
+get_de_results2 <- function(contrast_name, 
+                            glm_fit, 
+                            contrast_matrix, 
+                            fc = 1.5) {
+  res_df <- glmTreat(
+    glm_fit, 
+    contrast = contrast_matrix[, contrast_name], 
+    lfc = log2(fc)
+    ) %>%
+    coriell::edger_to_df()
+  
+  list("table" = res_df)
+}
+
+# DEPRECATED -------------------------------------------------------------------
 # perform differential expression on all contrasts ------------------------
 # get_de_results <- function(contrast_name, 
 #                            plot_title, 
@@ -24,21 +74,6 @@ library(edgeR)
 #   
 #   list("table" = res_df, "vplot" = vplot, "mdplot" = md_plot)
 # }
-
-# version without the plots
-get_de_results2 <- function(contrast_name, 
-                            glm_fit, 
-                            contrast_matrix, 
-                            fc = 1.5) {
-  res_df <- glmTreat(
-    glm_fit, 
-    contrast = contrast_matrix[, contrast_name], 
-    lfc = log2(fc)
-    ) %>%
-    coriell::edger_to_df()
-  
-  list("table" = res_df)
-}
 
 # create dotplots of RE expression ---------------------------------------------
 # plot_fam_counts = function(df, con, n_dots = 25) {
