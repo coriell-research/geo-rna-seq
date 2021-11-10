@@ -1,5 +1,5 @@
 ---
-title: "PRJNA510428 Analysis"
+title: "PRJNA509743 Analysis"
 output:
   html_document:
     df_print: paged
@@ -22,7 +22,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA510428", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA509743", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -72,7 +72,6 @@ colData(mae)$bases <- as.integer(colData(mae)$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
 setDF(metadata, rownames = metadata$BioSample)
-all(colnames(counts) == rownames(metadata))
 ```
 
 ## DE pipeline
@@ -92,13 +91,7 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  Raji_CDK9as.4sU_labeled_RNA.1_NA_PP1_4sU_vs_DMSO = Raji_CDK9as.4sU_labeled_RNA.1_NA_PP1_4sU - Raji_CDK9as.4sU_labeled_RNA.DMSO_4sU,
-  K562.4sU_labeled_RNA.37_oC_vs_Total_fragmented_RNA.4sU = K562.4sU_labeled_RNA.37_oC - K562.Total_fragmented_RNA.4sU,
-  K562.4sU_labeled_RNA.42_oC_15min_vs_Total_fragmented_RNA.4sU = K562.4sU_labeled_RNA.42_oC_15min - K562.Total_fragmented_RNA.4sU,
-  K562.4sU_labeled_RNA.42_oC_30min_vs_Total_fragmented_RNA.4sU = K562.4sU_labeled_RNA.42_oC_30min - K562.Total_fragmented_RNA.4sU,
-  
-  K562.4sU_labeled_RNA.42_oC_15min_vs_4sU_labeled_RNA.37_oC = K562.4sU_labeled_RNA.42_oC_15min - K562.4sU_labeled_RNA.37_oC,
-  K562.4sU_labeled_RNA.42_oC_30min_vs_4sU_labeled_RNA.37_oC = K562.4sU_labeled_RNA.42_oC_30min - K562.4sU_labeled_RNA.37_oC,
+  BMI1_vs_control = BMI1 - Ctrl,
   
   levels = design
 )
@@ -126,9 +119,9 @@ df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast"
 ## Create results directory for project
 
 ```{r}
-if (!dir.exists(here("results", "PRJNA510428"))) {
-  dir.create(here("results", "PRJNA510428", "rds-files"), recursive = TRUE)
-  dir.create(here("results", "PRJNA510428", "data-files"))
+if (!dir.exists(here("results", "PRJNA509743"))) {
+  dir.create(here("results", "PRJNA509743", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA509743", "data-files"))
 }
 ```
 
@@ -138,13 +131,13 @@ if (!dir.exists(here("results", "PRJNA510428"))) {
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA510428", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA509743", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA510428", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA509743", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -159,13 +152,13 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA510428", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA510428", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA509743", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA509743", "rds-files", "re-lcpms.rds"))
 ```
 
 ## Save design and contrast matrix
 
 ```{r}
-saveRDS(design, here("results", "PRJNA510428", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA510428", "rds-files", "contrast-matrix.rds"))
+saveRDS(design, here("results", "PRJNA509743", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA509743", "rds-files", "contrast-matrix.rds"))
 ```

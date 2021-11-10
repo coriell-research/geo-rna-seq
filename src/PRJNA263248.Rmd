@@ -1,5 +1,5 @@
 ---
-title: "PRJNA510428 Analysis"
+title: "PRJNA263248 Analysis"
 output:
   html_document:
     df_print: paged
@@ -22,7 +22,7 @@ library(data.table)
 library(MultiAssayExperiment)
 
 
-mae <- readRDS(here("data", "PRJNA510428", "MultiAssayExperiment.rds"))
+mae <- readRDS(here("data", "PRJNA263248", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -68,11 +68,10 @@ Also has the effect of renaming the rows by the BioSample accession.
 
 ```{r}
 counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
-colData(mae)$bases <- as.integer(colData(mae)$bases)
+
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
 setDF(metadata, rownames = metadata$BioSample)
-all(colnames(counts) == rownames(metadata))
 ```
 
 ## DE pipeline
@@ -92,13 +91,11 @@ fit <- glmQLFit(y, design = design, robust = TRUE)
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  Raji_CDK9as.4sU_labeled_RNA.1_NA_PP1_4sU_vs_DMSO = Raji_CDK9as.4sU_labeled_RNA.1_NA_PP1_4sU - Raji_CDK9as.4sU_labeled_RNA.DMSO_4sU,
-  K562.4sU_labeled_RNA.37_oC_vs_Total_fragmented_RNA.4sU = K562.4sU_labeled_RNA.37_oC - K562.Total_fragmented_RNA.4sU,
-  K562.4sU_labeled_RNA.42_oC_15min_vs_Total_fragmented_RNA.4sU = K562.4sU_labeled_RNA.42_oC_15min - K562.Total_fragmented_RNA.4sU,
-  K562.4sU_labeled_RNA.42_oC_30min_vs_Total_fragmented_RNA.4sU = K562.4sU_labeled_RNA.42_oC_30min - K562.Total_fragmented_RNA.4sU,
-  
-  K562.4sU_labeled_RNA.42_oC_15min_vs_4sU_labeled_RNA.37_oC = K562.4sU_labeled_RNA.42_oC_15min - K562.4sU_labeled_RNA.37_oC,
-  K562.4sU_labeled_RNA.42_oC_30min_vs_4sU_labeled_RNA.37_oC = K562.4sU_labeled_RNA.42_oC_30min - K562.4sU_labeled_RNA.37_oC,
+  GNF2_resistant_vs_control = GNF2_resistant - control,
+  imatinib_nilotinib_GNF2_resistant_vs_control = imatinib_nilotinib_GNF2_resistant - control,
+  imatinib_nilotinib_resistant_vs_control = imatinib_nilotinib_resistant - control,
+  imatinib_resistant_vs_control = imatinib_resistant - control,
+  nilotinib_resistant_vs_control = nilotinib_resistant - control,
   
   levels = design
 )
@@ -126,9 +123,9 @@ df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast"
 ## Create results directory for project
 
 ```{r}
-if (!dir.exists(here("results", "PRJNA510428"))) {
-  dir.create(here("results", "PRJNA510428", "rds-files"), recursive = TRUE)
-  dir.create(here("results", "PRJNA510428", "data-files"))
+if (!dir.exists(here("results", "PRJNA263248"))) {
+  dir.create(here("results", "PRJNA263248", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA263248", "data-files"))
 }
 ```
 
@@ -138,13 +135,13 @@ if (!dir.exists(here("results", "PRJNA510428"))) {
 # split DE results into gene and RE results and write out
 fwrite(
   x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA510428", "data-files", "dge.tsv"),
+  file = here("results", "PRJNA263248", "data-files", "dge.tsv"),
   sep = "\t"
   )
 
 fwrite(
   x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA510428", "data-files", "dre.tsv"),
+  file = here("results", "PRJNA263248", "data-files", "dre.tsv"),
   sep = "\t"
 )
 ```
@@ -159,13 +156,13 @@ lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
 lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
 
 # Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA510428", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA510428", "rds-files", "re-lcpms.rds"))
+saveRDS(lcpms.gene, here("results", "PRJNA263248", "rds-files", "gene-lcpms.rds"))
+saveRDS(lcpms.re, here("results", "PRJNA263248", "rds-files", "re-lcpms.rds"))
 ```
 
 ## Save design and contrast matrix
 
 ```{r}
-saveRDS(design, here("results", "PRJNA510428", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA510428", "rds-files", "contrast-matrix.rds"))
+saveRDS(design, here("results", "PRJNA263248", "rds-files", "design.rds"))
+saveRDS(contrast.matrix, here("results", "PRJNA263248", "rds-files", "contrast-matrix.rds"))
 ```

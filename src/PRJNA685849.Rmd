@@ -103,9 +103,9 @@ contrast.matrix <- makeContrasts(
   Hypercin.150nM_irradiation_vs_Untreated_4hr = Hypercin_150nM_irradiation_4hr - untreated_4hr,
   Hypercin.150nM_irradiation_vs_Untreated_10hr = (Hypercin_150nM_irradiation_10hr - Hypercin_150nM_irradiation_4hr) -                                                   (untreated_10hr - untreated_4hr),
   Hypercin.150nM_irradiation_vs_Untreated_20hr = (Hypercin_150nM_irradiation_20hr - Hypercin_150nM_irradiation_4hr) -                                                   (untreated_20hr - untreated_4hr),
-  Mitoxantrone.1um_4hr = MTX_1um_4hr - untreated_4hr,
-  Mitoxantrone.1um_10hr = (MTX_1um_10hr - MTX_1um_4hr) - (untreated_10hr - untreated_4hr),
-  Mitoxantrone.1um_20hr = (MTX_1um_20hr - MTX_1um_4hr) - (untreated_20hr - untreated_4hr),
+  Mitoxantrone.1um_4hr = MTX_1uM_4hr - untreated_4hr,
+  Mitoxantrone.1um_10hr = (MTX_1uM_10hr - MTX_1uM_4hr) - (untreated_10hr - untreated_4hr),
+  Mitoxantrone.1um_20hr = (MTX_1uM_20hr - MTX_1uM_4hr) - (untreated_20hr - untreated_4hr),
 
   levels = design
 )
