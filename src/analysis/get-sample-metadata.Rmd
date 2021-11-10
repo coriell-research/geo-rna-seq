@@ -1,0 +1,336 @@
+---
+title: "Create Sample Metadata"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# colData
+
+This is the mapping from BioSample to experiment metadata
+
+```{r}
+library(here)
+library(data.table)
+
+
+mae_files <- list.files(
+  path = here("data"),
+  pattern = "MultiAssayExperiment.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(mae_files) <- regmatches(mae_files, regexpr("PRJNA[0-9]+", mae_files))
+```
+
+Read in the raw annotations. This step will read in the metadata from each 
+MultiAssayExperiment individually. 
+
+```{r}
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+
+
+get_coldata <- function(fpath) {
+  mae <- readRDS(fpath)
+  colData(mae)$bases <- as.integer(colData(mae)$bases)
+  dt <- as.data.table(as.data.frame(colData(mae)), keep.rownames = "Run")
+  return(dt)
+}
+
+meta_dt <- rbindlist(parallel::mclapply(mae_files, get_coldata, mc.cores = 32), use.names = TRUE, fill = TRUE)
+```
+
+## Combine the like colnames
+
+```{r}
+source_cols <- colnames(meta_dt)[colnames(meta_dt) %ilike% "source"]
+tissue_cols <- colnames(meta_dt)[colnames(meta_dt) %ilike% "tissue"]
+cell_cols <- colnames(dt)[colnames(dt) %ilike% "cell"]
+treatment_cols <- colnames(meta_dt)[colnames(meta_dt) %ilike% "treatment" | colnames(meta_dt) %ilike% "drug" | colnames(meta_dt) %ilike% "compound"]
+dose_cols <- colnames(meta_dt)[colnames(meta_dt) %ilike% "dose"]
+time_cols <- colnames(meta_dt)[colnames(meta_dt) %ilike% "time"]
+
+# collapse into new INFO cols
+meta_dt[, `:=`(SOURCE_INFO = gsub("NA", "", do.call(paste, c(lapply(source_cols, function(x) get(x))))),
+               TISSUE_INFO = gsub("NA", "", do.call(paste, c(lapply(tissue_cols, function(x) get(x))))),
+               CELL_INFO =   gsub("NA", "", do.call(paste, c(lapply(cell_cols, function(x) get(x))))),
+               TREATMENT_INFO = gsub("NA", "", do.call(paste, c(lapply(treatment_cols, function(x) get(x))))),
+               DOSE_INFO = gsub("NA", "", do.call(paste, c(lapply(dose_cols, function(x) get(x))))),
+               TIME_INFO = gsub("NA", "", do.call(paste, c(lapply(time_cols, function(x) get(x))))))]
+```
+
+## Write the raw data out 
+
+**This raw data will have to be cleaned by hand and read back in after cleaning.**
+
+```{r}
+fwrite(meta_dt, here("doc", "sample-metadata", paste0(Sys.Date(), "_raw-sample-metadata.tsv")), sep = "\t")
+```
+
+---
+
+# Differential Expression Results
+
+```{r}
+dge_files <- list.files(
+  path = here("results"),
+  pattern = "dge.tsv",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+dre_files <- list.files(
+  path = here("results"),
+  pattern = "dre.tsv",
+  recursive = TRUE,
+  full.names = TRUE
+)
+```
+
+## Read into single data.tables
+
+```{r}
+dge <- setDT(
+  vroom::vroom(
+    dge_files,
+    id = "fpath",
+    delim = "\t",
+    col_types = list(
+      contrast = "c",
+      feature_id = "c",
+      logFC = "d",
+      unshrunk.logFC = "d",
+      logCPM = "d",
+      PValue = "d",
+      FDR = "d")
+  )
+)
+
+dre <- setDT(
+  vroom::vroom(
+    dre_files,
+    id = "fpath",
+    delim = "\t",
+    col_types = list(
+      contrast = "c",
+      feature_id = "c",
+      logFC = "d",
+      unshrunk.logFC = "d",
+      logCPM = "d",
+      PValue = "d",
+      FDR = "d")
+  )
+)
+```
+
+## Clean and add variables
+
+```{r}
+# function for extracting the experiment name from the filepath
+clean_fpath <- function(s) { 
+  gsub("/data-files/", "", 
+  gsub("/results/", "", 
+  regmatches(s, 
+  regexpr("\\/results\\/.*\\/", s)))) 
+}
+
+# create an experiment variable by extracting project ID from path
+dge[, experiment := clean_fpath(fpath)]
+dre[, experiment := clean_fpath(fpath)]
+dge[, fpath := NULL]
+dre[, fpath := NULL]
+
+# combine the contrast and the experiment into a new column
+# (used to differentiate same conditions in different experiments)
+dge[, id := paste(experiment, contrast, sep = ".")]
+dre[, id := paste(experiment, contrast, sep = ".")]
+```
+
+## Write raw data out
+
+```{r}
+# write the results out
+fwrite(dge, here("results", "combined", "data-files", "dge-all-experiments.csv.gz"))
+fwrite(dre, here("results", "combined", "data-files", "dre-all-experiments.csv.gz"))
+```
+
+## Cast Data into Matrices
+
+```{r}
+dge_lfc_mat <- as.matrix(dcast(dge[, .(feature_id, id, logFC)],
+  feature_id ~ id,
+  value.var = "logFC"
+), rownames = "feature_id")
+
+dre_lfc_mat <- as.matrix(dcast(dre[, .(feature_id, id, logFC)],
+  feature_id ~ id,
+  value.var = "logFC"
+), rownames = "feature_id")
+
+# repeat for FDR values
+dge_fdr_mat <- as.matrix(dcast(dge[, .(feature_id, id, FDR)],
+  feature_id ~ id,
+  value.var = "FDR"
+), rownames = "feature_id")
+
+dre_fdr_mat <- as.matrix(dcast(dre[, .(feature_id, id, FDR)],
+  feature_id ~ id,
+  value.var = "FDR"
+), rownames = "feature_id")
+
+# fill missing data
+dge_lfc_mat[is.na(dge_lfc_mat)] <- 0
+dre_lfc_mat[is.na(dre_lfc_mat)] <- 0
+dge_fdr_mat[is.na(dge_fdr_mat)] <- 1
+dre_fdr_mat[is.na(dre_fdr_mat)] <- 1
+
+# View sample
+dge_lfc_mat[100:105, 10:12]
+```
+
+### Write the matrices out to files
+
+```{r}
+saveRDS(dge_lfc_mat, here("results", "combined", "rds-files", "dge-lfc-mat.rds"), compress = FALSE)
+saveRDS(dre_lfc_mat, here("results", "combined", "rds-files", "dre-lfc-mat.rds"), compress = FALSE)
+```
+
+---
+
+# Contrast Matrices
+
+The contrast matrices contain the contrast to group mapping
+
+```{r}
+contrasts <- list.files(
+  path = here("results"),
+  pattern = "contrast-matrix",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(contrasts) <- regmatches(contrasts, regexpr("PRJNA[0-9]+", contrasts))
+contrast_mats <- lapply(contrasts, readRDS)
+contrast_dts <- lapply(contrast_mats, as.data.table, keep.rownames = "group")
+
+# helper function for cleaning the contrast matrix dts
+clean_contrast <- function(dt) {
+  dt.m <- melt(dt, id.vars = "group", variable.name = "contrast", value.name = "present")
+  dt.m[present != 0, .(contrast, group, var = ifelse(present == 1, "condition", "control"))]
+}
+
+contrast_dt <- rbindlist(lapply(contrast_dts, clean_contrast), idcol = "experiment")
+contrast_dt[, id := paste(experiment, contrast, sep = ".")]
+head(contrast_dt)
+```
+
+---
+
+# Design Matrices
+
+The design matrices contain the sample to group mapping.
+
+```{r}
+designs <- list.files(
+  path = here("results"),
+  pattern = "design",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(designs) <- regmatches(designs, regexpr("PRJNA[0-9]+", designs))
+design_mats <- lapply(designs, readRDS)
+design_dts <- lapply(design_mats, as.data.table, keep.rownames = "sample_name")
+
+# helper function for cleaning design matrix
+clean_design <- function(dt) {
+  dt.m <- melt(dt, id.vars = "sample_name", variable.name = "group", value.name = "present")
+  dt.m[present == 1, .(sample_name, group)]
+}
+
+design_dt <- rbindlist(lapply(design_dts, clean_design), idcol = "experiment")
+head(design_dt)
+```
+
+---
+
+# Cleaned Metadata
+
+```{r}
+metadata <- fread(here("doc", "sample-metadata", "sample-metadata - metadata.tsv"), 
+                  select = c("BioSample", "BioProject", "LibrarySelection", 
+                             "LibrarySource", "Model", "title", "CELL_INFO",
+                             "TREATMENT_INFO", "DOSE_INFO", "TIME_INFO"))
+drugs <- fread(here("doc", "sample-metadata", "sample-metadata - drugs.tsv"))
+cells <- fread(here("doc", "sample-metadata", "sample-metadata - cells.tsv"))
+
+# ---
+head(metadata)
+head(drugs)
+head(cells)
+
+# join annotations to metadata
+metadata <- merge(
+  metadata,
+  drugs,
+  by = "TREATMENT_INFO",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+metadata <- merge(
+  metadata,
+  cells,
+  by = "CELL_INFO",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+head(metadata)
+```
+
+## Start joining data
+
+```{r}
+# check that operations on dge data apply to dre data as well
+all(colnames(dge_lfc_mat) == colnames(dre_lfc_mat))
+
+# create data.table of IDs (experiment + contrast names)
+id_dt <- data.table(id = colnames(dge_lfc_mat))
+
+# Join contrast information
+combined_metadata <- merge(
+  id_dt, 
+  contrast_dt, 
+  by = "id", 
+  all.x = TRUE, 
+  all.y = FALSE
+)
+
+# Join group membership information
+combined_metadata <- merge(
+  combined_metadata, 
+  design_dt, 
+  by = c("experiment", "group"), 
+  all.x = TRUE, 
+  all.y = FALSE,
+  allow.cartesian = TRUE
+)
+
+# join metadata information
+combined_metadata <- merge(
+  combined_metadata,
+  metadata,
+  by.x = "sample_name",
+  by.y = "BioSample",
+  all.x = TRUE,
+  all.y = FALSE,
+  allow.cartesian = TRUE
+)
+
+# write out
+fwrite(combined_metadata, here("doc", "sample-metadata", "combined-sample-metdata.tsv"), sep = "\t")
+```

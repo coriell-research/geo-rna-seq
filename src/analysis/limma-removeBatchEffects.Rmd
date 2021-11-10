@@ -1,0 +1,232 @@
+---
+title: "limma - removeBatchEffect"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Attempt to batch correct the TMM normalized logCPMs of gene and RE counts.
+
+## Read in the logCPM gene and RE counts
+
+```{r}
+library(here)
+
+
+gl_files <- list.files(
+  path = here("results"),
+  pattern = "gene-lcpms.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+# Per experiment RE TMM normalized logCPM
+rl_files <- list.files(
+  path = here("results"),
+  pattern = "re-lcpms.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+getPRJNA <- function(x) {regmatches(x, regexpr("PRJNA[0-9]+", x))}
+names(gl_files) <- getPRJNA(gl_files)
+names(rl_files) <- getPRJNA(rl_files)
+
+# Get normalized count matrices
+g.lcpm <- lapply(gl_files, readRDS)
+r.lcpm <- lapply(rl_files, readRDS)
+```
+
+## Read in cleaned per-run metadata
+
+```{r}
+library(data.table)
+
+
+metadata <- fread(here("doc/2021-10-15_metadata.tsv"))
+drugs <- fread(here("doc/2021-10-15_drugs.tsv"))
+
+# select only necessary columns
+metadata <- unique(metadata[, .(BioSample, avgLength, LibrarySelection, 
+                                LibraryLayout, Model, BioProject, title, 
+                                SOURCE_INFO, CELL_INFO, TREATMENT_INFO, 
+                                DOSE_INFO, TIME_INFO)])
+
+metadata <- merge(metadata, drugs, by = "CELL_INFO", all.x = TRUE, all.y = FALSE)
+head(metadata)
+```
+
+## Cluster on per-experiment normalized values
+
+```{r}
+library(PCAtools)
+
+
+# Get set of common genes
+common.genes <- Reduce(intersect, lapply(g.lcpm, function(M) rownames(M)))
+common.res <- Reduce(intersect, lapply(r.lcpm, function(M) rownames(M)))
+g.filt <- lapply(g.lcpm, function(M) M[common.genes, ])
+r.filt <- lapply(r.lcpm, function(M) M[common.res, ])
+g.filt.mat <- do.call(cbind, g.filt)
+r.filt.mat <- do.call(cbind, r.filt)
+
+# Specify metadata for PCAtools
+setDF(metadata, rownames = metadata$BioSample)
+meta_df <- metadata[colnames(g.filt.mat), ]
+all(rownames(meta_df) == colnames(g.filt.mat))
+
+# PCA on lcpms
+g.pca <- pca(g.filt.mat, meta_df, center = TRUE, scale = FALSE, removeVar = 0.25)
+r.pca <- pca(r.filt.mat, meta_df, center = TRUE, scale = FALSE, removeVar = 0.1)
+```
+
+Quick biplot
+
+```{r}
+biplot(g.pca, colby = "BioProject", title = "Gene Expression - Uncorrected")
+biplot(r.pca, colby = "BioProject", title = "RE Expression - Uncorrected")
+```
+
+## Estimate and remove batch effects with `limma::removeBatchEffects()`
+
+```{r}
+library(limma)
+
+
+meta_df$GROUP <- paste(meta_df$TREATMENT_INFO, meta_df$DOSE_INFO, meta_df$TIME_INFO, sep = ".")
+design <- model.matrix(~CELL_INFO + TISSUE + DISEASE + GROUP, data = meta_df)
+
+# Use the BioProject as a batch variable
+g.mat.c <- removeBatchEffect(
+  g.filt.mat, 
+  batch = meta_df$BioProject, 
+  design = design)
+
+r.mat.c <- removeBatchEffect(
+  r.filt.mat, 
+  batch = meta_df$BioProject,
+  design = design)
+
+# Perform PCA on batch corrected logCPMs
+g.pca.c <- pca(g.mat.c, meta_df, center = TRUE, scale = FALSE, removeVar = 0.25)
+r.pca.c <- pca(r.mat.c, meta_df, center = TRUE, scale = FALSE, removeVar = 0.1)
+```
+
+Quick biplot
+
+```{r}
+biplot(g.pca.c, colby = "BioProject", title = "Gene Expression - Batch Corrected")
+biplot(r.pca.c, colby = "BioProject", title = "RE Expression - Batch Corrected")
+```
+
+## tSNE on the PCs
+
+Since there is some outlier effect in the PCA plot, use tSNE to visualize
+finer cluster details
+
+```{r}
+library(Rtsne)
+
+
+# Uncorrected Gene ---
+g.tsne <- Rtsne(
+  X = g.pca$rotated,
+  perplexity = 25,
+  theta = 0.5,
+  pca = FALSE,
+  max_iter = 1e4,
+  num_threads = 48
+)
+
+# Corrected
+g.tsne.c <- Rtsne(
+  X = g.pca.c$rotated,
+  perplexity = 25,
+  theta = 0.5,
+  pca = FALSE,
+  max_iter = 1e4,
+  num_threads = 48
+)
+
+# RE ---
+r.tsne <- Rtsne(
+  X = r.pca$rotated,
+  perplexity = 15,
+  theta = 0.5,
+  pca = FALSE,
+  max_iter = 1e4,
+  num_threads = 48
+)
+
+# Corrected
+r.tsne.c <- Rtsne(
+  X = r.pca.c$rotated,
+  perplexity = 15,
+  theta = 0.5,
+  pca = FALSE,
+  max_iter = 1e4,
+  num_threads = 48
+)
+```
+
+Join on metadata information
+
+```{r}
+# convert to data tables
+g.tsne_dt <- as.data.table(g.tsne$Y)
+gc.tsne_dt <- as.data.table(g.tsne.c$Y)
+r.tsne_dt <- as.data.table(r.tsne$Y)
+rc.tsne_dt <- as.data.table(r.tsne.c$Y)
+
+# add sample names
+g.tsne_dt[, BioSample := rownames(g.pca$rotated)]
+gc.tsne_dt[, BioSample := rownames(g.pca.c$rotated)]
+r.tsne_dt[, BioSample := rownames(r.pca$rotated)]
+rc.tsne_dt[, BioSample := rownames(r.pca.c$rotated)]
+
+# join on metadata
+g.tsne_dt <- merge(g.tsne_dt, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
+gc.tsne_dt <- merge(gc.tsne_dt, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
+r.tsne_dt <- merge(r.tsne_dt, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
+rc.tsne_dt <- merge(rc.tsne_dt, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
+```
+
+Interactive tSNE plots
+
+```{r message=FALSE, warning=FALSE}
+source(here("src", "helpers", "helpers.R"))
+
+
+# Color by BioProject ---
+g_by_bioproject <- plot_dimReduction(g.tsne_dt, "V1", "V2", colBy = "BioProject", plot_title = "Gene Expression - Uncorrected")
+gc_by_bioproject <- plot_dimReduction(gc.tsne_dt, "V1", "V2", colBy = "BioProject", plot_title = "Gene Expression - Corrected")
+r_by_bioproject <- plot_dimReduction(r.tsne_dt, "V1", "V2", colBy = "BioProject", plot_title = "RE Expression - Uncorrected")
+rc_by_bioproject <- plot_dimReduction(rc.tsne_dt, "V1", "V2", colBy = "BioProject", plot_title = "RE Expression - Corrected")
+htmlwidgets::saveWidget(g_by_bioproject, file = here("results", "combined", "figures", "limma", "gene-by-bioproject.html"))
+htmlwidgets::saveWidget(gc_by_bioproject, file = here("results", "combined", "figures", "limma", "geneCorrected-by-bioproject.html"))
+htmlwidgets::saveWidget(r_by_bioproject, file = here("results", "combined", "figures", "limma", "re-by-bioproject.html"))
+htmlwidgets::saveWidget(rc_by_bioproject, file = here("results", "combined", "figures", "limma", "reCorrected-by-bioproject.html"))
+
+# Color by disease ---
+g_by_disease <- plot_dimReduction(g.tsne_dt, "V1", "V2", colBy = "DISEASE", plot_title = "Gene Expression - Uncorrected")
+gc_by_disease <- plot_dimReduction(gc.tsne_dt, "V1", "V2", colBy = "DISEASE", plot_title = "Gene Expression - Corrected")
+r_by_disease <- plot_dimReduction(r.tsne_dt, "V1", "V2", colBy = "DISEASE", plot_title = "RE Expression - Uncorrected")
+rc_by_disease <- plot_dimReduction(rc.tsne_dt, "V1", "V2", colBy = "DISEASE", plot_title = "RE Expression - Corrected")
+htmlwidgets::saveWidget(g_by_disease, file = here("results", "combined", "figures", "limma", "gene-by-disease.html"))
+htmlwidgets::saveWidget(gc_by_disease, file = here("results", "combined", "figures", "limma", "geneCorrected-by-disease.html"))
+htmlwidgets::saveWidget(r_by_disease, file = here("results", "combined", "figures", "limma", "re-by-disease.html"))
+htmlwidgets::saveWidget(rc_by_disease, file = here("results", "combined", "figures", "limma", "reCorrected-by-disease.html"))
+
+# By Tissue
+g_by_tissue <- plot_dimReduction(g.tsne_dt, "V1", "V2", colBy = "TISSUE", plot_title = "Gene Expression - Uncorrected")
+gc_by_tissue <- plot_dimReduction(gc.tsne_dt, "V1", "V2", colBy = "TISSUE", plot_title = "Gene Expression - Corrected")
+r_by_tissue <- plot_dimReduction(r.tsne_dt, "V1", "V2", colBy = "TISSUE", plot_title = "RE Expression - Uncorrected")
+rc_by_tissue <- plot_dimReduction(rc.tsne_dt, "V1", "V2", colBy = "TISSUE", plot_title = "RE Expression - Corrected")
+htmlwidgets::saveWidget(g_by_tissue, file = here("results", "combined", "figures", "limma", "gene-by-tissue.html"))
+htmlwidgets::saveWidget(gc_by_tissue, file = here("results", "combined", "figures", "limma", "geneCorrected-by-tissue.html"))
+htmlwidgets::saveWidget(r_by_tissue, file = here("results", "combined", "figures", "limma", "re-by-tissue.html"))
+htmlwidgets::saveWidget(rc_by_tissue, file = here("results", "combined", "figures", "limma", "reCorrected-by-tissue.html"))
+```
+
