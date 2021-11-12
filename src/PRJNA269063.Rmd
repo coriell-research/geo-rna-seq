@@ -14,25 +14,23 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 source("helpers/helpers.R")
 ```
 
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(edgeR))
+suppressPackageStartupMessages(library(qsmooth))
+```
+
 ## Read in MultiAssayExperiment Object
 
 ```{r}
-library(here)
-library(data.table)
-library(MultiAssayExperiment)
-
-
 mae <- readRDS(here("data", "PRJNA269063", "MultiAssayExperiment.rds"))
-```
 
-## Keep only JQ1 and DMSO samples
-
-Other samples do not have replicates
-
-```{r}
-mae <- mae[, mae$drug == "JQ1" | mae$drug == "DMSO"]
-mae$group2 <- paste(mae$drug, mae$time_hr, sep = ".")
-mae$group2 <- factor(mae$group2)
+# Filter for conditions that have replicates (JQ1 and DMSO)
+mae <- mae[, mae$group %like% "JQ1|DMSO"]
 ```
 
 ## Read in gene annotations
@@ -76,35 +74,38 @@ counts <- rbind(genes, repeats)
 
 Also has the effect of renaming the rows by the BioSample accession.
 
-```{r}
+```{r, warning=FALSE}
 counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
-
+colData(mae)$bases <- as.integer(colData(mae)$bases)
 metadata <- as.data.table(colData(mae))
-metadata <- unique(metadata[, .(BioSample, group2, cell_line)])
+metadata <- unique(metadata[, .(BioSample, group)])
 setDF(metadata, rownames = metadata$BioSample)
 ```
 
 ## DE pipeline
 
 ```{r}
-design <- model.matrix(~0 + group2 + cell_line, data = metadata)
-colnames(design) <- gsub(pattern = "^group2", replacement = "", x = colnames(design))
+metadata$cell_line <- factor(regmatches(metadata$group, regexpr("[A-Z0-9]+", metadata$group, perl = TRUE)))
+metadata$drug <- factor(regmatches(metadata$group, regexpr("JQ1\\.[0-9]+|DMSO", metadata$group)))
+design <- model.matrix(~0 + drug + cell_line, data = metadata)
+colnames(design) <- gsub("drug", "", colnames(design))
 y <- DGEList(counts = counts, samples = metadata)
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
-y <- calcNormFactors(y, design = design, method = "TMM")
-y <- estimateDisp(y, design = design, robust = TRUE)
-fit <- glmQLFit(y, design = design, robust = TRUE)
+qs_norm <- qsmooth(y$counts, group_factor = y$samples$group)
+disp <- estimateDisp(y = qsmoothData(qs_norm), design = design, robust = TRUE)
+fit <- glmQLFit(y = qsmoothData(qs_norm), dispersion = disp$trended.dispersion, design = design, robust = TRUE)
 ```
 
 ## DE testing
 
-Since there are no replicates at each time test the overall effect of JQ1 vs DMSO.
+Since there are no replicates at each time test the overall effect of JQ1 vs DMSO,
+controlling for cell line differences.
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  JQ1.2 = JQ1.2 - DMSO.NA,
-  JQ1.24 = JQ1.24 - DMSO.NA,
+  JQ1.2 = JQ1.2 - DMSO,
+  JQ1.24 = JQ1.24 - DMSO,
   levels = design
 )
 
@@ -157,7 +158,7 @@ fwrite(
 ## Calculate normalized counts
 
 ```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
+lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
 
 # split lcpms by gene and by RE
 lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)

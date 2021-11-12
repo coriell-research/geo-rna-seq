@@ -15,14 +15,19 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 source("helpers/helpers.R")
 ```
 
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(edgeR))
+suppressPackageStartupMessages(library(qsmooth))
+```
+
 ## Read in MultiAssayExperiment Object
 
 ```{r}
-library(here)
-library(data.table)
-library(MultiAssayExperiment)
-
-
 mae <- readRDS(here("data", "PRJNA607909", "MultiAssayExperiment.rds"))
 ```
 
@@ -67,13 +72,12 @@ counts <- rbind(genes, repeats)
 
 Also has the effect of renaming the rows by the BioSample accession.
 
-```{r}
+```{r, warning=FALSE}
 counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
-
+colData(mae)$bases <- as.integer(colData(mae)$bases)
 metadata <- as.data.table(colData(mae))
-metadata <- unique(metadata[, .(BioSample, group, treatment, cell_type)])
+metadata <- unique(metadata[, .(BioSample, group, cell_type)])
 setDF(metadata, rownames = metadata$BioSample)
-all(colnames(counts) == rownames(metadata))
 ```
 
 ## DE pipeline
@@ -83,24 +87,23 @@ only on replicate for each cell_type so we can't properly test for differences
 within cell_types. However we can test DAC vs DMSO controlling for cell_type.
 
 ```{r}
-Treatment <- factor(metadata$treatment, levels = c("pbs", "dac"))
-metadata$cell_type <- gsub("-", "\\.", colData(mae)$cell_type)
-Cell_type <- factor(metadata$cell_type)
-design <- model.matrix(~Cell_type + Treatment)
+metadata$Treatment <- rep(c("control", "dac"), 6)
+metadata$cell_type <- gsub("-", "", metadata$cell_type)
 
+design <- model.matrix(~0 + Treatment + cell_type, data = metadata)
 y <- DGEList(counts = counts, samples = metadata)
 keep <- filterByExpr(y, design = design)
 y <- y[keep,, keep.lib.sizes = FALSE]
-y <- calcNormFactors(y, design = design, method = "TMM")
-y <- estimateDisp(y, design = design, robust = TRUE)
-fit <- glmQLFit(y, design = design, robust = TRUE)
+qs_norm <- qsmooth(y$counts, group_factor = y$samples$group)
+disp <- estimateDisp(y = qsmoothData(qs_norm), design = design, robust = TRUE)
+fit <- glmQLFit(y = qsmoothData(qs_norm), dispersion = disp$trended.dispersion, design = design, robust = TRUE)
 ```
 
 ## DE testing
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  Decitabine_vs_PBS = Treatmentdac,
+  Decitabine_vs_PBS = Treatmentdac - Treatmentcontrol,
   
   levels = design
 )
@@ -144,7 +147,7 @@ fwrite(
 ## Calculate normalized counts
 
 ```{r}
-lcpms <- cpm(y, log = TRUE, prior.count = 2)
+lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
 
 # split lcpms by gene and by RE
 lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)

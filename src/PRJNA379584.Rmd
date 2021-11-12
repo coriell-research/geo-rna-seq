@@ -15,14 +15,19 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 source("helpers/helpers.R")
 ```
 
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(edgeR))
+suppressPackageStartupMessages(library(qsmooth))
+```
+
 ## Read in MultiAssayExperiment Object
 
 ```{r}
-library(here)
-library(data.table)
-library(MultiAssayExperiment)
-
-
 mae <- readRDS(here("data", "PRJNA379584", "MultiAssayExperiment.rds"))
 ```
 
@@ -67,9 +72,8 @@ counts <- rbind(genes, repeats)
 
 Also has the effect of renaming the rows by the BioSample accession.
 
-```{r}
+```{r, warning=FALSE}
 counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
-
 colData(mae)$bases <- as.integer(colData(mae)$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group, batch)])
@@ -88,7 +92,7 @@ mae <- MultiAssayExperiment(
 colData(mae)$group <- factor(colData(mae)$group)
 ```
 
-## Split MultiAssayexperiment by batch
+## Split MultiAssayExperiment by batch
 
 ```{r message=FALSE}
 # split by batch
@@ -151,10 +155,10 @@ pipeline <- function(x) {
                samples = colData(x))
   keep <- filterByExpr(y, design = design)
   y <- y[keep,, keep.lib.sizes = FALSE]
-  y <- calcNormFactors(y, design = design, method = "TMM")
-  y <- estimateDisp(y, design = design, robust = TRUE)
-  fit <- glmQLFit(y, design = design, robust = TRUE)
-  list("y" = y, "fit" = fit, "design" = design)
+  qs_norm <- qsmooth(y$counts, group_factor = y$samples$group)
+  disp <- estimateDisp(y = qsmoothData(qs_norm), design = design, robust = TRUE)
+  fit <- glmQLFit(y = qsmoothData(qs_norm), dispersion = disp$trended.dispersion, design = design, robust = TRUE)
+  list("y" = qsmoothData(qs_norm), "fit" = fit, "design" = design)
 }
 
 pipeline_res <- mclapply(experiments, pipeline, mc.cores = 16)
