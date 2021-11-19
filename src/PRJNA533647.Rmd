@@ -127,149 +127,35 @@ de_results <- lapply(
 df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
-## Write results out
-
-```{r}
-# split DE results into gene and RE results and write out
-fwrite(
-  x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA533647", "data-files", "dge.tsv"),
-  sep = "\t"
-  )
-
-fwrite(
-  x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA533647", "data-files", "dre.tsv"),
-  sep = "\t"
-)
-```
-
 ## Calculate normalized counts
 
 ```{r}
 lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA533647", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA533647", "rds-files", "re-lcpms.rds"))
 ```
 
-## Save design and contrast matrix
+## Save a `SummarizedExperiment` of processed data
+
+Save the:
+
+- Filtered raw counts (gene + RE)
+- Normalized counts
+- Log counts per million of normalized counts
+- Metadata used for DE testing
+- Design matrix used for DE testing
+- Dispersion estimates for DE testing
+- Model fit used in DE testing
+- Differential expression results
 
 ```{r}
-saveRDS(design, here("results", "PRJNA533647", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA533647", "rds-files", "contrast-matrix.rds"))
-```
+se <- SummarizedExperiment(assays = list("counts" = y$counts,
+                                         "qs_norm" = qsmoothData(qs_norm),
+                                         "lcpm" = lcpms),
+                           colData = metadata,
+                           metadata = list("design" = design, 
+                                           "contrasts" = contrast.matrix,
+                                           "dispersions" = disp,
+                                           "fit" = fit,
+                                           "de_results" = df))
 
----
-
-# OLD CODE
-
-## PCA
-
-```{r eval=FALSE, include=FALSE}
-library(FactoMineR)
-library(factoextra)
-
-
-# perform PCA with factominer --------------------------------------------------
-pca.gene <- PCA(t(lcpms.gene),
-                scale.unit = TRUE,
-                graph = FALSE,
-                ncp = 5)
-
-pca.re <- PCA(t(lcpms.re),
-              scale.unit = TRUE,
-              graph = FALSE,
-              ncp = 5)
-
-# scree plot -------------------------------------------------------------------
-fviz_eig(pca.gene, addlabels = TRUE) +
-  ggtitle("Protein Coding Genes") +
-  ggsave(here("results", "PRJNA533647", "figures", "gene-scree.png"),
-         width = 8,
-         height = 5)
-
-fviz_eig(pca.re, addlabels = TRUE) +
-  ggtitle("Repetitive Elements") +
-  ggsave(here("results", "PRJNA533647", "figures", "re-scree.png"),
-         width = 8,
-         height = 5)
-
-# extract the individual level coordinates -------------------------------------
-ind.gene <- get_pca_ind(pca.gene)
-ind.re <- get_pca_ind(pca.re)
-
-# plot -------------------------------------------------------------------------
-# genes
-ind.gene$coord %>% 
-  as_tibble(rownames = "sample_name") %>% 
-  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>%
-  ggplot(aes(x = Dim.1, y = Dim.2, color = group)) +
-  geom_point(size = 5) +
-  geom_hline(yintercept = 0, linetype = 3) +
-  geom_vline(xintercept = 0, linetype = 3) +
-  labs(title = "Protein Coding Genes",
-       x = "PC 1",
-       y = "PC 2") +
-  scale_color_brewer(palette = "Dark2") +
-  theme_light() +
-  ggsave(here("results", "PRJNA533647", "figures", "gene-pca.png"),
-         width = 8,
-         height = 5)
-# REs
-ind.re$coord %>% 
-  as_tibble(rownames = "sample_name") %>% 
-  left_join(as_tibble(colData(se), rownames = "sample_name"), by = "sample_name") %>% 
-  ggplot(aes(x = Dim.1, y = Dim.2, color = group)) +
-  geom_point(size = 5) +
-  geom_hline(yintercept = 0, linetype = 3) +
-  geom_vline(xintercept = 0, linetype = 3) +
-  labs(title = "Repetitive Elements",
-       x = "PC 1",
-       y = "PC 2") +
-  scale_color_brewer(palette = "Dark2") +
-  theme_light() +
-  ggsave(here("results", "PRJNA533647", "figures", "re-pca.png"),
-         width = 8,
-         height = 5)
-```
-
-## Heatmaps
-
-```{r eval=FALSE, include=FALSE}
-# create column annotation
-col_df <- colData(se)[, "group", drop = FALSE] %>%
-  as.data.frame()
-
-# create colors for column annotations
-group_colors <- RColorBrewer::brewer.pal(n = nlevels(col_df$group), "Dark2")
-names(group_colors) <- levels(col_df$group)
-
-# put colors in list
-ann_colors <- list(group = group_colors)
-
-# extract only significant genes and REs ---------------------------------------
-sig_genes <- df %>% filter(feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
-sig_res <- df %>% filter(!feature_id %in% cds$gene_name & FDR < sig) %>% pull(feature_id)
-lcpms.sig_genes <- subset(lcpms.gene, rownames(lcpms.gene) %in% sig_genes)
-lcpms.sig_res <- subset(lcpms.re, rownames(lcpms.re) %in% sig_res)
-
-# plot heatmaps ----------------------------------------------------------------
-# Nothing significant
-# quickmap(lcpms.sig_genes, 
-#          annotation_col = col_df,
-#          annotation_colors = ann_colors,
-#          main = paste("Significant (FDR <", sig, ") Protein Coding Genes"),
-#          filename = here("results", "PRJNA533647", "figures", "gene-heatmap.png"))
-# 
-# quickmap(lcpms.sig_res, 
-#          annotation_col = col_df,
-#          annotation_colors = ann_colors,
-#          main = paste("Significant (FDR <", sig, ") Repetitive Elements"),
-#          filename = here("results", "PRJNA533647", "figures", "re-heatmap.png"))
+saveRDS(se, here("results", "PRJNA533647", "rds-files", "se.rds"))
 ```

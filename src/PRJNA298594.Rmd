@@ -131,40 +131,35 @@ de_results <- lapply(
 df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
 ```
 
-## Write results out
-
-```{r}
-# split DE results into gene and RE results and write out
-fwrite(
-  x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA298594", "data-files", "dge.tsv"),
-  sep = "\t"
-  )
-
-fwrite(
-  x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA298594", "data-files", "dre.tsv"),
-  sep = "\t"
-)
-```
-
 ## Calculate normalized counts
 
 ```{r}
 lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA298594", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA298594", "rds-files", "re-lcpms.rds"))
 ```
 
-## Save design and contrast matrix
+## Save a `SummarizedExperiment` of processed data
+
+Save the:
+
+- Filtered raw counts (gene + RE)
+- Normalized counts
+- Log counts per million of normalized counts
+- Metadata used for DE testing
+- Design matrix used for DE testing
+- Dispersion estimates for DE testing
+- Model fit used in DE testing
+- Differential expression results
 
 ```{r}
-saveRDS(design, here("results", "PRJNA298594", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA298594", "rds-files", "contrast-matrix.rds"))
+se <- SummarizedExperiment(assays = list("counts" = y$counts,
+                                         "qs_norm" = qsmoothData(qs_norm),
+                                         "lcpm" = lcpms),
+                           colData = metadata,
+                           metadata = list("design" = design, 
+                                           "contrasts" = contrast.matrix,
+                                           "dispersions" = disp,
+                                           "fit" = fit,
+                                           "de_results" = df))
+
+saveRDS(se, here("results", "PRJNA298594", "rds-files", "se.rds"))
 ```

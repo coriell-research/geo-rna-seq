@@ -30,6 +30,12 @@ suppressPackageStartupMessages(library(qsmooth))
 mae <- readRDS(here("data", "PRJNA592159", "MultiAssayExperiment.rds"))
 ```
 
+## KEEP ONLY CALCITRIOL TREATED SAMPLES
+
+```{r}
+mae <- mae[, mae$group %like% "(Calcitriol$|DMSO$)"]
+```
+
 ## Read in gene annotations
 
 ```{r}
@@ -99,12 +105,17 @@ this information.
 
 ```{r}
 contrast.matrix <- makeContrasts(
-  CAPAN.Calcitriol_vs_CAPAN.DMSO = CAPAN.Calcitriol - CAPAN.DMSO,
+  CAPAN.Calcitriol_vs_CAPAN.DMSO = CAPAN2.Calcitriol - CAPAN2.DMSO,
   HPAFII.Calcitriol_vs_HPAFII.DMSO = HPAFII.Calcitriol - HPAFII.DMSO,
   MIAPACA2.Calcitriol_vs_MIAPACA2.DMSO = MIAPACA2.Calcitriol - MIAPACA2.DMSO,
   PANC1.Calcitriol_vs_PANC1.DMSO = PANC1.Calcitriol - PANC1.DMSO,
-  PDAC.Calcitriol_vs_PDAC.DMSO = PDAC.Calcitriol - PDAC.DMSO,
-  PDAC.FFX_vs_PDAC.DMSO = PDAC.FFX - PDAC.DMSO,
+  PDAC2.Calcitriol_vs_PDAC2.DMSO = PDAC2.Calcitriol - PDAC2.DMSO,
+  PDAC3.Calcitriol_vs_PDAC3.DMSO = PDAC3.Calcitriol - PDAC3.DMSO,
+  PDAC5.Calcitriol_vs_PDAC5.DMSO = PDAC5.Calcitriol - PDAC5.DMSO,
+  PDAC6.Calcitriol_vs_PDAC6.DMSO = PDAC6.Calcitriol - PDAC6.DMSO,
+  PDAC8.Calcitriol_vs_PDAC8.DMSO = PDAC8.Calcitriol - PDAC8.DMSO,
+  PDAC9.Calcitriol_vs_PDAC9.DMSO = PDAC9.Calcitriol - PDAC9.DMSO,
+  PDAC.Calcitriol_vs_PDAC.DMSO = ((PDAC2.Calcitriol + PDAC3.Calcitriol + PDAC5.Calcitriol + PDAC6.Calcitriol + PDAC8.Calcitriol + PDAC9.Calcitriol) / 6) - ((PDAC2.DMSO + PDAC3.DMSO + PDAC5.DMSO + PDAC6.DMSO + PDAC8.DMSO + PDAC9.DMSO) / 6),
   
   levels = design
 )
@@ -138,40 +149,35 @@ if (!dir.exists(here("results", "PRJNA592159"))) {
 }
 ```
 
-## Write results out
-
-```{r}
-# split DE results into gene and RE results and write out
-fwrite(
-  x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA592159", "data-files", "dge.tsv"),
-  sep = "\t"
-  )
-
-fwrite(
-  x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA592159", "data-files", "dre.tsv"),
-  sep = "\t"
-)
-```
-
 ## Calculate normalized counts
 
 ```{r}
 lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
-
-# split lcpms by gene and by RE
-lcpms.gene <- subset(lcpms, rownames(lcpms) %in% cds$gene_name)
-lcpms.re <- subset(lcpms, !rownames(lcpms) %in% cds$gene_name)
-
-# Write normalized counts out
-saveRDS(lcpms.gene, here("results", "PRJNA592159", "rds-files", "gene-lcpms.rds"))
-saveRDS(lcpms.re, here("results", "PRJNA592159", "rds-files", "re-lcpms.rds"))
 ```
 
-## Save design and contrast matrix
+## Save a `SummarizedExperiment` of processed data
+
+Save the:
+
+- Filtered raw counts (gene + RE)
+- Normalized counts
+- Log counts per million of normalized counts
+- Metadata used for DE testing
+- Design matrix used for DE testing
+- Dispersion estimates for DE testing
+- Model fit used in DE testing
+- Differential expression results
 
 ```{r}
-saveRDS(design, here("results", "PRJNA592159", "rds-files", "design.rds"))
-saveRDS(contrast.matrix, here("results", "PRJNA592159", "rds-files", "contrast-matrix.rds"))
+se <- SummarizedExperiment(assays = list("counts" = y$counts,
+                                         "qs_norm" = qsmoothData(qs_norm),
+                                         "lcpm" = lcpms),
+                           colData = metadata,
+                           metadata = list("design" = design, 
+                                           "contrasts" = contrast.matrix,
+                                           "dispersions" = disp,
+                                           "fit" = fit,
+                                           "de_results" = df))
+
+saveRDS(se, here("results", "PRJNA592159", "rds-files", "se.rds"))
 ```

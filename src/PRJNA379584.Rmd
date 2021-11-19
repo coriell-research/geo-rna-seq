@@ -158,7 +158,7 @@ pipeline <- function(x) {
   qs_norm <- qsmooth(y$counts, group_factor = y$samples$group)
   disp <- estimateDisp(y = qsmoothData(qs_norm), design = design, robust = TRUE)
   fit <- glmQLFit(y = qsmoothData(qs_norm), dispersion = disp$trended.dispersion, design = design, robust = TRUE)
-  list("y" = qsmoothData(qs_norm), "fit" = fit, "design" = design)
+  list("y" = qsmoothData(qs_norm), "fit" = fit, "design" = design, "raw_counts" = y$counts, "dispersion" = disp, "metadata" = colData(x))
 }
 
 pipeline_res <- mclapply(experiments, pipeline, mc.cores = 16)
@@ -503,8 +503,6 @@ contrast_mats <- list(
 ```
 
 Create modified version of get_de_results function that doesn't produce any plots
-and displays the execution time of each step. To be run in R console session on
-tmux.
 
 ```{r}
 # inner function -- operates on contrast level
@@ -545,44 +543,39 @@ df <- rbindlist(de_results)
 df[, batch_id := NULL]
 ```
 
-## Write results out
-
-```{r}
-# split DE results into gene and RE results and write out
-fwrite(
-  x = df[feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA379584", "data-files", "dge.tsv"),
-  sep = "\t"
-  )
-
-fwrite(
-  x = df[!feature_id %chin% cds$gene_name],
-  file = here("results", "PRJNA379584", "data-files", "dre.tsv"),
-  sep = "\t"
-)
-```
-
 ## Calculate normalized counts
 
 ```{r}
 lcpms <- lapply(pipeline_res, function(x) {cpm(x$y, log = TRUE, prior.count = 2)})
-lcpms.gene <- lapply(lcpms, function(x) {subset(x, rownames(x) %in% cds$gene_name)})
-lcpms.re <- lapply(lcpms, function(x) {subset(x, !rownames(x) %in% cds$gene_name)})
-
-# Write normalized counts out
-for (batch in names(lcpms)) {
-  saveRDS(lcpms.gene[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-gene-lcpms.rds")))
-  saveRDS(lcpms.re[[batch]], here("results", "PRJNA379584", "rds-files", paste0(batch, "-re-lcpms.rds")))
-}
 ```
 
-## Save design and contrast matrix
+## Save a `SummarizedExperiment` of processed data
+
+Save the:
+
+- Filtered raw counts (gene + RE)
+- Normalized counts
+- Log counts per million of normalized counts
+- Metadata used for DE testing
+- Design matrix used for DE testing
+- Dispersion estimates for DE testing
+- Model fit used in DE testing
+- Differential expression results
 
 ```{r}
-designs <- lapply(pipeline_res, function(x) x[["design"]])
-
-for (d in names(designs)) {
-  saveRDS(designs[[d]], here("results", "PRJNA379584", "rds-files", paste0("design-", d, ".rds")))
-  saveRDS(contrast_mats[[d]], here("results", "PRJNA379584", "rds-files", paste0("contrast-matrix-", d, ".rds")))
+create_se <- function(res, conmat, logcounts, de) {
+  se <- SummarizedExperiment(assays = list("counts" = res[["raw_counts"]],
+                                           "qs_norm" = res[["y"]],
+                                           "lcpm" = logcounts),
+                             colData = res[["metadata"]],
+                             metadata = list("design" = res[["design"]],
+                                             "contrasts" = conmat,
+                                             "fit" = res[["fit"]],
+                                             "dispersions" = res[["dispersion"]],
+                                             "de_results" = de))
+  return(se)
 }
+
+ses <- mapply(create_se, res = pipeline_res, conmat = contrast_mats, logcounts = lcpms, de = de_results, SIMPLIFY = FALSE)
+invisible(lapply(names(ses), function(x) saveRDS(ses[[x]], here("results", "PRJNA379584", "rds-files", paste0("se-", x, ".rds")))))
 ```
