@@ -1,0 +1,75 @@
+---
+title: "Quantro test"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Test for global differences with `Quantro`
+
+Read in data from HH1 experiment
+
+```{r}
+library(here)
+library(MultiAssayExperiment)
+
+
+mae <- readRDS(here("data", "PRJNA413957", "MultiAssayExperiment.rds"))
+```
+
+## Extract Count Matrix
+
+```{r}
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+
+# Filter for CDS and main REs
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
+repeats <- subset(
+  repeats, 
+  grepl(rownames(repeats), 
+        pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\.")
+  )
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+
+# Bind into single count matrix
+counts <- rbind(genes, repeats)
+```
+
+## Test for global differences using `quantro`
+
+```{r}
+library(doParallel)
+library(quantro)
+registerDoParallel(cores = 32)
+
+
+
+Groups <- factor(colData(mae)$group)
+q.genes <- quantro(genes, groupFactor = Groups, B = 1e05)
+q.repeats <- quantro(repeats, groupFactor = Groups, B = 1e05)
+q.all <- quantro(counts, groupFactor = Groups, B = 1e05)
+```
+
+Examine results
+
+```{r}
+# Genes only
+anova(q.genes)
+quantroStat(q.genes)
+quantroPlot(q.genes)
+
+# Repeats only
+anova(q.repeats)
+quantroStat(q.repeats)
+quantroPlot(q.repeats)
+
+# All
+anova(q.all)
+quantroStat(q.all)
+quantroPlot(q.all)
+```
+
+

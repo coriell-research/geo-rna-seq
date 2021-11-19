@@ -1,0 +1,46 @@
+---
+title: "Sample-level Meta-Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Get the list of processed raw counts in the MAE objects for each experiment
+
+```{r}
+library(MultiAssayExperiment)
+library(here)
+library(data.table)
+
+
+mae_files <- list.files(
+  path = here("data"),
+  pattern = "MultiAssayExperiment.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(mae_files) <- regmatches(mae_files, regexpr("PRJNA[0-9]+", mae_files))
+```
+
+Filter and normalize the raw count matrices for each experiment separately. 
+
+```{r}
+library(coriell)
+
+
+# Function to extract counts, filter and normalize
+process_count_mat <- function(fpath) {
+  mae <- readRDS(fpath)
+  genes <- assay(mae, "gene counts")
+  repeats <- assay(mae, "RE counts")
+  counts <- rbind(genes, repeats)
+  Group <- factor(colData(mae)$group)
+  norm_data <- normalize_count_matrix(counts, Group)
+  return(norm_data)
+}
+
+```
+

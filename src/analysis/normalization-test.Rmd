@@ -1,5 +1,5 @@
 ---
-title: "QSmooth"
+title: "Test Qsmooth vs RUVseq vs TMM Normalization"
 output: html_document
 ---
 
@@ -49,9 +49,15 @@ rownames(metadata) <- metadata$BioSample
 
 # Create DGEList object
 design <- model.matrix(~0 + group, data = metadata)
+colnames(design) <- gsub("group", "", colnames(design))
 y <- DGEList(counts = counts, samples = metadata)
 keep <- filterByExpr(y, design = design, group = metadata$group)
 y <- y[keep, ]
+
+# create alternate design for RUVg estimates
+W <- as.numeric(ruvg$W)
+design.ruv <- model.matrix(~0 + metadata$group + W)
+colnames(design.ruv) <- gsub("metadata$group", "", colnames(design.ruv), fixed = TRUE)
 ```
 
 ## Run `qsmooth` on the filtered counts
@@ -69,6 +75,27 @@ qs_norm <- qsmooth(object = y$counts, group_factor = y$samples$group, window = 0
 y <- calcNormFactors(y, method = "TMM")
 ```
 
+## Run `RUVSeq` on the filtered counts
+
+Use the 'stable' repeat elements as control genes. Use the stable 50 by BCV. 
+These are the repeats which were present in at least 50% of lists of the top
+500 most invariant REs across all experiments.
+
+```{r}
+# read in the 'stable' REs
+stableRE_10_bcv <- readRDS("../../results/normalization/rds-files/stableRE-10-bcv.rds")
+stableRE_10_union <- readRDS("../../results/normalization/rds-files/stableRE-10-union.rds")
+stableRE_25_bcv <- readRDS("../../results/normalization/rds-files/stableRE-25-bcv.rds")
+stableRE_25_union <- readRDS("../../results/normalization/rds-files/stableRE-25-union.rds")
+stableRE_33_bcv <- readRDS("../../results/normalization/rds-files/stableRE-33-bcv.rds")
+stableRE_33_union <- readRDS("../../results/normalization/rds-files/stableRE-33-union.rds")
+stableRE_50_bcv <- readRDS("../../results/normalization/rds-files/stableRE-50-bcv.rds")
+stableRE_50_union <- readRDS("../../results/normalization/rds-files/stableRE-50-union.rds")
+
+controls <- intersect(rownames(y$counts), stableRE_10_bcv)
+ruvg <- RUVSeq::RUVg(x = y$counts, cIdx = controls, k = 1)
+```
+
 ## Plot distributions for each
 
 ```{r}
@@ -81,26 +108,31 @@ library(patchwork)
 lcpm.raw <- cpm(y = y$counts, prior.count = 2, log = TRUE)
 lcpm.qs <- cpm(qsmoothData(qs_norm), prior.count = 2, log = TRUE)
 lcpm.tmm <- cpm(y, prior.count = 2, log = TRUE)
+lcpm.ruv <- cpm(y = ruvg$normalizedCounts, prior.count = 2, log = TRUE)
 
 # get data into ggplot format
 raw_dt <- as.data.table(lcpm.raw, keep.rownames = "feature_id")
 qs_dt <- as.data.table(lcpm.qs, keep.rownames = "feature_id")
 tmm_dt <- as.data.table(lcpm.tmm, keep.rownames = "feature_id")
+ruv_dt <- as.data.table(lcpm.ruv, keep.rownames = "feature_id")
 
 # Pivot counts longer
 raw_dt.m <- melt(raw_dt, id.vars = "feature_id", variable.name = "BioSample", value.name = "logCPM")
 qs_dt.m <- melt(qs_dt, id.vars = "feature_id", variable.name = "BioSample", value.name = "logCPM")
 tmm_dt.m <- melt(tmm_dt, id.vars = "feature_id", variable.name = "BioSample", value.name = "logCPM")
+ruv_dt.m <- melt(ruv_dt, id.vars = "feature_id", variable.name = "BioSample", value.name = "logCPM")
 
 # Join on metadata information
 raw_dt.m <- merge(raw_dt.m, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
 qs_dt.m <- merge(qs_dt.m, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
 tmm_dt.m <- merge(tmm_dt.m, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
+ruv_dt.m <- merge(ruv_dt.m, metadata, by = "BioSample", all.x = TRUE, all.y = FALSE)
 
 # create labels per treatment/time
 tmm_dt.m[, c("treatment", "dose", "time") := tstrsplit(group, "\\.")]
 raw_dt.m[, c("treatment", "dose", "time") := tstrsplit(group, "\\.")]
 qs_dt.m[, c("treatment", "dose", "time") := tstrsplit(group, "\\.")]
+ruv_dt.m[, c("treatment", "dose", "time") := tstrsplit(group, "\\.")]
 
 # Define Group factor levels
 group_lvls <- c("dmso..2", "dmso..4", "dmso..8", "dmso..24", "dmso..96",
@@ -111,6 +143,7 @@ group_lvls <- c("dmso..2", "dmso..4", "dmso..8", "dmso..24", "dmso..96",
 raw_dt.m[, group := factor(group, levels = group_lvls)]
 tmm_dt.m[, group := factor(group, levels = group_lvls)]
 qs_dt.m[, group := factor(group, levels = group_lvls)]
+ruv_dt.m[, group := factor(group, levels = group_lvls)]
 
 # boxplots ---
 plotBoxplot <- function(df, plot_title, fill_col = treatment) {
@@ -125,9 +158,10 @@ plotBoxplot <- function(df, plot_title, fill_col = treatment) {
           legend.position = "bottom")
 }
 
-p.raw <- plotBoxplot(raw_dt.m, "Raw Counts")
-p.tmm <- plotBoxplot(tmm_dt.m, "TMM Normalized Counts")
-p.qs <- plotBoxplot(qs_dt.m, "QS normalized Counts")
+p.raw <- plotBoxplot(raw_dt.m, "Library Size Normalized")
+p.tmm <- plotBoxplot(tmm_dt.m, "TMM Normalized")
+p.qs <- plotBoxplot(qs_dt.m, "QS Normalized")
+p.ruv <- plotBoxplot(ruv_dt.m, "RUVg Normalized")
 
 # Density plots
 plotDensity <- function(df, plot_title, color_col = treatment) {
@@ -141,12 +175,13 @@ plotDensity <- function(df, plot_title, color_col = treatment) {
     theme(legend.position = "bottom")
 }
 
-p2.raw <- plotDensity(raw_dt.m, "Raw Counts")
+p2.raw <- plotDensity(raw_dt.m, "Library Size Normalized")
 p2.tmm <- plotDensity(tmm_dt.m, "TMM Normalized")
 p2.qs <- plotDensity(qs_dt.m, "QSmooth Normalized")
+p2.ruv <- plotDensity(qs_dt.m, "RUVg Normalized")
 
 # Combine into patchwork
-(p.raw | p.tmm | p.qs) / (p2.raw | p2.tmm | p2.qs) +
+(p.raw | p.tmm | p.qs | p.ruv) / (p2.raw | p2.tmm | p2.qs | p2.ruv) +
   plot_layout(guides = "collect") & 
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "normalization.png"), width = 18, height = 9)
@@ -165,6 +200,7 @@ setDF(metadata, rownames = metadata$BioSample)
 pca.raw <- pca(lcpm.raw, metadata, scale = FALSE, center = TRUE)
 pca.tmm <- pca(lcpm.tmm, metadata, scale = FALSE, center = TRUE)
 pca.qs <- pca(lcpm.qs, metadata, scale = FALSE, center = TRUE)
+pca.ruv <- pca(lcpm.ruv, metadata, scale = FALSE, center = TRUE)
 
 b.raw <- biplot(
   pca.raw, 
@@ -199,10 +235,21 @@ b.qs <- biplot(
   title = "QSmooth Normalized") +
   scale_color_brewer(palette = "Dark2")
 
-(b.raw | b.tmm | b.qs) +
+b.ruv <- biplot(
+  pca.ruv, 
+  colby = "treatment", 
+  lab = metadata$time,
+  vline = 0,
+  vlineType = 2,
+  hline = 0,
+  hlineType = 2,
+  title = "RUVg Normalized") +
+  scale_color_brewer(palette = "Dark2")
+
+(b.raw | b.tmm | b.qs | b.ruv) +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
-ggsave(here("results", "normalization", "figures", "biplots.png"), width = 20, height = 8)
+ggsave(here("results", "normalization", "figures", "biplots.png"), width = 20, height = 6)
 ```
 
 ## Do the strategies result in differential expression differences?
@@ -211,16 +258,17 @@ ggsave(here("results", "normalization", "figures", "biplots.png"), width = 20, h
 y <- estimateDisp(y, design = design, robust = TRUE)
 disp.raw <- estimateDisp(y$counts, design = design, robust = TRUE)
 disp.qs <- estimateDisp(qsmoothData(qs_norm), design = design, robust = TRUE)
+disp.ruv <- estimateDisp(y$counts, design = design.ruv, robust = TRUE)
 
 fit.tmm <- glmQLFit(y, design = design, robust = TRUE)
 fit.raw <- glmQLFit(y = y$counts, design = design, dispersion = disp.raw$trended.dispersion, robust = TRUE)
 fit.qs <- glmQLFit(y = qsmoothData(qs_norm), design = design, dispersion = disp.qs$trended.dispersion, robust = TRUE)
+fit.ruv <- glmQLFit(y = y$counts, design = design.ruv, dispersion = disp.ruv$trended.dispersion, robust = TRUE)
 ```
 
 ### Test for differential expression
 
 ```{r}
-colnames(design) <- gsub("group", "", colnames(design))
 contrast.matrix <- makeContrasts(
   hh1_vs_dmso.2 = hh1.10uM.2 - dmso..2,
   hh1_vs_dmso.4 = (hh1.10uM.4 - hh1.10uM.2) - (dmso..4 - dmso..2),
@@ -235,6 +283,21 @@ contrast.matrix <- makeContrasts(
   
   levels = design
 )
+
+contrast.matrix2 <- makeContrasts(
+  hh1_vs_dmso.2 = hh1.10uM.2 - dmso..2,
+  hh1_vs_dmso.4 = (hh1.10uM.4 - hh1.10uM.2) - (dmso..4 - dmso..2),
+  hh1_vs_dmso.8 = (hh1.10uM.8 - hh1.10uM.2) - (dmso..8 - dmso..2),
+  hh1_vs_dmso.24 = (hh1.10uM.24 - hh1.10uM.2) - (dmso..24 - dmso..2),
+  hh1_vs_dmso.96 = (hh1.10uM.96 - hh1.10uM.2) - (dmso..96 - dmso..2),
+  
+  dac_vs_dmso.96 = dac_dmso..96 - dmso..96,
+  dac_hh1_10_vs_dmso.96 = dac_hh1.10uM.96 - dmso..96,
+  dac_hh1_25_vs_dmso.96 = dac_hh1.25uM.96 - dmso..96,
+  tetOff_vs_tetOn.72 = tetOff..72 - tetOn..72,
+  
+  levels = design.ruv
+)
 ```
 
 ### HH1 vs DMSO 2hr
@@ -246,15 +309,19 @@ library(coriell)
 hh1_vs_dmso.2.raw <- setDT(edger_to_df(glmTreat(fit.raw, contrast = contrast.matrix[, "hh1_vs_dmso.2"], lfc = log2(1.2))))
 hh1_vs_dmso.2.tmm <- setDT(edger_to_df(glmTreat(fit.tmm, contrast = contrast.matrix[, "hh1_vs_dmso.2"], lfc = log2(1.2))))
 hh1_vs_dmso.2.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "hh1_vs_dmso.2"], lfc = log2(1.2))))
+hh1_vs_dmso.2.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "hh1_vs_dmso.2"], lfc = log2(1.2))))
 
 v1 <- plot_volcano(hh1_vs_dmso.2.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(hh1_vs_dmso.2.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(hh1_vs_dmso.2.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(hh1_vs_dmso.2.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(hh1_vs_dmso.2.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(hh1_vs_dmso.2.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(hh1_vs_dmso.2.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(hh1_vs_dmso.2.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "HH1 10um vs DMSO - 2hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "de-2hr.png"), width = 18, height = 12)
@@ -266,15 +333,19 @@ ggsave(here("results", "normalization", "figures", "de-2hr.png"), width = 18, he
 hh1_vs_dmso.4.raw <- setDT(edger_to_df(glmTreat(fit.raw, contrast = contrast.matrix[, "hh1_vs_dmso.4"], lfc = log2(1.2))))
 hh1_vs_dmso.4.tmm <- setDT(edger_to_df(glmTreat(fit.tmm, contrast = contrast.matrix[, "hh1_vs_dmso.4"], lfc = log2(1.2))))
 hh1_vs_dmso.4.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "hh1_vs_dmso.4"], lfc = log2(1.2))))
+hh1_vs_dmso.4.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "hh1_vs_dmso.4"], lfc = log2(1.2))))
 
 v1 <- plot_volcano(hh1_vs_dmso.4.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(hh1_vs_dmso.4.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(hh1_vs_dmso.4.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(hh1_vs_dmso.4.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(hh1_vs_dmso.4.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(hh1_vs_dmso.4.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(hh1_vs_dmso.4.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(hh1_vs_dmso.4.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "HH1 10um vs DMSO - 4hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "de-4hr.png"), width = 18, height = 12)
@@ -286,15 +357,19 @@ ggsave(here("results", "normalization", "figures", "de-4hr.png"), width = 18, he
 hh1_vs_dmso.8.raw <- setDT(edger_to_df(glmTreat(fit.raw, contrast = contrast.matrix[, "hh1_vs_dmso.8"], lfc = log2(1.2))))
 hh1_vs_dmso.8.tmm <- setDT(edger_to_df(glmTreat(fit.tmm, contrast = contrast.matrix[, "hh1_vs_dmso.8"], lfc = log2(1.2))))
 hh1_vs_dmso.8.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "hh1_vs_dmso.8"], lfc = log2(1.2))))
+hh1_vs_dmso.8.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "hh1_vs_dmso.8"], lfc = log2(1.2))))
 
 v1 <- plot_volcano(hh1_vs_dmso.8.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(hh1_vs_dmso.8.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(hh1_vs_dmso.8.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(hh1_vs_dmso.8.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(hh1_vs_dmso.8.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(hh1_vs_dmso.8.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(hh1_vs_dmso.8.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(hh1_vs_dmso.8.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "HH1 10um vs DMSO - 8hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "de-8hr.png"), width = 18, height = 12)
@@ -306,15 +381,19 @@ ggsave(here("results", "normalization", "figures", "de-8hr.png"), width = 18, he
 hh1_vs_dmso.24.raw <- setDT(edger_to_df(glmTreat(fit.raw, contrast = contrast.matrix[, "hh1_vs_dmso.24"], lfc = log2(1.2))))
 hh1_vs_dmso.24.tmm <- setDT(edger_to_df(glmTreat(fit.tmm, contrast = contrast.matrix[, "hh1_vs_dmso.24"], lfc = log2(1.2))))
 hh1_vs_dmso.24.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "hh1_vs_dmso.24"], lfc = log2(1.2))))
+hh1_vs_dmso.24.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "hh1_vs_dmso.24"], lfc = log2(1.2))))
 
 v1 <- plot_volcano(hh1_vs_dmso.24.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(hh1_vs_dmso.24.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(hh1_vs_dmso.24.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(hh1_vs_dmso.24.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(hh1_vs_dmso.24.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(hh1_vs_dmso.24.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(hh1_vs_dmso.24.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(hh1_vs_dmso.24.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "HH1 10um vs DMSO - 24hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "de-24hr.png"), width = 18, height = 12)
@@ -326,15 +405,19 @@ ggsave(here("results", "normalization", "figures", "de-24hr.png"), width = 18, h
 hh1_vs_dmso.96.raw <- setDT(edger_to_df(glmTreat(fit.raw, contrast = contrast.matrix[, "hh1_vs_dmso.96"], lfc = log2(1.2))))
 hh1_vs_dmso.96.tmm <- setDT(edger_to_df(glmTreat(fit.tmm, contrast = contrast.matrix[, "hh1_vs_dmso.96"], lfc = log2(1.2))))
 hh1_vs_dmso.96.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "hh1_vs_dmso.96"], lfc = log2(1.2))))
+hh1_vs_dmso.96.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "hh1_vs_dmso.96"], lfc = log2(1.2))))
 
 v1 <- plot_volcano(hh1_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(hh1_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(hh1_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(hh1_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(hh1_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(hh1_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(hh1_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(hh1_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "HH1 10um vs DMSO - 96hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "de-96hr.png"), width = 18, height = 12)
@@ -358,15 +441,23 @@ dac_hh1_10_vs_dmso.96.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contra
 dac_hh1_25_vs_dmso.96.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "dac_hh1_25_vs_dmso.96"], lfc = log2(1.2))))
 tetOff_vs_tetOn.72.qs <- setDT(edger_to_df(glmTreat(fit.qs, contrast = contrast.matrix[, "tetOff_vs_tetOn.72"], lfc = log2(1.2))))
 
+dac_vs_dmso.96.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "dac_vs_dmso.96"], lfc = log2(1.2))))
+dac_hh1_10_vs_dmso.96.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "dac_hh1_10_vs_dmso.96"], lfc = log2(1.2))))
+dac_hh1_25_vs_dmso.96.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "dac_hh1_25_vs_dmso.96"], lfc = log2(1.2))))
+tetOff_vs_tetOn.72.ruv <- setDT(edger_to_df(glmTreat(fit.ruv, contrast = contrast.matrix2[, "tetOff_vs_tetOn.72"], lfc = log2(1.2))))
+
 # DAC vs DMSO ---
 v1 <- plot_volcano(dac_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(dac_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(dac_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(dac_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(dac_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(dac_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(dac_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(dac_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "Decitabine vs DMSO - 96hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "dac_vs_dmso-96hr.png"), width = 18, height = 12)
@@ -375,11 +466,14 @@ ggsave(here("results", "normalization", "figures", "dac_vs_dmso-96hr.png"), widt
 v1 <- plot_volcano(dac_hh1_10_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(dac_hh1_10_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(dac_hh1_10_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(dac_hh1_10_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(dac_hh1_10_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(dac_hh1_10_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(dac_hh1_10_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(dac_hh1_10_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "Decitabine + HH1 10um vs DMSO - 96hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "dacHH110_vs_dmso-96hr.png"), width = 18, height = 12)
@@ -388,11 +482,14 @@ ggsave(here("results", "normalization", "figures", "dacHH110_vs_dmso-96hr.png"),
 v1 <- plot_volcano(dac_hh1_25_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(dac_hh1_25_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(dac_hh1_25_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(dac_hh1_25_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(dac_hh1_25_vs_dmso.96.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(dac_hh1_25_vs_dmso.96.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(dac_hh1_25_vs_dmso.96.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(dac_hh1_25_vs_dmso.96.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "Decitabine + HH1 25um vs DMSO - 96hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "dacHH125_vs_dmso-96hr.png"), width = 18, height = 12)
@@ -401,11 +498,14 @@ ggsave(here("results", "normalization", "figures", "dacHH125_vs_dmso-96hr.png"),
 v1 <- plot_volcano(tetOff_vs_tetOn.72.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 v2 <- plot_volcano(tetOff_vs_tetOn.72.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 v3 <- plot_volcano(tetOff_vs_tetOn.72.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+v4 <- plot_volcano(tetOff_vs_tetOn.72.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 m1 <- plot_md(tetOff_vs_tetOn.72.raw, fdr = 0.1, lfc = log2(1.2)) + ggtitle("Raw Counts")
 m2 <- plot_md(tetOff_vs_tetOn.72.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalization")
 m3 <- plot_md(tetOff_vs_tetOn.72.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
+m4 <- plot_md(tetOff_vs_tetOn.72.ruv, fdr = 0.1, lfc = log2(1.2)) + ggtitle("RUVg Normalization")
 
-(v1 | v2 | v3) / (m1 | m2 | m3) +
+(v1 | v2 | v3 | v4) / (m1 | m2 | m3 | m4) +
+  plot_annotation(title = "Tet Off vs Tet On - 72hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "TetOff_vs_TetOn-96hr.png"), width = 18, height = 12)
@@ -587,6 +687,7 @@ m2 <- plot_md(molt.jq1.2.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normali
 m3 <- plot_md(molt.jq1.2.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "MOLT JQ1 vs DMSO - 2hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "molt_jq1-2hr.png"), width = 18, height = 12)
@@ -607,6 +708,7 @@ m2 <- plot_md(molt.jq1.6.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normali
 m3 <- plot_md(molt.jq1.6.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "MOLT JQ1 vs DMSO - 6hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "molt_jq1-6hr.png"), width = 18, height = 12)
@@ -627,6 +729,7 @@ m2 <- plot_md(molt.dbet6.2.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Norma
 m3 <- plot_md(molt.dbet6.2.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "MOLT dBET6 vs DMSO - 2hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "molt_dbet6-2hr.png"), width = 18, height = 12)
@@ -647,6 +750,7 @@ m2 <- plot_md(molt.dbet6.6.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Norma
 m3 <- plot_md(molt.dbet6.6.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "MOLT dBET6 vs DMSO - 6hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "molt_dbet6-6hr.png"), width = 18, height = 12)
@@ -667,6 +771,7 @@ m2 <- plot_md(pdx.jq1.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normalizat
 m3 <- plot_md(pdx.jq1.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "PDX JQ1 vs DMSO - 0hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "pdx-jq1.png"), width = 18, height = 12)
@@ -687,6 +792,7 @@ m2 <- plot_md(pdx.dbet6.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normaliz
 m3 <- plot_md(pdx.dbet6.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "PDX dBET6 vs DMSO - 0hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "pdx-dbet6.png"), width = 18, height = 12)
@@ -707,6 +813,7 @@ m2 <- plot_md(primary.jq1.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Normal
 m3 <- plot_md(primary.jq1.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "Primary Cells JQ1 vs DMSO - 0hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "primary_cells-jq1.png"), width = 18, height = 12)
@@ -727,6 +834,7 @@ m2 <- plot_md(primary.dbet6.tmm, fdr = 0.1, lfc = log2(1.2)) + ggtitle("TMM Norm
 m3 <- plot_md(primary.dbet6.qs, fdr = 0.1, lfc = log2(1.2)) + ggtitle("QSmooth Normalization")
 
 (v1 | v2 | v3) / (m1 | m2 | m3) +
+  plot_annotation(title = "Primary Cells dBET6 vs DMSO - 0hr") +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 ggsave(here("results", "normalization", "figures", "primary_cells-dbet6.png"), width = 18, height = 12)

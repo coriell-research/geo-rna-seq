@@ -208,9 +208,22 @@ dre_se <- SummarizedExperiment(
 
 ## REMOVE OUTLIERS BEFORE WRITING OUT
 
+Identified after plotting PCA. One experiment was done in multiple batches but
+replicates were split across batches for some, making the DE analysis different
+across these batches.
+
 ```{r}
 outlier_contrasts <- c("PDX_CBAB22694_CD45pos.1percent_VTP50469_chow.28d_vs_control",
-                       "Bortezomib_vs_DMSO_24hr.10A")
+                       "Bortezomib_vs_DMSO_24hr.10A",
+                       "Bortezomib_vs_DMSO_24hr.10B",
+                       "Ciclopirox_vs_DMSO_24hr.12A",
+                       "Manumycin_A_vs_DMSO_6hr.12A",
+                       "SCH_79797_vs_DMSO_24hr.12A",
+                       "GSK461364_vs_DMSO_24hr.10B",
+                       "Sorafenib_vs_DMSO_24hr.10B",
+                       "TW_37_vs_DMSO_24hr.10B",
+                       "Vorinostat_vs_DMSO_24hr.10B"
+                       )
 dge_se <- dge_se[, !dge_se$contrast %in% outlier_contrasts]
 dre_se <- dre_se[, !dre_se$contrast %in% outlier_contrasts]
 
