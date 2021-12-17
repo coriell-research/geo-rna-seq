@@ -7,7 +7,6 @@ output:
     theme: united
     toc: yes
     toc_depth: 4
-
 ---
 
 ```{r setup, include=FALSE}
@@ -23,6 +22,18 @@ suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(edgeR))
 suppressPackageStartupMessages(library(qsmooth))
+suppressPackageStartupMessages(library(quantro))
+suppressPackageStartupMessages(library(doParallel))
+registerDoParallel(cores = 12)
+```
+
+## Create results directory for project if one doesn't exist
+
+```{r}
+if (!dir.exists(here("results", "PRJNA395584"))) {
+  dir.create(here("results", "PRJNA395584", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA395584", "data-files"))
+}
 ```
 
 ## Read in MultiAssayExperiment Object
@@ -72,71 +83,84 @@ counts <- rbind(genes, repeats)
 
 Also has the effect of renaming the rows by the BioSample accession.
 
-```{r, warning=FALSE}
-counts <- edgeR::sumTechReps(counts, ID = colData(mae)$BioSample)
+```{r}
+counts <- sumTechReps(counts, ID = colData(mae)$BioSample)
 colData(mae)$bases <- as.integer(colData(mae)$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
 setDF(metadata, rownames = metadata$BioSample)
 ```
 
+## Check for global differences between groups with `quantro`
+
+```{r}
+qtest <- quantro(counts, groupFactor = metadata$group, B = 1e3)
+perm_pval <- quantroPvalPerm(qtest)
+```
+
 ## DE pipeline
 
 ```{r}
+# Define experimental design
 design <- model.matrix(~0 + group, data = metadata)
 colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
-y <- DGEList(counts = counts, samples = metadata)
-keep <- filterByExpr(y, design = design)
-y <- y[keep,, keep.lib.sizes = FALSE]
-qs_norm <- qsmooth(y$counts, group_factor = y$samples$group)
-disp <- estimateDisp(y = qsmoothData(qs_norm), design = design, robust = TRUE)
-fit <- glmQLFit(y = qsmoothData(qs_norm), dispersion = disp$trended.dispersion, design = design, robust = TRUE)
-```
 
-## DE testing
-
-```{r}
+# Define contrasts to test
 contrast.matrix <- makeContrasts(
   HL_60.BI00894999.35nM_vs_HL_60.DMSO = HL_60.BI00894999.35nM - HL_60.DMSO.NA,
   KASUMI_1.BI00894999.35nM_vs_KASUMI_1.DMSO = KASUMI_1.BI00894999.35nM - KASUMI_1.DMSO.NA,
   MOLM_13.BI00894999.35nM_vs_OLM_13.DMSO = MOLM_13.BI00894999.35nM - MOLM_13.DMSO.NA,
   NCI_H2171.BI00894999.100nM_vs_NCI_H2171.DMSO = NCI_H2171.BI00894999.100nM - NCI_H2171.DMSO.NA,
   OCI_AML3.BI00894999.35nM_vs_OCI_AML3.DMSO = OCI_AML3.BI00894999.35nM - OCI_AML3.DMSO.NA,
-  
   MV_4_11_B.BI00894999.1000nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.1000nM - MV_4_11_B.DMSO.NA,
   MV_4_11_B.BI00894999.100nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.100nM - MV_4_11_B.DMSO.NA,
   MV_4_11_B.BI00894999.1nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.1nM - MV_4_11_B.DMSO.NA,
   MV_4_11_B.BI00894999.35nM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999.35nM - MV_4_11_B.DMSO.NA,
   MV_4_11_B.BI00894999_EX00101218.35nM_5uM_vs_MV_4_11_B.DMSO = MV_4_11_B.BI00894999_EX00101218.35nM_5uM - MV_4_11_B.DMSO.NA,
   MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO = MV_4_11_B.EX00101218.5uM - MV_4_11_B.DMSO.NA,
-  
   levels = design
 )
 
-# create inputs to map over (titles are same as above)
-cons <- colnames(contrast.matrix)
-names(cons) <- cons
+# Create DGEList object from counts and filter for expression
+y <- DGEList(counts = counts, samples = metadata)
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
 
-# set global significance levels (used in all downstream plots/analyses)
-fc <- 1.5
-
-# map over and extract results
-de_results <- lapply(
-  cons, 
-  get_de_results2,
-  contrast_matrix = contrast.matrix,
-  fc = fc,
-  glm_fit = fit
-)
-
-# extract all results and bind to single df
-df <- rbindlist(lapply(de_results, function(x) x[["table"]]), idcol = "contrast")
+# If global differences exist use QSmooth normalization, if not use TMM
+if (perm_pval < 0.01) {
+  norm_method <- "qs"
+  qs <- qsmooth(y$counts, group_factor = y$samples$group)
+  fit <- lmFit(log2(qsmoothData(qs) + 2), design)
+  fit <- contrasts.fit(fit, contrast.matrix)
+} else {
+  norm_method <- "tmm"
+  y <- calcNormFactors(y, method = "TMM")
+  y <- estimateDisp(y, design, robust = TRUE)
+  fit <- glmQLFit(y, design, robust = TRUE)
+  plotQLDisp(fit)
+}
 ```
 
-## Calculate normalized counts
+## Test for differential expression above a fold-change
+
+Use either `treat` or `glmTreat` depending on the fit type to test for 
+differential expression above a fold-change.
 
 ```{r}
-lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
+# Define fold-change that features must exceed to be considered for significance
+FC <- 1.5
+
+contrast_names <- colnames(contrast.matrix)
+if (norm_method == "qs") {
+  fit2 <- treat(fit, lfc = log2(FC), trend = TRUE, robust = TRUE)
+  plotSA(fit2)
+  res_dts <- get_treat(contrast_names, fit2)
+} else {
+  res_dts <- get_glmTreat(contrast_names, fit, contrast.matrix, FC)
+  }
+
+# extract all results and bind to single df
+df <- rbindlist(res_dts, idcol = "contrast")
 ```
 
 ## Save a `SummarizedExperiment` of processed data
@@ -144,24 +168,18 @@ lcpms <- cpm(qsmoothData(qs_norm), log = TRUE, prior.count = 2)
 Save the:
 
 - Filtered raw counts (gene + RE)
-- Normalized counts
-- Log counts per million of normalized counts
 - Metadata used for DE testing
 - Design matrix used for DE testing
-- Dispersion estimates for DE testing
 - Model fit used in DE testing
 - Differential expression results
 
 ```{r}
-se <- SummarizedExperiment(assays = list("counts" = y$counts,
-                                         "qs_norm" = qsmoothData(qs_norm),
-                                         "lcpm" = lcpms),
+se <- SummarizedExperiment(assays = list("counts" = y$counts),
                            colData = metadata,
                            metadata = list("design" = design, 
                                            "contrasts" = contrast.matrix,
-                                           "dispersions" = disp,
                                            "fit" = fit,
-                                           "de_results" = df))
+                                           "de" = df))
 
 saveRDS(se, here("results", "PRJNA395584", "rds-files", "se.rds"))
 ```

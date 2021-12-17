@@ -23,6 +23,18 @@ suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(edgeR))
 suppressPackageStartupMessages(library(qsmooth))
+suppressPackageStartupMessages(library(quantro))
+suppressPackageStartupMessages(library(doParallel))
+registerDoParallel(cores = 12)
+```
+
+## Create results directory for project if one doesn't exist
+
+```{r}
+if (!dir.exists(here("results", "PRJNA379584"))) {
+  dir.create(here("results", "PRJNA379584", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA379584", "data-files"))
+}
 ```
 
 ## Read in MultiAssayExperiment Object
@@ -139,34 +151,17 @@ experiments <- list("1" = mae_1, "2" = mae_2, "3" = mae_3, "4" = mae_4, "5" = ma
                     "12B" = mae_12B, "12C" = mae_12C)
 ```
 
-## DE pipeline per-batch
+## Create design matrix for each experiment
 
-Apply the `edgeR` pipeline separately over each batch. Since one of the batches
-is generating a full rank error, run each individually.
-
-```{r message=FALSE}
-library(edgeR)
-
-
-pipeline <- function(x) {
-  design <- model.matrix(~0 + group, data = colData(x))
+```{r}
+designs <- lapply(experiments, function(experiment) {
+  design <- model.matrix(~0 + group, data = colData(experiment))
   colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
-  y <- DGEList(counts = assay(x, "counts"),
-               samples = colData(x))
-  keep <- filterByExpr(y, design = design)
-  y <- y[keep,, keep.lib.sizes = FALSE]
-  qs_norm <- qsmooth(y$counts, group_factor = y$samples$group)
-  disp <- estimateDisp(y = qsmoothData(qs_norm), design = design, robust = TRUE)
-  fit <- glmQLFit(y = qsmoothData(qs_norm), dispersion = disp$trended.dispersion, design = design, robust = TRUE)
-  list("y" = qsmoothData(qs_norm), "fit" = fit, "design" = design, "raw_counts" = y$counts, "dispersion" = disp, "metadata" = colData(x))
-}
-
-pipeline_res <- mclapply(experiments, pipeline, mc.cores = 16)
+  return(design)
+})
 ```
 
-## DE testing
-
-Create a contrast matrix for each batch
+## Create a contrast matrix for each batch
 
 ```{r}
 contrast.matrix.1 <- makeContrasts(
@@ -187,7 +182,7 @@ contrast.matrix.1 <- makeContrasts(
   YK_4_279_vs_DMSO_6hr.1 = YK_4_279.6 - DMSO.6,
   YK_4_279_vs_DMSO_24hr.1 = (YK_4_279.24 - YK_4_279.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["1"]]$design
+  levels = designs[["1"]]
 )
 
 contrast.matrix.2 <- makeContrasts(
@@ -199,7 +194,7 @@ contrast.matrix.2 <- makeContrasts(
   Sunitinib_vs_DMSO_6hr.2 = Sunitinib.6 - DMSO.6,
   YM_155_vs_DMSO_6hr.2 = YM_155.6 - DMSO.6,
   
-  levels = pipeline_res[["2"]]$design
+  levels = designs[["2"]]
 )
 
 # can't get control for changes over time (trts from different batch)
@@ -212,7 +207,7 @@ contrast.matrix.3 <- makeContrasts(
   Sunitinib_vs_DMSO_24hr.3 = Sunitinib.24 - DMSO.24,
   YM_155_vs_DMSO_24hr.3 = YM_155.24 - DMSO.24,
   
-  levels = pipeline_res[["3"]]$design
+  levels = designs[["3"]]
 )
 
 contrast.matrix.4 <- makeContrasts(
@@ -238,7 +233,7 @@ contrast.matrix.4 <- makeContrasts(
   Parthenolide_vs_DMSO_6hr.4 = Parthenolide.6 - DMSO.6,
   Parthenolide_vs_DMSO_24hr.4 = (Parthenolide.24 - Parthenolide.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["4"]]$design
+  levels = designs[["4"]]
 )
 
 contrast.matrix.5 <- makeContrasts(
@@ -263,7 +258,7 @@ contrast.matrix.5 <- makeContrasts(
   Piperlongumine_vs_DMSO_6hr.5 = Piperlongumine.6 - DMSO.6,
   Piperlongumine_vs_DMSO_24hr.5  = (Piperlongumine.24 - Piperlongumine.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["5"]]$design
+  levels = designs[["5"]]
 )
 
 contrast.matrix.6 <- makeContrasts(
@@ -290,7 +285,7 @@ contrast.matrix.6 <- makeContrasts(
   x5Zx_7_Oxozeanol_vs_DMSO_6hr.6 = x5Zx_7_Oxozeanol.6 - DMSO.6,
   x5Zx_7_Oxozeanol_vs_DMSO_24hr.6 = (x5Zx_7_Oxozeanol.24 - x5Zx_7_Oxozeanol.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["6"]]$design
+  levels = designs[["6"]]
 )
 
 contrast.matrix.7 <- makeContrasts(
@@ -317,7 +312,7 @@ contrast.matrix.7 <- makeContrasts(
   Ibrutinib_vs_DMSO_6hr.7 = Ibrutinib.6 - DMSO.6,
   Ibrutinib_vs_DMSO_24hr.7  = (Ibrutinib.24 - Ibrutinib.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["7"]]$design
+  levels = designs[["7"]]
 )
 
 contrast.matrix.8 <- makeContrasts(
@@ -344,7 +339,7 @@ contrast.matrix.8 <- makeContrasts(
   Nutlin_3_vs_DMSO_6hr.8 = Nutlin_3.6 - DMSO.6,
   Nutlin_3_vs_DMSO_24hr.8  = (Nutlin_3.24 - Nutlin_3.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["8"]]$design
+  levels = designs[["8"]]
 )
 
 contrast.matrix.9 <- makeContrasts(
@@ -371,7 +366,7 @@ contrast.matrix.9 <- makeContrasts(
   SCH_79797_vs_DMSO_6hr.9 = SCH_79797.6 - DMSO.6,
   SCH_79797_vs_DMSO_24hr.9  = (SCH_79797.24 - SCH_79797.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["9"]]$design
+  levels = designs[["9"]]
 )
 
 contrast.matrix.10a <- makeContrasts(
@@ -384,7 +379,7 @@ contrast.matrix.10a <- makeContrasts(
   GSK1210151A_vs_DMSO_6hr.10A = GSK1210151A.6 - DMSO.6, 
   GSK1210151A_vs_DMSO_24hr.10A  = (GSK1210151A.24 - GSK1210151A.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["10A"]]$design
+  levels = designs[["10A"]]
 )
 
 contrast.matrix.10b <- makeContrasts(
@@ -401,7 +396,7 @@ contrast.matrix.10b <- makeContrasts(
   Vorinostat_vs_DMSO_6hr.10B = Vorinostat.6 - DMSO.6, 
   Vorinostat_vs_DMSO_24hr.10B = (Vorinostat.24 - Vorinostat.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["10B"]]$design
+  levels = designs[["10B"]]
 )
 
 contrast.matrix.11a <- makeContrasts(
@@ -418,7 +413,7 @@ contrast.matrix.11a <- makeContrasts(
   Y_27632_vs_DMSO_6hr.11A = Y_27632.6 - DMSO.6, 
   Y_27632_vs_DMSO_24hr.11A = (Y_27632.24 - Y_27632.6) - (DMSO.24 - DMSO.6),
   
-  levels = pipeline_res[["11A"]]$design
+  levels = designs[["11A"]]
 )
 
 contrast.matrix.11b <- makeContrasts(
@@ -427,7 +422,7 @@ contrast.matrix.11b <- makeContrasts(
   LY_2183240_vs_DMSO_6hr.11B = LY_2183240.6 - DMSO.6, 
   PF_573228_vs_DMSO_6hr.11B = PF_573228.6 - DMSO.6,
 
-  levels = pipeline_res[["11B"]]$design
+  levels = designs[["11B"]]
 )
 
 contrast.matrix.12a <- makeContrasts(
@@ -465,21 +460,21 @@ contrast.matrix.12a <- makeContrasts(
   SU11274_vs_DMSO_24hr.12A  = (SU11274.24 - SU11274.6) - (DMSO.24 - DMSO.6),
   Y_27632_vs_DMSO_6hr.12A = Y_27632.6 - DMSO.6,
   
-  levels = pipeline_res[["12A"]]$design
+  levels = designs[["12A"]]
 )
 
 contrast.matrix.12b <- makeContrasts(
   CAY10618_in_Methanol_vs_Methanol_6hr.12B = CAY10618_in_Methanol.6 - Methanol.6, 
   CAY10618_in_Methanol_vs_Methanol_24hr.12B = (CAY10618_in_Methanol.24 - CAY10618_in_Methanol.6) - (Methanol.24 - Methanol.6),
   
-  levels = pipeline_res[["12B"]]$design
+  levels = designs[["12B"]]
 )
 
 contrast.matrix.12c <- makeContrasts(
   Leptomycin_B_in_Ethanol_vs_Ethanol_6hr.12C = Leptomycin_B_in_Ethanol.6 - Ethanol.6, 
   Leptomycin_B_in_Ethanol_vs_Ethanol_24hr.12C = (Leptomycin_B_in_Ethanol.24 - Leptomycin_B_in_Ethanol.6) - (Ethanol.24 - Ethanol.6),
   
-  levels = pipeline_res[["12C"]]$design
+  levels = designs[["12C"]]
 )
 
 contrast_mats <- list(
@@ -502,51 +497,29 @@ contrast_mats <- list(
 )
 ```
 
-Create modified version of get_de_results function that doesn't produce any plots
+## DE pipeline per-batch
 
-```{r}
-# inner function -- operates on contrast level
-get_de_results <- function(contrast_name, glm_fit, contrast_matrix, fc = 1.5) {
-  res_df <- coriell::edger_to_df(
-    glmTreat(
-      glm_fit, 
-      contrast = contrast_matrix[, contrast_name],
-      lfc = log2(fc)
-      )
-    )
+For this analysis assume global differences and apply `QSmooth` pipeline.
+
+```{r message=FALSE}
+pipeline <- function(mae, design, contrast_matrix) {
+  design <- model.matrix(~0 + group, data = colData(mae))
+  colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
+  y <- DGEList(counts = assay(mae, "counts"), samples = colData(mae))
+  keep <- filterByExpr(y, design = design)
+  y <- y[keep,, keep.lib.sizes = FALSE]
+    
+  qs <- qsmooth(y$counts, group_factor = y$samples$group)
+  fit <- lmFit(log2(qsmoothData(qs) + 2), design)
+  fit <- contrasts.fit(fit, contrast_matrix)  
+  fit2 <- treat(fit, lfc = log2(1.5), trend = TRUE, robust = TRUE)
+  res_dts <- get_treat(colnames(contrast_matrix), fit2)
+  df <- rbindlist(res_dts, idcol = "contrast")
   
-  return(list("table" = res_df))
+  list("design" = design, "metadata" = colData(mae), "raw_counts" = y$counts, "de" = df, "fit" = fit2, "contrast_matrix" = contrast_matrix)
 }
 
-# outer function - operates on batch level
-get_batch_results <- function(x) {
-  contrasts <- colnames(contrast_mats[[x]])
-  names(contrasts) <- contrasts
-  
-  batch_res <- mclapply(
-    X = contrasts,
-    FUN = get_de_results,
-    glm_fit = pipeline_res[[x]]$fit,
-    contrast_matrix = contrast_mats[[x]],
-    fc = 1.5,
-    mc.cores = 12
-  )
-  
-  res_df <- rbindlist(lapply(batch_res, function(x) x[["table"]]), idcol = "contrast")
-  res_df[, batch_id := x]
-  
-  return(res_df)
-}
-
-de_results <- lapply(X = names(pipeline_res), FUN = get_batch_results)
-df <- rbindlist(de_results)
-df[, batch_id := NULL]
-```
-
-## Calculate normalized counts
-
-```{r}
-lcpms <- lapply(pipeline_res, function(x) {cpm(x$y, log = TRUE, prior.count = 2)})
+pipeline_res <- parallel::mcmapply(pipeline, experiments, designs, contrast_mats, mc.cores = 12, SIMPLIFY = FALSE)
 ```
 
 ## Save a `SummarizedExperiment` of processed data
@@ -563,19 +536,15 @@ Save the:
 - Differential expression results
 
 ```{r}
-create_se <- function(res, conmat, logcounts, de) {
-  se <- SummarizedExperiment(assays = list("counts" = res[["raw_counts"]],
-                                           "qs_norm" = res[["y"]],
-                                           "lcpm" = logcounts),
-                             colData = res[["metadata"]],
-                             metadata = list("design" = res[["design"]],
-                                             "contrasts" = conmat,
-                                             "fit" = res[["fit"]],
-                                             "dispersions" = res[["dispersion"]],
-                                             "de_results" = de))
-  return(se)
+create_se <- function(result) {
+  se <- SummarizedExperiment(assays = list("counts" = result[["raw_counts"]]),
+                             colData = result[["metadata"]],
+                             metadata = list("design" = result[["design"]], 
+                                             "contrasts" = result[["contrast_matrix"]],
+                                             "fit" = result[["fit"]],
+                                             "de" = result[["de"]]))
 }
 
-ses <- mapply(create_se, res = pipeline_res, conmat = contrast_mats, logcounts = lcpms, de = de_results, SIMPLIFY = FALSE)
+ses <- lapply(pipeline_res, create_se)
 invisible(lapply(names(ses), function(x) saveRDS(ses[[x]], here("results", "PRJNA379584", "rds-files", paste0("se-", x, ".rds")))))
 ```
