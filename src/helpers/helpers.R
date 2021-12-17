@@ -1,118 +1,29 @@
-#library(data.table)
-#library(forcats)
-#library(tidyverse)
-library(magrittr)
+library(data.table)
 library(edgeR)
-library(plotly)
-library(magrittr)
+library(limma)
 
 
-# plotly function for plotting interactive dim reductions
-plot_dimReduction <- function(df, xvar, yvar, colBy, plot_title = NULL, x_lab = "Dim1", y_lab = "Dim2") {
-  plot_ly(
-    data = df,
-    x = ~get(xvar),
-    y = ~get(yvar),
-    color = ~get(colBy),
-    opacity = 0.8,
-    colors = "Set1",
-    type = "scatter",
-    mode = "markers",
-    hovertext = paste(
-      "BioProject:", df$BioProject,
-      "<br>BioSample:", df$BioSample,
-      "<br>Group:", df$group,
-      "<br>Cell Info:", df$CELL_INFO,
-      "<br>Tissue:", df$TISSUE,
-      "<br>Disease:", df$DISEASE,
-      "<br>Treatment:", df$TREATMENT_INFO,
-      "<br>Dose:", df$DOSE_INFO,
-      "<br>Time:", df$TIME_INFO
-    )
-  ) %>%
-    add_markers(size = 180) %>%
-    layout(
-      title = plot_title,
-      showlegend = FALSE,
-      xaxis = list(title = x_lab),
-      yaxis = list(title = y_lab)
-    )
-}
-
-# version without the plots
-get_de_results2 <- function(contrast_name, 
-                            glm_fit, 
-                            contrast_matrix, 
-                            fc = 1.5) {
-  res_df <- glmTreat(
-    glm_fit, 
-    contrast = contrast_matrix[, contrast_name], 
-    lfc = log2(fc)
-    ) %>%
-    coriell::edger_to_df()
+# Function to retrieve significance results from limma-trend pipeline
+get_treat <- function(contrasts, fit) {
+  res_dts <- lapply(contrasts, function(contrast) { 
+    as.data.table(topTreat(fit, coef = contrast, number = Inf), keep.rownames = "feature_id") })
+  names(res_dts) <- contrasts
   
-  list("table" = res_df)
+  # Rename some columns to match edgeR output
+  res_dts <- lapply(res_dts, function(dt) setnames(dt, old = c("P.Value", "adj.P.Val"), new = c("PValue", "FDR")))
+
+  return(res_dts)
 }
 
-# DEPRECATED -------------------------------------------------------------------
-# perform differential expression on all contrasts ------------------------
-# get_de_results <- function(contrast_name, 
-#                            plot_title, 
-#                            glm_fit, 
-#                            contrast_matrix, 
-#                            fdr = 0.1, 
-#                            fc = 1.5) {
-#   
-#   res_df <- glmTreat(glm_fit, contrast = contrast_matrix[, contrast_name], lfc = log2(fc)) %>% 
-#     coriell::edger_to_df()
-#   
-#   vplot <- coriell::plot_volcano(res_df, fdr = fdr, lfc = log2(fc)) +
-#     ggtitle(plot_title)
-#   
-#   md_plot <- coriell::plot_md(res_df, fdr = fdr, lfc = log2(fc)) + 
-#     ggtitle(plot_title)
-#   
-#   list("table" = res_df, "vplot" = vplot, "mdplot" = md_plot)
-# }
+# Function to retrieve significance results from glmTreat test
+get_glmTreat <- function(contrasts, fit, contrast_matrix, fc) {
+  res_dts <- lapply(contrasts, function(contrast) {
+    as.data.table(
+      topTags(glmTreat(fit, contrast = contrast_matrix[, contrast], lfc = log2(fc)), n = Inf)$table, 
+      keep.rownames = "feature_id")
+  })
+  names(res_dts) <- contrasts
+  
+  return(res_dts)
+}
 
-# create dotplots of RE expression ---------------------------------------------
-# plot_fam_counts = function(df, con, n_dots = 25) {
-#   plot_df <- df %>% 
-#     mutate(direction = case_when(FDR < sig & logFC > 0 ~ "up",
-#                                  FDR < sig & logFC < 0 ~ "down",
-#                                  TRUE ~ "non-de")) %>% 
-#     filter(contrast == con) %>% 
-#     separate(feature_id, into = c("class", "family", "subfamily"), sep = "\\.") %>% 
-#     group_by(family, direction) %>% 
-#     summarize(count = n(),
-#               mean_lfc = mean(logFC),
-#               .groups = "drop") %>% 
-#     filter(direction != "non-de") %>%
-#     mutate(count = if_else(direction == "down", -count, count)) %>% 
-#     slice_max(order_by = abs(count), n = n_dots)
-#   
-#   if (nrow(plot_df) == 0) return(NULL)
-#   
-#   break_values <- pretty(plot_df$count)
-#   
-#   plot_df %>%
-#     ggplot(
-#       aes(
-#         x = fct_reorder(family, count, function(x) sum(abs(x))),
-#         y = count,
-#         color = direction,
-#         size = abs(mean_lfc)
-#         )
-#       ) +
-#     geom_hline(yintercept = 0, linetype = 2) +
-#     geom_point() +
-#     coord_flip() +
-#     scale_color_manual(values = c("up" = "firebrick", "down" = "steelblue")) +
-#     scale_y_continuous(breaks = break_values, labels = abs(break_values)) +
-#     theme_light() +
-#     labs(title = con,
-#          x = NULL,
-#          y = "Count",
-#          size = "|mean(logFC)|",
-#          color = "Differential Expression")
-# }
