@@ -168,21 +168,19 @@ df <- rbindlist(res_dts, idcol = "contrast")
 
 ## Save a `SummarizedExperiment` of processed data
 
-Save the:
-
-- Filtered raw counts (gene + RE)
-- Metadata used for DE testing
-- Design matrix used for DE testing
-- Model fit used in DE testing
-- Differential expression results
-
 ```{r}
-se <- SummarizedExperiment(assays = list("counts" = y$counts),
-                           colData = metadata,
-                           metadata = list("design" = design, 
-                                           "contrasts" = contrast.matrix,
-                                           "fit" = fit,
-                                           "de" = df))
+# Calculate logcounts of filtered, normalized data
+if (norm_method == "qs") {
+  logcounts <- log2(qsmoothData(qs) + 2)
+} else {
+  logcounts <- cpm(y, log = TRUE, prior.count = 2)
+}
 
+# Export results as SummarizedExperiment
+se <- SummarizedExperiment(
+  assays = list("counts" = y$counts, "logcounts" = logcounts),
+  colData = metadata,
+  metadata = list("fit" = fit, "de" = df)
+  )
 saveRDS(se, here("results", "PRJNA244098", "rds-files", "se.rds"))
 ```

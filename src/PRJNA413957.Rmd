@@ -44,7 +44,7 @@ mae <- readRDS(here("data", "PRJNA413957", "MultiAssayExperiment.rds"))
 
 ## ONLY INCLUDE TIME-SERIES DATA 
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 mae <- mae[, mae$group %like% "^hh1\\.10uM\\.[0-9]+|^dmso\\.\\.[0-9]+"]
 ```
 
@@ -118,11 +118,11 @@ contrast.matrix <- makeContrasts(
   YB5.HH1.10uM_vs_DMSO_8hr = (hh1.10uM.8 - hh1.10uM.2) - (dmso..8 - dmso..2),
   YB5.HH1.10uM_vs_DMSO_24hr = (hh1.10uM.24 - hh1.10uM.2) - (dmso..24 - dmso..2),
   YB5.HH1.10uM_vs_DMSO_96hr = (hh1.10uM.96 - hh1.10uM.2) - (dmso..96 - dmso..2),
-  # YB5.Decitabine_vs_DMSO_96hr = dac_dmso..96 - dmso..96,
-  # YB5.HH1.25uM_vs_DMSO_96hr = hh1.25uM.96 - dmso..96,
-  # YB5.Decitabine_HH1.10uM_vs_DMSO_96hr = dac_hh1.10uM.96 - dmso..96,
-  # YB5.Decitabine_HH1.25uM_vs_DMSO_96hr = dac_hh1.25uM.96 - dmso..96,
-  # YB5.TetOff_vs_TetOn = tetOff..72 - tetOn..72,
+  YB5.Decitabine_vs_DMSO_96hr = dac_dmso..96 - dmso..96,
+  YB5.HH1.25uM_vs_DMSO_96hr = hh1.25uM.96 - dmso..96,
+  YB5.Decitabine_HH1.10uM_vs_DMSO_96hr = dac_hh1.10uM.96 - dmso..96,
+  YB5.Decitabine_HH1.25uM_vs_DMSO_96hr = dac_hh1.25uM.96 - dmso..96,
+  YB5.TetOff_vs_TetOn = tetOff..72 - tetOn..72,
   levels = design
 )
 
@@ -170,21 +170,19 @@ df <- rbindlist(res_dts, idcol = "contrast")
 
 ## Save a `SummarizedExperiment` of processed data
 
-Save the:
-
-- Filtered raw counts (gene + RE)
-- Metadata used for DE testing
-- Design matrix used for DE testing
-- Model fit used in DE testing
-- Differential expression results
-
 ```{r}
-se <- SummarizedExperiment(assays = list("counts" = y$counts),
-                           colData = metadata,
-                           metadata = list("design" = design, 
-                                           "contrasts" = contrast.matrix,
-                                           "fit" = fit,
-                                           "de" = df))
+# Calculate logcounts of filtered, normalized data
+if (norm_method == "qs") {
+  logcounts <- log2(qsmoothData(qs) + 2)
+} else {
+  logcounts <- cpm(y, log = TRUE, prior.count = 2)
+}
 
+# Export results as SummarizedExperiment
+se <- SummarizedExperiment(
+  assays = list("counts" = y$counts, "logcounts" = logcounts),
+  colData = metadata,
+  metadata = list("fit" = fit, "de" = df)
+  )
 saveRDS(se, here("results", "PRJNA413957", "rds-files", "se.rds"))
 ```

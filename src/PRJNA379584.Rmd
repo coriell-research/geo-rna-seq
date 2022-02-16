@@ -516,7 +516,7 @@ pipeline <- function(mae, design, contrast_matrix) {
   res_dts <- get_treat(colnames(contrast_matrix), fit2)
   df <- rbindlist(res_dts, idcol = "contrast")
   
-  list("design" = design, "metadata" = colData(mae), "raw_counts" = y$counts, "de" = df, "fit" = fit2, "contrast_matrix" = contrast_matrix)
+  list("design" = design, "metadata" = colData(mae), "raw_counts" = y$counts, "de" = df, "fit" = fit2, "contrast_matrix" = contrast_matrix, "qs" = qs)
 }
 
 pipeline_res <- parallel::mcmapply(pipeline, experiments, designs, contrast_mats, mc.cores = 12, SIMPLIFY = FALSE)
@@ -524,25 +524,13 @@ pipeline_res <- parallel::mcmapply(pipeline, experiments, designs, contrast_mats
 
 ## Save a `SummarizedExperiment` of processed data
 
-Save the:
-
-- Filtered raw counts (gene + RE)
-- Normalized counts
-- Log counts per million of normalized counts
-- Metadata used for DE testing
-- Design matrix used for DE testing
-- Dispersion estimates for DE testing
-- Model fit used in DE testing
-- Differential expression results
-
 ```{r}
 create_se <- function(result) {
-  se <- SummarizedExperiment(assays = list("counts" = result[["raw_counts"]]),
-                             colData = result[["metadata"]],
-                             metadata = list("design" = result[["design"]], 
-                                             "contrasts" = result[["contrast_matrix"]],
-                                             "fit" = result[["fit"]],
-                                             "de" = result[["de"]]))
+  se <- SummarizedExperiment(
+    assays = list("counts" = result[["raw_counts"]], "logcounts" = log2(qsmoothData(result[["qs"]]) + 2)),
+    colData = result[["metadata"]],
+    metadata = list("fit" = result[["fit"]],
+                    "de" = result[["de"]]))
 }
 
 ses <- lapply(pipeline_res, create_se)
