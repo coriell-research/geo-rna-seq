@@ -79,15 +79,15 @@ by_feature <- dt[, .(mean_dispersion = mean(dispersion, na.rm = TRUE),
                  by = "feature_id"]
 
 repeat_by_feature <- by_feature[!feature_id %chin% cds$gene_name]
+
+# write this table out 
+fwrite(by_feature, here("results", "normalization", "data-files", "feature-data.tsv"), sep = "\t")
 ```
 
 Create a BCV plot for the averages across all features
 
 ```{r}
-library(plotly)
-
-
-ggplotly(ggplot(by_feature, aes(x = mean_avgLogCPM, y = sqrt(mean_dispersion), label = feature_id)) +
+ggplot(by_feature, aes(x = mean_avgLogCPM, y = sqrt(mean_dispersion), label = feature_id)) +
   geom_point(color = "grey", alpha = 0.5) +
   geom_point(data = repeat_by_feature[N < 106], color = "blue") +
   geom_point(data = repeat_by_feature[N >= 106], color = "red") +
@@ -98,10 +98,8 @@ ggplotly(ggplot(by_feature, aes(x = mean_avgLogCPM, y = sqrt(mean_dispersion), l
        x = "Mean logCPM",
        y = "Mean BCV",
        caption = "Dotted blue line shows typical value for a well controlled experiment") +
-  theme(plot.title = element_text(face = "bold", size = 14)))
+  theme(plot.title = element_text(face = "bold", size = 14))
 ggsave(here("results", "normalization", "figures", "bcv-plot.png"), width = 11, height = 7)
-
-by_feature[feature_id %like% "MYC"]
 ```
 
 How much do these elements vary around their means?
@@ -527,7 +525,6 @@ processed <- parallel::mclapply(
 
 gene_dt <- rbindlist(lapply(processed, function(x) x[["gene"]]), idcol = "sample_name")
 re_dt <- rbindlist(lapply(processed, function(x) x[["re"]]), idcol = "sample_name")
-head(gene_dt)
 
 gene_mat <- as.matrix(
   dcast(gene_dt, symbol ~ sample_name, value.var = "count", fill = 0L),
@@ -538,6 +535,10 @@ re_mat <- as.matrix(
   dcast(re_dt, repElem ~ sample_name, value.var = "count", fill = 0L),
   rownames = "repElem"
   )
+
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
+re_mat <- subset(re_mat, grepl(rownames(re_mat), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+gene_mat <- subset(gene_mat, rownames(gene_mat) %in% cds$gene_name)
 
 all(colnames(gene_mat) == colnames(re_mat))
 counts <- rbind(gene_mat, re_mat)

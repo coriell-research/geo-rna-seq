@@ -1,0 +1,36 @@
+---
+title: "Create Biosample Database"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Try to create a database linking BioSample IDs to contrast names
+
+## Read in experiment metadata and de results
+
+```{r}
+library(here)
+
+
+mae_files <- list.files(
+  path = here("data"),
+  pattern = "MultiAssayExperiment.rds",
+  full.names = TRUE,
+  recursive = TRUE
+  )
+names(mae_files) <- regmatches(mae_files, regexpr("PRJNA[0-9]+", mae_files))
+
+se_files <- list.files(
+  path = here("results"),
+  pattern = "se.rds",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+se_files <- se_files[!grepl("combined", se_files)]
+names(se_files) <- regmatches(se_files, regexpr("PRJNA[0-9]+", se_files))
+```
+

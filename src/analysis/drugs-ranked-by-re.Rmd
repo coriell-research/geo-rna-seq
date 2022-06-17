@@ -1,0 +1,398 @@
+---
+title: "Rank drugs by RE expression"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rank drugs by RE expression
+
+```{r}
+suppressPackageStartupMessages(library(SummarizedExperiment))
+library(DBI)
+library(data.table)
+
+
+# Get the differential expression data as a long table
+con <- dbConnect(RSQLite::SQLite(), "../../results/combined/data-files/de.sqlite")
+dt <- setDT(dbReadTable(con, "de"))
+
+# Read in results (mostly for metadata)
+se <- readRDS("../../results/combined/rds-files/se.rds")
+metadata <- as.data.table(as.data.frame(colData(se)), keep.rownames = "id")
+metadata[, `:=`(id = NULL, contrast = NULL)]
+```
+
+Calculate number of times differentiallly expressed
+
+```{r}
+dt[, `:=`(de = fcase(FDR < 0.1 & logFC < 0, "Down",
+                     FDR < 0.1 & logFC > 0, "Up",
+                     default = "Unperturbed"),
+          Expr = fcoalesce(AveExpr, logCPM))][,
+          de := factor(de, levels = c("Up", "Unperturbed", "Down"))]
+
+re_dt <- dt[feature_type == "re"]
+
+# join on the metadata information
+re_dt <- merge(
+  x = re_dt,
+  y = metadata,
+  by = "id",
+  all.x = TRUE,
+  all.y = FALSE
+  )
+```
+
+## Mean percentages dysregulated by drug and epigenetic class
+
+- For each contrast calculate the proportion of up/down/non-de REs
+- Join on metadata information
+- exclude drugs without labels
+- order drugs by prop dysregulated
+- plot drugs where proportion dysregulated is greater than or equal to 1%
+
+```{r}
+library(forcats)
+
+
+na_ids <- metadata[is.na(drug) | drug == "N/A", id]
+by_id <- re_dt[!id %in% na_ids, .N, by = .(id, de)]
+by_id.w <- dcast(by_id, id ~ de, value.var = "N", fill = 0L)
+by_id.w[, `:=`(prop_dys = (Up + Down) / (Up + Down + Unperturbed),
+               prop_up = Up / (Up + Down + Unperturbed),
+               prop_down = Down / (Up + Down + Unperturbed),
+               prop_unperturbed = Unperturbed / (Up + Down + Unperturbed))]
+by_id.w <- by_id.w[prop_dys >= 0.01]
+by_id <- melt(by_id.w, id.vars = c("id", "prop_dys", "prop_up", "prop_down", "prop_unperturbed"), variable.name = "direction", value.name = "N")
+by_id <- merge(by_id, metadata, by = "id", all.x = TRUE, all.y = FALSE)
+by_id <- by_id[!is.na(drug) & drug != "Untreated"]
+by_id[, id := fct_reorder(id, prop_dys, .desc = TRUE)]
+by_id[, drug := fct_reorder(drug, prop_dys, .desc = TRUE)]
+```
+
+Plot
+
+```{r}
+library(ggplot2)
+
+
+ggplot(by_id, aes(drug, N, fill = direction)) +
+  geom_col(position = "fill") +
+  scale_fill_manual(values = c("Up" = "firebrick", "Unperturbed" = "grey80", "Down" = "steelblue")) +
+  labs(title = "Proportion of Dysregulated Repetitive Elements by Drug",
+       subtitle = "Proportion of dysregulated REs \u2265 1% for each drug",
+       x = NULL,
+       y = "Proportion",
+       fill = "Direction of Expression",
+       caption = "FDR < 0.1 & abs(logFC) > 2") +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        legend.position = "bottom",
+        plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(size = 14, hjust = 0.5),
+        plot.margin = unit(c(1, 2, 1, 2), "cm"))
+ggsave("../../results/jp/figures/drugs-by-re.png", width = 18, height = 10)
+```
+
+## Send it as two tables - one for up and one for down regulation? And if you have a description of the drugs (or targets), that would be helpful.
+
+```{r}
+by_drug <- by_id[, .(N = sum(N)), by = .(drug, direction)]
+by_drug[, prop := round(N / sum(N), 2) , by = drug]
+up_tbl <- by_drug[direction == "Up", .(drug, Proportion = prop)]
+down_tbl <- by_drug[direction == "Down", .(drug, Proportion = prop)]
+
+up_tbl <- merge(
+  x = up_tbl,
+  y = unique(metadata, by = c("drug", "desc"))[, .(drug, desc, epigenetic_class)],
+  by = "drug",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+down_tbl <- merge(
+  x = down_tbl,
+  y = unique(metadata, by = c("drug", "desc"))[, .(drug, desc, epigenetic_class)],
+  by = "drug",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+up_tbl <- up_tbl[order(Proportion, decreasing = TRUE)]
+down_tbl <- down_tbl[order(Proportion, decreasing = TRUE)]
+setnames(up_tbl, old = c("drug", "desc", "epigenetic_class"), new = c("Drug", "Description", "Epigenetic Class"))
+setnames(down_tbl, old = c("drug", "desc", "epigenetic_class"), new = c("Drug", "Description", "Epigenetic Class"))
+
+fwrite(up_tbl, file = "../../results/jp/data-files/up-table.tsv", sep = "\t")
+fwrite(down_tbl, file = "../../results/jp/data-files/down-table.tsv", sep = "\t")
+```
+
+Create tables
+
+```{r}
+library(kableExtra)
+
+
+kbl(up_tbl[, .(Drug, `Epigenetic Class`, Proportion, Description)]) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria") %>% 
+  column_spec(4, width = "60em") %>% 
+  column_spec(2, width = "15em") %>% 
+  add_header_above(header = c("Proportion of Up-Regulated REs" = 4L), bold = TRUE, font_size = 16) %>% 
+  save_kable(file = "../../results/jp/figures/up-table.png", keep_tex = TRUE)
+
+# Same table without description column
+kbl(up_tbl[, .(Drug, `Epigenetic Class`, Proportion)]) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria") %>% 
+  column_spec(2, width = "15em") %>% 
+  add_header_above(header = c("Proportion of Up-Regulated REs" = 3L), bold = TRUE, font_size = 16) %>% 
+  save_kable(file = "../../results/jp/figures/up-table-noDesc.png", keep_tex = TRUE)
+
+# down ---
+kbl(down_tbl[, .(Drug, `Epigenetic Class`, Proportion, Description)]) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria") %>% 
+  column_spec(4, width = "60em") %>% 
+  column_spec(2, width = "15em") %>% 
+  add_header_above(header = c("Proportion of Down-Regulated REs" = 4L), bold = TRUE, font_size = 16) %>% 
+  save_kable(file = "../../results/jp/figures/down-table.png", keep_tex = TRUE)
+
+# Same table without description column
+kbl(down_tbl[, .(Drug, `Epigenetic Class`, Proportion)]) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria") %>% 
+  column_spec(2, width = "15em") %>% 
+  add_header_above(header = c("Proportion of Down-Regulated REs" = 3L), bold = TRUE, font_size = 16) %>% 
+  save_kable(file = "../../results/jp/figures/down-table-noDesc.png", keep_tex = TRUE)
+```
+
+## Question form JP
+
+Drug 	         Proportion 	Description
+EX00101218 	   0.38 	      TEC
+C646 	         0.26 	      TIC
+Depsipeptide 	 0.25 	      TIC
+FB23-2 	       0.16 	      TIC
+THZ1 	         0.14 	      TEC
+Mitoxantrone   0.13 	      NOT
+HH1 	         0.13 	      TEC
+Doxorubicin 	 0.12 	      NOT
+Manumycin A 	 0.12 	      NOT
+dBET6 	       0.12 	      TEC
+
+Could you please check and see if the families of REs induced by TEC drugs, TIC drugs and NOT drugs are different? You can lump the different drugs for this analysis based on TEC, IC or NOT. And what are the top REs induced by each if different, or induced in general if the same? Please give this analysis priority (working on a grant). Thanks.
+
+```{r}
+tec_drugs <- c("dBET6", "HH1", "THZ1", "EX00101218")
+tic_drugs <- c("C646", "Depsipeptide", "FB23-2")
+not_drugs <- c("Mitoxantrone", "Doxorubicin", "Manumycin A")
+re_dt[, c("repClass", "repFamily", "repElem") := tstrsplit(feature_id, "\\.")]
+```
+
+## Get proportions at family level
+
+```{r}
+# TEC
+tec <- re_dt[drug %chin% tec_drugs]
+tec_by_family <- dcast(tec[, .N, by = .(repFamily, de)], repFamily ~ de, value.var = "N", fill = 0L)
+tec_by_family[, `:=`(prop_dys = (Up + Down) / (Up + Down + Unperturbed),
+                     prop_up = Up / (Up + Down + Unperturbed),
+                     prop_down = Down / (Up + Down + Unperturbed),
+                     prop_unperturbed = Unperturbed / (Up + Down + Unperturbed))]
+tec_by_family[order(Unperturbed, decreasing = TRUE)]
+
+# TIC
+tic <- re_dt[drug %chin% tic_drugs]
+tic_by_family <- dcast(tic[, .N, by = .(repFamily, de)], repFamily ~ de, value.var = "N", fill = 0L)
+tic_by_family[, `:=`(prop_dys = (Up + Down) / (Up + Down + Unperturbed),
+                     prop_up = Up / (Up + Down + Unperturbed),
+                     prop_down = Down / (Up + Down + Unperturbed),
+                     prop_unperturbed = Unperturbed / (Up + Down + Unperturbed))]
+tic_by_family[order(Unperturbed, decreasing = TRUE)]
+
+# NOT
+not <- re_dt[drug %chin% not_drugs]
+not_by_family <- dcast(not[, .N, by = .(repFamily, de)], repFamily ~ de, value.var = "N", fill = 0L)
+not_by_family[, `:=`(prop_dys = (Up + Down) / (Up + Down + Unperturbed),
+                     prop_up = Up / (Up + Down + Unperturbed),
+                     prop_down = Down / (Up + Down + Unperturbed),
+                     prop_unperturbed = Unperturbed / (Up + Down + Unperturbed))]
+not_by_family[order(Unperturbed, decreasing = TRUE)]
+
+# bind all together
+family_dt <- rbindlist(list("TEC" = tec_by_family, "TIC" = tic_by_family, "NOT" = not_by_family), idcol = "Description")
+```
+
+Plot differences in proportions. **Too many to look at - find possible significant
+differences by test of proportions**
+
+```{r}
+library(patchwork)
+
+
+family_dt.m <- melt(family_dt, id.vars = c("Description", "repFamily"), 
+                    measure.vars = c("prop_up", "prop_down", "prop_unperturbed"),
+                    variable.name = "Direction", value.name = "Proportion")
+
+p1 <- ggplot(family_dt.m[Direction == "prop_up"], 
+       aes(Proportion, repFamily, fill = Description)) +
+  geom_col(position = "dodge") +
+  labs(title = "Up-Regulated RE Families",
+       x = "Proportion",
+       y = NULL) +
+  scale_fill_brewer(palette = "Set1") +
+  theme_light()
+
+p2 <- ggplot(family_dt.m[Direction == "prop_down"], 
+       aes(Proportion, repFamily, fill = Description)) +
+  geom_col(position = "dodge") +
+  labs(title = "Down-Regulated RE Families",
+       x = "Proportion",
+       y = NULL) +
+  scale_fill_brewer(palette = "Set1") +
+  scale_x_continuous(limits = c(0, 0.5)) +
+  theme_light()
+
+(p1 | p2) +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+ggsave("../../results/jp/figures/repFamily-proportions.png", width = 18, height = 10)
+```
+
+```{r}
+prop_up_tbl <- dcast(family_dt.m[Direction == "prop_up"], repFamily ~ Description, value.var = "Proportion", fill = 0.0)
+prop_down_tbl <- dcast(family_dt.m[Direction == "prop_down"], repFamily ~ Description, value.var = "Proportion", fill = 0.0)
+prop_unperturbed_tbl <- dcast(family_dt.m[Direction == "prop_unperturbed"], repFamily ~ Description, value.var = "Proportion", fill = 0.0)
+
+fwrite(prop_unperturbed_tbl, "../../results/jp/data-files/prop-unperturbed-table.tsv", sep = "\t")
+```
+
+## Calculate CI for differences in proportions
+
+```{r}
+confInt <- function(p1, p2, n1, n2, z = 1.96) {
+  diff <- p1 - p2
+  err <- z * sqrt(((p1 * (1 - p1)) / n1) + ((p2 * (1 - p2)) / n2))
+  list("lower" = diff - err, "upper" = diff + err)
+}
+```
+
+How many samples are in each drug description?
+
+```{r}
+n_tec <- length(unique(re_dt[drug %chin% tec_drugs, id]))
+n_tic <- length(unique(re_dt[drug %chin% tic_drugs, id]))
+n_not <- length(unique(re_dt[drug %chin% not_drugs, id]))
+```
+
+Convert the prop tables to matrices
+
+```{r}
+prop_up_mat <- as.matrix(prop_up_tbl, rownames = "repFamily")
+prop_down_mat <- as.matrix(prop_down_tbl, rownames = "repFamily")
+
+# remove all zero rows
+prop_up_mat <- prop_up_mat[rowSums(prop_up_mat) != 0, ]
+prop_down_mat <- prop_down_mat[rowSums(prop_down_mat) != 0, ]
+```
+
+### TEC minus NOT
+
+```{r}
+# Up-regulated
+tecNot_up <- apply(prop_up_mat, 1, function(x) confInt(x[2], x[1], n_tec, n_not))
+tecNot_lower <- sapply(tecNot_up, function(x) x$lower)
+tecNot_upper <- sapply(tecNot_up, function(x) x$upper)
+
+# Down-regulated
+tecNot_down <- apply(prop_down_mat, 1, function(x) confInt(x[2], x[1], n_tec, n_not))
+tecNot_lower2 <- sapply(tecNot_down, function(x) x$lower)
+tecNot_upper2 <- sapply(tecNot_down, function(x) x$upper)
+```
+
+### TEC minus TIC
+
+```{r}
+# Up-regulated
+tecTic_up <- apply(prop_up_mat, 1, function(x) confInt(x[2], x[3], n_tec, n_tic))
+tecTic_lower <- sapply(tecTic_up, function(x) x$lower)
+tecTic_upper <- sapply(tecTic_up, function(x) x$upper)
+
+# Down-regulated
+tecTic_down <- apply(prop_down_mat, 1, function(x) confInt(x[2], x[3], n_tec, n_tic))
+tecTic_lower2 <- sapply(tecTic_down, function(x) x$lower)
+tecTic_upper2 <- sapply(tecTic_down, function(x) x$upper)
+```
+
+### TIC minus NOT
+
+```{r}
+# Up-regulated
+ticNot_up <- apply(prop_up_mat, 1, function(x) confInt(x[3], x[1], n_tic, n_not))
+ticNot_lower <- sapply(ticNot_up, function(x) x$lower)
+ticNot_upper <- sapply(ticNot_up, function(x) x$upper)
+
+# Down-regulated
+ticNot_down <- apply(prop_down_mat, 1, function(x) confInt(x[3], x[1], n_tic, n_not))
+ticNot_lower2 <- sapply(ticNot_down, function(x) x$lower)
+ticNot_upper2 <- sapply(ticNot_down, function(x) x$upper)
+```
+
+
+
+## Bind all data back into table
+
+```{r}
+# Create new data.table from filtered matrix
+prop_up_tbl <- as.data.table(prop_up_mat, keep.rownames = "repFamily")
+prop_up_tbl$TECminusNOT.CI.lower <- tecNot_lower
+prop_up_tbl$TECminusTIC.CI.lower <- tecTic_lower
+prop_up_tbl$TICminusNOT.CI.lower <- ticNot_lower
+prop_up_tbl$TECminusNOT.CI.upper <- tecNot_upper
+prop_up_tbl$TECminusTIC.CI.upper <- tecTic_upper
+prop_up_tbl$TICminusNOT.CI.upper <- ticNot_upper
+
+prop_down_tbl <- as.data.table(prop_down_mat, keep.rownames = "repFamily")
+prop_down_tbl$TECminusNOT.CI.lower <- tecNot_lower2
+prop_down_tbl$TECminusTIC.CI.lower <- tecTic_lower2
+prop_down_tbl$TICminusNOT.CI.lower <- ticNot_lower2
+prop_down_tbl$TECminusNOT.CI.upper <- tecNot_upper2
+prop_down_tbl$TECminusTIC.CI.upper <- tecTic_upper2
+prop_down_tbl$TICminusNOT.CI.upper <- ticNot_upper2
+```
+
+rearrange the columns
+
+```{r}
+colnames(prop_up_tbl)
+col_order <- c("repFamily", "NOT", "TEC", "TIC", "TECminusNOT.CI.lower", "TECminusNOT.CI.upper",
+               "TECminusTIC.CI.lower", "TECminusTIC.CI.upper", "TICminusNOT.CI.lower", "TICminusNOT.CI.upper")
+prop_up_tbl <- prop_up_tbl[, ..col_order]
+prop_down_tbl <- prop_down_tbl[, ..col_order]
+```
+
+Write results out
+
+```{r}
+fwrite(prop_up_tbl, "../../results/jp/data-files/prop-up-table.tsv", sep = "\t")
+fwrite(prop_down_tbl, "../../results/jp/data-files/prop-down-table.tsv", sep = "\t")
+```
+
+CIs that do not overlap zero
+
+```{r}
+prop_up_tbl[TECminusNOT.CI.lower > 0]
+prop_up_tbl[TECminusTIC.CI.lower > 0]
+prop_up_tbl[TICminusNOT.CI.lower > 0]
+
+# down-regulated
+prop_down_tbl[TECminusNOT.CI.lower > 0]
+prop_down_tbl[TECminusTIC.CI.lower > 0]
+prop_down_tbl[TICminusNOT.CI.lower > 0]
+```
+
+
+
+
+
+

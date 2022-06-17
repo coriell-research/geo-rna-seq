@@ -7,9 +7,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ## Read in data from HH1 experiment
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(here)
 library(MultiAssayExperiment)
 
@@ -19,7 +20,7 @@ mae <- readRDS(here("data", "PRJNA413957", "MultiAssayExperiment.rds"))
 
 ## Extract Count Matrix
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 genes <- assay(mae, "gene counts")
 repeats <- assay(mae, "RE counts")
 
@@ -34,7 +35,7 @@ counts <- rbind(genes, repeats)
 
 ## Import data into EdgeR object
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(edgeR)
 
 
@@ -62,7 +63,7 @@ colnames(design.ruv) <- gsub("metadata$group", "", colnames(design.ruv), fixed =
 
 ## Run `qsmooth` on the filtered counts
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(qsmooth)
 
 
@@ -71,7 +72,7 @@ qs_norm <- qsmooth(object = y$counts, group_factor = y$samples$group, window = 0
 
 ## Run TMM normalization on the count matrix
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 y <- calcNormFactors(y, method = "TMM")
 ```
 
@@ -81,7 +82,7 @@ Use the 'stable' repeat elements as control genes. Use the stable 50 by BCV.
 These are the repeats which were present in at least 50% of lists of the top
 500 most invariant REs across all experiments.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # read in the 'stable' REs
 stableRE_10_bcv <- readRDS("../../results/normalization/rds-files/stableRE-10-bcv.rds")
 stableRE_10_union <- readRDS("../../results/normalization/rds-files/stableRE-10-union.rds")

@@ -1,0 +1,29 @@
+---
+title: "For Shoghag"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read in the differential expression results
+
+```{r}
+library(here)
+library(data.table)
+
+
+de <- fread("../../results/combined/data-files/de.tsv")
+sig_tet_contrasts <- de[feature_id %like% "TET" & FDR < 0.1, contrast]
+```
+
+## Filter for the TET
+
+```{r}
+sig_tet <- de[contrast %chin% sig_tet_contrasts]
+
+fwrite(sig_tet, "../../results/shoghag/data-files/TET-de-results.tsv.gz", sep = "\t", compress = TRUE)
+```
+
+

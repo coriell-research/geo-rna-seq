@@ -1,0 +1,606 @@
+---
+title: "Simulate Global Expression Changes"
+output: html_document
+---
+
+## Simulate Count Matrix From Real Data
+
+```{r}
+library(here)
+library(seqc)
+library(edgeR)
+
+
+# Take the illumina RefSeq Genes from BGI
+count_df <- ILM_refseq_gene_BGI
+
+# Use only Sample A counts
+counts <- as.matrix(count_df[, grepl("^A_[0-9]+", colnames(count_df))])
+rownames(counts) <- count_df$Symbol
+
+# Summarize replicate IDs
+ID <- regmatches(colnames(counts), regexpr("^A_[0-5]", colnames(counts)))
+counts <- sumTechReps(counts, ID = ID)
+keep <- filterByExpr(counts) 
+counts <- counts[keep, ]
+```
+
+## Create NB simulation functions modified from `polyester`
+
+```{r}
+# modify polyester::get_params to change to log2 transformation
+get_params <- function(counts, threshold = NULL) {
+  if (!is.null(threshold)) {
+    rowm <- rowMeans(counts)
+    index1 <- which(rowm > threshold)
+    counts <- counts[index1, ]
+  }
+  nsamples <- dim(counts)[2]
+  counts0 <- counts == 0
+  nn0 <- rowSums(!counts0)
+  if (any(nn0 == 1)) {
+    counts <- counts[nn0 > 1, ]
+    nn0 <- nn0[nn0 > 1]
+    counts0 <- counts == 0
+  }
+  mu <- rowSums((!counts0) * counts) / nn0
+  s2 <- rowSums((!counts0) * (counts - mu)^2) / (nn0 - 1)
+  size <- mu^2 / (s2 - mu + 1e-04)
+  size <- ifelse(size > 0, size, min(size[size > 0]))
+  p0 <- (nsamples - nn0) / nsamples
+  lsize <- log2(size)
+  lmu <- log2(mu + 1e-04)
+  fit <- smooth.spline(lsize ~ lmu)
+
+  return(list(p0 = p0, mu = mu, size = size, fit = fit))
+}
+
+# modify polyester::create_read_numbers
+create_read_numbers <- function(mu, fit, p0, m = NULL, n = NULL, mod = NULL, beta = NULL) {
+  m <- dim(beta)[1] 
+  n <- dim(mod)[1] 
+  index <- sample(1:length(mu), size = m) 
+  mus <- mu[index]
+  p0s <- p0[index]
+  ind <- !apply(mod, 2, function(x) { all(x == 1) })
+  mod <- cbind(mod[, ind])
+  beta <- cbind(beta[, ind])
+  mumat <- log2(mus + 0.001) + beta %*% t(mod)
+  muvec <- as.vector(mumat)
+  sizevec <- predict(fit, muvec)$y
+  sizemat <- matrix(sizevec, nrow = m)
+  counts <- sizemat * NA
+  for (i in 1:m) {
+    counts[i, ] <- rbinom(n, prob = (1 - p0s[i]), size = 1) * rnbinom(n, mu = 2^(mumat[i, ]), size = 2^(sizemat[i, ]))
+  }
+
+  list(counts = counts, mumat = mumat, p0 = p0s)
+}
+```
+
+## Simulations
+
+```{r}
+params <- get_params(counts)
+group <- factor(rep(c("A", "B", "C", "D", "E", "F", "G"), each = 3))
+mod <- model.matrix(~0 + group)
+nGenes <- 1.5e4
+```
+
+## Create matrix of coefs to augment counts
+
+```{r}
+set.seed(12345)
+
+# Initialize coef matrix with all 0s
+coef_mat <- matrix(data = 0L, ncol = nlevels(group), nrow = nGenes)
+
+# Select indeces of coef mat to modify
+idx <- 1:nGenes
+idx_up05 <- sample.int(nGenes, size = round(0.05 * nGenes))
+idx_up10 <- c(idx_up05, sample(idx[-idx_up05], size = 0.05 * nGenes))
+idx_up25 <- c(idx_up10, sample(idx[-idx_up10], size = 0.15 * nGenes))
+idx_up50 <- c(idx_up25, sample(idx[-idx_up25], size = 0.25 * nGenes))
+idx_up75 <- c(idx_up50, sample(idx[-idx_up50], size = 0.25 * nGenes))
+idx_up90 <- c(idx_up75, sample(idx[-idx_up75], size = 0.15 * nGenes))
+
+# Ensure same coef is consistent across simulations
+coef_mat[, 1] <- 0L
+coef_mat[idx_up05, 2:7] <- sample(1L:2L, size = length(idx_up05), replace = TRUE)
+coef_mat[setdiff(idx_up10, idx_up05), 3:7] <- sample(1L:2L, size = length(setdiff(idx_up10, idx_up05)), replace = TRUE)
+coef_mat[setdiff(idx_up25, idx_up10), 4:7] <- sample(1L:2L, size = length(setdiff(idx_up25, idx_up10)), replace = TRUE)
+coef_mat[setdiff(idx_up50, idx_up25), 5:7] <- sample(1L:2L, size = length(setdiff(idx_up50, idx_up25)), replace = TRUE)
+coef_mat[setdiff(idx_up75, idx_up50), 6:7] <- sample(1L:2L, size = length(setdiff(idx_up75, idx_up50)), replace = TRUE)
+coef_mat[setdiff(idx_up90, idx_up75), 7] <- sample(1L:2L, size = length(setdiff(idx_up90, idx_up75)), replace = TRUE)
+```
+
+## Simulate Count Matrix
+
+```{r}
+simdata <- create_read_numbers(mu = params$mu, fit = params$fit, p0 = params$p0, beta = coef_mat, mod = mod)
+counts <- simdata$counts
+dimnames(counts) <- list(paste0("gene.", 1:nrow(counts)), paste0("sample.", 1:ncol(counts)))
+```
+
+## Plot count distributions
+
+```{r}
+library(PCAtools)
+
+
+metadata <- data.frame(
+  group = factor(rep(c("0", "0.05", "0.10", "0.25", "0.50", "0.75", "0.90"), each = 3)), 
+  row.names = paste0("sample.", 1:ncol(counts))
+  )
+logcounts <- log2(counts + 2)
+pca.res <- pca(logcounts, metadata, center = TRUE, scale = FALSE)
+
+# Create biplot of expression
+biplot(
+  pca.res, 
+  colby = "group", 
+  lab = NULL,
+  vline = 0,
+  vlineType = 2,
+  hline = 0,
+  hlineType = 2,
+  pointSize = 4,
+  legendPosition = "bottom",
+  title = "Simulated Expression Data"
+  ) + 
+  scale_color_brewer(palette = "Dark2") +
+  labs(color = "Proportion Up-Regulated")
+```
+
+### Show heatmaps
+
+```{r}
+col_df <- metadata
+col_df$Group <- factor(
+  c(rep("Control", 3), rep("5% Up-regulated", 3), 
+  rep("10% Up-regulated", 3), rep("25% Up-regulated", 3),
+  rep("50% Up-regulated", 3), rep("75% Up-regulated", 3),
+  rep("90% Up-regulated", 3)), 
+  levels = c("Control", "5% Up-regulated", "10% Up-regulated", 
+             "25% Up-regulated", "50% Up-regulated", "75% Up-regulated",
+             "90% Up-regulated")
+  )
+col_df$group <- NULL
+ann_cols <- list(Group = c("Control" = "grey80", 
+                           "5% Up-regulated" = "#FEE5D9", 
+                           "10% Up-regulated" = "#FCBBA1", 
+                           "25% Up-regulated" = "#FC9272", 
+                           "50% Up-regulated" = "#FB6A4A", 
+                           "75% Up-regulated" = "#DE2D26",
+                           "90% Up-regulated" = "#A50F15"))
+
+coriell::quickmap(
+  logcounts, 
+  annotation_col = col_df, 
+  cluster_cols = FALSE, 
+  annotation_colors = ann_cols,
+  show_colnames = FALSE,
+  main = "Simulated Data with Increasing Numbers of Up-Regulated Genes",
+  filename = here("results", "combined", "figures", "heatmap.png")
+  )
+```
+
+
+## Distribution Plots
+
+```{r}
+library(quantro)
+
+
+matdensity(
+  logcounts, 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = "Log2 Count", 
+  ylab = "Density",
+  lwd = 2)
+legend('topright', legend = levels(metadata$group), col = 1:nlevels(metadata$group), lty = 1, lwd = 4)
+
+png(here("results", "normalization", "figures", "matboxplot.png"), width = 8, height = 6, res = 300, units = "in")
+matboxplot(
+  logcounts, 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = NULL, 
+  ylab = "Log2 Count")
+dev.off()
+```
+
+## Differential Expression Testing
+
+### Standard edgeR pipeline
+
+```{r}
+library(edgeR)
+
+
+design <- model.matrix(~0 + group, data = metadata)
+contrast.matrix <- makeContrasts(
+  up_5pct = group0.05 - group0,
+  up_10pct = group0.10 - group0,
+  up_25pct = group0.25 - group0,
+  up_50pct = group0.50 - group0,
+  up_75pct = group0.75 - group0,
+  up_90pct = group0.90 - group0,
+  levels = design
+)
+
+y <- DGEList(counts, samples = metadata)
+y <- calcNormFactors(y, method = "TMM")
+y <- estimateDisp(y, design)
+fit <- glmQLFit(y, design)
+```
+
+## Plot results
+
+```{r}
+library(coriell)
+
+
+de.res <- lapply(colnames(contrast.matrix), function(x) { 
+  edger_to_df(glmQLFTest(fit, contrast = contrast.matrix[, x]))
+  })
+con_names <- c("5% Up-regulated", "10% Up-regulated", "25% Up-regulated", "50% Up-regulated", "75% Up-regulated", "90% Up-regulated")
+names(de.res) <- con_names
+
+lapply(names(de.res), function(x) plot_volcano(de.res[[x]], fdr = 0.05) + ggtitle(x))
+lapply(names(de.res), function(x) plot_md(de.res[[x]], fdr = 0.05) + ggtitle(x))
+```
+
+create patchwork 
+
+```{r}
+library(here)
+library(patchwork)
+
+
+vplots <- lapply(names(de.res), function(x) plot_volcano(de.res[[x]], fdr = 0.05) + ggtitle(x) + theme(plot.title = element_text(size = 24, face = "bold")))
+
+(vplots[[1]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[2]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[3]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-3, 3))) / (
+ vplots[[4]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[5]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[6]] + scale_y_continuous(limits = c(0, 40)) + scale_x_continuous(limits = c(-3, 3))) +
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Global Scaling Normalization") & theme(plot.title = element_text(size = 24, face = "bold"))
+ggsave(here("results", "normalization", "figures", "tmm-volcano-plots.png"), width = 18, height = 10)
+```
+
+
+## QSmooth + limma voom
+
+Use the `limma` pipeline on the corrected data. I have created a copy of the 
+`limma::vomm` function that fit the trend by the log2(qsmoothData) instead of
+using the logCPM, since the qsmooth function already corrects for library size.
+
+```{r}
+library(data.table)
+library(qsmooth)
+
+
+# Test for global differences with quantro
+qtest <- quantro(counts, groupFactor = metadata$group, B = 1e3)
+quantroPlot(qtest)
+
+qs <- qsmooth(counts, group_factor = metadata$group)
+qsmoothPlotWeights(qs)
+
+# After qs normalization
+png(here("results", "normalization", "figures", "qs-matboxplot.png"), width = 8, height = 6, res = 300, units = "in")
+matboxplot(
+  log2(qsmoothData(qs) + 1), 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = NULL, 
+  ylab = "Log2 Count")
+dev.off()
+
+# Fit and test for differences
+fit.qs <- lmFit(log2(qsmoothData(qs) + 1), design)
+fit.qs2 <- contrasts.fit(fit.qs, contrast.matrix)
+fit.qs2 <- eBayes(fit.qs2, trend = TRUE)
+
+qs.res <- lapply(
+  1:6, 
+  function(x) { as.data.table(topTable(fit.qs2, coef = x, adjust = "BH", number = Inf), keep.rownames = "feature_id")
+})
+names(qs.res) <- con_names
+```
+
+create patchwork 
+
+```{r}
+vplots <- lapply(names(qs.res), function(x) plot_volcano(qs.res[[x]], fdr = 0.05, y = "adj.P.Val") + ggtitle(x) + theme(plot.title = element_text(size = 24, face = "bold")))
+
+(vplots[[1]] + scale_y_continuous(limits = c(0, 50)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[2]] + scale_y_continuous(limits = c(0, 50)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[3]] + scale_y_continuous(limits = c(0, 50)) + scale_x_continuous(limits = c(-3, 3))) / (
+ vplots[[4]] + scale_y_continuous(limits = c(0, 50)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[5]] + scale_y_continuous(limits = c(0, 50)) + scale_x_continuous(limits = c(-3, 3)) | 
+ vplots[[6]] + scale_y_continuous(limits = c(0, 50)) + scale_x_continuous(limits = c(-3, 3))) +
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Smooth Quantile Normalization") & theme(plot.title = element_text(size = 24, face = "bold"))
+ggsave(here("results", "normalization", "figures", "qs-volcano-plots.png"), width = 18, height = 10)
+```
+
+
+---
+
+## Generate more extreme differences
+
+```{r}
+set.seed(34567)
+
+
+# Initialize coef matrix with all 0s
+coef_mat <- matrix(data = 0L, ncol = nlevels(group), nrow = nGenes)
+
+# Select indeces of coef mat to modify
+idx <- 1:nGenes
+idx_up05 <- sample.int(nGenes, size = round(0.05 * nGenes))
+idx_up10 <- c(idx_up05, sample(idx[-idx_up05], size = 0.05 * nGenes))
+idx_up25 <- c(idx_up10, sample(idx[-idx_up10], size = 0.15 * nGenes))
+idx_up50 <- c(idx_up25, sample(idx[-idx_up25], size = 0.25 * nGenes))
+idx_up75 <- c(idx_up50, sample(idx[-idx_up50], size = 0.25 * nGenes))
+idx_up90 <- c(idx_up75, sample(idx[-idx_up75], size = 0.15 * nGenes))
+
+# Ensure same coef is consistent across simulations
+fc <- c(-10, -8, -4, -2, -1, 1, 2, 4, 8, 10)
+fc_probs <- c(0.05, 0.05, 0.05, 0.1, 0.25, 0.25, 0.1, 0.05, 0.05, 0.05)
+coef_mat[, 1] <- 0L
+coef_mat[idx_up05, 2:7] <- sample(fc, prob = fc_probs, size = length(idx_up05), replace = TRUE)
+coef_mat[setdiff(idx_up10, idx_up05), 3:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up10, idx_up05)), replace = TRUE)
+coef_mat[setdiff(idx_up25, idx_up10), 4:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up25, idx_up10)), replace = TRUE)
+coef_mat[setdiff(idx_up50, idx_up25), 5:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up50, idx_up25)), replace = TRUE)
+coef_mat[setdiff(idx_up75, idx_up50), 6:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up75, idx_up50)), replace = TRUE)
+coef_mat[setdiff(idx_up90, idx_up75), 7] <- sample(fc, fc_probs, size = length(setdiff(idx_up90, idx_up75)), replace = TRUE)
+```
+
+## Simulate Count Matrix
+
+```{r}
+simdata <- create_read_numbers(mu = params$mu, fit = params$fit, p0 = params$p0, beta = coef_mat, mod = mod)
+counts <- simdata$counts
+dimnames(counts) <- list(paste0("gene.", 1:nrow(counts)), paste0("sample.", 1:ncol(counts)))
+```
+
+## Plot count distributions
+
+```{r}
+logcounts <- log2(counts + 2)
+pca.res <- pca(logcounts, metadata, center = TRUE, scale = FALSE)
+
+# Create biplot of expression
+biplot(
+  pca.res, 
+  colby = "group", 
+  lab = NULL,
+  vline = 0,
+  vlineType = 2,
+  hline = 0,
+  hlineType = 2,
+  pointSize = 4,
+  legendPosition = "bottom",
+  title = "Simulated Expression Data"
+  ) + 
+  scale_color_brewer(palette = "Dark2") +
+  labs(color = "Proportion Up-Regulated")
+```
+
+## Distribution Plots
+
+```{r}
+matdensity(
+  logcounts, 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = "Log2 Count", 
+  ylab = "Density",
+  lwd = 2)
+legend('topright', legend = levels(metadata$group), col = 1:nlevels(metadata$group), lty = 1, lwd = 4)
+
+matboxplot(
+  logcounts, 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = NULL, 
+  ylab = "Log2 Count")
+```
+
+## Differential Expression Testing
+
+### Standard edgeR pipeline
+
+```{r}
+contrast.matrix <- makeContrasts(
+  dys_5pct = group0.05 - group0,
+  dys_10pct = group0.10 - group0,
+  dys_25pct = group0.25 - group0,
+  dys_50pct = group0.50 - group0,
+  dys_75pct = group0.75 - group0,
+  dys_90pct = group0.90 - group0,
+  levels = design
+)
+
+y <- DGEList(counts, samples = metadata)
+y <- calcNormFactors(y, method = "TMM")
+y <- estimateDisp(y, design)
+fit <- glmQLFit(y, design)
+```
+
+## Plot results
+
+```{r}
+de.res <- lapply(colnames(contrast.matrix), function(x) { 
+  edger_to_df(glmQLFTest(fit, contrast = contrast.matrix[, x]))
+  })
+names(de.res) <- colnames(contrast.matrix)
+
+lapply(names(de.res), function(x) plot_volcano(de.res[[x]], fdr = 0.1) + ggtitle(x))
+lapply(names(de.res), function(x) plot_md(de.res[[x]], fdr = 0.1) + ggtitle(x))
+```
+
+## QSmooth + limma voom
+
+```{r}
+qs <- qsmooth(counts, group_factor = metadata$group)
+fit.qs <- lmFit(log2(qsmoothData(qs) + 1), design)
+fit.qs2 <- contrasts.fit(fit.qs, contrast.matrix)
+fit.qs2 <- eBayes(fit.qs2, trend = TRUE)
+
+qs.res <- lapply(
+  1:6, 
+  function(x) { as.data.table(topTable(fit.qs2, coef = x, adjust = "BH", number = Inf), keep.rownames = "feature_id")
+})
+names(qs.res) <- colnames(contrast.matrix)
+
+lapply(names(qs.res), function(x)  plot_volcano(qs.res[[x]], y = adj.P.Val, fdr = 0.1) + ggtitle(x))
+lapply(names(qs.res), function(x)  plot_md(qs.res[[x]], x = AveExpr, sig_col =  adj.P.Val, fdr = 0.1) + ggtitle(x))
+```
+
+---
+
+## Generate more extreme differences
+
+```{r}
+set.seed(34567)
+
+
+# Initialize coef matrix with all 0s
+coef_mat <- matrix(data = 0L, ncol = nlevels(group), nrow = nGenes)
+
+# Select indeces of coef mat to modify
+idx <- 1:nGenes
+idx_up05 <- sample.int(nGenes, size = round(0.05 * nGenes))
+idx_up10 <- c(idx_up05, sample(idx[-idx_up05], size = 0.05 * nGenes))
+idx_up25 <- c(idx_up10, sample(idx[-idx_up10], size = 0.15 * nGenes))
+idx_up50 <- c(idx_up25, sample(idx[-idx_up25], size = 0.25 * nGenes))
+idx_up75 <- c(idx_up50, sample(idx[-idx_up50], size = 0.25 * nGenes))
+idx_up90 <- c(idx_up75, sample(idx[-idx_up75], size = 0.15 * nGenes))
+
+# Ensure same coef is consistent across simulations
+fc <- c(-10, -8, -4, -2, -1, 1, 2, 4, 8, 10)
+fc_probs <- c(0.05, 0.05, 0.05, 0.1, 0.25, 0.25, 0.1, 0.05, 0.05, 0.05)
+coef_mat[, 1] <- 0L
+coef_mat[idx_up05, 2:7] <- sample(fc, prob = fc_probs, size = length(idx_up05), replace = TRUE)
+coef_mat[setdiff(idx_up10, idx_up05), 3:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up10, idx_up05)), replace = TRUE)
+coef_mat[setdiff(idx_up25, idx_up10), 4:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up25, idx_up10)), replace = TRUE)
+coef_mat[setdiff(idx_up50, idx_up25), 5:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up50, idx_up25)), replace = TRUE)
+coef_mat[setdiff(idx_up75, idx_up50), 6:7] <- sample(fc, fc_probs, size = length(setdiff(idx_up75, idx_up50)), replace = TRUE)
+coef_mat[setdiff(idx_up90, idx_up75), 7] <- sample(fc, fc_probs, size = length(setdiff(idx_up90, idx_up75)), replace = TRUE)
+```
+
+## Simulate Count Matrix
+
+```{r}
+simdata <- create_read_numbers(mu = params$mu, fit = params$fit, p0 = params$p0, beta = coef_mat, mod = mod)
+counts <- simdata$counts
+dimnames(counts) <- list(paste0("gene.", 1:nrow(counts)), paste0("sample.", 1:ncol(counts)))
+```
+
+## Scale the counts in every 2nd replicate
+
+```{r}
+counts[, c(2, 8, 14, 20)] <- counts[, c(2, 8, 14, 20)] * 1.5
+counts[, c(5, 11, 17)] <- counts[, c(5, 11, 17)] * 0.5
+```
+
+## Plot count distributions
+
+```{r}
+logcounts <- log2(counts + 2)
+pca.res <- pca(logcounts, metadata, center = TRUE, scale = FALSE)
+
+# Create biplot of expression
+biplot(
+  pca.res, 
+  colby = "group", 
+  lab = NULL,
+  vline = 0,
+  vlineType = 2,
+  hline = 0,
+  hlineType = 2,
+  pointSize = 4,
+  legendPosition = "bottom",
+  title = "Simulated Expression Data"
+  ) + 
+  scale_color_brewer(palette = "Dark2") +
+  labs(color = "Proportion Up-Regulated")
+```
+
+## Distribution Plots
+
+```{r}
+matdensity(
+  logcounts, 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = "Log2 Count", 
+  ylab = "Density",
+  lwd = 2)
+legend('topright', legend = levels(metadata$group), col = 1:nlevels(metadata$group), lty = 1, lwd = 4)
+
+matboxplot(
+  logcounts, 
+  groupFactor = metadata$group, 
+  main = "Simulated Expression Data", 
+  xlab = NULL, 
+  ylab = "Log2 Count")
+```
+
+## Differential Expression Testing
+
+### Standard edgeR pipeline
+
+```{r}
+contrast.matrix <- makeContrasts(
+  dys_5pct = group0.05 - group0,
+  dys_10pct = group0.10 - group0,
+  dys_25pct = group0.25 - group0,
+  dys_50pct = group0.50 - group0,
+  dys_75pct = group0.75 - group0,
+  dys_90pct = group0.90 - group0,
+  levels = design
+)
+
+y <- DGEList(counts, samples = metadata)
+y <- calcNormFactors(y, method = "TMM")
+y <- estimateDisp(y, design)
+fit <- glmQLFit(y, design)
+```
+
+## Plot results
+
+```{r}
+de.res <- lapply(colnames(contrast.matrix), function(x) { 
+  edger_to_df(glmQLFTest(fit, contrast = contrast.matrix[, x]))
+  })
+names(de.res) <- colnames(contrast.matrix)
+
+lapply(names(de.res), function(x) plot_volcano(de.res[[x]], fdr = 0.1) + ggtitle(x))
+lapply(names(de.res), function(x) plot_md(de.res[[x]], fdr = 0.1) + ggtitle(x))
+```
+
+## QSmooth + limma voom
+
+```{r}
+qs <- qsmooth(counts, group_factor = metadata$group)
+fit.qs <- lmFit(log2(qsmoothData(qs) + 1), design)
+fit.qs2 <- contrasts.fit(fit.qs, contrast.matrix)
+fit.qs2 <- eBayes(fit.qs2, trend = TRUE, robust = TRUE)
+
+qs.res <- lapply(
+  1:6, 
+  function(x) { as.data.table(topTable(fit.qs2, coef = x, adjust = "BH", number = Inf), keep.rownames = "feature_id")
+})
+names(qs.res) <- colnames(contrast.matrix)
+
+lapply(names(qs.res), function(x)  plot_volcano(qs.res[[x]], y = adj.P.Val, fdr = 0.1) + ggtitle(x))
+lapply(names(qs.res), function(x)  plot_md(qs.res[[x]], x = AveExpr, sig_col =  adj.P.Val, fdr = 0.1) + ggtitle(x))
+```

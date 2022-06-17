@@ -1,0 +1,295 @@
+---
+title: "Simulate Experiments"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Get estimates for variance and counts of each feature
+
+Use the raw quants.sf files to get the estimates for the mean and variance
+for each feature across all samples. Since there is ~1.5TB of data this needs to 
+be done iteratively.
+
+The mean is straughtforward to calculate. The population variance can be estimated
+by $Var = (SumSq − (Sum × Sum) / n) / (n)$
+
+N below is probably superflous to keep track of but I think it will be useful
+if creating a dataframe in R after parsing the files. 
+
+```{r eval=FALSE, include=FALSE}
+library(reticulate)
+use_python("/usr/local/programs/anaconda3/bin/python3")
+```
+
+```{python eval=FALSE, include=FALSE}
+from collections import defaultdict
+from pathlib import Path
+
+
+data_dir = Path("/home/gcalendo/data/projects/geo-rna-seq/data")
+quant_files = list(data_dir.glob("**/quant.sf"))
+
+data = defaultdict(lambda: defaultdict(float))
+n_files = len(quant_files)
+file_count = 1
+
+for quant_file in quant_files:
+    print(f"Processing {file_count}/{n_files}: {quant_file}")
+    file_count += 1
+    with open(quant_file, "r") as infile:
+        next(infile)  # skip header
+        for line in infile:
+            l = line.strip().split("\t")
+            md5 = l[0]
+            count = float(l[4])
+            data[md5]["N"] += 1
+            data[md5]["sum"] += count
+            data[md5]["sq_sum"] += count**2
+
+print("Writing out results to file...")
+outfile = Path("/home/gcalendo/data/projects/geo-rna-seq/results/normalization/data-files/transcript-statistics.tsv")
+with open(outfile, "w") as f:
+    f.write("md5\tN\tsum\tsum_sq\n")
+    for md5 in data:
+        f.write(f"{md5}\t{data[md5]['N']}\t{data[md5]['sum']}\t{data[md5]['sq_sum']}\n")
+print("Finished.")
+```
+
+## Read in the transcript stats and calculate params for simulation
+
+- Calculate the variance using the sum and squared sum values $Var = (SumSq − (Sum × Sum) / n) / (n)$
+- Calculate the mean counts and size factor given the mean/variance relationship from the negative binomial model $variance = mean + (mean^2) / size.$
+
+```{r}
+library(here)
+library(data.table)
+
+
+transcript_stats <- fread(here("results", "normalization", "data-files", "transcript-statistics.tsv")) 
+transcript_stats[, variance := (sum_sq - ((sum * sum) / N)) / N]
+transcript_stats[, mean_count := sum / N]
+transcript_stats[, size_factor := -1 * (mean_count^2) / (mean_count - variance)]
+```
+
+## Adjust data for simulation
+
+```{r}
+# replace NaN size_factors
+transcript_stats[sum <= 0, size_factor := 0.0]
+
+# round very low mean counts down to zero
+transcript_stats[, floor_count := as.integer(floor(mean_count))]
+
+# Adjust negative size factors to have low variance -- positive values needed for model
+transcript_stats[size_factor <= 0, size_factor := floor_count / 3]
+
+# In case of zero counts, adjust size factor to be 1 (resulting variance of 0)
+transcript_stats[floor_count <= 0, size_factor := fifelse(size_factor <= 0, 1L, size_factor)]
+```
+
+## See what the top counts are
+
+Examine the transcript stats to see if the counts and the feature variance 
+estimates make sense.
+
+```{r}
+gencode_annot <- setDT(readRDS("/mnt/data/gdata/human/REdiscoverTE_hg38/GENCODE.V26.Basic_Gene_Annotation_md5.RDS"))
+rmsk_annot <- setDT(readRDS("/mnt/data/gdata/human/REdiscoverTE_hg38/rmsk_annotation.RDS"))
+rmsk_annot[, repElem := paste(repClass, repFamily, repName, sep = ".")]
+rmsk_annot[, `:=`(repClass = NULL, repFamily = NULL, repName = NULL)]
+
+transcript_stats <- merge(
+  x = transcript_stats, 
+  y = gencode_annot[, .(md5, symbol)],
+  by = "md5",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+transcript_stats <- merge(
+  x = transcript_stats, 
+  y = rmsk_annot[, .(md5, repElem, selected_feature)],
+  by = "md5",
+  all.x = TRUE,
+  all.y = FALSE
+)
+
+transcript_stats[, feature_id := fcoalesce(symbol, repElem)]
+transcript_stats[, `:=`(repElem = NULL, symbol = NULL)]
+transcript_stats[!is.na(feature_id) & is.na(selected_feature), selected_feature := "gene"]
+transcript_stats[is.na(selected_feature) & is.na(feature_id), selected_feature := "REintron"]
+transcript_stats[selected_feature == "REintron", feature_id := paste0("REintron.", 1:.N)]
+
+# remove zero counts -- model can't be built with them in
+transcript_stats <- transcript_stats[floor_count > 0, ]
+```
+
+## Generate FC matrix by feature_id and type
+
+Ensure that the same features are up regulated the same degree in each condition.
+
+```{r}
+feature_dt <- unique(transcript_stats[, .(feature_id, selected_feature)])
+
+n_tx <- nrow(feature_dt)
+fc_mat <- matrix(data = 1L, ncol = 6, nrow = n_tx)
+
+# Specify fold change matrix -- Control, up 10%, up 25%, up 50%, up 75%, up 95%
+idx <- 1:n_tx
+idx_up10 <- sample.int(n_tx, size = round(0.1 * n_tx))
+idx_up25 <- c(idx_up10, sample(idx[-idx_up10], size = 0.15 * n_tx))
+idx_up50 <- c(idx_up25, sample(idx[-idx_up25], size = 0.25 * n_tx))
+idx_up75 <- c(idx_up50, sample(idx[-idx_up50], size = 0.25 * n_tx))
+idx_up90 <- c(idx_up75, sample(idx[-idx_up75], size = 0.15 * n_tx))
+
+# Ensure FC is consistent across all samples
+fc_mat[idx_up10, 2:6] <- sample(seq(1.5, 10, by = 0.5), size = length(idx_up10), replace = TRUE)
+fc_mat[setdiff(idx_up25, idx_up10), 3:6] <- sample(seq(1.5, 10, by = 0.5), size = length(setdiff(idx_up25, idx_up10)), replace = TRUE)
+fc_mat[setdiff(idx_up50, idx_up25), 4:6] <- sample(seq(1.5, 10, by = 0.5), size = length(setdiff(idx_up50, idx_up25)), replace = TRUE)
+fc_mat[setdiff(idx_up75, idx_up50), 5:6] <- sample(seq(1.5, 10, by = 0.5), size = length(setdiff(idx_up75, idx_up50)), replace = TRUE)
+fc_mat[setdiff(idx_up90, idx_up75), 5:6] <- sample(seq(1.5, 10, by = 0.5), size = length(setdiff(idx_up90, idx_up75)), replace = TRUE)
+
+# Join FC matrix onto the feature_dt
+feature_dt <- cbind(feature_dt, fc_mat)
+
+# Join expected fold-changes onto the transcript_stats dt
+transcript_stats <- merge(
+  x = transcript_stats,
+  y = feature_dt,
+  by = c("feature_id", "selected_feature"),
+  all.x = TRUE,
+  all.y = TRUE
+)
+
+# Extract the fold-changes per md5 to use in simulation
+FC <- as.matrix(transcript_stats[, .(md5, V1, V2, V3, V4, V5, V6)], rownames = "md5")
+```
+
+## Simulate count matrix
+
+Use the `get_params` and `create_read_numbers` functions from `polyester` to
+simulate the read counts.
+
+```{r}
+get_params = function(counts, threshold = NULL){
+    if(!is.null(threshold)){
+        rowm = rowMeans(counts)
+        index1 = which(rowm > threshold)
+        counts = counts[index1,]
+    }
+    nsamples = dim(counts)[2]
+    counts0 = counts==0
+    nn0 = rowSums(!counts0)
+    if(any(nn0 == 1)){
+        # need more than 1 nonzero count to estimate variance
+        counts = counts[nn0 > 1, ]
+        nn0 = nn0[nn0 > 1]
+        counts0 = counts==0
+    }
+    mu = rowSums((!counts0)*counts)/nn0
+    s2 = rowSums((!counts0)*(counts - mu)^2)/(nn0-1)
+    size = mu^2/(s2-mu + 0.0001)
+    size = ifelse(size > 0, size, min(size[size > 0]))
+    p0 = (nsamples-nn0)/nsamples
+
+    lsize = log(size)
+    lmu = log(mu + 0.0001)
+    
+    fit = smooth.spline(lsize ~ lmu)
+    return(list(p0=p0, mu=mu, size=size, fit=fit))
+}
+
+create_read_numbers = function(mu, fit, p0, m = NULL, n = NULL, mod = NULL, beta = NULL,
+    seed = NULL) {
+    if(!is.null(seed)){set.seed(seed)}
+    if(is.null(mod) | is.null(beta)){
+        message("Generating data from baseline model.\n")
+        if(is.null(m) | is.null(n)){
+            stop(message("create_read_numbers error: if you don't specify
+            mod and beta, you must specify m and n.\n"))
+        }
+        index = sample(1:length(mu),size=m)
+        mus = mu[index]
+        p0s = p0[index]
+        mumat = log(mus + 0.001) %*% t(rep(1,n))
+    } else {
+        m = dim(beta)[1]
+        n = dim(mod)[1]
+        index = sample(1:length(mu),size=m)
+        mus = mu[index]
+        p0s = p0[index]
+
+        ind = !apply(mod,2,function(x){all(x==1)})
+        mod = cbind(mod[,ind])
+        beta = cbind(beta[,ind])
+        mumat = log(mus + 0.001) + beta %*% t(mod)
+    }
+
+    muvec = as.vector(mumat)
+    sizevec = predict(fit,muvec)$y
+    sizemat = matrix(sizevec,nrow=m)
+    counts = sizemat*NA
+    for(i in 1:m){
+      counts[i,] = rbinom(n,prob=(1-p0s[i]),size=1)*
+        rnbinom(n,mu=exp(mumat[i,]),size=exp(sizemat[i,]))
+    }
+    return(counts)
+}
+```
+
+## Simulate a count matrix
+
+```{r}
+# Create a count matrix of the base means multiplied by the fold-changes
+transcript_stats[, `:=`(control = floor_count * V1,
+                        up_10 = floor_count * V2,
+                        up_25 = floor_count * V3,
+                        up_50 = floor_count * V4,
+                        up_75 = floor_count * V5,
+                        up_90 = floor_count * V6)]
+
+counts <- as.matrix(transcript_stats[, .(md5, control, up_10, up_25, up_50, up_75, up_90)], rownames = "md5")
+
+# Estimate parameters for NB model
+params <- get_params(counts)
+
+# Simulate counts based on estimated parameters
+simcounts <- create_read_numbers(
+  mu = params$mu, 
+  fit = params$fit, 
+  p0 = params$p0,
+  m = nrow(counts),
+  n = 18,
+  seed = 12345
+  )
+```
+
+## EDA on sim_counts
+
+```{r}
+metadata <- data.frame(group = factor(rep(c("0", "10", "25", "50", "75", "90"), each = 3)))
+rownames(metadata) <- paste0("sample_", 1:18)
+
+quantro::matdensity(
+  log2(counts + 2), 
+  groupFactor = metadata$group, 
+  xlab = " ", 
+  ylab = "Density",
+  main = "Simulated Expression", 
+  brewer.n = 8, 
+  brewer.name = "Dark2")
+legend('topright', legend = levels(metadata$group), col = 1:6, lty = 1, lwd = 3)
+```
+
+## PCA on counts
+
+```{r}
+colSums(counts)
+```
+
+
+
+

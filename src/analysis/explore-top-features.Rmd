@@ -1,0 +1,68 @@
+---
+title: "Explore top features"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Connect to the expression database and explore
+
+Hopefully create some functions to explore the top features by their expression.
+Create some statistics for how many time it's up/downregulated, average logFC,
+etc.
+
+```{r}
+library(tidyverse)
+library(here)
+library(DBI)
+
+
+con <- dbConnect(RSQLite::SQLite(), here("results", "combined", "data-files", "de.sqlite"))
+df <- tbl(con, "de")
+```
+
+```{r}
+sig_level <- 0.1
+
+count_by_feature <- df %>% 
+  filter(feature_type == "re") %>% 
+  mutate(Significant = ifelse(FDR < sig_level, TRUE, FALSE),
+         Direction = case_when(Significant & logFC < 0 ~ "Down",
+                               Significant & logFC > 0 ~ "Up",
+                               TRUE ~ "Unperturbed")) %>% 
+  count(feature_id, Direction) %>% 
+  collect()
+
+# Get total number of contrasts
+df %>% distinct(contrast)
+
+count_by_feature <- count_by_feature %>% 
+  mutate(Proportion = n / 797)
+```
+
+```{r}
+library(forcats)
+
+
+count_by_feature %>% 
+  filter(Direction != "Unperturbed") %>% 
+  arrange(desc(n)) %>% 
+  head(n = 25) %>% 
+  ggplot(aes(x = fct_reorder(feature_id, n), y = Proportion, color = Direction)) +
+  geom_point(size = 3) + 
+  coord_flip() +
+  labs(title = "Top 25 REs",
+       y = "Proportion of Contrasts",
+       x = NULL) +
+  theme_light() +
+  scale_color_brewer(palette = "Set1")
+```
+
+
+
+
+
+
+

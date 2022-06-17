@@ -1,0 +1,171 @@
+---
+title: "Qsmooth vs TMM"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## load libraries
+
+```{r}
+suppressPackageStartupMessages(library(SummarizedExperiment))
+library(here)
+library(data.table)
+library(edgeR)
+library(coriell)
+library(ggplot2)
+library(limma)
+library(qsmooth)
+library(patchwork)
+source("../helpers/qs-voom.R")
+
+# Read in gene annotations
+cds <- readRDS("../../doc/gencode.v26.annotation.cds.rds")
+```
+
+---
+
+## HH1
+
+### Read in HH1 experiment data
+
+```{r}
+# Extract data from processed SE object
+se <- readRDS(here("results", "PRJNA413957", "rds-files", "se.rds"))
+counts <- assay(se, "counts")
+design <- metadata(se)$design
+contrast.matrix <- metadata(se)$contrasts
+metadata <- setDT(as.data.frame(colData(se)))
+```
+
+### EdgeR + TMM pipeline
+
+```{r}
+y <- DGEList(counts, samples = metadata)
+y <- calcNormFactors(y, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+res <- lapply(cons, function(x) edger_to_df(glmTreat(fit, contrast = contrast.matrix[, x], lfc = log2(1.5))))
+pv <- lapply(names(res), function(x) {
+  plot_volcano(res[[x]], fdr = 0.1) + 
+  geom_point(data = subset(res[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) + 
+  ggtitle(x) }
+  )
+pm <- lapply(names(res), function(x) { 
+  plot_md(res[[x]], fdr = 0.1) +
+  geom_point(data = subset(res[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) + 
+  ggtitle(x) }
+)
+```
+
+### QSmooth + limma-trend pipeline
+
+```{r}
+qs <- qsmooth(counts, group_factor = metadata$group)
+v <- qs_voom(qsmoothData(qs), design = design, normalize.method = "none", plot = TRUE, span = 0.05)
+fit.qs <- lmFit(v, design)
+fit2.qs <- contrasts.fit(fit.qs, contrast.matrix)
+fit2.qs <- treat(fit2.qs, lfc = log2(1.5), trend = TRUE, robust = TRUE)
+res_dts <- lapply(1:ncol(contrast.matrix), 
+                  function(x) as.data.table(topTreat(fit2.qs, coef = x, number = Inf), keep.rownames = "feature_id"))
+names(res_dts) <- colnames(contrast.matrix)
+pv2 <- lapply(names(res_dts), function(x) { 
+  plot_volcano(res_dts[[x]], y = adj.P.Val, fdr = 0.1) +
+  geom_point(data = subset(res_dts[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) +
+  ggtitle(x) }
+  )
+pm2 <- lapply(names(res_dts), function(x) {
+  plot_md(res_dts[[x]], x = AveExpr, sig_col = adj.P.Val, fdr = 0.1) +
+  geom_point(data = subset(res_dts[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) +
+  ggtitle(x) }
+  )
+```
+
+## Patchwork comparison of each contrast
+
+```{r fig.align='center', fig.width=8, fig.height=5}
+for (i in 1:ncol(contrast.matrix)) {
+  print(
+    (pv[[i]] | pv2[[i]]) / (pm[[i]] | pm2[[i]]) +
+    plot_layout(guides = "collect") +
+    plot_annotation(title = names(res)[[i]]) &
+    theme(legend.position = "bottom")
+    )
+}
+```
+
+---
+
+## dBET6
+
+```{r}
+# Extract data from processed SE object
+se <- readRDS(here("results", "PRJNA315414", "rds-files", "se.rds"))
+counts <- assay(se, "counts")
+design <- metadata(se)$design
+contrast.matrix <- metadata(se)$contrasts
+metadata <- setDT(as.data.frame(colData(se)))
+```
+
+## EdgeR + TMM
+
+```{r}
+y <- DGEList(counts, samples = metadata)
+y <- calcNormFactors(y, method = "TMM")
+y <- estimateDisp(y, design = design, robust = TRUE)
+fit <- glmQLFit(y, design = design, robust = TRUE)
+cons <- colnames(contrast.matrix)
+names(cons) <- cons
+res <- lapply(cons, function(x) edger_to_df(glmTreat(fit, contrast = contrast.matrix[, x], lfc = log2(1.5))))
+pv <- lapply(names(res), function(x) {
+  plot_volcano(res[[x]], fdr = 0.1) + 
+  geom_point(data = subset(res[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) + 
+  ggtitle(x) }
+  )
+pm <- lapply(names(res), function(x) { 
+  plot_md(res[[x]], fdr = 0.1) +
+  geom_point(data = subset(res[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) + 
+  ggtitle(x) }
+)
+```
+
+## Qsmooth + limma-voom
+
+```{r}
+qs <- qsmooth(counts, group_factor = metadata$group)
+v <- qs_voom(qsmoothData(qs), design = design, normalize.method = "none", plot = TRUE, span = 0.25)
+fit.qs <- lmFit(v, design)
+fit2.qs <- contrasts.fit(fit.qs, contrast.matrix)
+fit2.qs <- treat(fit2.qs, lfc = log2(1.5), trend = TRUE, robust = TRUE)
+res_dts <- lapply(1:ncol(contrast.matrix), 
+                  function(x) as.data.table(topTreat(fit2.qs, coef = x, number = Inf), keep.rownames = "feature_id"))
+names(res_dts) <- colnames(contrast.matrix)
+pv2 <- lapply(names(res_dts), function(x) { 
+  plot_volcano(res_dts[[x]], y = adj.P.Val, fdr = 0.1) +
+  geom_point(data = subset(res_dts[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) +
+  ggtitle(x) }
+  )
+pm2 <- lapply(names(res_dts), function(x) {
+  plot_md(res_dts[[x]], x = AveExpr, sig_col = adj.P.Val, fdr = 0.1) +
+  geom_point(data = subset(res_dts[[x]], !feature_id %in% cds$gene_name), color = "green", alpha = 0.5) +
+  ggtitle(x) }
+  )
+```
+
+## Patchwork comparison of each contrast
+
+```{r fig.align='center', fig.width=8, fig.height=5}
+for (i in 1:ncol(contrast.matrix)) {
+  print(
+    (pv[[i]] | pv2[[i]]) / (pm[[i]] | pm2[[i]]) +
+    plot_layout(guides = "collect") +
+    plot_annotation(title = names(res)[[i]]) &
+    theme(legend.position = "bottom")
+    )
+}
+```
+
