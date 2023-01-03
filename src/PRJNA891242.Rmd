@@ -1,5 +1,5 @@
 ---
-title: "PRJNA679028 Analysis"
+title: "PRJNA891242 Analysis"
 output:
   html_document:
     df_print: paged
@@ -30,22 +30,16 @@ registerDoParallel(cores = 12)
 ## Create results directory for project if one doesn't exist
 
 ```{r}
-if (!dir.exists(here("results", "PRJNA679028"))) {
-  dir.create(here("results", "PRJNA679028", "rds-files"), recursive = TRUE)
-  dir.create(here("results", "PRJNA679028", "data-files"))
+if (!dir.exists(here("results", "PRJNA891242"))) {
+  dir.create(here("results", "PRJNA891242", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA891242", "data-files"))
 }
 ```
 
 ## Read in MultiAssayExperiment Object
 
 ```{r}
-mae <- readRDS(here("data", "PRJNA679028", "MultiAssayExperiment.rds"))
-```
-
-## REMOVE OUTLIER SAMPLE
-
-```{r}
-mae <- mae[, mae$BioSample != "SAMN16821854"]
+mae <- readRDS(here("data", "PRJNA891242", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -113,9 +107,12 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # Define contrasts to test
 contrast.matrix <- makeContrasts(
-  T_ALL.Jurkat_cells.BSJ_4_23_vs_T_ALL.Jurkat_cells.BSJ_4_23NC = T_ALL.Jurkat_cells.BSJ_4_23 - T_ALL.Jurkat_cells.BSJ_4_23NC,
-  T_ALL.Jurkat_cells.THZ531_vs_T_ALL.Jurkat_cells.DMSO = T_ALL.Jurkat_cells.THZ531 - T_ALL.Jurkat_cells.DMSO,
-  T_ALL.Jurkat_cells.BSJ_4_23NC_vs_T_ALL.Jurkat_cells.DMSO = T_ALL.Jurkat_cells.BSJ_4_23NC - T_ALL.Jurkat_cells.DMSO,
+  HT.0.2_uM_doxorubicin.24h_vs_HT.untreated.0h = HT.0.2_uM_doxorubicin.24h - HT.untreated.0h,
+  OCILY19.0.2_uM_doxorubicin.24h_vs_OCILY19.untreated.0h = OCILY19.0.2_uM_doxorubicin.24h - OCILY19.untreated.0h,
+  OCILY19.20nM_doxorubicin_removed_vs_OCILY19.untreated = OCILY19.20nM_doxorubicin_removed - OCILY19.untreated,
+  OCILY3.0.2_uM_doxorubicin.24h_vs_OCILY3.untreated.0h = OCILY3.0.2_uM_doxorubicin.24h - OCILY3.untreated.0h,
+  SUDHL5.0.2_uM_doxorubicin.24h_vs_SUDHL5.untreated.0h = SUDHL5.0.2_uM_doxorubicin.24h - SUDHL5.untreated.0h,
+  
   levels = design
 )
 
@@ -177,5 +174,5 @@ se <- SummarizedExperiment(
   colData = metadata,
   metadata = list("fit" = fit, "de" = df)
   )
-saveRDS(se, here("results", "PRJNA679028", "rds-files", "se.rds"))
+saveRDS(se, here("results", "PRJNA891242", "rds-files", "se.rds"))
 ```

@@ -96,6 +96,7 @@ setDF(metadata, rownames = metadata$BioSample)
 ```{r}
 qtest <- quantro(counts, groupFactor = metadata$group, B = 1e3)
 perm_pval <- quantroPvalPerm(qtest)
+quantroPlot(qtest)
 ```
 
 ## DE pipeline

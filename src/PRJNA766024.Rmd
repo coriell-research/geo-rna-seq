@@ -1,5 +1,5 @@
 ---
-title: "PRJNA679028 Analysis"
+title: "PRJNA766024 Analysis"
 output:
   html_document:
     df_print: paged
@@ -30,22 +30,16 @@ registerDoParallel(cores = 12)
 ## Create results directory for project if one doesn't exist
 
 ```{r}
-if (!dir.exists(here("results", "PRJNA679028"))) {
-  dir.create(here("results", "PRJNA679028", "rds-files"), recursive = TRUE)
-  dir.create(here("results", "PRJNA679028", "data-files"))
+if (!dir.exists(here("results", "PRJNA766024"))) {
+  dir.create(here("results", "PRJNA766024", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA766024", "data-files"))
 }
 ```
 
 ## Read in MultiAssayExperiment Object
 
 ```{r}
-mae <- readRDS(here("data", "PRJNA679028", "MultiAssayExperiment.rds"))
-```
-
-## REMOVE OUTLIER SAMPLE
-
-```{r}
-mae <- mae[, mae$BioSample != "SAMN16821854"]
+mae <- readRDS(here("data", "PRJNA766024", "MultiAssayExperiment.rds"))
 ```
 
 ## Read in gene annotations
@@ -113,9 +107,8 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # Define contrasts to test
 contrast.matrix <- makeContrasts(
-  T_ALL.Jurkat_cells.BSJ_4_23_vs_T_ALL.Jurkat_cells.BSJ_4_23NC = T_ALL.Jurkat_cells.BSJ_4_23 - T_ALL.Jurkat_cells.BSJ_4_23NC,
-  T_ALL.Jurkat_cells.THZ531_vs_T_ALL.Jurkat_cells.DMSO = T_ALL.Jurkat_cells.THZ531 - T_ALL.Jurkat_cells.DMSO,
-  T_ALL.Jurkat_cells.BSJ_4_23NC_vs_T_ALL.Jurkat_cells.DMSO = T_ALL.Jurkat_cells.BSJ_4_23NC - T_ALL.Jurkat_cells.DMSO,
+  A375.THZ531_500nM_6H_vs_DMSO = A375.THZ531_500nM_6H - A375.DMSO_6H,
+  Colo829.THZ531_500nM_6H_vs_DMSO = Colo829.THZ531_500nM_6H - Colo829.DMSO_6H,
   levels = design
 )
 
@@ -177,5 +170,5 @@ se <- SummarizedExperiment(
   colData = metadata,
   metadata = list("fit" = fit, "de" = df)
   )
-saveRDS(se, here("results", "PRJNA679028", "rds-files", "se.rds"))
+saveRDS(se, here("results", "PRJNA766024", "rds-files", "se.rds"))
 ```
