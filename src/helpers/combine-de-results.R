@@ -1,4 +1,4 @@
-# Create combined metadata SummarizeExperiment objects
+# Create combined metadata SummarizedExperiment objects
 #
 # This script will import all SE files from each experiment and extract the DE
 # results into a single data.table. Individual columns of the data.table are then
@@ -103,7 +103,7 @@ lfc_mat <- as.matrix(
     data = de_results[, .(id, feature_id, logFC)], 
     formula = feature_id ~ id,
     value.var = "logFC",
-    fill = 0L
+    fill = NA
     ),
   rownames = "feature_id"
 )
@@ -113,7 +113,7 @@ fdr_mat <- as.matrix(
     data = de_results[, .(id, feature_id, FDR)], 
     formula = feature_id ~ id,
     value.var = "FDR",
-    fill = 1L
+    fill = NA
   ),
   rownames = "feature_id"
 )
@@ -123,7 +123,7 @@ expr_mat <- as.matrix(
     data = de_results[, .(id, feature_id, expr)], 
     formula = feature_id ~ id,
     value.var = "expr",
-    fill = 0L
+    fill = NA
   ),
   rownames = "feature_id"
 )

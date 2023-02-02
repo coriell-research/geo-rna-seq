@@ -1,0 +1,120 @@
+---
+title: "Analysis Report"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    theme: flatly
+    highlight: tango
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(coriell))
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(SummarizedExperiment))
+
+theme_set(theme_coriell())
+```
+
+## HH1
+
+```{r}
+hh1 <- readRDS("../../results/PRJNA413957/rds-files/se.rds")
+hh1_de <- metadata(hh1)$de
+
+# Get the top genes
+hh1_up <- hh1_de[contrast == "YB5.HH1.25uM_vs_DMSO_96hr" & FDR < 0.01 & logFC > 0][
+  order(t, decreasing = TRUE)][1:25, feature_id]
+hh1_down <- hh1_de[contrast == "YB5.HH1.25uM_vs_DMSO_96hr" & FDR < 0.01 & logFC < 0][
+  order(abs(t), decreasing = TRUE)][1:25, feature_id]
+```
+
+## EX00101218
+
+```{r}
+ex001 <- readRDS("../../results/PRJNA395584/rds-files/se.rds")
+ex001_de <- metadata(ex001)$de
+
+# Get the top genes
+ex001_up <- ex001_de[contrast == "MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO" & FDR < 0.01 & logFC > 0][
+  order(t, decreasing = TRUE)][1:25, feature_id]
+ex001_down <- ex001_de[contrast == "MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO" & FDR < 0.01 & logFC < 0][
+  order(abs(t), decreasing = TRUE)][1:25, feature_id]
+```
+
+## Intersection
+
+```{r}
+hh1_up_all <- hh1_de[contrast == "YB5.HH1.25uM_vs_DMSO_96hr" & FDR < 0.05 & logFC > 0, feature_id]
+hh1_down_all <- hh1_de[contrast == "YB5.HH1.25uM_vs_DMSO_96hr" & FDR < 0.05 & logFC < 0, feature_id]
+ex1_up_all <- ex001_de[contrast == "MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO" & FDR < 0.05 & logFC > 0, feature_id]
+ex1_down_all <- ex001_de[contrast == "MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO" & FDR < 0.05 & logFC < 0, feature_id]
+
+# Get the intersection of all significant features
+all_up <- intersect(hh1_up_all, ex1_up_all)
+all_down <- intersect(hh1_down_all, ex1_down_all)
+
+# Remove REs
+all_up <- all_up[!grepl(".*\\..*\\..*", all_up)]
+all_down <- all_down[!grepl(".*\\..*\\..*", all_down)]
+```
+
+Take the top ranked by t stat from both
+
+```{r}
+up1 <- hh1_de[contrast == "YB5.HH1.25uM_vs_DMSO_96hr" & feature_id %chin% all_up][order(t, decreasing = TRUE)][1:50, feature_id]
+up2 <- ex001_de[contrast == "MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO" & feature_id %chin% all_up][order(t, decreasing = TRUE)][1:50, feature_id]
+
+comb_up <- intersect(up1, up2)
+
+
+down1 <- hh1_de[contrast == "YB5.HH1.25uM_vs_DMSO_96hr" & feature_id %chin% all_down][order(abs(t), decreasing = TRUE)][1:50, feature_id]
+down2 <- ex001_de[contrast == "MV_4_11_B.EX00101218.5uM_vs_MV_4_11_B.DMSO" & feature_id %chin% all_down][order(abs(t), decreasing = TRUE)][1:50, feature_id]
+
+comb_down <- intersect(down1, down2)
+```
+
+Sent to Almedia
+
+```
+HH1 96hr 25uM - up-regulated:
+
+TXNIP, GAGE1, PNMA5, GAGE12F, DKK1, ARRDC4, DAZL, MAGEA4, MAGEA2, ARC, MAGEA9B, NLRP1, TEX13C, DLK1, KRTAP3-2, COL5A1, 
+CTCFL, GAGE2A, AQP3, TAF9B, PMCH, MAGEA1, PAGE5, MAGEA3, MAGEA6
+
+HH1 96hr 25uM - down-regulated:
+
+HIST1H2AM, HIST1H2AI, TUBA1B, HIST1H2BL, HIST1H2AH, CDC45, HIST1H3D, HIST1H1E, HIST1H3F, HIST1H2BC, HIST1H2BN, 
+HIST1H2AL, SEMA3B, HIST1H2BO, MT1X, HIST1H2AG, CDCA4, LMNB1, GINS2, HIST1H3H, IGFL2, HIST1H4H, PDIA4, HIST1H4J, LDHA
+
+EX00101218 5uM - up-regulated:
+
+MAFG, C18orf25, ZBTB34, ATP1B4, LRRN2, PAQR6, TRIM66, MSH4, CTSK, POPDC2, LEAP2, GCM1, RWDD2B, MAB21L3, TEX29, AOC2, 
+PAPSS2, RAPSN, RBM15, TMEM25, MIA-RAB4B, ANKRD65, DNHD1, VEGFD, GUCA1B
+
+EX00101218 5uM - down-regulated:
+
+PNP, FTSJ3, PRMT5, SMARCB1, MEPCE, POLA2, HEXIM1, HSPA8, CALR, PDCD11, CHMP7, SAPCD2, POLR2A, UBAP2L, THOC6, NAT10, 
+INTS3, RANGAP1, SF3B3, SH3BP5, SLC29A1, RBM12, NUP188, MBD3, LMTK2
+
+HH1 & EX - up-regulated:
+
+TP53INP1, MCC, ANKRD65, AOC2, FNDC7, ITGA1, PYGM, MYH15, FBXO10, GCNA, SEC31B, CMYA5, CD200R1
+
+HH1 & EX - down-regulated:
+
+MT1X, PDIA4, PHF19, MT2A, RRM2, C19orf48, CDC20, HK2, NRP2, TUBA1C, THOC6, ACTG1, TUBB3, TYRO3, THOP1
+```

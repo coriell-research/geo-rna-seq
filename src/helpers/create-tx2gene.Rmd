@@ -1,0 +1,50 @@
+---
+title: "Create tx2gene"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Create tx2gene dataframe for `tximport` function
+
+Create the tx2gene dataframe with the md5 hash as the transcipt id and the 
+gene name / repElem as the gene name so that `tximport` can be used to create 
+count matrices from `salmon` quant files.
+
+### Read in the REdiscoverTE annotation files
+
+```{r}
+library(data.table)
+
+
+gencode_annot <- setDT(readRDS("/mnt/data/gdata/human/REdiscoverTE_hg38/GENCODE.V26.Basic_Gene_Annotation_md5.RDS"))
+rmsk_annot <- setDT(readRDS("/mnt/data/gdata/human/REdiscoverTE_hg38/rmsk_annotation.RDS"))
+```
+
+Create new column for repElem using the class-family-subfamily and the location
+labels
+
+```{r}
+rmsk_annot[, repElem := paste(repClass, repFamily, repName, sep = ".")]
+rmsk_annot[, repElem := paste(repElem, selected_feature, sep = "__")]
+rmsk_annot2 <- rmsk_annot[, .(md5, feature_id = repElem)]
+```
+
+Select only the md5 and the gene symbol from the gencode annotation
+
+```{r}
+gencode_annot2 <- gencode_annot[, .(md5, feature_id = symbol)]
+```
+
+### Bind into single dataframe and save
+
+colnames do not matter for the function, only column order. First column must be
+the transcript id (md5 hash) and the second is the gene id (feature_id). 
+
+```{r}
+tx2gene <- rbind(gencode_annot2, rmsk_annot2)
+saveRDS(tx2gene, "tx2gene_REdiscoverTE.rds", compress = FALSE)
+```
+

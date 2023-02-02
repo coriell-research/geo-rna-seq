@@ -1,0 +1,52 @@
+---
+title: "Analysis Report"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    theme: flatly
+    highlight: tango
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(coriell))
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(ggplot2))
+
+theme_set(theme_coriell())
+```
+
+## Read in all run info data
+
+```{r}
+files <- list.files(
+  path = here("data"),
+  pattern = "run-info.csv",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+names(files) <- regmatches(files, regexpr("PRJNA[0-9]+", files))
+run_info <- rbindlist(lapply(files, fread)) 
+```
+
+```{r}
+run_info[LibraryStrategy == "RNA-Seq", .N, by = LibrarySelection][order(N, decreasing = TRUE)]
+run_info[LibraryStrategy == "RNA-Seq", .N, by = LibrarySource][order(N, decreasing = TRUE)]
+
+```
+
+
+

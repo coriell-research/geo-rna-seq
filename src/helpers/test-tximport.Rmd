@@ -1,0 +1,72 @@
+---
+title: "Test tximport"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Test reading in quant files with `tximport`
+
+Select a quants directory for testing
+
+```{r}
+quant_dir <- "/mnt/data/data_gc/projects/geo-rna-seq/data/PRJNA246529/quants/"
+```
+
+## Read in the files with tximport
+
+```{r}
+library(tximport)
+
+
+# Setup files and annotation dataframe
+tx2gene <- readRDS("tx2gene_REdiscoverTE.rds")
+quant_files <- list.files(
+  path = quant_dir,
+  pattern = "quant.sf",
+  recursive = TRUE,
+  full.names = TRUE
+)
+names(quant_files) <- regmatches(quant_files, regexpr("SRR[0-9]+", quant_files))
+
+txi <- tximport(
+  files = quant_files,
+  type = "salmon",
+  countsFromAbundance = "lengthScaledTPM",
+  tx2gene = tx2gene,
+  importer = function(x) data.table::fread(x)
+)
+
+txi$counts[1:5, ]
+```
+
+## Split counts into differnt assays
+
+Downstream, if we want to examine the count matrices separately this might be 
+useful.
+
+```{r}
+library(data.table)
+
+
+intron_counts <- txi$counts[grepl("__intron$", rownames(txi$counts)), ]
+intergenic_counts <- txi$counts[grepl("__intergenic", rownames(txi$counts)), ]
+exon_counts <- txi$counts[grepl("__exon", rownames(txi$counts)), ]
+all_re <- Reduce(union, list(rownames(intron_counts), rownames(intergenic_counts), rownames(exon_counts)))
+gene_counts <- txi$counts[!rownames(txi$counts) %in% all_re, ]
+```
+
+Create a new matrix for all REs derived from intronic and intergenic counts
+
+```{r}
+intron_dt <- as.data.table(intron_counts, keep.rownames = "feature_id")
+intergenic_dt <- as.data.table(intergenic_counts, keep.rownames = "feature_id")
+re_dt <- rbind(intron_dt, intergenic_dt)
+re_dt[, feature_id := gsub("__intron$|__intergenic$", "", feature_id)]
+re_dt.m <- melt(re_dt, id.vars = "feature_id", variable.name = "Run", value.name = "count")
+by_re <- re_dt.m[, .(count = sum(count)), by = .(Run, feature_id)]
+re_counts <- as.matrix(dcast(by_re, feature_id ~ Run, value.var = "count", fill = 0.0), rownames = "feature_id")
+```
+

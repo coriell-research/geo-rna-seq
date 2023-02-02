@@ -1,0 +1,258 @@
+---
+title: "PRJNA734957 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+source("helpers/helpers.R")
+```
+
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(edgeR))
+suppressPackageStartupMessages(library(qsmooth))
+suppressPackageStartupMessages(library(quantro))
+suppressPackageStartupMessages(library(doParallel))
+registerDoParallel(cores = 12)
+```
+
+## Create results directory for project if one doesn't exist
+
+```{r}
+if (!dir.exists(here("results", "PRJNA734957"))) {
+  dir.create(here("results", "PRJNA734957", "rds-files"), recursive = TRUE)
+  dir.create(here("results", "PRJNA734957", "data-files"))
+}
+```
+
+## Read in MultiAssayExperiment Object
+
+```{r}
+mae <- readRDS(here("data", "PRJNA734957", "MultiAssayExperiment.rds"))
+```
+
+## Read in gene annotations
+
+```{r}
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
+```
+
+## Extract RE and Gene Counts as matrices
+
+```{r}
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+```
+
+## Restrict REs to five classes
+
+LINE, SINE, long terminal repeats (LTR), SVA, and DNA transposons
+
+```{r}
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+```
+
+## Restrict genes to protein coding
+
+```{r}
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+```
+
+## Combine both matrices into a single count matrix
+
+```{r}
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
+```
+
+## Sum technical replicates across runs and collapse metadata (if present)
+
+Also has the effect of renaming the rows by the BioSample accession.
+
+```{r}
+counts <- sumTechReps(counts, ID = colData(mae)$BioSample)
+colData(mae)$bases <- as.integer(colData(mae)$bases)
+metadata <- as.data.table(colData(mae))
+metadata <- unique(metadata[, .(BioSample, group)])
+setDF(metadata, rownames = metadata$BioSample)
+```
+
+## Check for global differences between groups with `quantro`
+
+```{r}
+qtest <- quantro(counts, groupFactor = metadata$group, B = 1e3)
+perm_pval <- quantroPvalPerm(qtest)
+```
+
+## DE pipeline
+
+```{r}
+# Define experimental design
+design <- model.matrix(~0 + group, data = metadata)
+colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
+
+# Define contrasts to test
+contrast.matrix <- makeContrasts(
+  A375_100nM_OTS964_1hr_vs_A375_DMSO_1hr = A375_100nM_OTS964_1hr - A375_DMSO_1hr,
+  A375_100nM_OTS964_6hr_vs_A375_DMSO_6hr = 
+    (A375_100nM_OTS964_6hr - A375_100nM_OTS964_1hr) - (A375_DMSO_6hr - A375_DMSO_1hr),
+  A375_100nM_OTS964_24hr_vs_A375_DMSO_24hr = 
+    (A375_100nM_OTS964_24hr - A375_100nM_OTS964_1hr) - (A375_DMSO_24hr - A375_DMSO_1hr),
+  
+  A375_25nM_OTS964_1hr_vs_A375_DMSO_1hr = A375_25nM_OTS964_1hr - A375_DMSO_1hr,
+  A375_25nM_OTS964_6hr_vs_A375_DMSO_6hr = 
+    (A375_25nM_OTS964_6hr - A375_25nM_OTS964_1hr) - (A375_DMSO_6hr - A375_DMSO_1hr),
+  A375_25nM_OTS964_24hr_vs_A375_DMSO_24hr = 
+    (A375_25nM_OTS964_24hr - A375_25nM_OTS964_1hr) - (A375_DMSO_24hr - A375_DMSO_1hr),
+  
+  A375_G579S_100nM_OTS964_1hr_vs_A375_G579S_DMSO_1hr = A375_G579S_100nM_OTS964_1hr - A375_G579S_DMSO_1hr,
+  A375_G579S_100nM_OTS964_6hr_vs_A375_G579S_DMSO_6hr = 
+    (A375_G579S_100nM_OTS964_6hr - A375_G579S_100nM_OTS964_1hr) - (A375_G579S_DMSO_6hr - A375_G579S_DMSO_1hr),
+  A375_G579S_100nM_OTS964_24hr_vs_A375_G579S_DMSO_24hr = 
+    (A375_G579S_100nM_OTS964_24hr - A375_G579S_100nM_OTS964_1hr) - (A375_G579S_DMSO_24hr - A375_G579S_DMSO_1hr),
+  
+  A375_G579S_25nM_OTS964_1hr_vs_A375_G579S_DMSO_1hr = A375_G579S_25nM_OTS964_1hr - A375_G579S_DMSO_1hr,
+  A375_G579S_25nM_OTS964_6hr_vs_A375_G579S_DMSO_6hr = 
+    (A375_G579S_25nM_OTS964_6hr - A375_G579S_25nM_OTS964_1hr) - (A375_G579S_DMSO_6hr - A375_G579S_DMSO_1hr),
+  A375_G579S_25nM_OTS964_24hr_vs_A375_G579S_DMSO_24hr = 
+    (A375_G579S_25nM_OTS964_24hr - A375_G579S_25nM_OTS964_1hr) - (A375_G579S_DMSO_24hr - A375_G579S_DMSO_1hr),
+
+  CAL51_100nM_OTS964_1hr_vs_CAL51_DMSO_1hr = CAL51_100nM_OTS964_1hr - CAL51_DMSO_1hr,
+  CAL51_100nM_OTS964_6hr_vs_CAL51_DMSO_6hr = 
+    (CAL51_100nM_OTS964_6hr - CAL51_100nM_OTS964_1hr) - (CAL51_DMSO_6hr - CAL51_DMSO_1hr),
+  CAL51_100nM_OTS964_24hr_vs_CAL51_DMSO_24hr = 
+    (CAL51_100nM_OTS964_24hr - CAL51_100nM_OTS964_1hr) - (CAL51_DMSO_24hr - CAL51_DMSO_1hr),
+  
+  CAL51_25nM_OTS964_1hr_vs_CAL51_DMSO_1hr = CAL51_25nM_OTS964_1hr - CAL51_DMSO_1hr,
+  CAL51_25nM_OTS964_6hr_vs_CAL51_DMSO_6hr = 
+    (CAL51_25nM_OTS964_6hr - CAL51_25nM_OTS964_1hr) - (CAL51_DMSO_6hr - CAL51_DMSO_1hr),
+  CAL51_25nM_OTS964_24hr_vs_CAL51_DMSO_24hr = 
+    (CAL51_25nM_OTS964_24hr - CAL51_25nM_OTS964_1hr) - (CAL51_DMSO_24hr - CAL51_DMSO_1hr),
+  
+  CAL51_G579S_100nM_OTS964_1hr_vs_CAL51_G579S_DMSO_1hr = CAL51_G579S_100nM_OTS964_1hr - CAL51_G579S_DMSO_1hr,
+  CAL51_G579S_100nM_OTS964_6hr_vs_CAL51_G579S_DMSO_6hr = 
+    (CAL51_G579S_100nM_OTS964_6hr - CAL51_G579S_100nM_OTS964_1hr) - (CAL51_G579S_DMSO_6hr - CAL51_G579S_DMSO_1hr),
+  CAL51_G579S_100nM_OTS964_24hr_vs_CAL51_G579S_DMSO_24hr = 
+    (CAL51_G579S_100nM_OTS964_24hr - CAL51_G579S_100nM_OTS964_1hr) - (CAL51_G579S_DMSO_24hr - CAL51_G579S_DMSO_1hr),
+  
+  CAL51_G579S_25nM_OTS964_1hr_vs_CAL51_G579S_DMSO_1hr = CAL51_G579S_25nM_OTS964_1hr - CAL51_G579S_DMSO_1hr,
+  CAL51_G579S_25nM_OTS964_6hr_vs_CAL51_G579S_DMSO_6hr = 
+    (CAL51_G579S_25nM_OTS964_6hr - CAL51_G579S_25nM_OTS964_1hr) - (CAL51_G579S_DMSO_6hr - CAL51_G579S_DMSO_1hr),
+  CAL51_G579S_25nM_OTS964_24hr_vs_CAL51_G579S_DMSO_24hr = 
+    (CAL51_G579S_25nM_OTS964_24hr - CAL51_G579S_25nM_OTS964_1hr) - (CAL51_G579S_DMSO_24hr - CAL51_G579S_DMSO_1hr),
+
+  DLD1_100nM_OTS964_1hr_vs_DLD1_DMSO_1hr = DLD1_100nM_OTS964_1hr - DLD1_DMSO_1hr,
+  DLD1_100nM_OTS964_6hr_vs_DLD1_DMSO_6hr = 
+    (DLD1_100nM_OTS964_6hr - DLD1_100nM_OTS964_1hr) - (DLD1_DMSO_6hr - DLD1_DMSO_1hr),
+  DLD1_100nM_OTS964_24hr_vs_DLD1_DMSO_24hr = 
+    (DLD1_100nM_OTS964_24hr - DLD1_100nM_OTS964_1hr) - (DLD1_DMSO_24hr - DLD1_DMSO_1hr),
+  
+  DLD1_25nM_OTS964_1hr_vs_DLD1_DMSO_1hr = DLD1_25nM_OTS964_1hr - DLD1_DMSO_1hr,
+  DLD1_25nM_OTS964_6hr_vs_DLD1_DMSO_6hr = 
+    (DLD1_25nM_OTS964_6hr - DLD1_25nM_OTS964_1hr) - (DLD1_DMSO_6hr - DLD1_DMSO_1hr),
+  DLD1_25nM_OTS964_24hr_vs_DLD1_DMSO_24hr = 
+    (DLD1_25nM_OTS964_24hr - DLD1_25nM_OTS964_1hr) - (DLD1_DMSO_24hr - DLD1_DMSO_1hr),
+  
+  DLD1_G579S_100nM_OTS964_1hr_vs_DLD1_G579S_DMSO_1hr = DLD1_G579S_100nM_OTS964_1hr - DLD1_G579S_DMSO_1hr,
+  DLD1_G579S_100nM_OTS964_6hr_vs_DLD1_G579S_DMSO_6hr = 
+    (DLD1_G579S_100nM_OTS964_6hr - DLD1_G579S_100nM_OTS964_1hr) - (DLD1_G579S_DMSO_6hr - DLD1_G579S_DMSO_1hr),
+  DLD1_G579S_100nM_OTS964_24hr_vs_DLD1_G579S_DMSO_24hr = 
+    (DLD1_G579S_100nM_OTS964_24hr - DLD1_G579S_100nM_OTS964_1hr) - (DLD1_G579S_DMSO_24hr - DLD1_G579S_DMSO_1hr),
+  
+  DLD1_G579S_25nM_OTS964_1hr_vs_DLD1_G579S_DMSO_1hr = DLD1_G579S_25nM_OTS964_1hr - DLD1_G579S_DMSO_1hr,
+  DLD1_G579S_25nM_OTS964_6hr_vs_DLD1_G579S_DMSO_6hr = 
+    (DLD1_G579S_25nM_OTS964_6hr - DLD1_G579S_25nM_OTS964_1hr) - (DLD1_G579S_DMSO_6hr - DLD1_G579S_DMSO_1hr),
+  DLD1_G579S_25nM_OTS964_24hr_vs_DLD1_G579S_DMSO_24hr = 
+    (DLD1_G579S_25nM_OTS964_24hr - DLD1_G579S_25nM_OTS964_1hr) - (DLD1_G579S_DMSO_24hr - DLD1_G579S_DMSO_1hr),
+  
+  MDAMB231_cas9_CDK11B1346_vs_MDAMB231_cas9_EV1346 = MDAMB231_cas9_CDK11B1346 - MDAMB231_cas9_EV1346,
+  MDAMB231_cas9_CDK11B1347_vs_MDAMB231_cas9_EV1347 = MDAMB231_cas9_CDK11B1347 - MDAMB231_cas9_EV1347,
+  MDAMB231_cas9_CDK11B1348_vs_MDAMB231_cas9_EV1348 = MDAMB231_cas9_CDK11B1348 - MDAMB231_cas9_EV1348,
+  MDAMB231_cas9_CDK11B1349_vs_MDAMB231_cas9_EV1349 = MDAMB231_cas9_CDK11B1349 - MDAMB231_cas9_EV1349,
+  MDAMB231_EV_6hr_and_OTS964_vs_MDAMB231_EV_6hr_DMSO = MDAMB231_EV_6hr_and_OTS964 - MDAMB231_EV_6hr_DMSO,
+  MDAMB231_G579S_6hr_and_OTS964_vs_MDAMB231_G579S_6hr_DMSO = MDAMB231_G579S_6hr_and_OTS964 - MDAMB231_G579S_6hr_DMSO,
+  
+  SUIT2_cas9_CDK11B1346_vs_SUIT2_cas9_EV1346 = SUIT2_cas9_CDK11B1346 - SUIT2_cas9_EV1346,
+  SUIT2_cas9_CDK11B1347_vs_SUIT2_cas9_EV1347 = SUIT2_cas9_CDK11B1347 - SUIT2_cas9_EV1347,
+  SUIT2_cas9_CDK11B1348_vs_SUIT2_cas9_EV1348 = SUIT2_cas9_CDK11B1348 - SUIT2_cas9_EV1348,
+  SUIT2_cas9_CDK11B1348_vs_SUIT2_cas9_EV1349 = SUIT2_cas9_CDK11B1348 - SUIT2_cas9_EV1349,
+  SUIT2_cas9_EV_6hr_and_OTS964_vs_SUIT2_cas9_EV_6hr_DMSO = SUIT2_cas9_EV_6hr_and_OTS964 - SUIT2_cas9_EV_6hr_DMSO,
+  SUIT2_cas9_G579S_6hr_and_OTS964_vs_SUIT2_cas9_G579S_6hr_DMSO = SUIT2_cas9_G579S_6hr_and_OTS964 - SUIT2_cas9_G579S_6hr_DMSO,
+
+  levels = design
+)
+
+# Create DGEList object from counts and filter for expression
+y <- DGEList(counts = counts, samples = metadata)
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+
+# If global differences exist use QSmooth normalization, if not use TMM
+if (perm_pval < 0.01) {
+  norm_method <- "qs"
+  qs <- qsmooth(y$counts, group_factor = y$samples$group)
+  fit <- lmFit(log2(qsmoothData(qs) + 2), design)
+  fit <- contrasts.fit(fit, contrast.matrix)
+} else {
+  norm_method <- "tmm"
+  y <- calcNormFactors(y, method = "TMM")
+  y <- estimateDisp(y, design, robust = TRUE)
+  fit <- glmQLFit(y, design, robust = TRUE)
+  plotQLDisp(fit)
+}
+```
+
+## Test for differential expression above a fold-change
+
+Use either `treat` or `glmTreat` depending on the fit type to test for 
+differential expression above a fold-change.
+
+```{r}
+# Define fold-change that features must exceed to be considered for significance
+FC <- 1.5
+
+contrast_names <- colnames(contrast.matrix)
+if (norm_method == "qs") {
+  fit2 <- treat(fit, lfc = log2(FC), trend = TRUE, robust = TRUE)
+  plotSA(fit2)
+  res_dts <- get_treat(contrast_names, fit2)
+} else {
+  res_dts <- get_glmTreat(contrast_names, fit, contrast.matrix, FC)
+  }
+
+# extract all results and bind to single df
+df <- rbindlist(res_dts, idcol = "contrast")
+```
+
+## Save a `SummarizedExperiment` of processed data
+
+```{r}
+# Calculate logcounts of filtered, normalized data
+if (norm_method == "qs") {
+  logcounts <- log2(qsmoothData(qs) + 2)
+} else {
+  logcounts <- cpm(y, log = TRUE, prior.count = 2)
+}
+
+# Export results as SummarizedExperiment
+se <- SummarizedExperiment(
+  assays = list("counts" = y$counts, "logcounts" = logcounts),
+  colData = metadata,
+  metadata = list("fit" = fit, "de" = df)
+  )
+saveRDS(se, here("results", "PRJNA734957", "rds-files", "se.rds"))
+```

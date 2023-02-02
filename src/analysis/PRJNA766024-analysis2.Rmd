@@ -1,0 +1,744 @@
+---
+title: "PRJNA766024 Analysis"
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+    theme: united
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+source(here::here("src", "helpers", "helpers.R"))
+```
+
+## Load Libraries
+
+```{r}
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(coriell))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(edgeR))
+suppressPackageStartupMessages(library(qsmooth))
+suppressPackageStartupMessages(library(quantro))
+suppressPackageStartupMessages(library(doParallel))
+suppressPackageStartupMessages(library(PCAtools))
+suppressPackageStartupMessages(library(patchwork))
+suppressPackageStartupMessages(library(paletteer))
+suppressPackageStartupMessages(library(rms))
+suppressPackageStartupMessages(library(Hmisc))
+suppressPackageStartupMessages(library(ggbeeswarm))
+registerDoParallel(cores = 12)
+```
+
+## Read in MultiAssayExperiment Object
+
+```{r}
+mae <- readRDS(here("data", "PRJNA766024", "MultiAssayExperiment.rds"))
+cds <- readRDS(here("doc", "gencode.v26.annotation.cds.rds"))
+genes <- assay(mae, "gene counts")
+repeats <- assay(mae, "RE counts")
+repeats <- subset(repeats, grepl(rownames(repeats), pattern = "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\."))
+genes <- subset(genes, rownames(genes) %in% cds$gene_name)
+
+# check for consistent colnames
+all(colnames(genes) == colnames(repeats))
+
+# bind both matrices into single count matrix
+counts <- rbind(genes, repeats)
+counts <- sumTechReps(counts, ID = colData(mae)$BioSample)
+colData(mae)$bases <- as.integer(colData(mae)$bases)
+metadata <- as.data.table(colData(mae))
+metadata <- unique(metadata[, .(BioSample, group)])
+metadata[, c("cell_line", "treatment") := tstrsplit(group, ".", fixed = TRUE)]
+setDF(metadata, rownames = metadata$BioSample)
+```
+
+## Check for global differences between groups with `quantro`
+
+```{r}
+qtest <- quantro(counts, groupFactor = metadata$group, B = 1e3)
+perm_pval <- quantroPvalPerm(qtest)
+```
+
+## DE pipeline
+
+```{r}
+# Define experimental design
+design <- model.matrix(~0 + group, data = metadata)
+colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(design))
+
+# Define contrasts to test
+contrast.matrix <- makeContrasts(
+  A375.THZ531_500nM_6H_vs_DMSO = A375.THZ531_500nM_6H - A375.DMSO_6H,
+  Colo829.THZ531_500nM_6H_vs_DMSO = Colo829.THZ531_500nM_6H - Colo829.DMSO_6H,
+  levels = design
+)
+
+# Create DGEList object from counts and filter for expression
+y <- DGEList(counts = counts, samples = metadata)
+keep <- filterByExpr(y, design = design)
+y <- y[keep,, keep.lib.sizes = FALSE]
+
+# If global differences exist use QSmooth normalization, if not use TMM
+if (perm_pval < 0.01) {
+  norm_method <- "qs"
+  qs <- qsmooth(y$counts, group_factor = y$samples$group)
+  fit <- lmFit(log2(qsmoothData(qs) + 2), design)
+  fit <- contrasts.fit(fit, contrast.matrix)
+} else {
+  norm_method <- "tmm"
+  y <- calcNormFactors(y, method = "TMM")
+  y <- estimateDisp(y, design, robust = TRUE)
+  fit <- glmQLFit(y, design, robust = TRUE)
+  plotQLDisp(fit)
+}
+```
+
+## Test for differential expression above a fold-change
+
+Use either `treat` or `glmTreat` depending on the fit type to test for 
+differential expression above a fold-change.
+
+```{r}
+# Define fold-change that features must exceed to be considered for significance
+FC <- 1.5
+
+contrast_names <- colnames(contrast.matrix)
+if (norm_method == "qs") {
+  fit2 <- treat(fit, lfc = log2(FC), trend = TRUE, robust = TRUE)
+  plotSA(fit2)
+  res_dts <- get_treat(contrast_names, fit2)
+} else {
+  res_dts <- get_glmTreat(contrast_names, fit, contrast.matrix, FC)
+  }
+
+# extract all results and bind to single df
+df <- rbindlist(res_dts, idcol = "contrast")
+
+# Calculate logcounts of filtered, normalized data
+if (norm_method == "qs") {
+  logcounts <- log2(qsmoothData(qs) + 2)
+} else {
+  logcounts <- cpm(y, log = TRUE, prior.count = 2)
+}
+
+# Subset for genes and REs
+logcounts.genes <- logcounts[rownames(logcounts) %in% rownames(genes), ]
+logcounts.repeats <- logcounts[rownames(logcounts) %in% rownames(repeats), ]
+```
+
+## PCA
+
+```{r}
+pca.genes <- pca(logcounts.genes, metadata, scale = TRUE, center = TRUE)
+pca.repeats <- pca(logcounts.repeats, metadata, scale = TRUE, center = TRUE)
+
+b1 <- biplot(
+  pca.genes, 
+  colby = "treatment", 
+  shape = "cell_line",
+  legendPosition = "bottom", 
+  lab = NULL, 
+  pointSize = 5,
+  hline = 0, 
+  hlineType = 2,
+  vline = 0, 
+  vlineType = 2,
+  title = "Protein Coding Genes"
+  ) + 
+  scale_color_manual(values = c("DMSO_6H" = "steelblue", "THZ531_500nM_6H" = "firebrick")) +
+  theme_coriell()
+
+b2 <- biplot(
+  pca.repeats, 
+  colby = "treatment", 
+  shape = "cell_line",
+  legendPosition = "bottom", 
+  lab = NULL, 
+  pointSize = 5,
+  hline = 0, 
+  hlineType = 2,
+  vline = 0, 
+  vlineType = 2,
+  title = "Repetitive Elements"
+  ) + 
+  scale_color_manual(values = c("DMSO_6H" = "steelblue", "THZ531_500nM_6H" = "firebrick")) +
+  theme_coriell()
+
+(b1  | b2) + plot_layout(guides = "collect") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "biplots.png"), width = 12, height = 6)
+```
+
+## Heatmap
+
+```{r}
+ann_cols <- list(
+  cell_line = c("A375" = "#0073C2", "Colo829" = "#EFC000"),
+  treatment = c("DMSO_6H" = "steelblue", "THZ531_500nM_6H" = "firebrick")
+  )
+
+quickmap(
+  logcounts.genes, 
+  annotation_col = metadata[, c("treatment", "cell_line")],
+  annotation_colors = ann_cols,
+  show_colnames = FALSE,
+  main = "Protein Coding Genes",
+  filename = here("results", "PRJNA766024", "figures", "heatmap-genes.png")
+  )
+
+quickmap(
+  logcounts.repeats, 
+  annotation_col = metadata[, c("treatment", "cell_line")],
+  annotation_colors = ann_cols, 
+  show_colnames = FALSE,
+  main = "Repetitive Elements",
+  filename = here("results", "PRJNA766024", "figures", "heatmap-repeats.png")
+  )
+```
+
+## Is differential expression related to gene length?
+
+> We find that melanoma cells harbor constitutively high CDK12 activity, and that its inhibition decreases the expression 
+of long genes containing multiple exons, including many genes involved in DNA repair. Conversely, our results show that
+CDK12 inhibition promotes the expression of short genes with few exons, including many growth-promoting genes regulated 
+by the AP-1 and NF-κB transcription factors
+
+```{r}
+# Import the gene reference
+gtf <- rtracklayer::import("/mnt/data/gdata/human/REdiscoverTE_hg38/gencode.v26.annotation.gtf.gz")
+
+# Filter for the genes in the count matrix
+coding <- gtf[gtf$type == "gene" & gtf$gene_type == "protein_coding" & gtf$gene_name %in% rownames(y$counts), ]
+
+# Get the size of each feature
+widths <- data.table(gene_name = coding$gene_name, width = width(coding))
+
+# Since some features (44) have two lengths, take the maximum
+widths <- widths[, .(width = max(width)), by = gene_name]
+
+# Join the gene lengths onto the DE results
+df <- widths[df, on = c("gene_name" = "feature_id"), nomatch = NA]
+
+# Label the features as either up or down-regulated
+df[, direction := fcase(FDR < 0.1 & logFC > 0, "up",
+                        FDR < 0.1 & logFC < 0, "down",
+                        default = "unperturbed")][, 
+     `:=`(direction = factor(direction, levels = c("unperturbed", "down", "up")),
+          logWidth = log10(width))]
+```
+
+```{r}
+v1 <- plot_volcano(
+  subset(df, contrast == "A375.THZ531_500nM_6H_vs_DMSO" & gene_name %in% rownames(genes)), 
+  lfc = log2(1.5)) + labs(title = "A375 THZ531 500nM 6H vs DMSO")
+m1 <- plot_md(
+  subset(df, contrast == "A375.THZ531_500nM_6H_vs_DMSO" & gene_name %in% rownames(genes)), lfc = log2(1.5), 
+  x = "AveExpr") + labs(title = "A375 THZ531 500nM 6H vs DMSO")
+v2 <- plot_volcano(
+  subset(df, contrast == "Colo829.THZ531_500nM_6H_vs_DMSO" & gene_name %in% rownames(genes)), 
+  lfc = log2(1.5)) + labs(title = "Colo829 THZ531 500nM 6H vs DMSO")
+m2 <- plot_md(
+  subset(df, contrast == "Colo829.THZ531_500nM_6H_vs_DMSO" & gene_name %in% rownames(genes)), lfc = log2(1.5), 
+  x = "AveExpr") + labs(title = "Colo829 THZ531 500nM 6H vs DMSO")
+
+(v1 | v2) / (m1 | m2) +
+  plot_annotation(title = "Protein Coding Genes") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "diffExpr-gene.png"), width = 18, height = 12)
+
+# repeats
+v1 <- plot_volcano(
+  subset(df, contrast == "A375.THZ531_500nM_6H_vs_DMSO" & !gene_name %in% rownames(genes)), 
+  lfc = log2(1.5)) + labs(title = "A375 THZ531 500nM 6H vs DMSO")
+m1 <- plot_md(
+  subset(df, contrast == "A375.THZ531_500nM_6H_vs_DMSO" & !gene_name %in% rownames(genes)), lfc = log2(1.5), 
+  x = "AveExpr") + labs(title = "A375 THZ531 500nM 6H vs DMSO")
+v2 <- plot_volcano(
+  subset(df, contrast == "Colo829.THZ531_500nM_6H_vs_DMSO" & !gene_name %in% rownames(genes)), 
+  lfc = log2(1.5)) + labs(title = "Colo829 THZ531 500nM 6H vs DMSO")
+m2 <- plot_md(
+  subset(df, contrast == "Colo829.THZ531_500nM_6H_vs_DMSO" & !gene_name %in% rownames(genes)), lfc = log2(1.5), 
+  x = "AveExpr") + labs(title = "Colo829 THZ531 500nM 6H vs DMSO")
+
+(v1 | v2) / (m1 | m2) +
+  plot_annotation(title = "Repetitive Elements") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "diffExpr-repeats.png"), width = 18, height = 12)
+```
+
+```{r}
+# Subset for each separately
+a375 <- df[contrast == "A375.THZ531_500nM_6H_vs_DMSO" & gene_name %in% rownames(genes)]
+Colo829 <- df[contrast == "Colo829.THZ531_500nM_6H_vs_DMSO" & gene_name %in% rownames(genes)]
+```
+
+```{r}
+# A375
+p1 <- ggplot(a375, aes(x = width, y = logFC)) +
+  geom_point(data = subset(a375, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(a375, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(a375, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(a375, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(a375, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(a375, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+p2 <- ggplot(Colo829, aes(x = width, y = logFC)) +
+  geom_point(data = subset(Colo829, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(Colo829, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(Colo829, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(Colo829, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(Colo829, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(Colo829, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+(p1 | p2) +
+  plot_annotation(title = "Gene Length (introns + exons)") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "width_vs_logFC.png"), width = 18, height = 8)
+```
+
+```{r}
+p1 <- ggplot(a375, aes(x = width, y = logFC)) +
+  geom_point(data = subset(a375, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(a375, direction == "up"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_point(data = subset(a375, direction == "down"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_smooth(data = subset(a375, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(a375, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(a375, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+p2 <- ggplot(Colo829, aes(x = width, y = logFC)) +
+  geom_point(data = subset(Colo829, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(Colo829, direction == "up"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_point(data = subset(Colo829, direction == "down"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_smooth(data = subset(Colo829, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(Colo829, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(Colo829, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+(p1 | p2) +
+  plot_annotation(title = "Gene Length vs Differential Expression") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "width_vs_logFC2.png"), width = 18, height = 8)
+```
+
+How strong is this association? -- it's not.
+
+```{r}
+d <- datadist(a375)
+options(datadist = "d")
+f <- ols(logFC ~ rcs(logWidth, 4) * direction, data = a375)
+f
+```
+
+```{r}
+d <- datadist(Colo829)
+options(datadist = "d")
+f <- ols(logFC ~ rcs(logWidth, 4) * direction, data = Colo829)
+f
+```
+
+## By exon lengths
+
+The quant files contain the effective lengths of each transcript. These are the length estimates adjusted for the 
+relative probability of a read being align.
+
+```{r}
+# Get the tx2gene file that maps transcripts / REs to gene names
+tx2gene <- readRDS("/mnt/data/gdata/human/REdiscoverTE_hg38/tx2gene_REdiscoverTE.rds")
+setkey(tx2gene, "md5")
+
+# Get the effective lengths for each transcript from the quant files
+quant_files <- list.files(
+  path = "/mnt/data/data_gc/projects/geo-rna-seq/data/PRJNA766024/quants",
+  pattern = "quant.sf",
+  recursive = TRUE,
+  full.names = TRUE
+  )
+names(quant_files) <- regmatches(quant_files, regexpr("SRR[0-9]+", quant_files))
+
+# Read all quant_files into a single dt
+quant <- rbindlist(lapply(quant_files, fread, select = c("Name", "Length", "EffectiveLength")), idcol = "Run")
+
+# Get the mean values for the lengths and EffectiveLengths of each transcript
+by_feature <- quant[, .(Length = mean(Length), EffectiveLength = mean(EffectiveLength)), by = Name]
+setkey(by_feature, "Name")
+
+# Join the gene name information onto the summarized lengths
+by_feature <- tx2gene[by_feature]
+```
+
+Sum the lengths and effective lengths for each gene
+
+```{r}
+a375_features <- by_feature[feature_id %chin% a375[, unique(gene_name)]][, 
+                           .(sumLength = sum(Length), sumEffectiveLength = sum(EffectiveLength)), 
+                           by = feature_id]
+colo_features <- by_feature[feature_id %chin% Colo829[, unique(gene_name)]][, 
+                           .(sumLength = sum(Length), sumEffectiveLength = sum(EffectiveLength)), 
+                           by = feature_id]
+
+
+# Join back onto the data 
+a375 <- a375[a375_features, on = c("gene_name" = "feature_id")]
+Colo829 <- Colo829[colo_features, on = c("gene_name" = "feature_id")]
+```
+
+re-plot using the sum of the transcripts and effective lengths
+
+```{r}
+p1 <- ggplot(a375, aes(x = sumLength, y = logFC)) +
+  geom_point(data = subset(a375, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(a375, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(a375, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(a375, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(a375, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(a375, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+p2 <- ggplot(Colo829, aes(x = sumLength, y = logFC)) +
+  geom_point(data = subset(Colo829, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(Colo829, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(Colo829, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(Colo829, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(Colo829, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(Colo829, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+(p1 | p2) +
+  plot_annotation(title = "Sum Transcript Lengths per Gene") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "width_vs_logFC3.png"), width = 18, height = 8)
+```
+
+by Effective lengths
+
+```{r}
+p1 <- ggplot(a375, aes(x = sumEffectiveLength, y = logFC)) +
+  geom_point(data = subset(a375, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(a375, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(a375, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(a375, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(a375, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(a375, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+p2 <- ggplot(Colo829, aes(x = sumEffectiveLength, y = logFC)) +
+  geom_point(data = subset(Colo829, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(Colo829, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(Colo829, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(Colo829, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(Colo829, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(Colo829, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "Gene Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+(p1 | p2) +
+  plot_annotation(title = "Sum Effective Lengths of Transcripts per Gene") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "width_vs_logFC4.png"), width = 18, height = 8)
+```
+
+### MA plot with the lengths
+
+```{r}
+v1 <- ggplot(a375, aes(x = logFC, y = -log10(FDR), color = log10(sumEffectiveLength))) +
+  geom_point(alpha = 0.5) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "logFC",
+       y = "-log10(FDR)",
+       color = "log10(length)") +
+  theme_coriell()
+
+v2 <- ggplot(Colo829, aes(x = logFC, y = -log10(FDR), color = log10(sumEffectiveLength))) +
+  geom_point(alpha = 0.5) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "logFC",
+       y = "-log10(FDR)",
+       color = "log10(length)") +
+  theme_coriell()
+
+m1 <- ggplot(a375, aes(x = AveExpr, y = logFC, color = log10(sumEffectiveLength))) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "AveExpr",
+       y = "logFC",
+       color = "log10(length)") +
+  theme_coriell()
+
+m2 <- ggplot(Colo829, aes(x = AveExpr, y = logFC, color = log10(sumEffectiveLength))) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "AveExpr",
+       y = "logFC",
+       color = "log10(length)") +
+  theme_coriell()
+
+(v1 | v2) / (m1 | m2) +
+  plot_layout(guides = "collect") & 
+  theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "diffExpr-gene-byLength.png"), width = 18, height = 12)
+```
+
+## What are the effective lengths of REs?
+
+```{r}
+re_lengths <- by_feature[feature_id %like% "__"]
+re_lengths[, c("class", "family", "subfamily_loc") := tstrsplit(feature_id, ".", fixed = TRUE)][, feature_id := NULL]
+re_lengths[, c("subfamily", "location") := tstrsplit(subfamily_loc, "__", fixed = TRUE)][, subfamily_loc := NULL]
+re_lengths[, repElem := paste(class, family, subfamily, sep = ".")]
+```
+
+```{r}
+re_summary <- re_lengths[repElem %like% "^LINE\\.|^SINE\\.|^LTR\\.|.*\\.SVA\\..*|^DNA\\.", 
+           .(meanLength = mean(Length), meanEffectiveLength = mean(EffectiveLength),
+             medianLength = median(Length), medianEffectiveLength = median(EffectiveLength),
+             maxLength = max(Length), maxEffectiveLength = max(EffectiveLength),
+             minLength = min(Length), minEffectiveLength = min(EffectiveLength)),
+           by = .(class, family, subfamily)][order(meanLength, decreasing = TRUE)]
+re_summary[, repElem := paste(class, family, subfamily, sep = ".")]
+```
+
+```{r}
+p1 <- ggplot(re_summary, aes(x = reorder(class, medianEffectiveLength), y = medianEffectiveLength)) +
+  geom_quasirandom(alpha = 0.5) +
+  scale_y_log10() +
+  labs(title = "Median Effective Length",
+       x = "Class",
+       y = "Median Effective Length"
+       ) +
+  theme_coriell()
+
+p2 <- ggplot(re_summary, aes(x = reorder(class, meanEffectiveLength), y = meanEffectiveLength)) +
+  geom_quasirandom(alpha = 0.5) +
+  scale_y_log10() +
+  labs(title = "Mean Effective Length",
+       x = "Class",
+       y = "Mean Effective Length"
+       ) +
+  theme_coriell()
+
+p3 <- ggplot(re_summary, aes(x = reorder(class, medianLength), y = medianLength)) +
+  geom_quasirandom(alpha = 0.5) +
+  scale_y_log10() +
+  labs(title = "Median Length",
+       x = "Class",
+       y = "Median Length"
+       ) +
+  theme_coriell()
+
+p4 <- ggplot(re_summary, aes(x = reorder(class, meanLength), y = meanLength)) +
+  geom_quasirandom(alpha = 0.5) +
+  scale_y_log10() +
+  labs(title = "Mean Length",
+       x = "Class",
+       y = "Mean Length"
+       ) +
+  theme_coriell()
+
+(p1 | p2) / (p3 | p4) +
+  plot_annotation(title = "Distributions of RE Lengths")
+ggsave(here("results", "PRJNA766024", "figures", "repeat-length-distributions.png"), width = 12, height = 8)
+```
+
+Is effective length related to expression?
+
+```{r}
+df_re <- df[re_summary, on = c("gene_name" = "repElem"), nomatch = NULL]
+a375_re <- df_re[contrast == "A375.THZ531_500nM_6H_vs_DMSO"]
+Colo829_re <- df_re[contrast == "Colo829.THZ531_500nM_6H_vs_DMSO"]
+```
+
+```{r}
+p1 <- ggplot(a375_re, aes(x = medianEffectiveLength, y = logFC)) +
+  geom_point(data = subset(a375_re, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(a375_re, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(a375_re, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(a375_re, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(a375_re, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(a375_re, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "median Effective Length",
+       y = "logFC") +
+  theme_coriell()
+
+p2 <- ggplot(Colo829_re, aes(x = medianEffectiveLength, y = logFC)) +
+  geom_point(data = subset(Colo829_re, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(Colo829_re, direction == "up"), color = "red2", size = 0.5, alpha = 0.8) +
+  geom_point(data = subset(Colo829_re, direction == "down"), color = "blue2", size = 0.5, alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_smooth(data = subset(Colo829_re, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(Colo829_re, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(Colo829_re, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "median Effective Length",
+       y = "logFC") +
+  theme_coriell()
+
+(p1 | p2) +
+  plot_annotation(title = "Median Effective Length per RE") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "width_vs_logFC-re.png"), width = 18, height = 8)
+```
+
+```{r}
+p1 <- ggplot(a375_re, aes(x = medianEffectiveLength, y = logFC)) +
+  geom_point(data = subset(a375_re, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(a375_re, direction == "up"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_point(data = subset(a375_re, direction == "down"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_smooth(data = subset(a375_re, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(a375_re, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(a375_re, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "Median Effective Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+p2 <- ggplot(Colo829_re, aes(x = medianEffectiveLength, y = logFC)) +
+  geom_point(data = subset(Colo829_re, direction == "unperturbed"), color = "grey80", size = 0.5, alpha = 0.5) +
+  geom_point(data = subset(Colo829_re, direction == "up"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_point(data = subset(Colo829_re, direction == "down"), aes(color = AveExpr), size = 2, alpha = 0.8) +
+  geom_smooth(data = subset(Colo829_re, direction == "unperturbed"), method = "gam", se = FALSE, color = "grey65") +
+  geom_smooth(data = subset(Colo829_re, direction == "up"), method = "gam", se = FALSE, color = "red3") +
+  geom_smooth(data = subset(Colo829_re, direction == "down"), method = "gam", se = FALSE, color = "blue3") +
+  geom_smooth(method = "gam", se = FALSE, color = "black", linetype = 2) +
+  geom_rug(sides = "bl", alpha = 0.05) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "Median Effective Length (bp)",
+       y = "logFC") +
+  theme_coriell()
+
+(p1 | p2) +
+  plot_annotation(title = "Median Effective Length vs LogFC") & theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "width_vs_logFC2-re.png"), width = 18, height = 8)
+```
+
+### MA plots of REs by effective lengths
+
+```{r}
+v1 <- ggplot(a375_re, aes(x = logFC, y = -log10(FDR), color = log10(medianEffectiveLength))) +
+  geom_point(alpha = 0.8) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "logFC",
+       y = "-log10(FDR)",
+       color = "log10(length)") +
+  theme_coriell()
+
+v2 <- ggplot(Colo829_re, aes(x = logFC, y = -log10(FDR), color = log10(medianEffectiveLength))) +
+  geom_point(alpha = 0.8) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "logFC",
+       y = "-log10(FDR)",
+       color = "log10(length)") +
+  theme_coriell()
+
+m1 <- ggplot(a375_re, aes(x = AveExpr, y = logFC, color = log10(medianEffectiveLength))) +
+  geom_point(alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "A375 THZ531 vs DMSO 6hr",
+       x = "AveExpr",
+       y = "logFC",
+       color = "log10(length)") +
+  theme_coriell()
+
+m2 <- ggplot(Colo829_re, aes(x = AveExpr, y = logFC, color = log10(medianEffectiveLength))) +
+  geom_point(alpha = 0.8) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  scale_color_viridis_c(direction = -1) +
+  scale_x_log10() +
+  labs(title = "Colo829 THZ531 vs DMSO 6hr",
+       x = "AveExpr",
+       y = "logFC",
+       color = "log10(length)") +
+  theme_coriell()
+
+(v1 | v2) / (m1 | m2) +
+  plot_layout(guides = "collect") & 
+  theme_coriell()
+ggsave(here("results", "PRJNA766024", "figures", "diffExpr-re-byLength.png"), width = 18, height = 12)
+```
+
+
+
