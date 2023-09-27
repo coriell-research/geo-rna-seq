@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	tissue	treatment
+SAMN34123226	34123226	Palbp3	biochemistry, ajou university	9606	SRS17265456	GSM7157776	MCF7	cancer cell	1μM Palbociclib treated MCF7 for 4day	breast cancer	1uM Palbociclib treated for 4day
+SAMN34123227	34123227	Palbo2	biochemistry, ajou university	9606	SRS17265455	GSM7157775	MCF7	cancer cell	1μM Palbociclib treated MCF7 for 4day	breast cancer	1uM Palbociclib treated for 4day
+SAMN34123228	34123228	Palbo1	biochemistry, ajou university	9606	SRS17265454	GSM7157774	MCF7	cancer cell	1μM Palbociclib treated MCF7 for 4day	breast cancer	1uM Palbociclib treated for 4day
+SAMN34123229	34123229	Cis3	biochemistry, ajou university	9606	SRS17265453	GSM7157773	MCF7	cancer cell	5μM Cisplatin treated MCF7 for 4day	breast cancer	5uM Cisplatin treated for 4day
+SAMN34123230	34123230	Cis2	biochemistry, ajou university	9606	SRS17265452	GSM7157772	MCF7	cancer cell	5μM Cisplatin treated MCF7 for 4day	breast cancer	5uM Cisplatin treated for 4day
+SAMN34123231	34123231	Cis1	biochemistry, ajou university	9606	SRS17265451	GSM7157771	MCF7	cancer cell	5μM Cisplatin treated MCF7 for 4day	breast cancer	5uM Cisplatin treated for 4day
+SAMN34123232	34123232	Doxo3	biochemistry, ajou university	9606	SRS17265449	GSM7157770	MCF7	cancer cell	100nM Doxo treated MCF7 for 4day	breast cancer	100nM Doxo treated for 4day
+SAMN34123233	34123233	Doxo2	biochemistry, ajou university	9606	SRS17265450	GSM7157769	MCF7	cancer cell	100nM Doxo treated MCF7 for 4day	breast cancer	100nM Doxo treated for 4day
+SAMN34123234	34123234	Doxo1	biochemistry, ajou university	9606	SRS17265448	GSM7157768	MCF7	cancer cell	100nM Doxo treated MCF7 for 4day	breast cancer	100nM Doxo treated for 4day
+SAMN34123235	34123235	Control3	biochemistry, ajou university	9606	SRS17265446	GSM7157767	MCF7	cancer cell	Control MCF7	breast cancer	Control
+SAMN34123236	34123236	Control2	biochemistry, ajou university	9606	SRS17265447	GSM7157766	MCF7	cancer cell	Control MCF7	breast cancer	Control
+SAMN34123237	34123237	Control1	biochemistry, ajou university	9606	SRS17265445	GSM7157765	MCF7	cancer cell	Control MCF7	breast cancer	Control

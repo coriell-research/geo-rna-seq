@@ -1,0 +1,28 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	extract	source_name	treatment
+SAMN10060959	10060959	AD-i-1	Institut Curie	9606	SRS3774703	GSM3389678	A549	Cytosol	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10060960	10060960	H358-OXPT-T-3	Institut Curie	9606	SRS3774714	GSM3389677	H358	Total cells	Non-small cell lung cancer cell line	Oxaliplatin
+SAMN10060961	10060961	H358-CDDP-T-3	Institut Curie	9606	SRS3774711	GSM3389676	H358	Total cells	Non-small cell lung cancer cell line	Cisplatin
+SAMN10060962	10060962	H358-DMSO-T-3	Institut Curie	9606	SRS3774710	GSM3389675	H358	Total cells	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10060963	10060963	H358-OXPT-T-2	Institut Curie	9606	SRS3774709	GSM3389674	H358	Total cells	Non-small cell lung cancer cell line	Oxaliplatin
+SAMN10060964	10060964	H358-CDDP-T-2	Institut Curie	9606	SRS3774708	GSM3389673	H358	Total cells	Non-small cell lung cancer cell line	Cisplatin
+SAMN10060965	10060965	H358-DMSO-T-2	Institut Curie	9606	SRS3774707	GSM3389672	H358	Total cells	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10060966	10060966	H358-OXPT-T-1	Institut Curie	9606	SRS3774706	GSM3389671	H358	Total cells	Non-small cell lung cancer cell line	Oxaliplatin
+SAMN10060967	10060967	H358-CDDP-T-1	Institut Curie	9606	SRS3774705	GSM3389670	H358	Total cells	Non-small cell lung cancer cell line	Cisplatin
+SAMN10060968	10060968	H358-DMSO-T-1	Institut Curie	9606	SRS3774704	GSM3389669	H358	Total cells	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10060997	10060997	n3_A_CDDPplusplus	Institut Curie	9606	SRS3774727	GSM3389695	A549	Polysomes	Non-small cell lung cancer cell line	Cisplatin
+SAMN10060998	10060998	n3_A_DMSOplusplus	Institut Curie	9606	SRS3774728	GSM3389694	A549	Polysomes	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10060999	10060999	n2_A_CDDPplusplus	Institut Curie	9606	SRS3774729	GSM3389693	A549	Polysomes	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061000	10061000	n2_A_DMSOplusplus	Institut Curie	9606	SRS3774724	GSM3389692	A549	Polysomes	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061001	10061001	n1_A_CDDPplusplus	Institut Curie	9606	SRS3774726	GSM3389691	A549	Polysomes	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061002	10061002	n1_A_DMSOplusplus	Institut Curie	9606	SRS3774725	GSM3389690	A549	Polysomes	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061003	10061003	RC-i-3	Institut Curie	9606	SRS3774723	GSM3389689	A549R	Cytosol	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061004	10061004	RD-i-3	Institut Curie	9606	SRS3774721	GSM3389688	A549R	Cytosol	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061005	10061005	AC-i-3	Institut Curie	9606	SRS3774722	GSM3389687	A549	Cytosol	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061006	10061006	AD-i-3	Institut Curie	9606	SRS3774718	GSM3389686	A549	Cytosol	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061007	10061007	RC-i-2	Institut Curie	9606	SRS3774720	GSM3389685	A549R	Cytosol	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061008	10061008	RD-i-2	Institut Curie	9606	SRS3774719	GSM3389684	A549R	Cytosol	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061009	10061009	AC-i-2	Institut Curie	9606	SRS3774716	GSM3389683	A549	Cytosol	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061010	10061010	AD-i-2	Institut Curie	9606	SRS3774717	GSM3389682	A549	Cytosol	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061011	10061011	RC-i-1	Institut Curie	9606	SRS3774715	GSM3389681	A549R	Cytosol	Non-small cell lung cancer cell line	Cisplatin
+SAMN10061012	10061012	RD-i-1	Institut Curie	9606	SRS3774712	GSM3389680	A549R	Cytosol	Non-small cell lung cancer cell line	Vehicle (DMSO)
+SAMN10061013	10061013	AC-i-1	Institut Curie	9606	SRS3774713	GSM3389679	A549	Cytosol	Non-small cell lung cancer cell line	Cisplatin

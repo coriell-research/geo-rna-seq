@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype/variation	source_name	treatment
+SAMN13383793	13383793	SLFN11KO_CHK1i6h_3 [CB45_CHK1i6_15_S15]	Keio University	9606	SRS5715987	GSM4190717	CCRF-CEM	T lymphoblast	SLFN11 gene knockout	SLFN11KO_CHK1i6h	Prexasertib 100 nM treatment for 6h
+SAMN13383794	13383794	SLFN11KO_CHK1i6h_2 [CB45_CHK1i6_14_S14]	Keio University	9606	SRS5715986	GSM4190716	CCRF-CEM	T lymphoblast	SLFN11 gene knockout	SLFN11KO_CHK1i6h	Prexasertib 100 nM treatment for 6h
+SAMN13383795	13383795	SLFN11KO_CHK1i6h_1 [CB45_CHK1i6_13_S13]	Keio University	9606	SRS5715985	GSM4190715	CCRF-CEM	T lymphoblast	SLFN11 gene knockout	SLFN11KO_CHK1i6h	Prexasertib 100 nM treatment for 6h
+SAMN13383796	13383796	SLFN11KO_control_3 [CB45_con_12_S12]	Keio University	9606	SRS5715984	GSM4190714	CCRF-CEM	T lymphoblast	SLFN11 gene knockout	SLFN11KO_control	DMSO treatment
+SAMN13383797	13383797	SLFN11KO_control_2 [CB45_con_11_S11]	Keio University	9606	SRS5715983	GSM4190713	CCRF-CEM	T lymphoblast	SLFN11 gene knockout	SLFN11KO_control	DMSO treatment
+SAMN13383798	13383798	SLFN11KO_control_1 [CB45_con_10_S10]	Keio University	9606	SRS5715982	GSM4190712	CCRF-CEM	T lymphoblast	SLFN11 gene knockout	SLFN11KO_control	DMSO treatment
+SAMN13383799	13383799	Parent_CHK1i6h_3 [CEM_CHK1i6_6_S6]	Keio University	9606	SRS5715981	GSM4190711	CCRF-CEM	T lymphoblast	wild-type	Parent_CHK1i6h	Prexasertib 100 nM treatment for 6h
+SAMN13383801	13383801	Parent_CHK1i6h_2 [CEM_CHK1i6_5_S5]	Keio University	9606	SRS5715980	GSM4190710	CCRF-CEM	T lymphoblast	wild-type	Parent_CHK1i6h	Prexasertib 100 nM treatment for 6h
+SAMN13383802	13383802	Parent_CHK1i6h_1 [CEM_CHK1i6_4_S4]	Keio University	9606	SRS5715979	GSM4190709	CCRF-CEM	T lymphoblast	wild-type	Parent_CHK1i6h	Prexasertib 100 nM treatment for 6h
+SAMN13383803	13383803	Parent_control_3 [CEM_con_3_S3]	Keio University	9606	SRS5715978	GSM4190708	CCRF-CEM	T lymphoblast	wild-type	Parent_control	DMSO treatment
+SAMN13383804	13383804	Parent_control_2 [CEM_con_2_S2]	Keio University	9606	SRS5715977	GSM4190707	CCRF-CEM	T lymphoblast	wild-type	Parent_control	DMSO treatment
+SAMN13383805	13383805	Parent_control_1 [CEM_con_1_S1]	Keio University	9606	SRS5715976	GSM4190706	CCRF-CEM	T lymphoblast	wild-type	Parent_control	DMSO treatment

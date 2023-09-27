@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	source_name	treatment	tumor
+SAMN07562175	7562175	CL1	Chen Lab, Systems Biology, City of Hope	9606	SRS2468880	GSM2754478	MA9.3RAS	PBS	acute myeloid leukemia
+SAMN07562176	7562176	CL6	Chen Lab, Systems Biology, City of Hope	9606	SRS2468884	GSM2754483	MA9.3ITD	HHT 10ng/ml	acute myeloid leukemia
+SAMN07562177	7562177	CL5	Chen Lab, Systems Biology, City of Hope	9606	SRS2468883	GSM2754482	MA9.3ITD	HHT 5ng/ml	acute myeloid leukemia
+SAMN07562178	7562178	CL4	Chen Lab, Systems Biology, City of Hope	9606	SRS2468882	GSM2754481	MA9.3ITD	PBS	acute myeloid leukemia
+SAMN07562179	7562179	CL3	Chen Lab, Systems Biology, City of Hope	9606	SRS2468881	GSM2754480	MA9.3RAS	HHT 10ng/ml	acute myeloid leukemia
+SAMN07562180	7562180	CL2	Chen Lab, Systems Biology, City of Hope	9606	SRS2468879	GSM2754479	MA9.3RAS	HHT 5ng/ml	acute myeloid leukemia

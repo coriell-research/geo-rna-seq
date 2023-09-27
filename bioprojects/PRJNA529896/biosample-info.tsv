@@ -1,0 +1,10 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	tissue	treatment
+SAMN11288823	11288823	Sample_97L_P_SRC_3	Department of nutrition	9606	SRS4556512	GSM3692906	MHCC97L	hepatoma carcinoma cell	liver	liver	saracatinib
+SAMN11288824	11288824	Sample_97L_P_SRC_2	Department of nutrition	9606	SRS4556511	GSM3692905	MHCC97L	hepatoma carcinoma cell	liver	liver	saracatinib
+SAMN11288825	11288825	Sample_97L_P_SRC_1	Department of nutrition	9606	SRS4556510	GSM3692904	MHCC97L	hepatoma carcinoma cell	liver	liver	saracatinib
+SAMN11288826	11288826	Sample_97L_P_AC_3	Department of nutrition	9606	SRS4556509	GSM3692903	MHCC97L	hepatoma carcinoma cell	liver	liver	oxaliplatin
+SAMN11288828	11288828	Sample_97L_P_AC_2	Department of nutrition	9606	SRS4556508	GSM3692902	MHCC97L	hepatoma carcinoma cell	liver	liver	oxaliplatin
+SAMN11288829	11288829	Sample_97L_P_AC_1	Department of nutrition	9606	SRS4556507	GSM3692901	MHCC97L	hepatoma carcinoma cell	liver	liver	oxaliplatin
+SAMN11288830	11288830	Sample_97L_3	Department of nutrition	9606	SRS4556506	GSM3692900	MHCC97L	hepatoma carcinoma cell	liver	liver	none
+SAMN11288831	11288831	Sample_97L_2	Department of nutrition	9606	SRS4556505	GSM3692899	MHCC97L	hepatoma carcinoma cell	liver	liver	none
+SAMN11288832	11288832	Sample_97L_1	Department of nutrition	9606	SRS4556504	GSM3692898	MHCC97L	hepatoma carcinoma cell	liver	liver	none

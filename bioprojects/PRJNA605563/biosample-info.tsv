@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	lentivirus	source_name	time point	treatment
+SAMN14070734	14070734	shALKBH5-#1 ActD 12h	Chen Lab, Systems Biology, City of Hope	9606	SRS6122819	GSM4301493	Acute myeloid leukemia	shALKBH5-#1	AML cell line NOMO-1	12h	ActD
+SAMN14070735	14070735	shALKBH5-#1 ActD 8h	Chen Lab, Systems Biology, City of Hope	9606	SRS6122818	GSM4301492	Acute myeloid leukemia	shALKBH5-#1	AML cell line NOMO-1	8h	ActD
+SAMN14070736	14070736	shALKBH5-#1 ActD 0h	Chen Lab, Systems Biology, City of Hope	9606	SRS6122817	GSM4301491	Acute myeloid leukemia	shALKBH5-#1	AML cell line NOMO-1	0h	ActD
+SAMN14070737	14070737	shALKBH5-#2 ActD 12h	Chen Lab, Systems Biology, City of Hope	9606	SRS6122816	GSM4301490	Acute myeloid leukemia	shALKBH5-#2	AML cell line NOMO-1	12h	ActD
+SAMN14070738	14070738	shALKBH5-#2 ActD 8h	Chen Lab, Systems Biology, City of Hope	9606	SRS6122815	GSM4301489	Acute myeloid leukemia	shALKBH5-#2	AML cell line NOMO-1	8h	ActD
+SAMN14070739	14070739	shALKBH5-#2 ActD 0h	Chen Lab, Systems Biology, City of Hope	9606	SRS6122814	GSM4301488	Acute myeloid leukemia	shALKBH5-#2	AML cell line NOMO-1	0h	ActD
+SAMN14070740	14070740	shNS ActD 12h Rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS6122813	GSM4301487	Acute myeloid leukemia	shNS	AML cell line NOMO-1	12h	ActD
+SAMN14070741	14070741	shNS ActD 12h Rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS6122812	GSM4301486	Acute myeloid leukemia	shNS	AML cell line NOMO-1	12h	ActD
+SAMN14070742	14070742	shNS ActD 8h Rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS6122811	GSM4301485	Acute myeloid leukemia	shNS	AML cell line NOMO-1	8h	ActD
+SAMN14070743	14070743	shNS ActD 8h Rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS6122810	GSM4301484	Acute myeloid leukemia	shNS	AML cell line NOMO-1	8h	ActD
+SAMN14070744	14070744	shNS ActD 0h Rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS6122809	GSM4301483	Acute myeloid leukemia	shNS	AML cell line NOMO-1	0h	ActD
+SAMN14070745	14070745	shNS ActD 0h Rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS6122808	GSM4301482	Acute myeloid leukemia	shNS	AML cell line NOMO-1	0h	ActD

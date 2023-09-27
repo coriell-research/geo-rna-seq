@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell types	source_name	tissue	treatment	tumorigenicity
+SAMN09213248	9213248	MEC1 125nm SD6 at 24 h	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305276	GSM3143286	MEC1	CLL B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 24 hr	Leukemia cells
+SAMN09213249	9213249	MEC1 125nm SD6 at 6 h	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305275	GSM3143285	MEC1	CLL B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 6 hr	Leukemia cells
+SAMN09213250	9213250	MEC1 125nm SD6 at 2 h	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305274	GSM3143284	MEC1	CLL B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 2 hr	Leukemia cells
+SAMN09213252	9213252	MEC1 125nm SD6 at 0 hr	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305273	GSM3143283	MEC1	CLL B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 0 hr	Leukemia cells
+SAMN09213253	9213253	GM12878 125nm SD6 at 24 h	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305272	GSM3143282	GM12878	CD19+ B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 24 hr	Importalized lymhoblast cells
+SAMN09213254	9213254	GM12878 125nm SD6 at 6 h	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305271	GSM3143281	GM12878	CD19+ B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 6 hr	Importalized lymhoblast cells
+SAMN09213255	9213255	GM12878 125nm SD6 at 2 h	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305270	GSM3143280	GM12878	CD19+ B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 2 hr	Importalized lymhoblast cells
+SAMN09213257	9213257	GM12878 125nm SD6 at 0 hr	2125 K, Georgia Cancer Center, Augusta University	9606	SRS3305269	GSM3143279	GM12878	CD19+ B Cell line, EBV(+)	Blood	Blood	125nm SD6 at 0 hr	Importalized lymhoblast cells

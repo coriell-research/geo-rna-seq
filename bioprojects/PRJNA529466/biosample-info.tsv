@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN11267853	11267853	MOLM14.ASLAN_3	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545737	GSM3688836	MOLM14	AML cell line	ASLAN003
+SAMN11267854	11267854	MOLM14.ASLAN_2	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545736	GSM3688835	MOLM14	AML cell line	ASLAN003
+SAMN11267855	11267855	MOLM14.ASLAN_1	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545735	GSM3688834	MOLM14	AML cell line	ASLAN003
+SAMN11267856	11267856	MOLM14.DMSO_3	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545734	GSM3688833	MOLM14	AML cell line	DMSO
+SAMN11267857	11267857	MOLM14.DMSO_2	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545733	GSM3688832	MOLM14	AML cell line	DMSO
+SAMN11267858	11267858	MOLM14.DMSO_1	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545732	GSM3688831	MOLM14	AML cell line	DMSO
+SAMN11267859	11267859	KG-1.ASLAN_3	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545731	GSM3688830	KG-1	AML cell line	ASLAN003
+SAMN11267860	11267860	KG-1.ASLAN_2	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545730	GSM3688829	KG-1	AML cell line	ASLAN003
+SAMN11267861	11267861	KG-1.ASLAN_1	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545729	GSM3688828	KG-1	AML cell line	ASLAN003
+SAMN11267862	11267862	KG-1.DMSO_3	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545728	GSM3688827	KG-1	AML cell line	DMSO
+SAMN11267863	11267863	KG-1.DMSO_2	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545727	GSM3688826	KG-1	AML cell line	DMSO
+SAMN11267864	11267864	KG-1.DMSO_1	Cancer Science Institute Singapore, National University of Singapore	9606	SRS4545726	GSM3688825	KG-1	AML cell line	DMSO

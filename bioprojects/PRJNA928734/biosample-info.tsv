@@ -1,0 +1,24 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	genotype	source_name	tissue
+SAMN32941423	32941423	Hg38_A375_ZC3H14-S475A_CDK13R860Q_rep3	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609815	GSM6998397	A375	CLOVER ZC3H14-S475A_CDK13R860Q	melanoma cell line	melanoma cell line
+SAMN32941424	32941424	Hg38_A375_ZC3H14-S475A_CDK13R860Q_rep2	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609814	GSM6998396	A375	CLOVER ZC3H14-S475A_CDK13R860Q	melanoma cell line	melanoma cell line
+SAMN32941425	32941425	Hg38_A375_ZC3H14-S475A_CDK13R860Q_rep1	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609813	GSM6998395	A375	CLOVER ZC3H14-S475A_CDK13R860Q	melanoma cell line	melanoma cell line
+SAMN32941426	32941426	Hg38_A375_CDK13R860Q_rep3	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609812	GSM6998394	A375	CLOVER_CDK13R860Q control	melanoma cell line	melanoma cell line
+SAMN32941427	32941427	Hg38_A375_CDK13R860Q_rep2	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609811	GSM6998393	A375	CLOVER_CDK13R860Q control	melanoma cell line	melanoma cell line
+SAMN32941428	32941428	Hg38_A375_CDK13R860Q_rep1	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609810	GSM6998392	A375	CLOVER_CDK13R860Q control	melanoma cell line	melanoma cell line
+SAMN32941429	32941429	RNAseq_siZFC3H1_3_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609809	GSM6998391	A375	siZFC3H1	melanoma cell line	melanoma cell line
+SAMN32941430	32941430	RNAseq_siZFC3H1_2_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609808	GSM6998390	A375	siZFC3H1	melanoma cell line	melanoma cell line
+SAMN32941431	32941431	RNAseq_siZFC3H1_1_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609807	GSM6998389	A375	siZFC3H1	melanoma cell line	melanoma cell line
+SAMN32941432	32941432	RNAseq_siZC3H14_3_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609806	GSM6998388	A375	siZC3H14	melanoma cell line	melanoma cell line
+SAMN32941433	32941433	RNAseq_siZC3H14_2_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609805	GSM6998387	A375	siZC3H14	melanoma cell line	melanoma cell line
+SAMN32941434	32941434	RNAseq_siZC3H14_1_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609804	GSM6998386	A375	siZC3H14	melanoma cell line	melanoma cell line
+SAMN32941435	32941435	RNAseq_siCtrl_3_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609803	GSM6998385	A375	siControl	melanoma cell line	melanoma cell line
+SAMN32941436	32941436	RNAseq_siCtrl_2_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609802	GSM6998384	A375	siControl	melanoma cell line	melanoma cell line
+SAMN32941437	32941437	RNAseq_siCtrl_1_A375	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609801	GSM6998383	A375	siControl	melanoma cell line	melanoma cell line
+SAMN32941438	32941438	CLOVER_ZC3H14_S475A_A375_RNAseq_2	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609800	GSM6998382	A375	CLOVER ZC3H14_S475A	melanoma cell line	melanoma cell line
+SAMN32941439	32941439	CLOVER_ZC3H14_S475A_A375_RNAseq_1	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609799	GSM6998381	A375	CLOVER ZC3H14_S475A	melanoma cell line	melanoma cell line
+SAMN32941440	32941440	CLOVER_ZC3H14_S475E_A375_RNAseq_3	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609798	GSM6998380	A375	CLOVER ZC3H14_S475E	melanoma cell line	melanoma cell line
+SAMN32941441	32941441	CLOVER_ZC3H14_S475E_A375_RNAseq_2	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609797	GSM6998379	A375	CLOVER ZC3H14_S475E	melanoma cell line	melanoma cell line
+SAMN32941442	32941442	CLOVER_ZC3H14_S475E_A375_RNAseq_1	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609796	GSM6998378	A375	CLOVER ZC3H14_S475E	melanoma cell line	melanoma cell line
+SAMN32941443	32941443	CLOVER_A375_RNAseq_3	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609795	GSM6998377	A375	CLOVER control	melanoma cell line	melanoma cell line
+SAMN32941444	32941444	CLOVER_A375_RNAseq_2	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609794	GSM6998376	A375	CLOVER control	melanoma cell line	melanoma cell line
+SAMN32941445	32941445	CLOVER_A375_RNAseq_1	Young Lab, Whitehead Institute for Biomedical Research	9606	SRS16609793	GSM6998375	A375	CLOVER control	melanoma cell line	melanoma cell line

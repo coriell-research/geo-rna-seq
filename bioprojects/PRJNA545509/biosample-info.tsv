@@ -1,0 +1,19 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	replicate	source_name	treatment
+SAMN11895328	11895328	JP_Pal_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848928	GSM3833398	SUM159	2	breast cancer cells SUM159	palbociclib
+SAMN11895329	11895329	JP_Pal_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848926	GSM3833397	SUM159	1	breast cancer cells SUM159	palbociclib
+SAMN11895330	11895330	JP_JQ1_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848924	GSM3833396	SUM159	2	breast cancer cells SUM159	JQ1
+SAMN11895331	11895331	JP_JQ1_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848925	GSM3833395	SUM159	1	breast cancer cells SUM159	JQ1
+SAMN11895332	11895332	JP_DMSO_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848923	GSM3833394	SUM159	2	breast cancer cells SUM159	DMSO
+SAMN11895333	11895333	JP_DMSO_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848922	GSM3833393	SUM159	1	breast cancer cells SUM159	DMSO
+SAMN11895334	11895334	Pre_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848921	GSM3833392	SUM159	2	breast cancer cells SUM159	pre-treatment
+SAMN11895335	11895335	Pre_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848920	GSM3833391	SUM159	1	breast cancer cells SUM159	pre-treatment
+SAMN11895365	11895365	JT_JQ1Tax_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848937	GSM3833408	SUM159	2	breast cancer cells SUM159	JQ1+paclitaxel
+SAMN11895366	11895366	JT_DMSO_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848931	GSM3833402	SUM159	2	breast cancer cells SUM159	DMSO
+SAMN11895367	11895367	JT_DMSO_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848930	GSM3833401	SUM159	1	breast cancer cells SUM159	DMSO
+SAMN11895368	11895368	JT_JQ1Tax_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848936	GSM3833407	SUM159	1	breast cancer cells SUM159	JQ1+paclitaxel
+SAMN11895369	11895369	JT_Tax_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848935	GSM3833406	SUM159	2	breast cancer cells SUM159	paclitaxel
+SAMN11895370	11895370	JT_Tax_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848934	GSM3833405	SUM159	1	breast cancer cells SUM159	paclitaxel
+SAMN11895371	11895371	JT_JQ1_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848933	GSM3833404	SUM159	2	breast cancer cells SUM159	JQ1
+SAMN11895372	11895372	JT_JQ1_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848932	GSM3833403	SUM159	1	breast cancer cells SUM159	JQ1
+SAMN11895373	11895373	JP_JQ1Pal_r2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848929	GSM3833400	SUM159	2	breast cancer cells SUM159	JQ1+palbociclib
+SAMN11895374	11895374	JP_JQ1Pal_r1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS4848927	GSM3833399	SUM159	1	breast cancer cells SUM159	JQ1+palbociclib

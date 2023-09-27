@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	collection_date	genotype	geo_loc_name	source_name	treatment
+SAMN29132978	29132978	ES2-SRMS-cis8h-Rep3	University of Texas Health Science Center at San Antonio	9606	SRS13410962	GSM6246422	ES-2	human ovarian cancer cell	missing	SRMS knockdown	missing	ES-2	cisplatin
+SAMN29132979	29132979	ES2-SRMS-cis8h-Rep2	University of Texas Health Science Center at San Antonio	9606	SRS13410961	GSM6246421	ES-2	human ovarian cancer cell	missing	SRMS knockdown	missing	ES-2	cisplatin
+SAMN29132980	29132980	ES2-SRMS-cis8h-Rep1	University of Texas Health Science Center at San Antonio	9606	SRS13410960	GSM6246420	ES-2	human ovarian cancer cell	missing	SRMS knockdown	missing	ES-2	cisplatin
+SAMN29132981	29132981	ES2-PLKO-cis8h-Rep3	University of Texas Health Science Center at San Antonio	9606	SRS13410959	GSM6246419	ES-2	human ovarian cancer cell	missing	WT	missing	ES-2	cisplatin
+SAMN29132982	29132982	ES2-PLKO-cis8h-Rep2	University of Texas Health Science Center at San Antonio	9606	SRS13410958	GSM6246418	ES-2	human ovarian cancer cell	missing	WT	missing	ES-2	cisplatin
+SAMN29132983	29132983	ES2-PLKO-cis8h-Rep1	University of Texas Health Science Center at San Antonio	9606	SRS13410957	GSM6246417	ES-2	human ovarian cancer cell	missing	WT	missing	ES-2	cisplatin
+SAMN29132984	29132984	ES2-SRMS-cis0h-Rep3	University of Texas Health Science Center at San Antonio	9606	SRS13410956	GSM6246416	ES-2	human ovarian cancer cell	missing	SRMS knockdown	missing	ES-2	PBS
+SAMN29132985	29132985	ES2-SRMS-cis0h-Rep2	University of Texas Health Science Center at San Antonio	9606	SRS13410955	GSM6246415	ES-2	human ovarian cancer cell	missing	SRMS knockdown	missing	ES-2	PBS
+SAMN29132986	29132986	ES2-SRMS-cis0h-Rep1	University of Texas Health Science Center at San Antonio	9606	SRS13410954	GSM6246414	ES-2	human ovarian cancer cell	missing	SRMS knockdown	missing	ES-2	PBS
+SAMN29132987	29132987	ES2-PLKO-cis0h-Rep3	University of Texas Health Science Center at San Antonio	9606	SRS13410953	GSM6246413	ES-2	human ovarian cancer cell	missing	WT	missing	ES-2	PBS
+SAMN29132988	29132988	ES2-PLKO-cis0h-Rep2	University of Texas Health Science Center at San Antonio	9606	SRS13410952	GSM6246412	ES-2	human ovarian cancer cell	missing	WT	missing	ES-2	PBS
+SAMN29132989	29132989	ES2-PLKO-cis0h-Rep1	University of Texas Health Science Center at San Antonio	9606	SRS13410951	GSM6246411	ES-2	human ovarian cancer cell	missing	WT	missing	ES-2	PBS

@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN13229353	13229353	Control 1 [C1]	Gartner, Pediatrics, UCSF	9606	SRS5625492	GSM4153470	Caco2	Caco-2 spheroids_control	control
+SAMN13229354	13229354	Methotrexate 3 [M3]	Gartner, Pediatrics, UCSF	9606	SRS5625503	GSM4153481	Caco2	Caco-2 spheroids_Methotrexate	Methotrexate
+SAMN13229355	13229355	Methotrexate 2 [M2]	Gartner, Pediatrics, UCSF	9606	SRS5625502	GSM4153480	Caco2	Caco-2 spheroids_Methotrexate	Methotrexate
+SAMN13229356	13229356	Methotrexate 1 [M1]	Gartner, Pediatrics, UCSF	9606	SRS5625501	GSM4153479	Caco2	Caco-2 spheroids_Methotrexate	Methotrexate
+SAMN13229357	13229357	Lactoferrin 3 [L3]	Gartner, Pediatrics, UCSF	9606	SRS5625500	GSM4153478	Caco2	Caco-2 spheroids_Lactoferrin	Lactoferrin
+SAMN13229358	13229358	Lactoferrin 2 [L2]	Gartner, Pediatrics, UCSF	9606	SRS5625499	GSM4153477	Caco2	Caco-2 spheroids_Lactoferrin	Lactoferrin
+SAMN13229359	13229359	Lactoferrin 1 [L1]	Gartner, Pediatrics, UCSF	9606	SRS5625498	GSM4153476	Caco2	Caco-2 spheroids_Lactoferrin	Lactoferrin
+SAMN13229360	13229360	Methotrexate-Lactoferrin 3 [LM3]	Gartner, Pediatrics, UCSF	9606	SRS5625497	GSM4153475	Caco2	Caco-2 spheroids_Methotrexate-Lactoferrin	Methotrexate-Lactoferrin
+SAMN13229361	13229361	Methotrexate-Lactoferrin 2 [LM2]	Gartner, Pediatrics, UCSF	9606	SRS5625496	GSM4153474	Caco2	Caco-2 spheroids_Methotrexate-Lactoferrin	Methotrexate-Lactoferrin
+SAMN13229362	13229362	Methotrexate-Lactoferrin 1 [LM1]	Gartner, Pediatrics, UCSF	9606	SRS5625495	GSM4153473	Caco2	Caco-2 spheroids_Methotrexate-Lactoferrin	Methotrexate-Lactoferrin
+SAMN13229363	13229363	Control 3 [C3]	Gartner, Pediatrics, UCSF	9606	SRS5625494	GSM4153472	Caco2	Caco-2 spheroids_control	control
+SAMN13229364	13229364	Control 2 [C2]	Gartner, Pediatrics, UCSF	9606	SRS5625493	GSM4153471	Caco2	Caco-2 spheroids_control	control

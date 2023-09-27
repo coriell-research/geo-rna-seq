@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cancer	cell line	source_name	treatment
+SAMN21597626	21597626	A375_Ctl_rep1	Institute for Research in Immunology and Cance	9606	SRS10301163	GSM5596652	melanoma cell line	A375	1A	DMSO_6H
+SAMN21597627	21597627	A375_Ctl_rep2	Institute for Research in Immunology and Cance	9606	SRS10301162	GSM5596653	melanoma cell line	A375	1B	DMSO_6H
+SAMN21597628	21597628	A375_Ctl_rep3	Institute for Research in Immunology and Cance	9606	SRS10301164	GSM5596654	melanoma cell line	A375	1C	DMSO_6H
+SAMN21597629	21597629	A375_THZ531_rep1	Institute for Research in Immunology and Cance	9606	SRS10301167	GSM5596655	melanoma cell line	A375	2A	THZ531_500nM_6H
+SAMN21597630	21597630	A375_THZ531_rep2	Institute for Research in Immunology and Cance	9606	SRS10301165	GSM5596656	melanoma cell line	A375	2B	THZ531_500nM_6H
+SAMN21597631	21597631	A375_THZ531_rep3	Institute for Research in Immunology and Cance	9606	SRS10301166	GSM5596657	melanoma cell line	A375	2C	THZ531_500nM_6H
+SAMN21597632	21597632	Colo829_Ctl_rep1	Institute for Research in Immunology and Cance	9606	SRS10301169	GSM5596658	melanoma cell line	Colo829	4A	DMSO_6H
+SAMN21597633	21597633	Colo829_Ctl_rep2	Institute for Research in Immunology and Cance	9606	SRS10301168	GSM5596659	melanoma cell line	Colo829	4B	DMSO_6H
+SAMN21597634	21597634	Colo829_Ctl_rep3	Institute for Research in Immunology and Cance	9606	SRS10301173	GSM5596660	melanoma cell line	Colo829	4C	DMSO_6H
+SAMN21597635	21597635	Colo829_THZ531_rep1	Institute for Research in Immunology and Cance	9606	SRS10301170	GSM5596661	melanoma cell line	Colo829	5A	THZ531_500nM_6H
+SAMN21597636	21597636	Colo829_THZ531_rep2	Institute for Research in Immunology and Cance	9606	SRS10301171	GSM5596662	melanoma cell line	Colo829	5B	THZ531_500nM_6H
+SAMN21597637	21597637	Colo829_THZ531_rep3	Institute for Research in Immunology and Cance	9606	SRS10301172	GSM5596663	melanoma cell line	Colo829	5C	THZ531_500nM_6H

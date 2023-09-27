@@ -1,0 +1,19 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN03145845	3145845	CHD4_DAC_1	ISSA lab, fels, temple university	9606	SRS732714	GSM1533630	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4_DAC	siCHD4 plus decitabine treatment
+SAMN03145846	3145846	CHD4_1	ISSA lab, fels, temple university	9606	SRS732717	GSM1533633	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4	siCHD4 treatment
+SAMN03145847	3145847	con_DAC_1	ISSA lab, fels, temple university	9606	SRS732704	GSM1533621	SW48 (Human colon adenocarcinoma cell line)	human colon_con_DAC	decitabine treatment
+SAMN03145848	3145848	con_1	ISSA lab, fels, temple university	9606	SRS732708	GSM1533624	SW48 (Human colon adenocarcinoma cell line)	human colon_con	Control
+SAMN03145849	3145849	con_DNMT1_0	ISSA lab, fels, temple university	9606	SRS732700	GSM1533617	SW48 (Human colon adenocarcinoma cell line)	human colon_con_DNMT1	siDNMT1 treatment
+SAMN03145850	3145850	CHD4_2	ISSA lab, fels, temple university	9606	SRS732718	GSM1533634	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4	siCHD4 treatment
+SAMN03145851	3145851	con_0	ISSA lab, fels, temple university	9606	SRS732707	GSM1533623	SW48 (Human colon adenocarcinoma cell line)	human colon_con	Control
+SAMN03145852	3145852	con_DAC_0	ISSA lab, fels, temple university	9606	SRS732705	GSM1533620	SW48 (Human colon adenocarcinoma cell line)	human colon_con_DAC	decitabine treatment
+SAMN03145853	3145853	CHD4_DAC_0	ISSA lab, fels, temple university	9606	SRS732713	GSM1533629	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4_DAC	siCHD4 plus decitabine treatment
+SAMN03145854	3145854	CHD4_DAC_2	ISSA lab, fels, temple university	9606	SRS732715	GSM1533631	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4_DAC	siCHD4 plus decitabine treatment
+SAMN03145855	3145855	CHD4_DNMT1_1	ISSA lab, fels, temple university	9606	SRS732711	GSM1533627	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4_DNMT1	siCHD4 plus siDNMT1 treatment
+SAMN03145856	3145856	con_DNMT1_2	ISSA lab, fels, temple university	9606	SRS732703	GSM1533619	SW48 (Human colon adenocarcinoma cell line)	human colon_con_DNMT1	siDNMT1 treatment
+SAMN03145857	3145857	CHD4_DNMT1_0	ISSA lab, fels, temple university	9606	SRS732710	GSM1533626	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4_DNMT1	siCHD4 plus siDNMT1 treatment
+SAMN03145858	3145858	CHD4_0	ISSA lab, fels, temple university	9606	SRS732716	GSM1533632	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4	siCHD4 treatment
+SAMN03145859	3145859	CHD4_DNMT1_2	ISSA lab, fels, temple university	9606	SRS732712	GSM1533628	SW48 (Human colon adenocarcinoma cell line)	human colon_CHD4_DNMT1	siCHD4 plus siDNMT1 treatment
+SAMN03145860	3145860	con_2	ISSA lab, fels, temple university	9606	SRS732709	GSM1533625	SW48 (Human colon adenocarcinoma cell line)	human colon_con	Control
+SAMN03145861	3145861	con_DNMT1_1	ISSA lab, fels, temple university	9606	SRS732701	GSM1533618	SW48 (Human colon adenocarcinoma cell line)	human colon_con_DNMT1	siDNMT1 treatment
+SAMN03145862	3145862	con_DAC_2	ISSA lab, fels, temple university	9606	SRS732706	GSM1533622	SW48 (Human colon adenocarcinoma cell line)	human colon_con_DAC	decitabine treatment

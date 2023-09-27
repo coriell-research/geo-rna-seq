@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	compartment	source_name	transfected sirna	treatment
+SAMN20408221	20408221	MCF7-siHuR-Doxo-n2	Institut Curie	9606	SRS9594237	GSM5472025	MCF7	Total cells	Breast cancer cell line	siRNA against HuR	Doxorubicin
+SAMN20408222	20408222	MCF7-siHuR-UT-n2	Institut Curie	9606	SRS9595260	GSM5472024	MCF7	Total cells	Breast cancer cell line	siRNA against HuR	Vehicle (H2O)
+SAMN20408223	20408223	MCF7-siCT-Doxo-n2	Institut Curie	9606	SRS9595257	GSM5472023	MCF7	Total cells	Breast cancer cell line	negative control siRNA	Doxorubicin
+SAMN20408224	20408224	MCF7-siCT-UT-n2	Institut Curie	9606	SRS9595255	GSM5472022	MCF7	Total cells	Breast cancer cell line	negative control siRNA	Vehicle (H2O)
+SAMN20408225	20408225	MCF7-siHuR-Doxo-n1	Institut Curie	9606	SRS9595254	GSM5472021	MCF7	Total cells	Breast cancer cell line	siRNA against HuR	Doxorubicin
+SAMN20408226	20408226	MCF7-siHuR-UT-n1	Institut Curie	9606	SRS9594236	GSM5472020	MCF7	Total cells	Breast cancer cell line	siRNA against HuR	Vehicle (H2O)
+SAMN20408227	20408227	MCF7-siCT-Doxo-n1	Institut Curie	9606	SRS9595251	GSM5472019	MCF7	Total cells	Breast cancer cell line	negative control siRNA	Doxorubicin
+SAMN20408228	20408228	MCF7-siCT-UT-n1	Institut Curie	9606	SRS9595250	GSM5472018	MCF7	Total cells	Breast cancer cell line	negative control siRNA	Vehicle (H2O)

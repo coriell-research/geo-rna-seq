@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell population	cell type	source_name
+SAMN05757819	5757819	SupB15_DMSO-2_RNAseq	University of Utah, University of Utah	9606	SRS1685695	GSM2308689	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757820	5757820	SupB15_DMSO-1_RNAseq	University of Utah, University of Utah	9606	SRS1685693	GSM2308688	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757821	5757821	SupB15_1035+Doxo-1_RNAseq	University of Utah, University of Utah	9606	SRS1685700	GSM2308694	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757822	5757822	SupB15_Doxo-2_RNAseq	University of Utah, University of Utah	9606	SRS1685697	GSM2308693	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757823	5757823	SupB15_Doxo-1_RNAseq	University of Utah, University of Utah	9606	SRS1685698	GSM2308692	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757824	5757824	SupB15_1035-2_RNAseq	University of Utah, University of Utah	9606	SRS1685696	GSM2308691	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757825	5757825	SupB15_1035-1_RNAseq	University of Utah, University of Utah	9606	SRS1685694	GSM2308690	SupB15	Ph+Pre-B-ALL	leukemia	SupB15
+SAMN05757836	5757836	SupB15_1035+Doxo-2_RNAseq	University of Utah, University of Utah	9606	SRS1685699	GSM2308695	SupB15	Ph+Pre-B-ALL	leukemia	SupB15

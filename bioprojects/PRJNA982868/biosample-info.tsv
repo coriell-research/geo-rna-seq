@@ -1,0 +1,5 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	collection_date	geo_loc_name	source_name	tissue	treatment
+SAMN35717865	35717865	GBM8401 TMZ-resistant cells (bio rep2)	National Sun Yat-sen University	9606	SRS17959675	GSM7474306	GBM8401 TMZ-resistant cells	Human brain glioblastoma multiforme	missing	missing	brain	brain	TMZ-resistant
+SAMN35717866	35717866	GBM8401 TMZ-resistant cells (bio rep1)	National Sun Yat-sen University	9606	SRS17959676	GSM7474305	GBM8401 TMZ-resistant cells	Human brain glioblastoma multiforme	missing	missing	brain	brain	TMZ-resistant
+SAMN35717867	35717867	GBM8401 cells (bio rep2)	National Sun Yat-sen University	9606	SRS17959665	GSM7474304	GBM8401	Human brain glioblastoma multiforme	missing	missing	brain	brain	parental
+SAMN35717868	35717868	GBM8401 cells (bio rep1)	National Sun Yat-sen University	9606	SRS17959664	GSM7474303	GBM8401	Human brain glioblastoma multiforme	missing	missing	brain	brain	parental

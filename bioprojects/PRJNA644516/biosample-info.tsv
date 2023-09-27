@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	treatment	tumor subtype
+SAMN15462430	15462430	592T treated with Azathioprine_rep2	Korea Research Institute of Chemical Technology	9606	SRS6956698	GSM4658360	patient-derived rimary glioblastoma cells	primary glioblastoma cells	treated with azathioprine	mesenchymal subtype
+SAMN15462431	15462431	592T treated with Azathioprine_rep1	Korea Research Institute of Chemical Technology	9606	SRS6956697	GSM4658359	patient-derived rimary glioblastoma cells	primary glioblastoma cells	treated with azathioprine	mesenchymal subtype
+SAMN15462432	15462432	592T untreated_rep2	Korea Research Institute of Chemical Technology	9606	SRS6956696	GSM4658358	patient-derived rimary glioblastoma cells	primary glioblastoma cells	untreated	mesenchymal subtype
+SAMN15462433	15462433	592T untreated_rep1	Korea Research Institute of Chemical Technology	9606	SRS6956695	GSM4658357	patient-derived rimary glioblastoma cells	primary glioblastoma cells	untreated	mesenchymal subtype
+SAMN15462434	15462434	559T treated with Azathioprine_rep2	Korea Research Institute of Chemical Technology	9606	SRS6956694	GSM4658356	patient-derived rimary glioblastoma cells	primary glioblastoma cells	treated with azathioprine	proneural subtype
+SAMN15462435	15462435	559T treated with Azathioprine_rep1	Korea Research Institute of Chemical Technology	9606	SRS6956693	GSM4658355	patient-derived rimary glioblastoma cells	primary glioblastoma cells	treated with azathioprine	proneural subtype
+SAMN15462436	15462436	559T untreated_rep2	Korea Research Institute of Chemical Technology	9606	SRS6956692	GSM4658354	patient-derived rimary glioblastoma cells	primary glioblastoma cells	untreated	proneural subtype
+SAMN15462437	15462437	559T untreated_rep1	Korea Research Institute of Chemical Technology	9606	SRS6956691	GSM4658353	patient-derived rimary glioblastoma cells	primary glioblastoma cells	untreated	proneural subtype

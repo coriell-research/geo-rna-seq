@@ -1,0 +1,10 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN33798260	33798260	sora_769_3_FRAS210017241-1r	Department of nutrition	9606	SRS17071834	GSM7103892	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	sorafenib
+SAMN33798261	33798261	sora_769_2_FRAS210017241-1r	Department of nutrition	9606	SRS17071832	GSM7103891	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	sorafenib
+SAMN33798262	33798262	sora_769_1_FRAS210017241-1r	Department of nutrition	9606	SRS17071833	GSM7103890	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	sorafenib
+SAMN33798263	33798263	osha_769_3_FRAS210017238-1r	Department of nutrition	9606	SRS17071831	GSM7103889	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	oxaliplatin
+SAMN33798264	33798264	osha_769_2_FRAS210017238-1r	Department of nutrition	9606	SRS17071830	GSM7103888	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	oxaliplatin
+SAMN33798265	33798265	osha_769_1_FRAS210017238-1r	Department of nutrition	9606	SRS17071829	GSM7103887	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	oxaliplatin
+SAMN33798266	33798266	con_769_3_FRAS210017232-1r	Department of nutrition	9606	SRS17071827	GSM7103886	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	None
+SAMN33798267	33798267	con_769_2_FRAS210017232-1r	Department of nutrition	9606	SRS17071828	GSM7103885	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	None
+SAMN33798268	33798268	con_769_1_FRAS210017232-1r	Department of nutrition	9606	SRS17071826	GSM7103884	HCT 15	Human colorectal adenocarcinoma cells	WT	HCT 15	None

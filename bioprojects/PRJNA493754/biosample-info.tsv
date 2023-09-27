@@ -1,0 +1,35 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN10141879	10141879	U937_control_2	Nejentsev, medicine, University cambridge	9606	SRS3855061	GSM3405831	U937	histiocytic leukemia	monocyte cell line	Control
+SAMN10141880	10141880	U937_control_1	Nejentsev, medicine, University cambridge	9606	SRS3855060	GSM3405830	U937	histiocytic leukemia	monocyte cell line	Control
+SAMN10141881	10141881	THP1_Etoposide_3	Nejentsev, medicine, University cambridge	9606	SRS3855059	GSM3405829	THP1	acute monocytic leukemia	monocyte cell line	Etoposide
+SAMN10141882	10141882	THP1_Etoposide_2	Nejentsev, medicine, University cambridge	9606	SRS3855058	GSM3405828	THP1	acute monocytic leukemia	monocyte cell line	Etoposide
+SAMN10141883	10141883	THP1_Etoposide_1	Nejentsev, medicine, University cambridge	9606	SRS3855057	GSM3405827	THP1	acute monocytic leukemia	monocyte cell line	Etoposide
+SAMN10141884	10141884	THP1_control_3	Nejentsev, medicine, University cambridge	9606	SRS3855056	GSM3405826	THP1	acute monocytic leukemia	monocyte cell line	Control
+SAMN10141885	10141885	THP1_control_2	Nejentsev, medicine, University cambridge	9606	SRS3855055	GSM3405825	THP1	acute monocytic leukemia	monocyte cell line	Control
+SAMN10141886	10141886	THP1_control_1	Nejentsev, medicine, University cambridge	9606	SRS3855054	GSM3405824	THP1	acute monocytic leukemia	monocyte cell line	Control
+SAMN10141887	10141887	JURKAT_Etoposide_3	Nejentsev, medicine, University cambridge	9606	SRS3855053	GSM3405823	JURKAT	acute T cell leukemia	T lymphocyte cell line	Etoposide
+SAMN10141888	10141888	JURKAT_Etoposide_2	Nejentsev, medicine, University cambridge	9606	SRS3855052	GSM3405822	JURKAT	acute T cell leukemia	T lymphocyte cell line	Etoposide
+SAMN10141889	10141889	JURKAT_Etoposide_1	Nejentsev, medicine, University cambridge	9606	SRS3855051	GSM3405821	JURKAT	acute T cell leukemia	T lymphocyte cell line	Etoposide
+SAMN10141890	10141890	JURKAT_Control_3	Nejentsev, medicine, University cambridge	9606	SRS3855050	GSM3405820	JURKAT	acute T cell leukemia	T lymphocyte cell line	Control
+SAMN10141891	10141891	JURKAT_Control_2	Nejentsev, medicine, University cambridge	9606	SRS3855049	GSM3405819	JURKAT	acute T cell leukemia	T lymphocyte cell line	Control
+SAMN10141892	10141892	JURKAT_Control_1	Nejentsev, medicine, University cambridge	9606	SRS3855048	GSM3405818	JURKAT	acute T cell leukemia	T lymphocyte cell line	Control
+SAMN10141893	10141893	RAMOS_Etoposide_3	Nejentsev, medicine, University cambridge	9606	SRS3855047	GSM3405817	RAMOS	Burkitt's lymphoma (American)	B lymphocyte cell line	Etoposide
+SAMN10141894	10141894	RAMOS_Etoposide_2	Nejentsev, medicine, University cambridge	9606	SRS3855046	GSM3405816	RAMOS	Burkitt's lymphoma (American)	B lymphocyte cell line	Etoposide
+SAMN10141895	10141895	RAMOS_Etoposide_1	Nejentsev, medicine, University cambridge	9606	SRS3855045	GSM3405815	RAMOS	Burkitt's lymphoma (American)	B lymphocyte cell line	Etoposide
+SAMN10141896	10141896	RAMOS_Control_3	Nejentsev, medicine, University cambridge	9606	SRS3855044	GSM3405814	RAMOS	Burkitt's lymphoma (American)	B lymphocyte cell line	Control
+SAMN10141897	10141897	RAMOS_Control_2	Nejentsev, medicine, University cambridge	9606	SRS3855043	GSM3405813	RAMOS	Burkitt's lymphoma (American)	B lymphocyte cell line	Control
+SAMN10141898	10141898	RAMOS_Control_1	Nejentsev, medicine, University cambridge	9606	SRS3855042	GSM3405812	RAMOS	Burkitt's lymphoma (American)	B lymphocyte cell line	Control
+SAMN10141899	10141899	697_Etoposide_2	Nejentsev, medicine, University cambridge	9606	SRS3855041	GSM3405811	697	acute lymphoblastic leukemia (ALL)	pre-B cell line	Etoposide
+SAMN10141900	10141900	697_Etoposide_1	Nejentsev, medicine, University cambridge	9606	SRS3855040	GSM3405810	697	acute lymphoblastic leukemia (ALL)	pre-B cell line	Etoposide
+SAMN10141901	10141901	697_Control_3	Nejentsev, medicine, University cambridge	9606	SRS3855039	GSM3405809	697	acute lymphoblastic leukemia (ALL)	pre-B cell line	Control
+SAMN10141902	10141902	697_Control_2	Nejentsev, medicine, University cambridge	9606	SRS3855038	GSM3405808	697	acute lymphoblastic leukemia (ALL)	pre-B cell line	Control
+SAMN10141903	10141903	697_Control_1	Nejentsev, medicine, University cambridge	9606	SRS3855037	GSM3405807	697	acute lymphoblastic leukemia (ALL)	pre-B cell line	Control
+SAMN10141904	10141904	NALM6_Etoposide_3	Nejentsev, medicine, University cambridge	9606	SRS3855036	GSM3405806	NALM6	acute lymphoblastic leukemia (ALL)	pre-B cell line	Etoposide
+SAMN10141905	10141905	NALM6_Etoposide_2	Nejentsev, medicine, University cambridge	9606	SRS3855035	GSM3405805	NALM6	acute lymphoblastic leukemia (ALL)	pre-B cell line	Etoposide
+SAMN10141906	10141906	NALM6_Etoposide_1	Nejentsev, medicine, University cambridge	9606	SRS3855034	GSM3405804	NALM6	acute lymphoblastic leukemia (ALL)	pre-B cell line	Etoposide
+SAMN10141907	10141907	NALM6_Control_3	Nejentsev, medicine, University cambridge	9606	SRS3855032	GSM3405803	NALM6	acute lymphoblastic leukemia (ALL)	pre-B cell line	Control
+SAMN10141908	10141908	NALM6_Control_2	Nejentsev, medicine, University cambridge	9606	SRS3855031	GSM3405802	NALM6	acute lymphoblastic leukemia (ALL)	pre-B cell line	Control
+SAMN10141909	10141909	NALM6_Control_1	Nejentsev, medicine, University cambridge	9606	SRS3855033	GSM3405801	NALM6	acute lymphoblastic leukemia (ALL)	pre-B cell line	Control
+SAMN10141910	10141910	U937_Etoposide_3	Nejentsev, medicine, University cambridge	9606	SRS3855064	GSM3405834	U937	histiocytic leukemia	monocyte cell line	Etoposide
+SAMN10141911	10141911	U937_Etoposide_2	Nejentsev, medicine, University cambridge	9606	SRS3855063	GSM3405833	U937	histiocytic leukemia	monocyte cell line	Etoposide
+SAMN10141912	10141912	U937_Etoposide_1	Nejentsev, medicine, University cambridge	9606	SRS3855062	GSM3405832	U937	histiocytic leukemia	monocyte cell line	Etoposide

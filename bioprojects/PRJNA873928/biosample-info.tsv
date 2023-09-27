@@ -1,0 +1,10 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN30508501	30508501	9_Doxo_150nM_plus_MDL_50uM	Karolinska Institute	9606	SRS14810681	GSM6509102	IMR-90	foetal lung fibroblast	WT	IMR-90	Doxorubicin + MDL72527
+SAMN30508502	30508502	8_Doxo_150nM_plus_MDL_50uM	Karolinska Institute	9606	SRS14810680	GSM6509101	IMR-90	foetal lung fibroblast	WT	IMR-90	Doxorubicin + MDL72527
+SAMN30508503	30508503	7_Doxo_150nM_plus_MDL_50uM	Karolinska Institute	9606	SRS14810679	GSM6509100	IMR-90	foetal lung fibroblast	WT	IMR-90	Doxorubicin + MDL72527
+SAMN30508504	30508504	6_Doxo_150nM	Karolinska Institute	9606	SRS14810678	GSM6509099	IMR-90	foetal lung fibroblast	WT	IMR-90	Doxorubicin
+SAMN30508505	30508505	5_Doxo_150nM	Karolinska Institute	9606	SRS14810677	GSM6509098	IMR-90	foetal lung fibroblast	WT	IMR-90	Doxorubicin
+SAMN30508506	30508506	4_Doxo_150nM	Karolinska Institute	9606	SRS14810676	GSM6509097	IMR-90	foetal lung fibroblast	WT	IMR-90	Doxorubicin
+SAMN30508507	30508507	3_Ctrl	Karolinska Institute	9606	SRS14810675	GSM6509096	IMR-90	foetal lung fibroblast	WT	IMR-90	Untreated
+SAMN30508508	30508508	2_Ctrl	Karolinska Institute	9606	SRS14810674	GSM6509095	IMR-90	foetal lung fibroblast	WT	IMR-90	Untreated
+SAMN30508509	30508509	1_Ctrl	Karolinska Institute	9606	SRS14810673	GSM6509094	IMR-90	foetal lung fibroblast	WT	IMR-90	Untreated

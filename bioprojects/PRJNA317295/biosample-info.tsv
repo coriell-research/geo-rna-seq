@@ -1,0 +1,28 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	time	treatment
+SAMN04605049	4605049	No LNA-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372885	GSM2107716	REH	REH cell line	72h	medium
+SAMN04605050	4605050	NTC-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372884	GSM2107717	REH	REH cell line	72h	non-targeting LNA GapmeR
+SAMN04605051	4605051	lnc-TIMM21-LNA1-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372883	GSM2107718	REH	REH cell line	72h	lnc-TIMM21-5 LNA GapmeR1
+SAMN04605052	4605052	lnc-TIMM21-LNA2-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372882	GSM2107719	REH	REH cell line	72h	lnc-TIMM21-5 LNA GapmeR2
+SAMN04605053	4605053	lnc-NKX2-LNA1-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372881	GSM2107720	REH	REH cell line	72h	lnc-NKX2-3-1 LNA GapmeR1
+SAMN04605054	4605054	lnc-NKX2-LNA2-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372880	GSM2107721	REH	REH cell line	72h	lnc-NKX2-3-1 LNA GapmeR2
+SAMN04605055	4605055	lnc-RTN4R-LNA1-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372879	GSM2107722	REH	REH cell line	72h	lnc-RTN4R-1 LNA GapmeR1
+SAMN04605056	4605056	lnc-RTN4R-LNA2-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372878	GSM2107723	REH	REH cell line	72h	lnc-RTN4R-1 LNA GapmeR2
+SAMN04605057	4605057	lnc-ASTN1-LNA1-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372877	GSM2107724	REH	REH cell line	72h	lnc-ASTN1-1 LNA GapmeR1
+SAMN04605058	4605058	lnc-ASTN1-LNA2-rep1	Center of medical genetics, Gent university hospital	9606	SRS1372876	GSM2107725	REH	REH cell line	72h	lnc-ASTN1-1 LNA GapmeR2
+SAMN04605059	4605059	No LNA-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372875	GSM2107726	REH	REH cell line	72h	medium
+SAMN04605060	4605060	NTC-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372874	GSM2107727	REH	REH cell line	72h	non-targeting LNA GapmeR
+SAMN04605061	4605061	lnc-TIMM21-LNA1-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372873	GSM2107728	REH	REH cell line	72h	lnc-TIMM21-5 LNA GapmeR1
+SAMN04605062	4605062	lnc-TIMM21-LNA2-rpe2	Center of medical genetics, Gent university hospital	9606	SRS1372872	GSM2107729	REH	REH cell line	72h	lnc-TIMM21-5 LNA GapmeR2
+SAMN04605063	4605063	lnc-NKX2-LNA1-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372871	GSM2107730	REH	REH cell line	72h	lnc-NKX2-3-1 LNA GapmeR1
+SAMN04605064	4605064	lnc-NKX2-LNA2-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372870	GSM2107731	REH	REH cell line	72h	lnc-NKX2-3-1 LNA GapmeR2
+SAMN04605065	4605065	lnc-RTN4R-LNA1-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372869	GSM2107732	REH	REH cell line	72h	lnc-RTN4R-1 LNA GapmeR1
+SAMN04605066	4605066	lnc-RTN4R-LNA2-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372868	GSM2107733	REH	REH cell line	72h	lnc-RTN4R-1 LNA GapmeR2
+SAMN04605067	4605067	lnc-ASTN1-LNA1-rep2	Center of medical genetics, Gent university hospital	9606	SRS1372867	GSM2107734	REH	REH cell line	72h	lnc-ASTN1-1 LNA GapmeR1
+SAMN04605068	4605068	NTC-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372866	GSM2107735	REH	REH cell line	72h	non-targeting LNA GapmeR
+SAMN04605069	4605069	lnc-TIMM21-LNA1-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372865	GSM2107736	REH	REH cell line	72h	lnc-TIMM21-5 LNA GapmeR1
+SAMN04605070	4605070	lnc-RTN4R-LNA2-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372861	GSM2107740	REH	REH cell line	72h	lnc-RTN4R-1 LNA GapmeR2
+SAMN04605071	4605071	lnc-ASTN1-LNA1-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372860	GSM2107741	REH	REH cell line	72h	lnc-ASTN1-1 LNA GapmeR1
+SAMN04605072	4605072	lnc-ASTN1-LNA2-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372859	GSM2107742	REH	REH cell line	72h	lnc-ASTN1-1 LNA GapmeR2
+SAMN04605073	4605073	lnc-TIMM21-LNA2-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372864	GSM2107737	REH	REH cell line	72h	lnc-TIMM21-5 LNA GapmeR2
+SAMN04605074	4605074	lnc-NKX2-LNA2-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372863	GSM2107738	REH	REH cell line	72h	lnc-NKX2-3-1 LNA GapmeR2
+SAMN04605075	4605075	lnc-RTN4R-LNA1-rep3	Center of medical genetics, Gent university hospital	9606	SRS1372862	GSM2107739	REH	REH cell line	72h	lnc-RTN4R-1 LNA GapmeR1

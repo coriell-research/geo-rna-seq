@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	shRNA	source_name	time point	treatment
+SAMN10343574	10343574	HepG2_shMETTL14_6h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994326	GSM3450400	HepG2	shMETTl14	HepG2 cells	6h	5 ug/mL actinomycin D
+SAMN10343575	10343575	HepG2_shCtrl_1h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994306	GSM3450380	HepG2	non-specific control	HepG2 cells	1h	5 ug/mL actinomycin D
+SAMN10343576	10343576	HepG2_shCtrl_1h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994305	GSM3450379	HepG2	non-specific control	HepG2 cells	1h	5 ug/mL actinomycin D
+SAMN10343577	10343577	HepG2_shCtrl_0h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994303	GSM3450378	HepG2	non-specific control	HepG2 cells	0h	untreated
+SAMN10343578	10343578	HepG2_shCtrl_0h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994304	GSM3450377	HepG2	non-specific control	HepG2 cells	0h	untreated
+SAMN10343579	10343579	HepG2_shMETTL14_6h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994325	GSM3450399	HepG2	shMETTl14	HepG2 cells	6h	5 ug/mL actinomycin D
+SAMN10343580	10343580	HepG2_shMETTL14_3h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994324	GSM3450398	HepG2	shMETTl14	HepG2 cells	3h	5 ug/mL actinomycin D
+SAMN10343581	10343581	HepG2_shMETTL14_3h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994323	GSM3450397	HepG2	shMETTl14	HepG2 cells	3h	5 ug/mL actinomycin D
+SAMN10343582	10343582	HepG2_shMETTL14_1h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994322	GSM3450396	HepG2	shMETTl14	HepG2 cells	1h	5 ug/mL actinomycin D
+SAMN10343583	10343583	HepG2_shMETTL14_1h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994321	GSM3450395	HepG2	shMETTl14	HepG2 cells	1h	5 ug/mL actinomycin D
+SAMN10343584	10343584	HepG2_shMETTL14_0h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994320	GSM3450394	HepG2	shMETTl14	HepG2 cells	0h	untreated
+SAMN10343585	10343585	HepG2_shMETTL14_0h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994319	GSM3450393	HepG2	shMETTl14	HepG2 cells	0h	untreated
+SAMN10343586	10343586	HepG2_shSETD2_6h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994318	GSM3450392	HepG2	shSETD2	HepG2 cells	6h	5 ug/mL actinomycin D
+SAMN10343587	10343587	HepG2_shSETD2_6h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994317	GSM3450391	HepG2	shSETD2	HepG2 cells	6h	5 ug/mL actinomycin D
+SAMN10343588	10343588	HepG2_shSETD2_3h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994315	GSM3450390	HepG2	shSETD2	HepG2 cells	3h	5 ug/mL actinomycin D
+SAMN10343589	10343589	HepG2_shSETD2_3h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994316	GSM3450389	HepG2	shSETD2	HepG2 cells	3h	5 ug/mL actinomycin D
+SAMN10343590	10343590	HepG2_shSETD2_1h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	GEO: GSM3450388		HepG2	shSETD2	HepG2 cells	1h	5 ug/mL actinomycin D
+SAMN10343591	10343591	HepG2_shSETD2_1h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994313	GSM3450387	HepG2	shSETD2	HepG2 cells	1h	5 ug/mL actinomycin D
+SAMN10343592	10343592	HepG2_shSETD2_0h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994311	GSM3450386	HepG2	shSETD2	HepG2 cells	0h	untreated
+SAMN10343593	10343593	HepG2_shSETD2_0h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994312	GSM3450385	HepG2	shSETD2	HepG2 cells	0h	untreated
+SAMN10343594	10343594	HepG2_shCtrl_6h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994310	GSM3450384	HepG2	non-specific control	HepG2 cells	6h	5 ug/mL actinomycin D
+SAMN10343595	10343595	HepG2_shCtrl_6h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994309	GSM3450383	HepG2	non-specific control	HepG2 cells	6h	5 ug/mL actinomycin D
+SAMN10343596	10343596	HepG2_shCtrl_3h_rep2 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994308	GSM3450382	HepG2	non-specific control	HepG2 cells	3h	5 ug/mL actinomycin D
+SAMN10343597	10343597	HepG2_shCtrl_3h_rep1 (RNA-seq)	Chen Lab, Systems Biology, City of Hope	9606	SRS3994307	GSM3450381	HepG2	non-specific control	HepG2 cells	3h	5 ug/mL actinomycin D

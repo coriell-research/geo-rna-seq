@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	collection_date	geo_loc_name	source_name	transfection
+SAMN30195387	30195387	siFUBP1_3	Orthopedic Oncology Institute, Department of Orthopedic Surgery, Tangdu Hospital, Fourth Military Medical University	9606	SRS14569792	GSM6436199	MG63	osteosarcoma cells	missing	missing	MG63	siFUBP1
+SAMN30195388	30195388	siFUBP1_2	Orthopedic Oncology Institute, Department of Orthopedic Surgery, Tangdu Hospital, Fourth Military Medical University	9606	SRS14569790	GSM6436198	MG63	osteosarcoma cells	missing	missing	MG63	siFUBP1
+SAMN30195389	30195389	siFUBP1_1	Orthopedic Oncology Institute, Department of Orthopedic Surgery, Tangdu Hospital, Fourth Military Medical University	9606	SRS14569791	GSM6436197	MG63	osteosarcoma cells	missing	missing	MG63	siFUBP1
+SAMN30195390	30195390	siMock3	Orthopedic Oncology Institute, Department of Orthopedic Surgery, Tangdu Hospital, Fourth Military Medical University	9606	SRS14569788	GSM6436196	MG63	osteosarcoma cells	missing	missing	MG63	siMock
+SAMN30195391	30195391	siMock2	Orthopedic Oncology Institute, Department of Orthopedic Surgery, Tangdu Hospital, Fourth Military Medical University	9606	SRS14569789	GSM6436195	MG63	osteosarcoma cells	missing	missing	MG63	siMock
+SAMN30195392	30195392	siMock1	Orthopedic Oncology Institute, Department of Orthopedic Surgery, Tangdu Hospital, Fourth Military Medical University	9606	SRS14569787	GSM6436194	MG63	osteosarcoma cells	missing	missing	MG63	siMock

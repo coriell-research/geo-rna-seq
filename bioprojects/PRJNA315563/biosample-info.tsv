@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	genotype	source_name	treatment
+SAMN04565801	4565801	HL60 DMSO 1	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346617	GSM2090887	Acute myeloid leukemia	Myc amplification	HL60	DMSO
+SAMN04565803	4565803	HL60 BI-7273 1	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346615	GSM2090888	Acute myeloid leukemia	Myc amplification	HL60	BRD9 inhibitor
+SAMN04565804	4565804	HL60 DMSO 2	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346616	GSM2090889	Acute myeloid leukemia	Myc amplification	HL60	DMSO
+SAMN04565805	4565805	HL60 BI-7273 2	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346614	GSM2090890	Acute myeloid leukemia	Myc amplification	HL60	BRD9 inhibitor
+SAMN04565806	4565806	MV4-11 DMSO 1	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346613	GSM2090891	Acute myeloid leukemia	MLL-AF4	MV4-11	DMSO
+SAMN04565807	4565807	MV4-11 BI-7273 1	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346612	GSM2090892	Acute myeloid leukemia	MLL-AF4	MV4-11	BRD9 inhibitor
+SAMN04565814	4565814	MV4-11 DMSO 2	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346611	GSM2090893	Acute myeloid leukemia	MLL-AF4	MV4-11	DMSO
+SAMN04565815	4565815	HeLa BI-7273 1	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346608	GSM2090896	Cervical cancer		HeLa	BRD9 inhibitor
+SAMN04565816	4565816	HeLa DMSO 2	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346607	GSM2090897	Cervical cancer		HeLa	DMSO
+SAMN04565817	4565817	HeLa BI-7273 2	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346606	GSM2090898	Cervical cancer		HeLa	BRD9 inhibitor
+SAMN04565818	4565818	MV4-11 BI-7273 2	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346610	GSM2090894	Acute myeloid leukemia	MLL-AF4	MV4-11	BRD9 inhibitor
+SAMN04565819	4565819	HeLa DMSO 1	Vakoc Lab, Cold Spring Harbor Laboratory	9606	SRS1346609	GSM2090895	Cervical cancer		HeLa	DMSO

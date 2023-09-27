@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	disease subtype	source_name	treatment
+SAMN06185308	6185308	MDA-MB-231-LB-4w_3	John Wayne Cancer Institute	9606	SRS1878643	GSM2440301	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 28 days
+SAMN06185309	6185309	MDA-MB-231-LB-4w_2	John Wayne Cancer Institute	9606	SRS1878642	GSM2440300	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 28 days
+SAMN06185310	6185310	MDA-MB-231-LB-4w_1	John Wayne Cancer Institute	9606	SRS1878641	GSM2440299	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 28 days
+SAMN06185311	6185311	MDA-MB-231-DMSO-4w_3	John Wayne Cancer Institute	9606	SRS1878640	GSM2440298	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 28 days
+SAMN06185312	6185312	MDA-MB-231-DMSO-4w_2	John Wayne Cancer Institute	9606	SRS1878639	GSM2440297	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 28 days
+SAMN06185313	6185313	MDA-MB-231-DMSO-4w_1	John Wayne Cancer Institute	9606	SRS1878638	GSM2440296	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 28 days
+SAMN06185314	6185314	MDA-MB-231-LB-96hr_3	John Wayne Cancer Institute	9606	SRS1878637	GSM2440295	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 96hr
+SAMN06185315	6185315	MDA-MB-231-LB-96hr_2	John Wayne Cancer Institute	9606	SRS1878636	GSM2440294	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 96hr
+SAMN06185316	6185316	MDA-MB-231-LB-96hr_1	John Wayne Cancer Institute	9606	SRS1878635	GSM2440293	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 96hr
+SAMN06185317	6185317	MDA-MB-231-DMSO-96hr_3	John Wayne Cancer Institute	9606	SRS1878634	GSM2440292	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 96hr
+SAMN06185318	6185318	MDA-MB-231-DMSO-96hr_2	John Wayne Cancer Institute	9606	SRS1878633	GSM2440291	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 96hr
+SAMN06185319	6185319	MDA-MB-231-DMSO-96hr_1	John Wayne Cancer Institute	9606	SRS1878632	GSM2440290	MDA-MB-231	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 96hr
+SAMN06185320	6185320	HCC1806-LB-4w_3	John Wayne Cancer Institute	9606	SRS1878631	GSM2440289	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 28 days
+SAMN06185321	6185321	HCC1806-LB-4w_2	John Wayne Cancer Institute	9606	SRS1878630	GSM2440288	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 28 days
+SAMN06185322	6185322	HCC1806-LB-4w_1	John Wayne Cancer Institute	9606	SRS1878629	GSM2440287	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 28 days
+SAMN06185323	6185323	HCC1806-DMSO-4w_3	John Wayne Cancer Institute	9606	SRS1878628	GSM2440286	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 28 days
+SAMN06185324	6185324	HCC1806-DMSO-4w_2	John Wayne Cancer Institute	9606	SRS1878627	GSM2440285	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 28 days
+SAMN06185325	6185325	HCC1806-DMSO-4w_1	John Wayne Cancer Institute	9606	SRS1878626	GSM2440284	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 28 days
+SAMN06185326	6185326	HCC1806-LB-96hr_3	John Wayne Cancer Institute	9606	SRS1878625	GSM2440283	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 96hr
+SAMN06185327	6185327	HCC1806-LB-96hr_2	John Wayne Cancer Institute	9606	SRS1878624	GSM2440282	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 96hr
+SAMN06185328	6185328	HCC1806-LB-96hr_1	John Wayne Cancer Institute	9606	SRS1878623	GSM2440281	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	LBH589 (10nM) for 96hr
+SAMN06185329	6185329	HCC1806-DMSO-96hr_3	John Wayne Cancer Institute	9606	SRS1878622	GSM2440280	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 96 hours
+SAMN06185330	6185330	HCC1806-DMSO-96hr_2	John Wayne Cancer Institute	9606	SRS1878621	GSM2440279	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 96 hours
+SAMN06185331	6185331	HCC1806-DMSO-96hr_1	John Wayne Cancer Institute	9606	SRS1878620	GSM2440278	HCC1806	Triple-negative breast cancer	Invasive breast carcinoma	DMSO for 96 hours

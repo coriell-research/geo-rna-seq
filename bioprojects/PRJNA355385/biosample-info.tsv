@@ -1,0 +1,31 @@
+accession	uid	title	organization	taxonomy	sra	geo	shRNA	source_name	time point	tissue	treatment
+SAMN06075586	6075586	HepG2_shIGF2BP3_RNA-seq_rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS1824886	GSM2410413	shIGF2BP3	HepG2 cells	--	HepG2 cells	untreated
+SAMN06075587	6075587	HepG2_shIGF2BP2_RNA-seq_rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS1824885	GSM2410412	shIGF2BP2	HepG2 cells	--	HepG2 cells	untreated
+SAMN06075588	6075588	HepG2_shIGF2BP2_RNA-seq_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824884	GSM2410411	shIGF2BP2	HepG2 cells	--	HepG2 cells	untreated
+SAMN06075589	6075589	HepG2_shIGF2BP2_RNA-seq_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824883	GSM2410410	shIGF2BP2	HepG2 cells	--	HepG2 cells	untreated
+SAMN06075590	6075590	HepG2_shIGF2BP1_RNA-seq_rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS1824882	GSM2410409	shIGF2BP1	HepG2 cells	--	HepG2 cells	untreated
+SAMN06075591	6075591	HepG2_shNS_RNA-seq_rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS1824881	GSM2410408	shNS (non-specific control)	HepG2 cells	--	HepG2 cells	untreated
+SAMN06075592	6075592	HepG2_shIGF2BP3_6h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824880	GSM2410407	shIGF2BP3	HepG2 cells	6h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075593	6075593	HepG2_shIGF2BP3_6h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824879	GSM2410406	shIGF2BP3	HepG2 cells	6h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075594	6075594	HepG2_shIGF2BP3_3h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824878	GSM2410405	shIGF2BP3	HepG2 cells	3h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075595	6075595	HepG2_shIGF2BP3_3h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824877	GSM2410404	shIGF2BP3	HepG2 cells	3h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075596	6075596	HepG2_shIGF2BP3_1h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824876	GSM2410403	shIGF2BP3	HepG2 cells	1h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075597	6075597	HepG2_shIGF2BP3_1h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824875	GSM2410402	shIGF2BP3	HepG2 cells	1h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075598	6075598	HepG2_shIGF2BP3_0h_rep2 (RNA-seq_rep2)	Chen Lab, Systems Biology, City of Hope	9606	SRS1824874	GSM2410401	shIGF2BP3	HepG2 cells	0h	HepG2 cells	untreated
+SAMN06075599	6075599	HepG2_shIGF2BP3_0h_rep1 (RNA-seq_rep1)	Chen Lab, Systems Biology, City of Hope	9606	SRS1824873	GSM2410400	shIGF2BP3	HepG2 cells	0h	HepG2 cells	untreated
+SAMN06075600	6075600	HepG2_shIGF2BP1_6h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824872	GSM2410399	shIGF2BP1	HepG2 cells	6h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075601	6075601	HepG2_shIGF2BP1_6h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824871	GSM2410398	shIGF2BP1	HepG2 cells	6h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075602	6075602	HepG2_shIGF2BP1_3h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824870	GSM2410397	shIGF2BP1	HepG2 cells	3h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075603	6075603	HepG2_shIGF2BP1_3h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824869	GSM2410396	shIGF2BP1	HepG2 cells	3h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075604	6075604	HepG2_shNS_3h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824861	GSM2410388	shNS (non-specific control)	HepG2 cells	3h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075605	6075605	HepG2_shNS_3h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824862	GSM2410389	shNS (non-specific control)	HepG2 cells	3h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075606	6075606	HepG2_shNS_6h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824863	GSM2410390	shNS (non-specific control)	HepG2 cells	6h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075607	6075607	HepG2_shIGF2BP1_1h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824868	GSM2410395	shIGF2BP1	HepG2 cells	1h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075608	6075608	HepG2_shIGF2BP1_1h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824867	GSM2410394	shIGF2BP1	HepG2 cells	1h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075609	6075609	HepG2_shIGF2BP1_0h_rep2 (RNA-seq_rep2)	Chen Lab, Systems Biology, City of Hope	9606	SRS1824866	GSM2410393	shIGF2BP1	HepG2 cells	0h	HepG2 cells	untreated
+SAMN06075610	6075610	HepG2_shIGF2BP1_0h_rep1 (RNA-seq_rep1)	Chen Lab, Systems Biology, City of Hope	9606	SRS1824865	GSM2410392	shIGF2BP1	HepG2 cells	0h	HepG2 cells	untreated
+SAMN06075619	6075619	HepG2_shNS_1h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824860	GSM2410387	shNS (non-specific control)	HepG2 cells	1h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075620	6075620	HepG2_shNS_1h_rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS1824859	GSM2410386	shNS (non-specific control)	HepG2 cells	1h	HepG2 cells	5 μg/mL actinomycin D
+SAMN06075621	6075621	HepG2_shNS_0h_rep2 (RNA-seq_rep2)	Chen Lab, Systems Biology, City of Hope	9606	SRS1824858	GSM2410385	shNS (non-specific control)	HepG2 cells	0h	HepG2 cells	untreated
+SAMN06075622	6075622	HepG2_shNS_0h_rep1 (RNA-seq_rep1)	Chen Lab, Systems Biology, City of Hope	9606	SRS1824857	GSM2410384	shNS (non-specific control)	HepG2 cells	0h	HepG2 cells	untreated
+SAMN06075623	6075623	HepG2_shNS_6h_rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS1824864	GSM2410391	shNS (non-specific control)	HepG2 cells	6h	HepG2 cells	5 μg/mL actinomycin D

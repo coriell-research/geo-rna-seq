@@ -1,0 +1,67 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN10984776	10984776	THP1_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390492	GSM3617906	THP1	AML	AML	Etoposide (IC50)
+SAMN10984777	10984777	THP1_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390491	GSM3617905	THP1	AML	AML	Etoposide (IC50)
+SAMN10984778	10984778	THP1_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390490	GSM3617904	THP1	AML	AML	Etoposide (IC50)
+SAMN10984779	10984779	THP1_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390489	GSM3617903	THP1	AML	AML	Untreated
+SAMN10984780	10984780	THP1_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390488	GSM3617902	THP1	AML	AML	Untreated
+SAMN10984781	10984781	THP1_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390487	GSM3617901	THP1	AML	AML	Untreated
+SAMN10984782	10984782	OCIAML3_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390486	GSM3617900	OCIAML3	AML	AML	Etoposide (IC50)
+SAMN10984783	10984783	OCIAML3_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390485	GSM3617899	OCIAML3	AML	AML	Etoposide (IC50)
+SAMN10984784	10984784	OCIAML3_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390484	GSM3617898	OCIAML3	AML	AML	Etoposide (IC50)
+SAMN10984785	10984785	OCIAML3_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390483	GSM3617897	OCIAML3	AML	AML	Untreated
+SAMN10984786	10984786	OCIAML3_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390482	GSM3617896	OCIAML3	AML	AML	Untreated
+SAMN10984787	10984787	OCIAML3_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390481	GSM3617895	OCIAML3	AML	AML	Untreated
+SAMN10984788	10984788	OCIAML2_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390480	GSM3617894	OCIAML2	AML	AML	Etoposide (IC50)
+SAMN10984789	10984789	OCIAML2_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390479	GSM3617893	OCIAML2	AML	AML	Etoposide (IC50)
+SAMN10984790	10984790	OCIAML2_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390478	GSM3617892	OCIAML2	AML	AML	Etoposide (IC50)
+SAMN10984791	10984791	OCIAML2_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390477	GSM3617891	OCIAML2	AML	AML	Untreated
+SAMN10984792	10984792	OCIAML2_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390476	GSM3617890	OCIAML2	AML	AML	Untreated
+SAMN10984793	10984793	OCIAML2_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390475	GSM3617889	OCIAML2	AML	AML	Untreated
+SAMN10984794	10984794	NOMO1_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390474	GSM3617888	NOMO1	AML	AML	Etoposide (IC50)
+SAMN10984795	10984795	NOMO1_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390473	GSM3617887	NOMO1	AML	AML	Etoposide (IC50)
+SAMN10984796	10984796	NOMO1_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390472	GSM3617886	NOMO1	AML	AML	Etoposide (IC50)
+SAMN10984797	10984797	NOMO1_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390471	GSM3617885	NOMO1	AML	AML	Untreated
+SAMN10984798	10984798	NOMO1_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390470	GSM3617884	NOMO1	AML	AML	Untreated
+SAMN10984799	10984799	NOMO1_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390469	GSM3617883	NOMO1	AML	AML	Untreated
+SAMN10984800	10984800	HL60_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390435	GSM3617849	HL60	AML	AML	Untreated
+SAMN10984801	10984801	HL60_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390434	GSM3617848	HL60	AML	AML	Untreated
+SAMN10984802	10984802	HL60_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390433	GSM3617847	HL60	AML	AML	Untreated
+SAMN10984803	10984803	F36P_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390432	GSM3617846	F36P	AML	AML	Etoposide (IC50)
+SAMN10984804	10984804	F36P_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390431	GSM3617845	F36P	AML	AML	Etoposide (IC50)
+SAMN10984805	10984805	F36P_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390430	GSM3617844	F36P	AML	AML	Etoposide (IC50)
+SAMN10984806	10984806	F36P_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390429	GSM3617843	F36P	AML	AML	Untreated
+SAMN10984807	10984807	F36P_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390428	GSM3617842	F36P	AML	AML	Untreated
+SAMN10984808	10984808	F36P_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390427	GSM3617841	F36P	AML	AML	Untreated
+SAMN10984827	10984827	MV411_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390460	GSM3617874	MV411	AML	AML	Etoposide (IC50)
+SAMN10984828	10984828	MV411_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390459	GSM3617873	MV411	AML	AML	Untreated
+SAMN10984829	10984829	MV411_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390458	GSM3617872	MV411	AML	AML	Untreated
+SAMN10984830	10984830	MV411_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390457	GSM3617871	MV411	AML	AML	Untreated
+SAMN10984831	10984831	MONOMAC6_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390456	GSM3617870	MONOMAC6	AML	AML	Etoposide (IC50)
+SAMN10984832	10984832	MONOMAC6_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390455	GSM3617869	MONOMAC6	AML	AML	Etoposide (IC50)
+SAMN10984833	10984833	MONOMAC6_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390454	GSM3617868	MONOMAC6	AML	AML	Etoposide (IC50)
+SAMN10984834	10984834	MONOMAC6_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390453	GSM3617867	MONOMAC6	AML	AML	Untreated
+SAMN10984835	10984835	MONOMAC6_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390452	GSM3617866	MONOMAC6	AML	AML	Untreated
+SAMN10984836	10984836	MONOMAC6_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390451	GSM3617865	MONOMAC6	AML	AML	Untreated
+SAMN10984837	10984837	MOLM13_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390450	GSM3617864	MOLM13	AML	AML	Etoposide (IC50)
+SAMN10984838	10984838	MOLM13_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390449	GSM3617863	MOLM13	AML	AML	Etoposide (IC50)
+SAMN10984839	10984839	MOLM13_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390448	GSM3617862	MOLM13	AML	AML	Etoposide (IC50)
+SAMN10984840	10984840	MOLM13_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390447	GSM3617861	MOLM13	AML	AML	Untreated
+SAMN10984841	10984841	MOLM13_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390446	GSM3617860	MOLM13	AML	AML	Untreated
+SAMN10984842	10984842	MOLM13_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390445	GSM3617859	MOLM13	AML	AML	Untreated
+SAMN10984843	10984843	KASUMI1_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390444	GSM3617858	KASUMI1	AML	AML	Etoposide (IC50)
+SAMN10984844	10984844	KASUMI1_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390443	GSM3617857	KASUMI1	AML	AML	Etoposide (IC50)
+SAMN10984845	10984845	KASUMI1_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390442	GSM3617856	KASUMI1	AML	AML	Etoposide (IC50)
+SAMN10984846	10984846	KASUMI1_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390441	GSM3617855	KASUMI1	AML	AML	Untreated
+SAMN10984847	10984847	KASUMI1_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390440	GSM3617854	KASUMI1	AML	AML	Untreated
+SAMN10984848	10984848	KASUMI1_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390439	GSM3617853	KASUMI1	AML	AML	Untreated
+SAMN10984849	10984849	HL60_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390438	GSM3617852	HL60	AML	AML	Etoposide (IC50)
+SAMN10984850	10984850	HL60_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390437	GSM3617851	HL60	AML	AML	Etoposide (IC50)
+SAMN10984851	10984851	HL60_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390436	GSM3617850	HL60	AML	AML	Etoposide (IC50)
+SAMN10984852	10984852	NB4_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390468	GSM3617882	NB4	AML	AML	Etoposide (IC50)
+SAMN10984853	10984853	NB4_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390467	GSM3617881	NB4	AML	AML	Etoposide (IC50)
+SAMN10984854	10984854	NB4_ETOP_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390466	GSM3617880	NB4	AML	AML	Etoposide (IC50)
+SAMN10984855	10984855	NB4_CTR_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390465	GSM3617879	NB4	AML	AML	Untreated
+SAMN10984856	10984856	NB4_CTR_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390464	GSM3617878	NB4	AML	AML	Untreated
+SAMN10984857	10984857	NB4_CTR_REP1	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390463	GSM3617877	NB4	AML	AML	Untreated
+SAMN10984858	10984858	MV411_ETOP_REP3	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390462	GSM3617876	MV411	AML	AML	Etoposide (IC50)
+SAMN10984859	10984859	MV411_ETOP_REP2	Department of Pharmacology, University Medical Center, Johannes Gutenberg University of Mainz	9606	SRS4390461	GSM3617875	MV411	AML	AML	Etoposide (IC50)

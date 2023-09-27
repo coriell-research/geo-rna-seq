@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN03096804	3096804	KARPAS-DMSO-1	Constellation Pharmaceuticals	9606	SRS716212	GSM1519048	KARPAS-422	Diffuse large B cell lymphoma	DMSO
+SAMN03096805	3096805	KARPAS-DMSO-2	Constellation Pharmaceuticals	9606	SRS716213	GSM1519049	KARPAS-422	Diffuse large B cell lymphoma	DMSO
+SAMN03096806	3096806	KARPAS-CPI360-1	Constellation Pharmaceuticals	9606	SRS716214	GSM1519050	KARPAS-422	Diffuse large B cell lymphoma	CPI360
+SAMN03096807	3096807	KARPAS-CPI360-2	Constellation Pharmaceuticals	9606	SRS716215	GSM1519051	KARPAS-422	Diffuse large B cell lymphoma	CPI360
+SAMN03096808	3096808	KARPAS-EPZ6438-1	Constellation Pharmaceuticals	9606	SRS716216	GSM1519052	KARPAS-422	Diffuse large B cell lymphoma	EPZ6438
+SAMN03096809	3096809	KARPAS-EPZ6438-2	Constellation Pharmaceuticals	9606	SRS716217	GSM1519053	KARPAS-422	Diffuse large B cell lymphoma	EPZ6438
+SAMN03096810	3096810	KARPAS-GSK126-1	Constellation Pharmaceuticals	9606	SRS716218	GSM1519054	KARPAS-422	Diffuse large B cell lymphoma	GSK126
+SAMN03096811	3096811	KARPAS-GSK126-2	Constellation Pharmaceuticals	9606	SRS716219	GSM1519055	KARPAS-422	Diffuse large B cell lymphoma	GSK126

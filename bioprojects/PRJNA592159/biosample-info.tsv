@@ -1,0 +1,78 @@
+accession	uid	title	organization	taxonomy	sra	geo	culture condition	source_name	treatment
+SAMN13412925	13412925	PDAC6_VITD_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729301	GSM4195212	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412926	13412926	PDAC6_VEH_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729299	GSM4195211	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412927	13412927	PDAC6_VITD_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729298	GSM4195210	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412928	13412928	PDAC6_VEH_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729296	GSM4195209	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412929	13412929	PDAC6_VITD_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729297	GSM4195208	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412930	13412930	PDAC6_VEH_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729295	GSM4195207	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412931	13412931	PDAC5_VITD_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729294	GSM4195206	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412932	13412932	PDAC5_VEH_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729293	GSM4195205	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412933	13412933	PDAC5_VITD_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729292	GSM4195204	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412934	13412934	PDAC5_VEH_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729291	GSM4195203	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412935	13412935	PDAC5_VITD_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729290	GSM4195202	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412936	13412936	PDAC5_VEH_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729289	GSM4195201	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412937	13412937	PDAC3_VITD_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729288	GSM4195200	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412938	13412938	PDAC3_VEH_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729287	GSM4195199	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412939	13412939	PDAC3_VITD_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729286	GSM4195198	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412940	13412940	PDAC3_VEH_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729285	GSM4195197	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412941	13412941	PDAC3_VITD_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729284	GSM4195196	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412942	13412942	PDAC3_VEH_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729283	GSM4195195	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412943	13412943	PDAC2_VITD_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729282	GSM4195194	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412944	13412944	PDAC2_VEH_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729281	GSM4195193	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412945	13412945	PDAC2_VITD_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729280	GSM4195192	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412946	13412946	PDAC2_VEH_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729279	GSM4195191	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412947	13412947	PDAC2_VITD_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729278	GSM4195190	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412948	13412948	PDAC2_VEH_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729277	GSM4195189	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412949	13412949	PDAC9_FFX_D14	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729276	GSM4195188	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412950	13412950	PDAC9_FFX_D4	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729275	GSM4195187	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412951	13412951	PDAC9_FFX_D1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729274	GSM4195186	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412952	13412952	PDAC9_FFX_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729273	GSM4195185	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412953	13412953	PDAC9_VEH_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729272	GSM4195184	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412954	13412954	MIAPACA2_VITD	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729318	GSM4195230	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412955	13412955	MIAPACA2_VEH	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729317	GSM4195229	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412956	13412956	HPAFII_VITD	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729316	GSM4195228	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412957	13412957	HPAFII_VEH	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729315	GSM4195227	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412958	13412958	CAPAN2_VITD	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729314	GSM4195226	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412959	13412959	CAPAN2_VEH	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729313	GSM4195225	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412960	13412960	PDAC9_VITD_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729312	GSM4195224	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412961	13412961	PDAC9_VEH_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729311	GSM4195223	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412962	13412962	PDAC9_VITD_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729310	GSM4195222	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412963	13412963	PDAC9_VEH_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729309	GSM4195221	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412964	13412964	PDAC9_VITD_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729308	GSM4195220	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412965	13412965	PDAC9_VEH_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729307	GSM4195219	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412966	13412966	PDAC8_VITD_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729306	GSM4195218	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412967	13412967	PDAC8_VEH_3	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729305	GSM4195217	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412968	13412968	PDAC8_VITD_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729304	GSM4195216	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412969	13412969	PDAC8_VEH_2	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729303	GSM4195215	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412970	13412970	PDAC8_VITD_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729302	GSM4195214	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412971	13412971	PANC1_VITD	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729320	GSM4195232	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	Calcitriol
+SAMN13412972	13412972	PANC1_VEH	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729319	GSM4195231	3D tumorsphere	pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412973	13412973	PDAC6_VEH_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729263	GSM4195175	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412974	13412974	PDAC5_FFX_D14	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729262	GSM4195174	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412975	13412975	PDAC5_FFX_D4	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729261	GSM4195173	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412976	13412976	PDAC5_FFX_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729260	GSM4195172	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412977	13412977	PDAC5_VEH_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729259	GSM4195171	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412978	13412978	PDAC3_FFX_D14	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729258	GSM4195170	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412979	13412979	PDAC3_FFX_D4	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729257	GSM4195169	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412980	13412980	PDAC3_FFX_D1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729256	GSM4195168	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412981	13412981	PDAC3_FFX_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729255	GSM4195167	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412982	13412982	PDAC3_VEH_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729254	GSM4195166	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412983	13412983	PDAC2_FFX_D14	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729253	GSM4195165	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412984	13412984	MGH1473	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729248	GSM4195160	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	None
+SAMN13412985	13412985	MGH1222	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729247	GSM4195159	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	None
+SAMN13412986	13412986	MGH1312	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729249	GSM4195161	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	None
+SAMN13412987	13412987	PDAC2_FFX_D4	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729252	GSM4195164	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412988	13412988	PDAC2_FFX_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729251	GSM4195163	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412989	13412989	PDAC2_VEH_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729250	GSM4195162	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412990	13412990	MGH937	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729246	GSM4195158	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	None
+SAMN13412991	13412991	MGH1494	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729245	GSM4195157	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	None
+SAMN13412992	13412992	MGH1505	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729244	GSM4195156	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	None
+SAMN13412993	13412993	PDAC8_FFX_D14	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729271	GSM4195183	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412994	13412994	PDAC8_FFX_D4	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729270	GSM4195182	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412995	13412995	PDAC8_FFX_D1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729269	GSM4195181	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412996	13412996	PDAC8_FFX_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729268	GSM4195180	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412997	13412997	PDAC8_VEH_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729267	GSM4195179	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO
+SAMN13412998	13412998	PDAC6_FFX_D14	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729266	GSM4195178	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13412999	13412999	PDAC6_FFX_D4	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729265	GSM4195177	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13413000	13413000	PDAC6_FFX_D0	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729264	GSM4195176	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	FFX
+SAMN13413001	13413001	PDAC8_VEH_1	Ting Lab, Cancer Center, Massachusetts General Hospital	9606	SRS5729300	GSM4195213	3D tumorsphere	primary pancreatic ductal adenocarcinoma cell line	DMSO

@@ -1,0 +1,12 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	growth protocol	source_name	treatment
+SAMN05441354	5441354	U2OS_Control	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585896	GSM2252628	U2OS	Osteosarcoma		Osteosarcoma U2OS	DMSO
+SAMN05441355	5441355	MDA-MB231_Paclitaxel	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585894	GSM2252627	MDA-MB231	Breast cancer (Basal type)		Breast cancer MDA-MB231	0.2μM Paclitaxel for 8 hours
+SAMN05441356	5441356	MDA-MB231_Etoposide	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585893	GSM2252626	MDA-MB231	Breast cancer (Basal type)		Breast cancer MDA-MB231	20μM Etoposide for 8 hours
+SAMN05441357	5441357	MDA-MB231_Doxorubicin	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585892	GSM2252625	MDA-MB231	Breast cancer (Basal type)		Breast cancer MDA-MB231	1μM Doxorubicin for 8 hours
+SAMN05441358	5441358	MDA-MB231_Control	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585891	GSM2252624	MDA-MB231	Breast cancer (Basal type)		Breast cancer MDA-MB231	DMSO
+SAMN05441359	5441359	U2OS_Paclitaxel	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585900	GSM2252632	U2OS	Osteosarcoma		Osteosarcoma U2OS	0.2μM Paclitaxel for 8 hours
+SAMN05441360	5441360	U2OS_MMS	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585899	GSM2252631	U2OS	Osteosarcoma		Osteosarcoma U2OS	40μg/ml MMS for 8 hours
+SAMN05441361	5441361	U2OS_Etoposide	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585898	GSM2252630	U2OS	Osteosarcoma		Osteosarcoma U2OS	20μM Etoposide for 8 hours
+SAMN05441362	5441362	U2OS_Doxorubicin	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1585897	GSM2252629	U2OS	Osteosarcoma		Osteosarcoma U2OS	1μM Doxorubicin for 8 hours
+SAMN05591764	5591764	MDA-MB231_MMS_8hr	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1628886	GSM2284968	MDA-MB231	Breast cancer (Basal type)	Cells were grown in DMEM supplemented with 10%FBS	Breast cancer MDA-MB231	40microg/ml MMS for 8 hours
+SAMN05591765	5591765	MDA-MB231_Ctrl_8hr	Epidemiology and Biostatistics, UT Health Science Center at San Antonio	9606	SRS1628885	GSM2284967	MDA-MB231	Breast cancer (Basal type)	Cells were grown in DMEM supplemented with 10%FBS	Breast cancer MDA-MB231	DMSO

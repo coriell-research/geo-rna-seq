@@ -1,0 +1,19 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment	treatment time
+SAMN03737804	3737804	RNA-seq at 24 h 1,25(OH)2D3, replicate A	Institute of Biomedicine, University of Eastern Finland	9606	SRS947368	GSM1697101	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	24 h
+SAMN03737805	3737805	RNA-seq at 2.5 h EtOH, replicate B	Institute of Biomedicine, University of Eastern Finland	9606	SRS947366	GSM1697102	THP-1	monocytic cell line	Ethanol	2.5 h
+SAMN03737806	3737806	RNA-seq at 2.5 h 1,25(OH)2D3, replicate B	Institute of Biomedicine, University of Eastern Finland	9606	SRS947365	GSM1697103	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	2.5 h
+SAMN03737807	3737807	RNA-seq at 4 h EtOH, replicate B	Institute of Biomedicine, University of Eastern Finland	9606	SRS947361	GSM1697104	THP-1	monocytic cell line	Ethanol	4 h
+SAMN03737808	3737808	RNA-seq at 4 h 1,25(OH)2D3, replicate B	Institute of Biomedicine, University of Eastern Finland	9606	SRS947362	GSM1697105	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	4 h
+SAMN03737809	3737809	RNA-seq at 24 h 1,25(OH)2D3, replicate B	Institute of Biomedicine, University of Eastern Finland	9606	SRS947364	GSM1697107	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	24 h
+SAMN03737810	3737810	RNA-seq at 2.5 h EtOH, replicate C	Institute of Biomedicine, University of Eastern Finland	9606	SRS947360	GSM1697108	THP-1	monocytic cell line	Ethanol	2.5 h
+SAMN03737811	3737811	RNA-seq at 2.5 h 1,25(OH)2D3, replicate C	Institute of Biomedicine, University of Eastern Finland	9606	SRS947359	GSM1697109	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	2.5 h
+SAMN03737812	3737812	RNA-seq at 4 h EtOH, replicate C	Institute of Biomedicine, University of Eastern Finland	9606	SRS947357	GSM1697110	THP-1	monocytic cell line	Ethanol	4 h
+SAMN03737813	3737813	RNA-seq at 4 h 1,25(OH)2D3, replicate C	Institute of Biomedicine, University of Eastern Finland	9606	SRS947358	GSM1697111	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	4 h
+SAMN03737814	3737814	RNA-seq at 24 h EtOH, replicate C	Institute of Biomedicine, University of Eastern Finland	9606	SRS947356	GSM1697112	THP-1	monocytic cell line	Ethanol	24 h
+SAMN03737815	3737815	RNA-seq at 24 h 1,25(OH)2D3, replicate C	Institute of Biomedicine, University of Eastern Finland	9606	SRS947355	GSM1697113	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	24 h
+SAMN03737816	3737816	RNA-seq at 2.5 h EtOH, replicate A	Institute of Biomedicine, University of Eastern Finland	9606	SRS947371	GSM1697096	THP-1	monocytic cell line	Ethanol	2.5 h
+SAMN03737817	3737817	RNA-seq at 2.5 h 1,25(OH)2D3, replicate A	Institute of Biomedicine, University of Eastern Finland	9606	SRS947372	GSM1697097	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	2.5 h
+SAMN03737818	3737818	RNA-seq at 24 h EtOH, replicate B	Institute of Biomedicine, University of Eastern Finland	9606	SRS947363	GSM1697106	THP-1	monocytic cell line	Ethanol	24 h
+SAMN03737819	3737819	RNA-seq at 4 h EtOH, replicate A	Institute of Biomedicine, University of Eastern Finland	9606	SRS947370	GSM1697098	THP-1	monocytic cell line	Ethanol	4 h
+SAMN03737820	3737820	RNA-seq at 4 h 1,25(OH)2D3, replicate A	Institute of Biomedicine, University of Eastern Finland	9606	SRS947369	GSM1697099	THP-1	monocytic cell line	100 nM 1,25(OH)2D3	4 h
+SAMN03737821	3737821	RNA-seq at 24 h EtOH, replicate A	Institute of Biomedicine, University of Eastern Finland	9606	SRS947367	GSM1697100	THP-1	monocytic cell line	Ethanol	24 h

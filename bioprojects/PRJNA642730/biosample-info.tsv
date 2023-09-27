@@ -1,0 +1,17 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN15397968	15397968	NCH612_DMSO_rep2	Heidelberg university hospital	9606	SRS6917131	GSM4644348	NCH612	glioma cells	glioma cells	DMSO
+SAMN15397969	15397969	NCH612_DMSO_rep1	Heidelberg university hospital	9606	SRS6917130	GSM4644347	NCH612	glioma cells	glioma cells	DMSO
+SAMN15397970	15397970	SU-AO3_DAC_rep2	Heidelberg university hospital	9606	SRS6917129	GSM4644346	SU-AO3	glioma cells	glioma cells	DAC
+SAMN15397971	15397971	SU-AO3_DAC_rep1	Heidelberg university hospital	9606	SRS6917128	GSM4644345	SU-AO3	glioma cells	glioma cells	DAC
+SAMN15397972	15397972	SU-AO3_DMSO_rep2	Heidelberg university hospital	9606	SRS6917127	GSM4644344	SU-AO3	glioma cells	glioma cells	DMSO
+SAMN15397973	15397973	SU-AO3_DMSO_rep1	Heidelberg university hospital	9606	SRS6917126	GSM4644343	SU-AO3	glioma cells	glioma cells	DMSO
+SAMN15397974	15397974	TS603_DAC_rep2	Heidelberg university hospital	9606	SRS6917125	GSM4644342	TS603	glioma cells	glioma cells	DAC
+SAMN15397976	15397976	TS603_DAC_rep1	Heidelberg university hospital	9606	SRS6917124	GSM4644341	TS603	glioma cells	glioma cells	DAC
+SAMN15397977	15397977	TS603_DMSO_rep2	Heidelberg university hospital	9606	SRS6917123	GSM4644340	TS603	glioma cells	glioma cells	DMSO
+SAMN15397978	15397978	TS603_DMSO_rep1	Heidelberg university hospital	9606	SRS6917122	GSM4644339	TS603	glioma cells	glioma cells	DMSO
+SAMN15397979	15397979	NCH1681_DAC_rep2	Heidelberg university hospital	9606	SRS6917137	GSM4644354	NCH1681	glioma cells	glioma cells	DAC
+SAMN15397980	15397980	NCH1681_DAC_rep1	Heidelberg university hospital	9606	SRS6917136	GSM4644353	NCH1681	glioma cells	glioma cells	DAC
+SAMN15397981	15397981	NCH1681_DMSO_rep2	Heidelberg university hospital	9606	SRS6917135	GSM4644352	NCH1681	glioma cells	glioma cells	DMSO
+SAMN15397982	15397982	NCH1681_DMSO_rep1	Heidelberg university hospital	9606	SRS6917134	GSM4644351	NCH1681	glioma cells	glioma cells	DMSO
+SAMN15397983	15397983	NCH612_DAC_rep2	Heidelberg university hospital	9606	SRS6917133	GSM4644350	NCH612	glioma cells	glioma cells	DAC
+SAMN15397984	15397984	NCH612_DAC_rep1	Heidelberg university hospital	9606	SRS6917132	GSM4644349	NCH612	glioma cells	glioma cells	DAC

@@ -1,0 +1,5 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	genotype	growth conditions	source_name
+SAMN04396100	4396100	45 DMSO	Neff, Pediatric Oncology, University of Colorado Denver AMC	9606	SRS1245406	GSM2037146	primary AML patient sample	inv(16)	OP9 co-culture in IMDM with 20% FBS, IL3, IL6 and SCF	AML 45 (292)
+SAMN04396101	4396101	45 EPZ004777	Neff, Pediatric Oncology, University of Colorado Denver AMC	9606	SRS1245404	GSM2037147	primary AML patient sample	inv(16)	OP9 co-culture in IMDM with 20% FBS, IL3, IL6 and SCF	AML 45 (292)
+SAMN04396102	4396102	51 DMSO	Neff, Pediatric Oncology, University of Colorado Denver AMC	9606	SRS1245405	GSM2037148	primary AML patient sample	inv(16)	OP9 co-culture in IMDM with 20% FBS, IL3, IL6 and SCF	AML 51 (7934)
+SAMN04396103	4396103	51 EPZ004777	Neff, Pediatric Oncology, University of Colorado Denver AMC	9606	SRS1245403	GSM2037149	primary AML patient sample	inv(16)	OP9 co-culture in IMDM with 20% FBS, IL3, IL6 and SCF	AML 51 (7934)

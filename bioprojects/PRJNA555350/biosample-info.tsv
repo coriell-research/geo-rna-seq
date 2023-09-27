@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	treatment
+SAMN12314600	12314600	HEL 646C Doxo+Cyta+DAC 32	Instituto de Medicina Molecular	9606	SRS5117091	GSM3954422	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine + Decitabine (Doxo+Cyta+DAC)
+SAMN12314601	12314601	HEL 646C Doxo+Cyta+DAC 31	Instituto de Medicina Molecular	9606	SRS5117090	GSM3954421	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine + Decitabine (Doxo+Cyta+DAC)
+SAMN12314602	12314602	HEL 646C Doxo+Cyta+DAC 30	Instituto de Medicina Molecular	9606	SRS5117092	GSM3954420	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine + Decitabine (Doxo+Cyta+DAC)
+SAMN12314603	12314603	HEL 646C Doxo+Cyta 22	Instituto de Medicina Molecular	9606	SRS5117088	GSM3954419	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine (Doxo+Cyta)
+SAMN12314604	12314604	HEL 646C Doxo+Cyta 20	Instituto de Medicina Molecular	9606	SRS5117089	GSM3954418	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine (Doxo+Cyta)
+SAMN12314605	12314605	HEL 646C Doxo+Cyta 19	Instituto de Medicina Molecular	9606	SRS5117087	GSM3954417	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine (Doxo+Cyta)
+SAMN12314646	12314646	HEL 646C Doxo+Cyta+DAC 33	Instituto de Medicina Molecular	9606	SRS5117093	GSM3954423	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin + Cytarabine + Decitabine (Doxo+Cyta+DAC)
+SAMN12315597	12315597	HEL 646C Doxo6	Instituto de Medicina Molecular	9606	SRS5117240	GSM3954416	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin (Doxo)
+SAMN12315598	12315598	HEL 646C Doxo5	Instituto de Medicina Molecular	9606	SRS5117239	GSM3954415	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin (Doxo)
+SAMN12315599	12315599	HEL 646C Doxo4	Instituto de Medicina Molecular	9606	SRS5117238	GSM3954414	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	Doxorubicin (Doxo)
+SAMN12315600	12315600	HEL 646C NT2	Instituto de Medicina Molecular	9606	SRS5117241	GSM3954413	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	No treatment (NT)
+SAMN12315601	12315601	HEL 646C NT1	Instituto de Medicina Molecular	9606	SRS5117237	GSM3954412	AML cell line - HEL (Human Erythroleukemia)	HEL (Human Erythroleukemia) cell line	No treatment (NT)

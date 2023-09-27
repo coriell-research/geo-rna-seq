@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	mutation	source_name	strain background	treatment
+SAMN07138701	7138701	Proliferating control (PD34)	University of Pennsylvania	9606	SRS2207315	GSM2630603	Wild-type	IMR90 cells	Primary human fibroblasts	None
+SAMN07138702	7138702	Proliferating control (PD29)	University of Pennsylvania	9606	SRS2207314	GSM2630602	Wild-type	IMR90 cells	Primary human fibroblasts	None
+SAMN07138703	7138703	sh-cGAS etoposide-replicate 2	University of Pennsylvania	9606	SRS2207319	GSM2630607	cGAS shRNA knockdown	IMR90 cells	Primary human fibroblasts	Etoposide
+SAMN07138704	7138704	sh-cGAS etoposide-replicate 1	University of Pennsylvania	9606	SRS2207318	GSM2630606	cGAS shRNA knockdown	IMR90 cells	Primary human fibroblasts	Etoposide
+SAMN07138705	7138705	sh-NTC etoposide-replicate 2	University of Pennsylvania	9606	SRS2207317	GSM2630605	Wild-type	IMR90 cells	Primary human fibroblasts	Etoposide
+SAMN07138706	7138706	sh-NTC etoposide-replicate 1	University of Pennsylvania	9606	SRS2207316	GSM2630604	Wild-type	IMR90 cells	Primary human fibroblasts	Etoposide

@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	treatment
+SAMN15814006	15814006	Till_dCAR 14day	Chinese general PLA hospital	9606	SRS7200096	GSM4726747	T cell	T cell	CAR T cell treatment by DNMTi inhibitor collected from tumor site after 14days of cell infusion in vivo
+SAMN15814007	15814007	Till_CAR 14day	Chinese general PLA hospital	9606	SRS7200095	GSM4726746	T cell	T cell	Control CAR T cell collected from tumor site after 14days of cell infusion in vivo
+SAMN15814009	15814009	Till_dCAR 7day	Chinese general PLA hospital	9606	SRS7200094	GSM4726745	T cell	T cell	CAR T cell treatment by DNMTi inhibitor collected from tumor site after 7day of cell infusion in vivo
+SAMN15814010	15814010	Till_CAR 7day	Chinese general PLA hospital	9606	SRS7200093	GSM4726744	T cell	T cell	Control CAR T cell collected from tumor site after 7day of cell infusion in vivo
+SAMN15814012	15814012	dCAR 2_A	Chinese general PLA hospital	9606	SRS7200092	GSM4726743	T cell	T cell	CAR T treatment by DNMTi inhibitor coculture with Raij
+SAMN15814014	15814014	dCAR 1_A	Chinese general PLA hospital	9606	SRS7200091	GSM4726742	T cell	T cell	CAR T treatment by DNMTi inhibitor coculture with Raij
+SAMN15814015	15814015	CAR 2_A	Chinese general PLA hospital	9606	SRS7200097	GSM4726741	T cell	T cell	Control CAR after coculture with Raij
+SAMN15814017	15814017	CAR 1_A	Chinese general PLA hospital	9606	SRS7200090	GSM4726740	T cell	T cell	Control CAR after coculture with Raij
+SAMN15814018	15814018	dCAR 2	Chinese general PLA hospital	9606	SRS7200089	GSM4726739	T cell	T cell	CAR T treatment by DNMTi inhibitor
+SAMN15814019	15814019	dCAR 1	Chinese general PLA hospital	9606	SRS7200088	GSM4726738	T cell	T cell	CAR T treatment by DNMTi inhibitor
+SAMN15814020	15814020	CAR 2	Chinese general PLA hospital	9606	SRS7200087	GSM4726737	T cell	T cell	Control CAR
+SAMN15814021	15814021	CAR 1	Chinese general PLA hospital	9606	SRS7200086	GSM4726736	T cell	T cell	Control CAR

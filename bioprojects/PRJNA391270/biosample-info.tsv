@@ -1,0 +1,36 @@
+accession	uid	title	organization	taxonomy	sra	geo	agent	antibody	cell line	source_name	treated with
+SAMN07260236	7260236	UO31_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301884	GSM2677389			UO31	UO31	none (untreated)
+SAMN07260251	7260251	MCF7_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301881	GSM2677387			MCF7	MCF7	none (untreated)
+SAMN07260252	7260252	LOXIMVI_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301883	GSM2677388			LOXIMVI	LOXIMVI	none (untreated)
+SAMN07260253	7260253	UACC62_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301905	GSM2677410			UACC257	UACC257	4Gy for 3hrs
+SAMN07260254	7260254	UACC257_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301904	GSM2677409			UACC62	UACC62	4Gy for 3hrs
+SAMN07260255	7260255	HCT116_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301903	GSM2677408			HCT116	HCT116	4Gy for 3hrs
+SAMN07260256	7260256	A549_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301902	GSM2677407			A549	A549	4Gy for 3hrs
+SAMN07260257	7260257	H460_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301901	GSM2677406			H460	H460	4Gy for 3hrs
+SAMN07260258	7260258	MALME3_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301900	GSM2677405			MALME3	MALME3	4Gy for 3hrs
+SAMN07260259	7260259	SKMEL5_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301899	GSM2677404			SKMEL5	SKMEL5	4Gy for 3hrs
+SAMN07260260	7260260	U2OS_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301898	GSM2677403			U2OS	U2OS	4Gy for 3hrs
+SAMN07260261	7260261	A498_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301897	GSM2677402			A498	A498	4Gy for 3hrs
+SAMN07260262	7260262	UO31_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301896	GSM2677401			UO31	UO31	4Gy for 3hrs
+SAMN07260263	7260263	LOXIMVI_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301895	GSM2677400			LOXIMVI	LOXIMVI	4Gy for 3hrs
+SAMN07260264	7260264	MCF7_mRNA, 3hrs 4Gy	Lahav, systems biology, Harvard Medical School	9606	SRS2301894	GSM2677399			MCF7	MCF7	4Gy for 3hrs
+SAMN07260265	7260265	UACC62_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301893	GSM2677398			UACC257	UACC257	none (untreated)
+SAMN07260266	7260266	UACC257_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301892	GSM2677397			UACC62	UACC62	none (untreated)
+SAMN07260267	7260267	HCT116_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301890	GSM2677396			HCT116	HCT116	none (untreated)
+SAMN07260268	7260268	A549_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301891	GSM2677395			A549	A549	none (untreated)
+SAMN07260269	7260269	H460_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301889	GSM2677394			H460	H460	none (untreated)
+SAMN07260271	7260271	MALME3_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301887	GSM2677393			MALME3	MALME3	none (untreated)
+SAMN07260272	7260272	SKMEL5_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301888	GSM2677392			SKMEL5	SKMEL5	none (untreated)
+SAMN07260273	7260273	U2OS_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301886	GSM2677391			U2OS	U2OS	none (untreated)
+SAMN07260274	7260274	A498_RNA_NT	Lahav, systems biology, Harvard Medical School	9606	SRS2301885	GSM2677390			A498	A498	none (untreated)
+SAMN11663527	11663527	A549_TGFB_NUT_RNAseq_r2	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774785	GSM3771346	TGFB_NUT		A549	A549	
+SAMN11663528	11663528	A549_TGFB_NUT_RNAseq_r1	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774784	GSM3771345	TGFB_NUT		A549	A549	
+SAMN11663529	11663529	A549_TGFB_RNAseq_r3	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774783	GSM3771344	TGFB		A549	A549	
+SAMN11663530	11663530	A549_TGFB_RNAseq_r2	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774782	GSM3771343	TGFB		A549	A549	
+SAMN11663531	11663531	A549_TGFB_RNAseq_r1	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774781	GSM3771342	TGFB		A549	A549	
+SAMN11663532	11663532	A549_NUT_RNAseq_r3	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774780	GSM3771341	NUT		A549	A549	
+SAMN11663533	11663533	A549_NUT_RNAseq_r2	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774779	GSM3771340		NUT	A549	A549	
+SAMN11663534	11663534	A549_NUT_RNAseq_r1	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774778	GSM3771339	NUT		A549	A549	
+SAMN11663535	11663535	A549_NT_RNAseq_r3	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774777	GSM3771338	none		A549	A549	
+SAMN11663536	11663536	A549_NT_RNAseq_r2	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774776	GSM3771337	none		A549	A549	
+SAMN11663537	11663537	A549_NT_RNAseq_r1	Stewart-Ornstein, computational and systems biology, University of Pittsburgh, School of Medicine	9606	SRS4774775	GSM3771336	none		A549	A549	

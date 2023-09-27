@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN19727931	19727931	melphalan_rep2	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218418	GSM5387169	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 10 μM melphalan for 6 hours
+SAMN19727932	19727932	melphalan_rep1	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218417	GSM5387168	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 10 μM melphalan for 6 hours
+SAMN19727933	19727933	negative_control_rep3	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218416	GSM5387167	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	untreated
+SAMN19727934	19727934	negative_control_rep2	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218415	GSM5387166	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	untreated
+SAMN19727935	19727935	negative_control_rep1	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218414	GSM5387165	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	untreated
+SAMN19727954	19727954	melphalan_NG25_rep3	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218425	GSM5387176	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 10 μM melphalan and 2 μM NG25 for 6 hours
+SAMN19727956	19727956	melphalan_NG25_rep2	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218424	GSM5387175	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 10 μM melphalan and 2 μM NG25 for 6 hours
+SAMN19727958	19727958	melphalan_NG25_rep1	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218423	GSM5387174	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 10 μM melphalan and 2 μM NG25 for 6 hours
+SAMN19727959	19727959	NG25_rep3	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218422	GSM5387173	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 2 μM NG25 for 6 hours
+SAMN19727961	19727961	NG25_rep2	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218421	GSM5387172	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 2 μM NG25 for 6 hours
+SAMN19727962	19727962	NG25_rep1	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218420	GSM5387171	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 2 μM NG25 for 6 hours
+SAMN19727963	19727963	melphalan_rep3	Department of Clinical and Molecular Medicine, NTNU	9606	SRS9218419	GSM5387170	INA-6	human multiple myeloma	INA-6 (human multiple myeloma cell line)	treated with 10 μM melphalan for 6 hours

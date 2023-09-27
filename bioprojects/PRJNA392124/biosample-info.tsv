@@ -1,0 +1,69 @@
+accession	uid	title	organization	taxonomy	sra	geo	injected cells	source_name	time point	tissue	treatment
+SAMN07283785	7283785	AS_ShCtrl_AR6	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318468	GSM2687240	SK-N-AS	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283786	7283786	AS_ShCtrl_AR3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318467	GSM2687239	SK-N-AS	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283787	7283787	CHP212_R2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318425	GSM2687197	CHP212	Neuroblastoma	EP	Tumor	RA
+SAMN07283788	7283788	CHP212_R1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318424	GSM2687196	CHP212	Neuroblastoma	EP	Tumor	RA
+SAMN07283789	7283789	CHP212_R0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318423	GSM2687195	CHP212	Neuroblastoma	EP	Tumor	RA
+SAMN07283790	7283790	Lan1_A2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318429	GSM2687201	LAN-1	Neuroblastoma	EP	Tumor	AZA
+SAMN07283791	7283791	Lan1_A0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318428	GSM2687200	LAN-1	Neuroblastoma	EP	Tumor	AZA
+SAMN07283792	7283792	CHP212_R4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318427	GSM2687199	CHP212	Neuroblastoma	EP	Tumor	RA
+SAMN07283793	7283793	CHP212_C4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318422	GSM2687194	CHP212	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283794	7283794	CHP212_C3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318421	GSM2687193	CHP212	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283795	7283795	CHP212_C2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318420	GSM2687192	CHP212	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283796	7283796	CHP212_C1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318419	GSM2687191	CHP212	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283797	7283797	CHP212_C0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318418	GSM2687190	CHP212	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283798	7283798	CHP212_AR4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318417	GSM2687189	CHP212	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283799	7283799	CHP212_AR3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318416	GSM2687188	CHP212	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283800	7283800	CHP212_AR2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318415	GSM2687187	CHP212	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283801	7283801	CHP212_AR1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318414	GSM2687186	CHP212	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283802	7283802	CHP212_AR0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318413	GSM2687185	CHP212	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283803	7283803	CHP212_A4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318412	GSM2687184	CHP212	Neuroblastoma	EP	Tumor	AZA
+SAMN07283804	7283804	CHP212_A3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318410	GSM2687183	CHP212	Neuroblastoma	EP	Tumor	AZA
+SAMN07283805	7283805	CHP212_A2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318411	GSM2687182	CHP212	Neuroblastoma	EP	Tumor	AZA
+SAMN07283806	7283806	CHP212_A1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318408	GSM2687181	CHP212	Neuroblastoma	EP	Tumor	AZA
+SAMN07283807	7283807	CHP212_A0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318409	GSM2687180	CHP212	Neuroblastoma	EP	Tumor	AZA
+SAMN07283808	7283808	AS_ShCtrl_AR2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318466	GSM2687238	SK-N-AS	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283809	7283809	AS_ShCtrl_AR0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318465	GSM2687237	SK-N-AS	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283810	7283810	AS_ShCtrl_A5	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318464	GSM2687236	SK-N-AS	Neuroblastoma	EP	Tumor	AZA
+SAMN07283811	7283811	AS_ShCtrl_A4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318463	GSM2687235	SK-N-AS	Neuroblastoma	EP	Tumor	AZA
+SAMN07283812	7283812	AS_ShCtrl_A2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318462	GSM2687234	SK-N-AS	Neuroblastoma	EP	Tumor	AZA
+SAMN07283813	7283813	Lan1_R4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318461	GSM2687233	LAN-1	Neuroblastoma	EP	Tumor	RA
+SAMN07283814	7283814	Lan1_R3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318460	GSM2687232	LAN-1	Neuroblastoma	EP	Tumor	RA
+SAMN07283815	7283815	Lan1_R2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318459	GSM2687231	LAN-1	Neuroblastoma	EP	Tumor	RA
+SAMN07283816	7283816	LAN1_D14_RA_B2_2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318458	GSM2687230	LAN-1	Neuroblastoma	day14	Tumor	AZA + RA
+SAMN07283817	7283817	LAN1_D14_RA_B2_0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318457	GSM2687229	LAN-1	Neuroblastoma	day14	Tumor	AZA + RA
+SAMN07283818	7283818	LAN1_D14_RA_B1_3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318456	GSM2687228	LAN-1	Neuroblastoma	day14	Tumor	AZA + RA
+SAMN07283819	7283819	LAN1_D14_RA_B1_2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318455	GSM2687227	LAN-1	Neuroblastoma	day14	Tumor	AZA + RA
+SAMN07283820	7283820	LAN1_D14_RA_B1_1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318454	GSM2687226	LAN-1	Neuroblastoma	day14	Tumor	AZA + RA
+SAMN07283821	7283821	LAN1_D14_CTRL_B2_3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318453	GSM2687225	LAN-1	Neuroblastoma	day14	Tumor	DMSO (CTRL)
+SAMN07283822	7283822	LAN1_D14_CTRL_B2_2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318452	GSM2687224	LAN-1	Neuroblastoma	day14	Tumor	DMSO (CTRL)
+SAMN07283823	7283823	LAN1_D14_CTRL_B2_1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318451	GSM2687223	LAN-1	Neuroblastoma	day14	Tumor	DMSO (CTRL)
+SAMN07283824	7283824	LAN1_D14_CTRL_B2_0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318450	GSM2687222	LAN-1	Neuroblastoma	day14	Tumor	DMSO (CTRL)
+SAMN07283825	7283825	LAN1_D14_CTRL_B1_0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318449	GSM2687221	LAN-1	Neuroblastoma	day14	Tumor	DMSO (CTRL)
+SAMN07283826	7283826	LAN1_D10_RA_B2_0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318448	GSM2687220	LAN-1	Neuroblastoma	day10	Tumor	AZA + RA
+SAMN07283827	7283827	LAN1_D10_RA_B1_3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318447	GSM2687219	LAN-1	Neuroblastoma	day10	Tumor	AZA + RA
+SAMN07283828	7283828	LAN1_D10_RA_B1_2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318446	GSM2687218	LAN-1	Neuroblastoma	day10	Tumor	AZA + RA
+SAMN07283829	7283829	LAN1_D10_RA_B1_1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318445	GSM2687217	LAN-1	Neuroblastoma	day10	Tumor	AZA + RA
+SAMN07283830	7283830	LAN1_D10_RA_B1_0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318444	GSM2687216	LAN-1	Neuroblastoma	day10	Tumor	AZA + RA
+SAMN07283831	7283831	LAN1_D10_CTRL_B2_3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318443	GSM2687215	LAN-1	Neuroblastoma	day10	Tumor	DMSO (CTRL)
+SAMN07283832	7283832	LAN1_D10_CTRL_B2_2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318442	GSM2687214	LAN-1	Neuroblastoma	day10	Tumor	DMSO (CTRL)
+SAMN07283833	7283833	LAN1_D10_CTRL_B2_1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318441	GSM2687213	LAN-1	Neuroblastoma	day10	Tumor	DMSO (CTRL)
+SAMN07283834	7283834	LAN1_D10_CTRL_B2_0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318440	GSM2687212	LAN-1	Neuroblastoma	day10	Tumor	DMSO (CTRL)
+SAMN07283835	7283835	LAN1_D10_CTRL_B1_3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318439	GSM2687211	LAN-1	Neuroblastoma	day10	Tumor	DMSO (CTRL)
+SAMN07283836	7283836	Lan1_C4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318438	GSM2687210	LAN-1	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283837	7283837	AS_ShCtrl_R3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318475	GSM2687247	SK-N-AS	Neuroblastoma	EP	Tumor	RA
+SAMN07283838	7283838	AS_ShCtrl_R2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318474	GSM2687246	SK-N-AS	Neuroblastoma	EP	Tumor	RA
+SAMN07283839	7283839	AS_ShCtrl_R0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318473	GSM2687245	SK-N-AS	Neuroblastoma	EP	Tumor	RA
+SAMN07283840	7283840	AS_ShCtrl_C3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318472	GSM2687244	SK-N-AS	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283841	7283841	AS_ShCtrl_C2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318471	GSM2687243	SK-N-AS	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283842	7283842	AS_ShCtrl_C1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318469	GSM2687242	SK-N-AS	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283843	7283843	AS_ShCtrl_C0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318470	GSM2687241	SK-N-AS	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283844	7283844	Lan1_C1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318436	GSM2687208	LAN-1	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283845	7283845	Lan1_C0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318435	GSM2687207	LAN-1	Neuroblastoma	EP	Tumor	DMSO (CTRL)
+SAMN07283846	7283846	Lan1_AR4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318434	GSM2687206	LAN-1	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283847	7283847	Lan1_AR3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318433	GSM2687205	LAN-1	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283848	7283848	Lan1_AR1	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318432	GSM2687204	LAN-1	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283849	7283849	Lan1_AR0	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318431	GSM2687203	LAN-1	Neuroblastoma	EP	Tumor	AZA + RA
+SAMN07283850	7283850	Lan1_A4	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318430	GSM2687202	LAN-1	Neuroblastoma	EP	Tumor	AZA
+SAMN07283851	7283851	CHP212_R3	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318426	GSM2687198	CHP212	Neuroblastoma	EP	Tumor	RA
+SAMN07283993	7283993	Lan1_C2	Department of Cell- and Molecular Biology, Ludwig Institute for Cancer Research, Karolinska Institute	9606	SRS2318437	GSM2687209	LAN-1	Neuroblastoma	EP	Tumor	DMSO (CTRL)

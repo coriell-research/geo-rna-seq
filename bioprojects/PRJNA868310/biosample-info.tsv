@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN30237412	30237412	CHL-1, CREM KD, rep 3	University of Turku	9606	SRS14605089	GSM6442909	CHL-1	melanoma cells	CREM knockdown	CHL-1	CREM siRNA
+SAMN30237413	30237413	CHL-1, CREM KD, rep 2	University of Turku	9606	SRS14605088	GSM6442908	CHL-1	melanoma cells	CREM knockdown	CHL-1	CREM siRNA
+SAMN30237414	30237414	CHL-1, CREM KD, rep 1	University of Turku	9606	SRS14605087	GSM6442907	CHL-1	melanoma cells	CREM knockdown	CHL-1	CREM siRNA
+SAMN30237415	30237415	CHL-1, control, rep 3	University of Turku	9606	SRS14605086	GSM6442906	CHL-1	melanoma cells	WT	CHL-1	Control siRNA
+SAMN30237416	30237416	CHL-1, control, rep 2	University of Turku	9606	SRS14605085	GSM6442905	CHL-1	melanoma cells	WT	CHL-1	Control siRNA
+SAMN30237417	30237417	CHL-1, control, rep 1	University of Turku	9606	SRS14605084	GSM6442904	CHL-1	melanoma cells	WT	CHL-1	Control siRNA

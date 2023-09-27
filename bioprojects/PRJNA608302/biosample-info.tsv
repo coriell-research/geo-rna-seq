@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	genotype	source_name	treatment
+SAMN14169884	14169884	HCT 116p53-/-RPL3 KO ACT D treated #3	Tigem	9606	SRS6205021	GSM4333302	HCT116	P53-/-; RPL3 KO	Colorectal Cancer stable cell line	5nM Act D for 24h
+SAMN14169885	14169885	HCT 116p53-/-RPL3 KO ACT D treated #2	Tigem	9606	SRS6205020	GSM4333301	HCT116	P53-/-; RPL3 KO	Colorectal Cancer stable cell line	5nM Act D for 24h
+SAMN14169886	14169886	HCT 116p53-/-RPL3 KO ACT D treated #1	Tigem	9606	SRS6205019	GSM4333300	HCT116	P53-/-; RPL3 KO	Colorectal Cancer stable cell line	5nM Act D for 24h
+SAMN14169887	14169887	HCT 116p53-/-RPL3 KO vehicle CTR #3	Tigem	9606	SRS6205018	GSM4333299	HCT116	P53-/-; RPL3 KO	Colorectal Cancer stable cell line	vehicle CTR
+SAMN14169888	14169888	HCT 116p53-/-RPL3 KO vehicle CTR #2	Tigem	9606	SRS6205017	GSM4333298	HCT116	P53-/-; RPL3 KO	Colorectal Cancer stable cell line	vehicle CTR
+SAMN14169889	14169889	HCT 116p53-/-RPL3 KO vehicle CTR #1	Tigem	9606	SRS6205016	GSM4333297	HCT116	P53-/-; RPL3 KO	Colorectal Cancer stable cell line	vehicle CTR
+SAMN14169890	14169890	HCT 116p53-/- ACT D treated #3	Tigem	9606	SRS6205015	GSM4333296	HCT116	P53-/-	Colorectal Cancer stable cell line	5nM Act D for 24h
+SAMN14169892	14169892	HCT 116p53-/- ACT D treated #2	Tigem	9606	SRS6205014	GSM4333295	HCT116	P53-/-	Colorectal Cancer stable cell line	5nM Act D for 24h
+SAMN14169893	14169893	HCT 116p53-/- ACT D treated #1	Tigem	9606	SRS6205013	GSM4333294	HCT116	P53-/-	Colorectal Cancer stable cell line	5nM Act D for 24h
+SAMN14169895	14169895	HCT 116p53-/- vehicle CTR #3	Tigem	9606	SRS6205012	GSM4333293	HCT116	P53-/-	Colorectal Cancer stable cell line	vehicle CTR
+SAMN14169896	14169896	HCT 116p53-/- vehicle CTR #2	Tigem	9606	SRS6205011	GSM4333292	HCT116	P53-/-	Colorectal Cancer stable cell line	vehicle CTR
+SAMN14169898	14169898	HCT 116p53-/- vehicle CTR #1	Tigem	9606	SRS6205010	GSM4333291	HCT116	P53-/-	Colorectal Cancer stable cell line	vehicle CTR

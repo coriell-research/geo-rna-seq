@@ -1,0 +1,31 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	time	treatment
+SAMN31314191	31314191	OCI-LY19R rep3	SBS, NTU	9606	SRS15431228	GSM6645254	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19		maintained in 20 nM doxorubicin, which was removed one week before being used for the experiment
+SAMN31314192	31314192	OCI-LY19R rep2	SBS, NTU	9606	SRS15431227	GSM6645253	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19		maintained in 20 nM doxorubicin, which was removed one week before being used for the experiment
+SAMN31314193	31314193	OCI-LY19R rep1	SBS, NTU	9606	SRS15431226	GSM6645252	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19		maintained in 20 nM doxorubicin, which was removed one week before being used for the experiment
+SAMN31314194	31314194	OCI-LY19S rep3	SBS, NTU	9606	SRS15431225	GSM6645251	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19		untreated
+SAMN31314195	31314195	OCI-LY19S rep2	SBS, NTU	9606	SRS15431224	GSM6645250	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19		untreated
+SAMN31314196	31314196	OCI-LY19S rep1	SBS, NTU	9606	SRS15431223	GSM6645249	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19		untreated
+SAMN31314197	31314197	SUDHL5 DOXO 24h ctrl rep3	SBS, NTU	9606	SRS15431236	GSM6645248	SUDHL5	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	SUDHL5	24h	0.2 µM doxorubicin
+SAMN31314198	31314198	SUDHL5 DOXO 24h ctrl rep2	SBS, NTU	9606	SRS15431235	GSM6645247	SUDHL5	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	SUDHL5	24h	0.2 µM doxorubicin
+SAMN31314199	31314199	SUDHL5 DOXO 24h ctrl rep1	SBS, NTU	9606	SRS15431233	GSM6645246	SUDHL5	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	SUDHL5	24h	0.2 µM doxorubicin
+SAMN31314200	31314200	SUDHL5 0h ctrl rep3	SBS, NTU	9606	SRS15431234	GSM6645245	SUDHL5	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	SUDHL5	0h	untreated
+SAMN31314201	31314201	SUDHL5 0h ctrl rep2	SBS, NTU	9606	SRS15431232	GSM6645244	SUDHL5	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	SUDHL5	0h	untreated
+SAMN31314202	31314202	SUDHL5 0h ctrl rep1	SBS, NTU	9606	SRS15431231	GSM6645243	SUDHL5	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	SUDHL5	0h	untreated
+SAMN31314203	31314203	OCI-LY19 DOXO 24h ctrl rep3	SBS, NTU	9606	SRS15431230	GSM6645242	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19	24h	0.2 µM doxorubicin
+SAMN31314204	31314204	OCI-LY19 DOXO 24h ctrl rep2	SBS, NTU	9606	SRS15431229	GSM6645241	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19	24h	0.2 µM doxorubicin
+SAMN31314205	31314205	OCI-LY19 DOXO 24h ctrl rep1	SBS, NTU	9606	SRS15431222	GSM6645240	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19	24h	0.2 µM doxorubicin
+SAMN31314206	31314206	OCI-LY19 0h ctrl rep3	SBS, NTU	9606	SRS15431221	GSM6645239	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19	0h	untreated
+SAMN31314207	31314207	OCI-LY19 0h ctrl rep2	SBS, NTU	9606	SRS15431220	GSM6645238	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19	0h	untreated
+SAMN31314208	31314208	OCI-LY19 0h ctrl rep1	SBS, NTU	9606	SRS15431218	GSM6645237	OCI-LY19	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY19	0h	untreated
+SAMN31314209	31314209	HT DOXO 24h ctrl rep3	SBS, NTU	9606	SRS15431219	GSM6645236	HT	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	HT	24h	0.2 µM doxorubicin
+SAMN31314210	31314210	HT DOXO 24h ctrl rep2	SBS, NTU	9606	SRS15431217	GSM6645235	HT	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	HT	24h	0.2 µM doxorubicin
+SAMN31314211	31314211	HT DOXO 24h ctrl rep1	SBS, NTU	9606	SRS15431216	GSM6645234	HT	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	HT	24h	0.2 µM doxorubicin
+SAMN31314212	31314212	HT 0h ctrl rep3	SBS, NTU	9606	SRS15431215	GSM6645233	HT	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	HT	0h	untreated
+SAMN31314213	31314213	HT 0h ctrl rep2	SBS, NTU	9606	SRS15431214	GSM6645232	HT	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	HT	0h	untreated
+SAMN31314214	31314214	HT 0h ctrl rep1	SBS, NTU	9606	SRS15431213	GSM6645231	HT	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	HT	0h	untreated
+SAMN31314215	31314215	OCI-LY3 DOXO 24h ctrl rep3	SBS, NTU	9606	SRS15431212	GSM6645230	OCI-LY3	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY3	24h	0.2 µM doxorubicin
+SAMN31314216	31314216	OCI-LY3 DOXO 24h ctrl rep2	SBS, NTU	9606	SRS15431211	GSM6645229	OCI-LY3	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY3	24h	0.2 µM doxorubicin
+SAMN31314217	31314217	OCI-LY3 DOXO 24h ctrl rep1	SBS, NTU	9606	SRS15431210	GSM6645228	OCI-LY3	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY3	24h	0.2 µM doxorubicin
+SAMN31314218	31314218	OCI-LY3 0h ctrl rep3	SBS, NTU	9606	SRS15431209	GSM6645227	OCI-LY3	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY3	0h	untreated
+SAMN31314219	31314219	OCI-LY3 0h ctrl rep2	SBS, NTU	9606	SRS15431208	GSM6645226	OCI-LY3	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY3	0h	untreated
+SAMN31314220	31314220	OCI-LY3 0h ctrl rep1	SBS, NTU	9606	SRS15431207	GSM6645225	OCI-LY3	Diffuse large B-cell lymphoma (DLBCL) cell line	WT	OCI-LY3	0h	untreated

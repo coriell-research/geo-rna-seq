@@ -1,0 +1,109 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	treatment
+SAMN26542522	26542522	MPAF_DMSO_0.001%_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227498	GSM5941983	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.001%_24h
+SAMN26542523	26542523	MPAF_DMSO_0.001%_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227499	GSM5941982	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.001%_24h
+SAMN26542524	26542524	MPAF_DMSO_0.001%_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227497	GSM5941981	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.001%_24h
+SAMN26542525	26542525	MPAF_DMSO_0.001%_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227495	GSM5941980	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.001%_1h
+SAMN26542526	26542526	MPAF_DMSO_0.001%_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227496	GSM5941979	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.001%_1h
+SAMN26542527	26542527	MPAF_DMSO_0.001%_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227494	GSM5941978	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.001%_1h
+SAMN26542528	26542528	MPAF_YKL5124_100nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227493	GSM5941977	Human Adult Fibroblasts	MPAF_cell_line	YKL5124_100nM_24h
+SAMN26542529	26542529	MPAF_YKL5124_100nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227492	GSM5941976	Human Adult Fibroblasts	MPAF_cell_line	YKL5124_100nM_24h
+SAMN26542530	26542530	MPAF_YKL5124_100nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227491	GSM5941975	Human Adult Fibroblasts	MPAF_cell_line	YKL5124_100nM_24h
+SAMN26542531	26542531	MPAF_YKL5124_100nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227490	GSM5941974	Human Adult Fibroblasts	MPAF_cell_line	YKL5124_100nM_1h
+SAMN26542532	26542532	MPAF_YKL5124_100nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227489	GSM5941973	Human Adult Fibroblasts	MPAF_cell_line	YKL5124_100nM_1h
+SAMN26542533	26542533	MPAF_YKL5124_100nM_1h_	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227487	GSM5941972	Human Adult Fibroblasts	MPAF_cell_line	YKL5124_100nM_1h_
+SAMN26542534	26542534	MPAF_THZ531_100nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227488	GSM5941971	Human Adult Fibroblasts	MPAF_cell_line	THZ531_100nM_24h
+SAMN26542535	26542535	MPAF_THZ531_100nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227486	GSM5941970	Human Adult Fibroblasts	MPAF_cell_line	THZ531_100nM_24h
+SAMN26542536	26542536	MPAF_THZ531_100nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227485	GSM5941969	Human Adult Fibroblasts	MPAF_cell_line	THZ531_100nM_24h
+SAMN26542537	26542537	MPAF_THZ531_100nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227483	GSM5941968	Human Adult Fibroblasts	MPAF_cell_line	THZ531_100nM_1h
+SAMN26542538	26542538	MPAF_THZ531_100nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227484	GSM5941967	Human Adult Fibroblasts	MPAF_cell_line	THZ531_100nM_1h
+SAMN26542539	26542539	MPAF_THZ531_100nM_1h_	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227482	GSM5941966	Human Adult Fibroblasts	MPAF_cell_line	THZ531_100nM_1h_
+SAMN26542540	26542540	MPAF_DMSO_0.0001%_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227481	GSM5941965	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.0001%_24h
+SAMN26542541	26542541	MPAF_DMSO_0.0001%_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227479	GSM5941964	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.0001%_24h
+SAMN26542542	26542542	MPAF_DMSO_0.0001%_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227480	GSM5941963	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.0001%_24h
+SAMN26542543	26542543	MPAF_DMSO_0.0001%_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227478	GSM5941962	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.0001%_1h
+SAMN26542544	26542544	MPAF_DMSO_0.0001%_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227477	GSM5941961	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.0001%_1h
+SAMN26542545	26542545	MPAF_DMSO_0.0001%_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227475	GSM5941960	Human Adult Fibroblasts	MPAF_cell_line	DMSO_0.0001%_1h
+SAMN26542546	26542546	MPAF_SY0351_10nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227476	GSM5941959	Human Adult Fibroblasts	MPAF_cell_line	SY0351_10nM_24h
+SAMN26542547	26542547	MPAF_SY0351_10nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227474	GSM5941958	Human Adult Fibroblasts	MPAF_cell_line	SY0351_10nM_24h
+SAMN26542548	26542548	MPAF_SY0351_10nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227473	GSM5941957	Human Adult Fibroblasts	MPAF_cell_line	SY0351_10nM_24h
+SAMN26542549	26542549	MPAF_SY0351_10nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227472	GSM5941956	Human Adult Fibroblasts	MPAF_cell_line	SY0351_10nM_1h
+SAMN26542550	26542550	MPAF_SY0351_10nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227471	GSM5941955	Human Adult Fibroblasts	MPAF_cell_line	SY0351_10nM_1h
+SAMN26542551	26542551	MPAF_SY0351_10nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227470	GSM5941954	Human Adult Fibroblasts	MPAF_cell_line	SY0351_10nM_1h
+SAMN26542552	26542552	MPAF_NVP2_10nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227469	GSM5941953	Human Adult Fibroblasts	MPAF_cell_line	NVP2_10nM_24h
+SAMN26542553	26542553	MPAF_NVP2_10nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227468	GSM5941952	Human Adult Fibroblasts	MPAF_cell_line	NVP2_10nM_24h
+SAMN26542554	26542554	MPAF_NVP2_10nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227467	GSM5941951	Human Adult Fibroblasts	MPAF_cell_line	NVP2_10nM_24h
+SAMN26542555	26542555	MPAF_NVP2_10nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227466	GSM5941950	Human Adult Fibroblasts	MPAF_cell_line	NVP2_10nM_1h
+SAMN26542556	26542556	MPAF_NVP2_10nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227465	GSM5941949	Human Adult Fibroblasts	MPAF_cell_line	NVP2_10nM_1h
+SAMN26542557	26542557	MPAF_NVP2_10nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227464	GSM5941948	Human Adult Fibroblasts	MPAF_cell_line	NVP2_10nM_1h
+SAMN26542558	26542558	TCam2_DMSO_0.001%_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227463	GSM5941947	Seminoma	TCam2_cell_line	DMSO_0.001%_24h
+SAMN26542559	26542559	TCam2_DMSO_0.001%_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227462	GSM5941946	Seminoma	TCam2_cell_line	DMSO_0.001%_24h
+SAMN26542560	26542560	TCam2_DMSO_0.001%_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227461	GSM5941945	Seminoma	TCam2_cell_line	DMSO_0.001%_24h
+SAMN26542561	26542561	TCam2_DMSO_0.001%_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227460	GSM5941944	Seminoma	TCam2_cell_line	DMSO_0.001%_1h
+SAMN26542562	26542562	TCam2_DMSO_0.001%_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227459	GSM5941943	Seminoma	TCam2_cell_line	DMSO_0.001%_1h
+SAMN26542563	26542563	TCam2_DMSO_0.001%_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227457	GSM5941942	Seminoma	TCam2_cell_line	DMSO_0.001%_1h
+SAMN26542564	26542564	TCam2_YKL5124_100nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227458	GSM5941941	Seminoma	TCam2_cell_line	YKL5124_100nM_24h
+SAMN26542565	26542565	TCam2_YKL5124_100nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227456	GSM5941940	Seminoma	TCam2_cell_line	YKL5124_100nM_24h
+SAMN26542566	26542566	TCam2_YKL5124_100nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227455	GSM5941939	Seminoma	TCam2_cell_line	YKL5124_100nM_24h
+SAMN26542567	26542567	TCam2_YKL5124_100nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227454	GSM5941938	Seminoma	TCam2_cell_line	YKL5124_100nM_1h
+SAMN26542568	26542568	TCam2_YKL5124_100nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227453	GSM5941937	Seminoma	TCam2_cell_line	YKL5124_100nM_1h
+SAMN26542569	26542569	TCam2_YKL5124_100nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227452	GSM5941936	Seminoma	TCam2_cell_line	YKL5124_100nM_1h
+SAMN26542570	26542570	TCam2_THZ531_100nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227451	GSM5941935	Seminoma	TCam2_cell_line	THZ531_100nM_24h
+SAMN26542571	26542571	TCam2_THZ531_100nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227449	GSM5941934	Seminoma	TCam2_cell_line	THZ531_100nM_24h
+SAMN26542572	26542572	TCam2_THZ531_100nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227450	GSM5941933	Seminoma	TCam2_cell_line	THZ531_100nM_24h
+SAMN26542573	26542573	TCam2_THZ531_100nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227448	GSM5941932	Seminoma	TCam2_cell_line	THZ531_100nM_1h
+SAMN26542574	26542574	TCam2_THZ531_100nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227446	GSM5941931	Seminoma	TCam2_cell_line	THZ531_100nM_1h
+SAMN26542575	26542575	TCam2_THZ531_100nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227447	GSM5941930	Seminoma	TCam2_cell_line	THZ531_100nM_1h
+SAMN26542576	26542576	TCam2_DMSO_0.0001%_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227445	GSM5941929	Seminoma	TCam2_cell_line	DMSO_0.0001%_24h
+SAMN26542577	26542577	TCam2_DMSO_0.0001%_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227444	GSM5941928	Seminoma	TCam2_cell_line	DMSO_0.0001%_24h
+SAMN26542578	26542578	TCam2_DMSO_0.0001%_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227443	GSM5941927	Seminoma	TCam2_cell_line	DMSO_0.0001%_24h
+SAMN26542579	26542579	TCam2_DMSO_0.0001%_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227442	GSM5941926	Seminoma	TCam2_cell_line	DMSO_0.0001%_1h
+SAMN26542580	26542580	TCam2_DMSO_0.0001%_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227440	GSM5941925	Seminoma	TCam2_cell_line	DMSO_0.0001%_1h
+SAMN26542581	26542581	TCam2_DMSO_0.0001%_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227441	GSM5941924	Seminoma	TCam2_cell_line	DMSO_0.0001%_1h
+SAMN26542582	26542582	TCam2_SY0351_10nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227439	GSM5941923	Seminoma	TCam2_cell_line	SY0351_10nM_24h
+SAMN26542583	26542583	TCam2_SY0351_10nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227438	GSM5941922	Seminoma	TCam2_cell_line	SY0351_10nM_24h
+SAMN26542584	26542584	TCam2_SY0351_10nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227437	GSM5941921	Seminoma	TCam2_cell_line	SY0351_10nM_24h
+SAMN26542585	26542585	TCam2_SY0351_10nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227436	GSM5941920	Seminoma	TCam2_cell_line	SY0351_10nM_1h
+SAMN26542586	26542586	TCam2_SY0351_10nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227435	GSM5941919	Seminoma	TCam2_cell_line	SY0351_10nM_1h
+SAMN26542587	26542587	TCam2_SY0351_10nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227433	GSM5941918	Seminoma	TCam2_cell_line	SY0351_10nM_1h
+SAMN26542588	26542588	TCam2_NVP2_10nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227434	GSM5941917	Seminoma	TCam2_cell_line	NVP2_10nM_24h
+SAMN26542589	26542589	TCam2_NVP2_10nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227432	GSM5941916	Seminoma	TCam2_cell_line	NVP2_10nM_24h
+SAMN26542590	26542590	TCam2_NVP2_10nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227431	GSM5941915	Seminoma	TCam2_cell_line	NVP2_10nM_24h
+SAMN26542591	26542591	TCam2_NVP2_10nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227430	GSM5941914	Seminoma	TCam2_cell_line	NVP2_10nM_1h
+SAMN26542592	26542592	TCam2_NVP2_10nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227428	GSM5941913	Seminoma	TCam2_cell_line	NVP2_10nM_1h
+SAMN26542593	26542593	TCam2_NVP2_10nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227429	GSM5941912	Seminoma	TCam2_cell_line	NVP2_10nM_1h
+SAMN26542594	26542594	2102EP_DMSO_0.001%_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227427	GSM5941911	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.001%_24h
+SAMN26542595	26542595	2102EP_DMSO_0.001%_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227426	GSM5941910	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.001%_24h
+SAMN26542596	26542596	2102EP_DMSO_0.001%_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227424	GSM5941909	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.001%_24h
+SAMN26542597	26542597	2102EP_DMSO_0.001%_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227425	GSM5941908	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.001%_1h
+SAMN26542598	26542598	2102EP_DMSO_0.001%_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227423	GSM5941907	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.001%_1h
+SAMN26542599	26542599	2102EP_DMSO_0.001%_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227422	GSM5941906	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.001%_1h
+SAMN26542600	26542600	2102EP_YKL5124_100nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227420	GSM5941905	Embryonal Carcinoma	2102EP_cell_line	YKL5124_100nM_24h
+SAMN26542601	26542601	2102EP_YKL5124_100nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227421	GSM5941904	Embryonal Carcinoma	2102EP_cell_line	YKL5124_100nM_24h
+SAMN26542602	26542602	2102EP_YKL5124_100nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227419	GSM5941903	Embryonal Carcinoma	2102EP_cell_line	YKL5124_100nM_24h
+SAMN26542603	26542603	2102EP_YKL5124_100nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227418	GSM5941902	Embryonal Carcinoma	2102EP_cell_line	YKL5124_100nM_1h
+SAMN26542604	26542604	2102EP_YKL5124_100nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227417	GSM5941901	Embryonal Carcinoma	2102EP_cell_line	YKL5124_100nM_1h
+SAMN26542605	26542605	2102EP_YKL5124_100nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227416	GSM5941900	Embryonal Carcinoma	2102EP_cell_line	YKL5124_100nM_1h
+SAMN26542606	26542606	2102EP_THZ531_100nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227415	GSM5941899	Embryonal Carcinoma	2102EP_cell_line	THZ531_100nM_24h
+SAMN26542607	26542607	2102EP_THZ531_100nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227413	GSM5941898	Embryonal Carcinoma	2102EP_cell_line	THZ531_100nM_24h
+SAMN26542608	26542608	2102EP_THZ531_100nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227414	GSM5941897	Embryonal Carcinoma	2102EP_cell_line	THZ531_100nM_24h
+SAMN26542609	26542609	2102EP_THZ531_100nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227412	GSM5941896	Embryonal Carcinoma	2102EP_cell_line	THZ531_100nM_1h
+SAMN26542610	26542610	2102EP_THZ531_100nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227411	GSM5941895	Embryonal Carcinoma	2102EP_cell_line	THZ531_100nM_1h
+SAMN26542611	26542611	2102EP_THZ531_100nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227410	GSM5941894	Embryonal Carcinoma	2102EP_cell_line	THZ531_100nM_1h
+SAMN26542612	26542612	2102EP_DMSO_0.0001%_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227408	GSM5941893	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.0001%_24h
+SAMN26542613	26542613	2102EP_DMSO_0.0001%_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227409	GSM5941892	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.0001%_24h
+SAMN26542614	26542614	2102EP_DMSO_0.0001%_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227407	GSM5941891	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.0001%_24h
+SAMN26542615	26542615	2102EP_DMSO_0.0001%_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227406	GSM5941890	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.0001%_1h
+SAMN26542616	26542616	2102EP_DMSO_0.0001%_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227404	GSM5941889	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.0001%_1h
+SAMN26542617	26542617	2102EP_DMSO_0.0001%_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227405	GSM5941888	Embryonal Carcinoma	2102EP_cell_line	DMSO_0.0001%_1h
+SAMN26542618	26542618	2102EP_SY0351_10nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227403	GSM5941887	Embryonal Carcinoma	2102EP_cell_line	SY0351_10nM_24h
+SAMN26542619	26542619	2102EP_SY0351_10nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227402	GSM5941886	Embryonal Carcinoma	2102EP_cell_line	SY0351_10nM_24h
+SAMN26542620	26542620	2102EP_SY0351_10nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227401	GSM5941885	Embryonal Carcinoma	2102EP_cell_line	SY0351_10nM_24h
+SAMN26542621	26542621	2102EP_SY0351_10nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227400	GSM5941884	Embryonal Carcinoma	2102EP_cell_line	SY0351_10nM_1h
+SAMN26542622	26542622	2102EP_SY0351_10nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227399	GSM5941883	Embryonal Carcinoma	2102EP_cell_line	SY0351_10nM_1h
+SAMN26542623	26542623	2102EP_SY0351_10nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227398	GSM5941882	Embryonal Carcinoma	2102EP_cell_line	SY0351_10nM_1h
+SAMN26542624	26542624	2102EP_NVP2_10nM_24h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227396	GSM5941881	Embryonal Carcinoma	2102EP_cell_line	NVP2_10nM_24h
+SAMN26542625	26542625	2102EP_NVP2_10nM_24h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227397	GSM5941880	Embryonal Carcinoma	2102EP_cell_line	NVP2_10nM_24h
+SAMN26542626	26542626	2102EP_NVP2_10nM_24h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227395	GSM5941879	Embryonal Carcinoma	2102EP_cell_line	NVP2_10nM_24h
+SAMN26542627	26542627	2102EP_NVP2_10nM_1h_3	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227394	GSM5941878	Embryonal Carcinoma	2102EP_cell_line	NVP2_10nM_1h
+SAMN26542628	26542628	2102EP_NVP2_10nM_1h_2	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227393	GSM5941877	Embryonal Carcinoma	2102EP_cell_line	NVP2_10nM_1h
+SAMN26542629	26542629	2102EP_NVP2_10nM_1h_1	Pathology, Developmental Pathology, University Hospital Bonn	9606	SRS12227392	GSM5941876	Embryonal Carcinoma	2102EP_cell_line	NVP2_10nM_1h

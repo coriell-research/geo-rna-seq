@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN11978252	11978252	TET2 KO+ IFNγ 1-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893358	GSM3862933	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	IFNγ
+SAMN11978253	11978253	TET2 KO+ IFNγ 1-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893357	GSM3862932	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	IFNγ
+SAMN11978254	11978254	TET2 KO 3-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893356	GSM3862931	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	control
+SAMN11978255	11978255	TET2 KO 3-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893355	GSM3862930	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	control
+SAMN11978256	11978256	TET2 KO 2-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893354	GSM3862929	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	control
+SAMN11978257	11978257	TET2 KO 2-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893353	GSM3862928	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	control
+SAMN11978258	11978258	TET2 KO 1-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893352	GSM3862927	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	control
+SAMN11978259	11978259	TET2 KO 1-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893351	GSM3862926	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	control
+SAMN11978260	11978260	WT+ IFNγ 3-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893350	GSM3862925	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	IFNγ
+SAMN11978261	11978261	WT+ IFNγ 3-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893349	GSM3862924	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	IFNγ
+SAMN11978262	11978262	WT+ IFNγ 2-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893348	GSM3862923	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	IFNγ
+SAMN11978263	11978263	WT+ IFNγ 2-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893347	GSM3862922	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	IFNγ
+SAMN11978264	11978264	WT+ IFNγ 1-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893346	GSM3862921	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	IFNγ
+SAMN11978265	11978265	WT+ IFNγ 1-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893345	GSM3862920	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	IFNγ
+SAMN11978266	11978266	WT 3-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893344	GSM3862919	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	control
+SAMN11978267	11978267	WT 3-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893343	GSM3862918	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	control
+SAMN11978268	11978268	WT 2-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893342	GSM3862917	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	control
+SAMN11978269	11978269	WT 2-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893341	GSM3862916	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	control
+SAMN11978270	11978270	WT 1-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893340	GSM3862915	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	control
+SAMN11978271	11978271	WT 1-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893339	GSM3862914	THP1	Leukemic monocyte	WT	Leukemic monocyte‎	control
+SAMN11978272	11978272	TET2 KO+ IFNγ 3-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893362	GSM3862937	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	IFNγ
+SAMN11978273	11978273	TET2 KO+ IFNγ 3-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893361	GSM3862936	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	IFNγ
+SAMN11978274	11978274	TET2 KO+ IFNγ 2-2	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893360	GSM3862935	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	IFNγ
+SAMN11978275	11978275	TET2 KO+ IFNγ 2-1	Xiong Lab, Linebeger Cancer Center, UNC-Chapel Hill	9606	SRS4893359	GSM3862934	THP1	Leukemic monocyte	TET2 KO	Leukemic monocyte‎	IFNγ

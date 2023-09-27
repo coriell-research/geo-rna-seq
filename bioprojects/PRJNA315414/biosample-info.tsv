@@ -1,0 +1,36 @@
+accession	uid	title	organization	taxonomy	sra	geo	bar code	cell line	cell type	drug treatment	source_name	time point
+SAMN04558330	4558330	MOLT4_JQ1_6h_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343318	GSM2089759		MOLT4		JQ1	T_ALL	6h
+SAMN04558331	4558331	MOLT4_JQ1_6h_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343317	GSM2089760		MOLT4		JQ1	T_ALL	6h
+SAMN04558332	4558332	MOLT4_JQ1_6h_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343316	GSM2089761		MOLT4		JQ1	T_ALL	6h
+SAMN04558333	4558333	MOLT4_dBET6_2h_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343315	GSM2089762		MOLT4		dBET6	T_ALL	2h
+SAMN04558334	4558334	MOLT4_dBET6_2h_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343312	GSM2089764		MOLT4		dBET6	T_ALL	2h
+SAMN04558335	4558335	MOLT4_dBET6_6h_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343310	GSM2089765		MOLT4		dBET6	T_ALL	6h
+SAMN04558336	4558336	MOLT4_dBET6_6h_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343309	GSM2089766		MOLT4		dBET6	T_ALL	6h
+SAMN04558337	4558337	MOLT4_dBET6_6h_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343311	GSM2089767		MOLT4		dBET6	T_ALL	6h
+SAMN04558338	4558338	MOLT4_DMSO_6h_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343322	GSM2089755		MOLT4		DMSO	T_ALL	6h
+SAMN04558339	4558339	MOLT4_JQ1_2h_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343321	GSM2089756		MOLT4		JQ1	T_ALL	2h
+SAMN04558340	4558340	MOLT4_dBET6_2h_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343313	GSM2089763		MOLT4		dBET6	T_ALL	2h
+SAMN04558341	4558341	MOLT4_JQ1_2h_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343320	GSM2089757		MOLT4		JQ1	T_ALL	2h
+SAMN04558342	4558342	MOLT4_JQ1_2h_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343319	GSM2089758		MOLT4		JQ1	T_ALL	2h
+SAMN04558353	4558353	MOLT4_DMSO_2h_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343326	GSM2089752		MOLT4		DMSO	T_ALL	2h
+SAMN04558354	4558354	MOLT4_DMSO_6h_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343324	GSM2089753		MOLT4		DMSO	T_ALL	6h
+SAMN04558355	4558355	MOLT4_DMSO_6h_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343323	GSM2089754		MOLT4		DMSO	T_ALL	6h
+SAMN04558356	4558356	MOLT4_DMSO_2h_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343327	GSM2089750		MOLT4		DMSO	T_ALL	2h
+SAMN04558357	4558357	MOLT4_DMSO_2h_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1343325	GSM2089751		MOLT4		DMSO	T_ALL	2h
+SAMN05934749	5934749	PDX_TALL_DMSO_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756525	GSM2358324	TCCAGTCG		T-ALL PDX		T-ALL PDX	
+SAMN05934750	5934750	PDX_TALL_DMSO_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756521	GSM2358323	TAAGTTCG		T-ALL PDX		T-ALL PDX	
+SAMN05934751	5934751	primary_T_dBET6_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756535	GSM2358339	TGAACTGG		primary T cell		primary T cell	
+SAMN05934752	5934752	primary_T_dBET6_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756536	GSM2358338	TTGGTATG		primary T cell		primary T cell	
+SAMN05934753	5934753	primary_T_dBET6_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756533	GSM2358337	TAACGCTG		primary T cell		primary T cell	
+SAMN05934754	5934754	primary_T_JQ1_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756534	GSM2358336	TCAGGAGG		primary T cell		primary T cell	
+SAMN05934755	5934755	primary_T_JQ1_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756531	GSM2358335	TCTCACGG		primary T cell		primary T cell	
+SAMN05934756	5934756	primary_T_JQ1_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756529	GSM2358334	GGCACAAC		primary T cell		primary T cell	
+SAMN05934757	5934757	primary_T_DMSO_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756532	GSM2358333	TCGAAGTG		primary T cell		primary T cell	
+SAMN05934758	5934758	primary_T_DMSO_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756530	GSM2358332	TTCCATTG		primary T cell		primary T cell	
+SAMN05934759	5934759	PDX_TALL_dBET6_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756528	GSM2358331	TATGCCAG		T-ALL PDX		T-ALL PDX	
+SAMN05934760	5934760	PDX_TALL_dBET6_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756526	GSM2358330	TGGCTCAG		T-ALL PDX		T-ALL PDX	
+SAMN05934761	5934761	PDX_TALL_dBET6_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756527	GSM2358329	TCATTGAG		T-ALL PDX		T-ALL PDX	
+SAMN05934762	5934762	PDX_TALL_JQ1_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756523	GSM2358328	TTCAGCTC		T-ALL PDX		T-ALL PDX	
+SAMN05934763	5934763	PDX_TALL_JQ1_2	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756522	GSM2358327	TACTAGTC		T-ALL PDX		T-ALL PDX	
+SAMN05934764	5934764	PDX_TALL_JQ1_1	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756524	GSM2358326	TCAGATTC		T-ALL PDX		T-ALL PDX	
+SAMN05934765	5934765	PDX_TALL_DMSO_3	Bradner Lab, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS1756520	GSM2358325	TGTATGCG		T-ALL PDX		T-ALL PDX	

@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	individual	source_name	treatment
+SAMN09536952	9536952	1020_6	Jordan Lab, University of Colorado	9606	SRS3497796	GSM3242952	bone marrow mononuclear cells	Primary AML patient	Primary AML patient specimen, treated	venetoclax and azacitidine
+SAMN09536953	9536953	1020_0	Jordan Lab, University of Colorado	9606	SRS3497795	GSM3242951	bone marrow mononuclear cells	Primary AML patient	Primary AML patient specimen	untreated
+SAMN09536954	9536954	RB_7	Jordan Lab, University of Colorado	9606	SRS3497800	GSM3242956	bone marrow mononuclear cells	Primary AML patient	Primary AML patient specimen, treated	venetoclax and azacitidine
+SAMN09536956	9536956	RB_0	Jordan Lab, University of Colorado	9606	SRS3497799	GSM3242955	bone marrow mononuclear cells	Primary AML patient	Primary AML patient specimen	untreated
+SAMN09536957	9536957	FJ_6	Jordan Lab, University of Colorado	9606	SRS3497798	GSM3242954	bone marrow mononuclear cells	Primary AML patient	Primary AML patient specimen, treated	venetoclax and azacitidine
+SAMN09536958	9536958	FJ_0	Jordan Lab, University of Colorado	9606	SRS3497797	GSM3242953	bone marrow mononuclear cells	Primary AML patient	Primary AML patient specimen	untreated

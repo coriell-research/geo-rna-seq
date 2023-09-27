@@ -1,0 +1,28 @@
+accession	uid	title	organization	taxonomy	sra	geo	agent	cell line	source_name	tumor type
+SAMN11514577	11514577	48h_untreated_A431_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677117	GSM3736781	none	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514580	11514580	48h_5Fu_M231_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677139	GSM3736804	5Fu	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514581	11514581	48h_5Fu_M231_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677138	GSM3736803	5Fu	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514582	11514582	48h_5Fu_M231_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677137	GSM3736802	5Fu	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514583	11514583	48h_CKI_1/20_M231_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677136	GSM3736801	CKI_1/20	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514584	11514584	48h_CKI_1/20_M231_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677135	GSM3736800	CKI_1/20	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514585	11514585	48h_CKI_1/20_M231_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677134	GSM3736799	CKI_1/20	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514586	11514586	48h_untreated_M231_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677133	GSM3736798	none	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514587	11514587	48h_untreated_M231_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677132	GSM3736797	none	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514588	11514588	48h_untreated_M231_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677131	GSM3736796	none	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514589	11514589	48h_vehicle_control_A431_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677130	GSM3736795	vehicle_control	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514590	11514590	48h_CKI+Doxorubicin_A431_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677125	GSM3736790	CKI+Doxorubicin	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514591	11514591	48h_Doxorubicin_A431_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677122	GSM3736789	Doxorubicin	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514592	11514592	48h_vehicle_control_A431_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677129	GSM3736794	vehicle_control	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514593	11514593	48h_vehicle_control_A431_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677128	GSM3736793	vehicle_control	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514594	11514594	48h_CKI+Doxorubicin_A431_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677127	GSM3736792	CKI+Doxorubicin	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514595	11514595	48h_CKI+Doxorubicin_A431_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677126	GSM3736791	CKI+Doxorubicin	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514596	11514596	48h_Doxorubicin_A431_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677123	GSM3736788	Doxorubicin	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514597	11514597	48h_Doxorubicin_A431_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677124	GSM3736787	Doxorubicin	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514598	11514598	48h_CKI_1/20_A431_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677121	GSM3736786	CKI_1/20	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514599	11514599	48h_CKI_1/20_A431_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677119	GSM3736785	CKI_1/20	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514600	11514600	48h_CKI_1/20_A431_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677120	GSM3736784	CKI_1/20	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514601	11514601	48h_untreated_A431_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677118	GSM3736783	none	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514602	11514602	48h_untreated_A431_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677116	GSM3736782	none	A431	total RNAs, cell line	epidermoid carcinoma
+SAMN11514605	11514605	48h_CKI+5Fu_M231_3	Molecular and biomedical science, University of Adelaide	9606	SRS4677141	GSM3736807	CKI+5Fu	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514606	11514606	48h_CKI+5Fu_M231_2	Molecular and biomedical science, University of Adelaide	9606	SRS4677142	GSM3736806	CKI+5Fu	MDA-MB-231	total RNAs, cell line	adenocarcinoma
+SAMN11514607	11514607	48h_CKI+5Fu_M231_1	Molecular and biomedical science, University of Adelaide	9606	SRS4677140	GSM3736805	CKI+5Fu	MDA-MB-231	total RNAs, cell line	adenocarcinoma

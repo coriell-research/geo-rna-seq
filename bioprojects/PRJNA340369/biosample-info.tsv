@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	disease	source_name	time	tissue	treatment
+SAMN05713037	5713037	TF1_ctl_rep2	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652311	GSM2295910	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713038	5713038	TF1_ctl_rep1	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652314	GSM2295909	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713039	5713039	TF1_Ccr_rep3	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652317	GSM2295915	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713040	5713040	TF1_Ccr_rep2	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652312	GSM2295914	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713041	5713041	TF1_Ccr_rep1	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652318	GSM2295913	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713042	5713042	TF1_ctl_rep4	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652315	GSM2295912	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713380	5713380	UCSD_Ccr_rep4	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652333	GSM2295932	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713381	5713381	UCSD_Ccr_rep3	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652332	GSM2295931	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713382	5713382	UCSD_Ccr_rep2	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652331	GSM2295930	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713383	5713383	UCSD_Ccr_rep1	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652334	GSM2295929	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713384	5713384	UCSD_ctl_rep4	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652330	GSM2295928	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713385	5713385	UCSD_ctl_rep3	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652327	GSM2295927	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713386	5713386	UCSD_ctl_rep2	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652329	GSM2295926	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713387	5713387	UCSD_ctl_rep1	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652325	GSM2295925	UCSD-AML1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713388	5713388	UT7_Ccr_rep4	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652328	GSM2295924	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713389	5713389	UT7_Ccr_rep3	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652326	GSM2295923	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713390	5713390	UT7_Ccr_rep2	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652324	GSM2295922	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713391	5713391	UT7_Ccr_rep1	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652323	GSM2295921	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713392	5713392	UT7_ctl_rep4	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652321	GSM2295920	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713393	5713393	UT7_ctl_rep3	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652319	GSM2295919	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713394	5713394	UT7_ctl_rep2	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652322	GSM2295918	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713395	5713395	UT7_ctl_rep1	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652316	GSM2295917	UT-7	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle
+SAMN05713396	5713396	TF1_Ccr_rep4	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652320	GSM2295916	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Cyclocreatine (3mM)
+SAMN05713397	5713397	TF1_ctl_rep3	Computational Biology and Bioinformatics, Broad Institute	9606	SRS1652313	GSM2295911	TF-1	Acute Myeloid Leukemia	Human bone marrow	24 hours	Human blood	Vehicle

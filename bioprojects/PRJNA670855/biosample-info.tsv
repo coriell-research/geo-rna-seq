@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	molecule	source_name	treatment
+SAMN16522644	16522644	Vehicle Rep 2	Microbiology, NYU School of Medicine	9606	SRS7572079	GSM4849752	B-cell non-Hodgkin lymphoma cell line	translated RNA	OCI-LY1 cells	untreated
+SAMN16522645	16522645	Vehicle Rep 1	Microbiology, NYU School of Medicine	9606	SRS7572078	GSM4849751	B-cell non-Hodgkin lymphoma cell line	translated RNA	OCI-LY1 cells	untreated
+SAMN16522646	16522646	SBI-756 total Rep 2	Microbiology, NYU School of Medicine	9606	SRS7572085	GSM4849758	B-cell non-Hodgkin lymphoma cell line	Total RNA	OCI-LY1 cells	treated with SBI-756 for 4 hours
+SAMN16522647	16522647	SBI-756 total Rep 1	Microbiology, NYU School of Medicine	9606	SRS7572084	GSM4849757	B-cell non-Hodgkin lymphoma cell line	Total RNA	OCI-LY1 cells	treated with SBI-756 for 4 hours
+SAMN16522648	16522648	Vehicle total Rep 2	Microbiology, NYU School of Medicine	9606	SRS7572083	GSM4849756	B-cell non-Hodgkin lymphoma cell line	Total RNA	OCI-LY1 cells	untreated
+SAMN16522649	16522649	Vehicle total Rep 1	Microbiology, NYU School of Medicine	9606	SRS7572082	GSM4849755	B-cell non-Hodgkin lymphoma cell line	Total RNA	OCI-LY1 cells	untreated
+SAMN16522650	16522650	SBI-756 Rep 2	Microbiology, NYU School of Medicine	9606	SRS7572081	GSM4849754	B-cell non-Hodgkin lymphoma cell line	translated RNA	OCI-LY1 cells	treated with SBI-756 for 4 hours
+SAMN16522651	16522651	SBI-756 Rep 1	Microbiology, NYU School of Medicine	9606	SRS7572080	GSM4849753	B-cell non-Hodgkin lymphoma cell line	translated RNA	OCI-LY1 cells	treated with SBI-756 for 4 hours

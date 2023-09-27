@@ -1,0 +1,97 @@
+accession	uid	title	organization	taxonomy	sra	geo	genotype	source_name	tissue	treatment
+SAMN09697968	9697968	BT245-DMSO-D5	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567223	GSM3294968	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697971	9697971	BT245-NKO-P18	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567201	GSM3294967	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697973	9697973	BT245-NKO-P17	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567228	GSM3294966	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697974	9697974	BT245-NKO-P16	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567224	GSM3294965	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697976	9697976	BT245-NKO-P31	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567198	GSM3294964	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697978	9697978	BT245-NKO-P30	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567197	GSM3294963	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697979	9697979	BT245-KO-C5P4	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567203	GSM3294962	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697981	9697981	BT245-KO-C4	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567196	GSM3294961	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697983	9697983	BT245-KO-C2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567199	GSM3294960	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697984	9697984	BT245-KO-C4P6	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567194	GSM3294959	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697986	9697986	BT245-KO-C2P6	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567195	GSM3294958	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697987	9697987	DIPGXIII-NKO-C8	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567193	GSM3294957	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697989	9697989	DIPGXIII-NKO-C12	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567200	GSM3294956	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697991	9697991	DIPGXIII-KO-C5	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567202	GSM3294955	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697993	9697993	DIPGXIII-KO-C10	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567189	GSM3294954	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09697994	9697994	DIPGXIII	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567188	GSM3294953	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697996	9697996	HSJ-050-C5	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567187	GSM3294952	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697997	9697997	HSJ019-C7	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567214	GSM3294951	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09697998	9697998	HSJ019-C4	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567191	GSM3294950	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698000	9698000	DIPGXIII-C14	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567190	GSM3294949	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698001	9698001	DIPGVI-C30	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567186	GSM3294948	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698003	9698003	BT245-C19	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567192	GSM3294947	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698005	9698005	G477	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567184	GSM3294946	H3.3K27WT	Tumor-derived cell-line	glioma tumor	None
+SAMN09698006	9698006	HSJ-030-C8	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567183	GSM3294945	H3.3K27WT	Tumor-derived cell-line	glioma tumor	None
+SAMN09698008	9698008	SJG5-C16	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567182	GSM3294944	H3.3K27WT	Tumor-derived cell-line	glioma tumor	None
+SAMN09698009	9698009	pCGBM2-C7	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567181	GSM3294943	H3.3K27WT	Tumor-derived cell-line	glioma tumor	None
+SAMN09698010	9698010	G477-C6	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567180	GSM3294942	H3.3K27WT	Tumor-derived cell-line	glioma tumor	None
+SAMN09698011	9698011	SJG5-C23	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567185	GSM3294941	H3.3K27WT	Tumor-derived cell-line	glioma tumor	None
+SAMN09698012	9698012	BT245-COMBO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567230	GSM3294995	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698013	9698013	BT245-5AZA-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567222	GSM3294994	H3.3K27M	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698014	9698014	BT245-5AZA-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567221	GSM3294993	H3.3K27M	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698015	9698015	BT245-PANO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567257	GSM3294992	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698016	9698016	BT245-PANO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567220	GSM3294991	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698017	9698017	DIPGXIII-KO-COMBO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567263	GSM3294990	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698018	9698018	DIPGXIII-KO-COMBO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567235	GSM3294989	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698019	9698019	DIPGXIII-KO-5AZA-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567259	GSM3294988	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698020	9698020	DIPGXIII-KO-5AZA-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567219	GSM3294987	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698021	9698021	DIPGXIII-KO-PANO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567218	GSM3294986	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698022	9698022	DIPGXIII-KO-PANO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567217	GSM3294985	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698023	9698023	DIPGXIII-KO-DMSO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567225	GSM3294984	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09698025	9698025	DIPGXIII-KO-DMSO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567226	GSM3294983	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09698027	9698027	DIPGXIII-COMBO-R3	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567248	GSM3294982	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698028	9698028	DIPGXIII-COMBO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567212	GSM3294981	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698030	9698030	DIPGXIII-COMBO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567211	GSM3294980	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698031	9698031	DIPGXIII-5AZA-R3	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567215	GSM3294979	H3.3K27M	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698033	9698033	DIPGXIII-5AZA-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567210	GSM3294978	H3.3K27M	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698034	9698034	DIPGXIII-5AZA-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567209	GSM3294977	H3.3K27M	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698036	9698036	DIPGXIII-PANO-R3	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567208	GSM3294976	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698037	9698037	DIPGXIII-PANO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567207	GSM3294975	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698039	9698039	DIPGXIII-PANO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567216	GSM3294974	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698040	9698040	DIPGXIII-DMSO-R3	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567205	GSM3294973	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698042	9698042	DIPGXIII-DMSO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567206	GSM3294972	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698043	9698043	DIPGXIII-DMSO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567204	GSM3294971	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698045	9698045	BT245-DMSO-D7	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567213	GSM3294970	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698047	9698047	BT245-DMSO-D6	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567227	GSM3294969	H3.3K27M	Tumor-derived cell-line	glioma tumor	None
+SAMN09698048	9698048	BT245-KO-PANO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567234	GSM3295000	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698049	9698049	BT245-KO-PANO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567253	GSM3294999	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat
+SAMN09698050	9698050	BT245-KO-DMSO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567244	GSM3294998	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09698051	9698051	BT245-KO-COMBO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567250	GSM3295004	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698052	9698052	BT245-KO-COMBO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567232	GSM3295003	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN09698053	9698053	BT245-KO-5AZA-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567237	GSM3295002	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698054	9698054	BT245-KO-5AZA-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567229	GSM3295001	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	5-azacytidine
+SAMN09698055	9698055	BT245-KO-DMSO-R1	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567255	GSM3294997	H3.3K27M-KO	Tumor-derived cell-line	glioma tumor	None
+SAMN09698056	9698056	BT245-COMBO-R2	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS3567231	GSM3294996	H3.3K27M	Tumor-derived cell-line	glioma tumor	Panobinostat + 5-azacytidine
+SAMN11229434	11229434	P-14-08877	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521333	GSM3682804	H3.3K27M	Tumor		None
+SAMN11229435	11229435	JN-695	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521332	GSM3682803	H3.3K27WT	Tumor		None
+SAMN11229436	11229436	HSJ-020	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521331	GSM3682802	H3.3K27WT	Tumor		None
+SAMN11229437	11229437	HSJ-019	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521330	GSM3682801	H3.3K27M	Tumor		None
+SAMN11229438	11229438	C-14-00110	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521329	GSM3682800	H3.3K27WT	Tumor		None
+SAMN11229439	11229439	HSJ-023	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521328	GSM3682799	H3.3K27M	Tumor		None
+SAMN11229440	11229440	R088	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521327	GSM3682798	H3.3K27WT	Tumor		None
+SAMN11229441	11229441	R006	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521326	GSM3682797	H3.3K27WT	Tumor		None
+SAMN11229442	11229442	PS14-1547	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521325	GSM3682796	H3.3K27WT	Tumor		None
+SAMN11229443	11229443	JN-29T	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521324	GSM3682795	H3.3K27M	Tumor		None
+SAMN11229444	11229444	JN-26T	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521323	GSM3682794	H3.3K27M	Tumor		None
+SAMN11229445	11229445	JN-10T	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521322	GSM3682793	H3.3K27M	Tumor		None
+SAMN11229446	11229446	JN-7T	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521321	GSM3682792	H3.3K27M	Tumor		None
+SAMN11229448	11229448	JN-35T	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521320	GSM3682791	H3.3K27M	Tumor		None
+SAMN11229449	11229449	PS113293	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521319	GSM3682790	H3.3K27M	Tumor		None
+SAMN11229451	11229451	PL708	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521318	GSM3682789	H3.3K27M	Tumor		None
+SAMN11229452	11229452	PL3948	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521317	GSM3682788	H3.3K27M	Tumor		None
+SAMN11229454	11229454	PL150	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521316	GSM3682787	H3.3K27WT	Tumor		None
+SAMN11229455	11229455	PH1157	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521315	GSM3682786	H3.3K27M	Tumor		None
+SAMN11229457	11229457	BTTB-434	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521314	GSM3682785	H3.3K27WT	Tumor		None
+SAMN11229458	11229458	2230	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521313	GSM3682784	H3.3K27WT	Tumor		None
+SAMN11229459	11229459	1840	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521312	GSM3682783	H3.3K27WT	Tumor		None
+SAMN11229460	11229460	HSJ-050	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521341	GSM3682812	H3.3K27M	Tumor		None
+SAMN11229461	11229461	PS14-0531	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521340	GSM3682811	H3.3K27WT	Tumor		None
+SAMN11229462	11229462	HSJ-035	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521339	GSM3682810	H3.3K27M	Tumor		None
+SAMN11229463	11229463	P-14-08877-R	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521343	GSM3682814	H3.3K27M	Tumor		None
+SAMN11229464	11229464	HSJ-051	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521342	GSM3682813	H3.3K27M	Tumor		None
+SAMN11229465	11229465	HSJ-031	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521338	GSM3682809	H3.3K27M	Tumor		None
+SAMN11229466	11229466	HSJ-030	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521337	GSM3682808	H3.3K27WT	Tumor		None
+SAMN11229467	11229467	CCHMC_4968-HGG-04A	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521336	GSM3682807	H3.3K27WT	Tumor		None
+SAMN11229468	11229468	PH1233	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521335	GSM3682806	H3.3K27WT	Tumor		None
+SAMN11229469	11229469	P-13-06179	Jabado Lab, Department of Pediatrics, McGill University	9606	SRS4521334	GSM3682805	H3.3K27WT	Tumor		None

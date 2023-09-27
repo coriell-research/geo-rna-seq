@@ -1,0 +1,10 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	replicate	source_name	timepoint	treatment
+SAMN12742376	12742376	BT12 cells, SolvA, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384491	GSM4078582	BT12	1	Atypical Teratoid/Rhabdoid Tumor	18hours	Solvent
+SAMN12742377	12742377	BT12 cells, mithramycin 18h_MMAC, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384499	GSM4078590	BT12	3	Atypical Teratoid/Rhabdoid Tumor	18hours	Mithramycin
+SAMN12742378	12742378	BT12 cells, mithramycin 18h_MMAB, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384498	GSM4078589	BT12	2	Atypical Teratoid/Rhabdoid Tumor	18hours	Mithramycin
+SAMN12742379	12742379	BT12 cells, mithramycin 18h_MMAA, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384497	GSM4078588	BT12	1	Atypical Teratoid/Rhabdoid Tumor	18hours	Mithramycin
+SAMN12742380	12742380	BT12 cells, mithramycin 8h_MMAC, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384496	GSM4078587	BT12	3	Atypical Teratoid/Rhabdoid Tumor	8hours	Mithramycin
+SAMN12742381	12742381	BT12 cells, mithramycin 8h_MMAB, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384495	GSM4078586	BT12	2	Atypical Teratoid/Rhabdoid Tumor	8hours	Mithramycin
+SAMN12742382	12742382	BT12 cells, mithramycin 8h_MMAA, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384494	GSM4078585	BT12	1	Atypical Teratoid/Rhabdoid Tumor	8hours	Mithramycin
+SAMN12742383	12742383	BT12 cells, SolvC, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384493	GSM4078584	BT12	3	Atypical Teratoid/Rhabdoid Tumor	18hours	Solvent
+SAMN12742384	12742384	BT12 cells, SolvB, RNA-seq	Children's Hospital of Philadelphia	9606	SRS5384492	GSM4078583	BT12	2	Atypical Teratoid/Rhabdoid Tumor	18hours	Solvent

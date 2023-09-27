@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN16523112	16523112	OC3_HH 5 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572629	GSM4850483	HH	HH Cutaneous T cell Lymphoma	5 nM decitabine
+SAMN16523114	16523114	OC1_HH untreated	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572628	GSM4850482	HH	HH Cutaneous T-cell Lymphoma	untreated
+SAMN16523116	16523116	OLC48_TLOm1 500 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572627	GSM4850481	TLOm1	TLOm1 Adult T-cell leukemia	500 nM azacitidine
+SAMN16523117	16523117	OLC47_TLOm1 250 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572626	GSM4850480	TLOm1	TLOm1 Adult T-cell leukemia	250 nM azacitidine
+SAMN16523119	16523119	OLC46_TLOm1 125 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572625	GSM4850479	TLOm1	TLOm1 Adult T-cell leukemia	125 nM azacitidine
+SAMN16523120	16523120	OLC44_TLOm1 untreated	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572624	GSM4850478	TLOm1	TLOm1 Adult T-cell leukemia	untreated
+SAMN16523122	16523122	OLC32_PF382 500 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572623	GSM4850477	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	500 nM azacitidine
+SAMN16523124	16523124	OLC31_PF82 250 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572622	GSM4850476	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	250 nM azacitidine
+SAMN16523125	16523125	OLC30_PF382 125 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572621	GSM4850475	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	125 nM azacitidine
+SAMN16523127	16523127	OLC28_PF382 untreated	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572620	GSM4850474	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	untreated
+SAMN16523129	16523129	OLC64_HH 250 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572619	GSM4850473	HH	HH Cutaneous T cell Lymphoma	250 nM azacitidine
+SAMN16523130	16523130	OC37_TLOm1 25 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572639	GSM4850493	TLOm1	TLOm1 Adult T-cell leukemia	25 nM decitabine
+SAMN16523131	16523131	OC36_TLOm1 12.5 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572638	GSM4850492	TLOm1	TLOm1 Adult T-cell leukemia	12.5 nM decitabine
+SAMN16523132	16523132	OC35_TLOm1 5 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572637	GSM4850491	TLOm1	TLOm1 Adult T-cell leukemia	5 nM decitabine
+SAMN16523133	16523133	OC33_TLOm1 untreated	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572636	GSM4850490	TLOm1	TLOm1 Adult T-cell leukemia	untreated
+SAMN16523134	16523134	OC29_PF382 25 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572635	GSM4850489	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	25 nM decitabine
+SAMN16523135	16523135	OLC63_HH 125 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572618	GSM4850472	HH	HH Cutaneous T cell Lymphoma	125 nM azacitidine
+SAMN16523136	16523136	OLC62_HH 50 nM azacitidine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572617	GSM4850471	HH	HH Cutaneous T cell Lymphoma	50 nM azacitidine
+SAMN16523137	16523137	OLC60_HH untreated	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572616	GSM4850470	HH	HH Cutaneous T-cell Lymphoma	untreated
+SAMN16523138	16523138	OC28_PF82 12.5 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572634	GSM4850488	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	12.5 nM decitabine
+SAMN16523139	16523139	OC27_PF382 5 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572633	GSM4850487	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	5 nM decitabine
+SAMN16523141	16523141	OC25_PF382 untreated	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572632	GSM4850486	PF382	PF382 T-cell Acute Lymphoblastic Leukemia	untreated
+SAMN16523142	16523142	OC5_HH 25 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572631	GSM4850485	HH	HH Cutaneous T cell Lymphoma	25 nM decitabine
+SAMN16523143	16523143	OC4_HH 12.5 nM decitabine	enter for Lymphoid Malignancies, Columbia University Medical Center	9606	SRS7572630	GSM4850484	HH	HH Cutaneous T cell Lymphoma	12.5 nM decitabine

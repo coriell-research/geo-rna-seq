@@ -1,0 +1,71 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	mapki sensitivity	mapki treatment	source_name
+SAMN03290885	3290885	Pt6-DP2	Medicine, UCLA	9606	SRS824601	GSM1588869	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290886	3290886	Pt15-DP2	Medicine, UCLA	9606	SRS824617	GSM1588889	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290887	3290887	Pt10-DP9	Medicine, UCLA	9606	SRS824582	GSM1588886	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290888	3290888	Pt5-DP3	Medicine, UCLA	9606	SRS824598	GSM1588866	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290889	3290889	Pt2-DP2	Medicine, UCLA	9606	SRS824588	GSM1588856	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290890	3290890	Pt3-baseline	Medicine, UCLA	9606	SRS824589	GSM1588857	melanoma	sensitive	none	tumor biopsy
+SAMN03290891	3290891	Pt8-DP3	Medicine, UCLA	9606	SRS824605	GSM1588873	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290892	3290892	Pt10-DP2	Medicine, UCLA	9606	SRS824611	GSM1588879	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290893	3290893	Pt10-baseline	Medicine, UCLA	9606	SRS824609	GSM1588877	melanoma	sensitive	none	tumor biopsy
+SAMN03290894	3290894	Pt4-baseline	Medicine, UCLA	9606	SRS824593	GSM1588861	melanoma	sensitive	none	tumor biopsy
+SAMN03290895	3290895	Pt8-baseline	Medicine, UCLA	9606	SRS824602	GSM1588870	melanoma	sensitive	none	tumor biopsy
+SAMN03290896	3290896	Pt9-baseline	Medicine, UCLA	9606	SRS824606	GSM1588874	melanoma	sensitive	none	tumor biopsy
+SAMN03290897	3290897	Pt10-DP8	Medicine, UCLA	9606	SRS824581	GSM1588885	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290898	3290898	Pt1-DP1	Medicine, UCLA	9606	SRS824585	GSM1588853	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290899	3290899	Pt2-baseline	Medicine, UCLA	9606	SRS824586	GSM1588854	melanoma	sensitive	none	tumor biopsy
+SAMN03290900	3290900	Pt8-DP1	Medicine, UCLA	9606	SRS824603	GSM1588871	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290901	3290901	Pt10-DP4	Medicine, UCLA	9606	SRS824613	GSM1588881	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290902	3290902	Pt10-DP5	Medicine, UCLA	9606	SRS824614	GSM1588882	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290903	3290903	Pt8-DP2	Medicine, UCLA	9606	SRS824604	GSM1588872	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290904	3290904	Pt10-DP7	Medicine, UCLA	9606	SRS824580	GSM1588884	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290905	3290905	Pt10-DP3	Medicine, UCLA	9606	SRS824612	GSM1588880	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290906	3290906	Pt6-baseline	Medicine, UCLA	9606	SRS824599	GSM1588867	melanoma	sensitive	none	tumor biopsy
+SAMN03290907	3290907	Pt10-DP1	Medicine, UCLA	9606	SRS824610	GSM1588878	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290908	3290908	Pt3-DP1	Medicine, UCLA	9606	SRS824590	GSM1588858	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290909	3290909	Pt3-DP2	Medicine, UCLA	9606	SRS824591	GSM1588859	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290910	3290910	Pt5-baseline	Medicine, UCLA	9606	SRS824595	GSM1588863	melanoma	sensitive	none	tumor biopsy
+SAMN03290911	3290911	Pt4-DP1	Medicine, UCLA	9606	SRS824594	GSM1588862	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290912	3290912	Pt9-DP1	Medicine, UCLA	9606	SRS824607	GSM1588875	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290913	3290913	Pt2-DP1	Medicine, UCLA	9606	SRS824587	GSM1588855	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290914	3290914	Pt15-baseline	Medicine, UCLA	9606	SRS824583	GSM1588887	melanoma	sensitive	none	tumor biopsy
+SAMN03290915	3290915	Pt5-DP2	Medicine, UCLA	9606	SRS824597	GSM1588865	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290916	3290916	Pt1-baseline	Medicine, UCLA	9606	SRS824584	GSM1588852	melanoma	sensitive	none	tumor biopsy
+SAMN03290917	3290917	Pt15-DP1	Medicine, UCLA	9606	SRS824616	GSM1588888	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290918	3290918	Pt9-DP2	Medicine, UCLA	9606	SRS824608	GSM1588876	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290919	3290919	Pt10-DP6	Medicine, UCLA	9606	SRS824615	GSM1588883	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290920	3290920	Pt3-DP3	Medicine, UCLA	9606	SRS824592	GSM1588860	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290921	3290921	Pt6-DP1	Medicine, UCLA	9606	SRS824600	GSM1588868	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290922	3290922	Pt5-DP1	Medicine, UCLA	9606	SRS824596	GSM1588864	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290923	3290923	Pt22-baseline	Medicine, UCLA	9606	SRS824634	GSM1588906	melanoma	sensitive	none	tumor biopsy
+SAMN03290924	3290924	Pt16-baseline	Medicine, UCLA	9606	SRS824618	GSM1588890	melanoma	sensitive	none	tumor biopsy
+SAMN03290925	3290925	Pt23-DDP1	Medicine, UCLA	9606	SRS824639	GSM1588911	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290926	3290926	Pt23-baseline	Medicine, UCLA	9606	SRS824638	GSM1588910	melanoma	sensitive	none	tumor biopsy
+SAMN03290927	3290927	Pt21-DDP2	Medicine, UCLA	9606	SRS824632	GSM1588904	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290928	3290928	Pt18-DDP1	Medicine, UCLA	9606	SRS824624	GSM1588896	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290929	3290929	SKMel28DDR1-PLXAZD	Medicine, UCLA	9606	SRS824649	GSM1588921	melanoma	resistant	BRAFi+MEKi	Melanoma cell line
+SAMN03290930	3290930	Pt17-DP2	Medicine, UCLA	9606	SRS824622	GSM1588894	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290931	3290931	Pt21-DP2	Medicine, UCLA	9606	SRS824633	GSM1588905	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290932	3290932	M238R1-PLX	Medicine, UCLA	9606	SRS824646	GSM1588918	melanoma	resistant	BRAFi	Melanoma cell line
+SAMN03290933	3290933	Pt22-DDP1	Medicine, UCLA	9606	SRS824635	GSM1588907	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290934	3290934	Pt20-DDP1	Medicine, UCLA	9606	SRS824629	GSM1588901	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290935	3290935	Pt19-DDP2	Medicine, UCLA	9606	SRS824627	GSM1588899	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290936	3290936	SKMel28R1-PLX	Medicine, UCLA	9606	SRS824648	GSM1588920	melanoma	resistant	BRAFi	Melanoma cell line
+SAMN03290937	3290937	Pt19-DDP1	Medicine, UCLA	9606	SRS824626	GSM1588898	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290938	3290938	Pt24-DDP1	Medicine, UCLA	9606	SRS824642	GSM1588913	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290939	3290939	Pt16-DP1	Medicine, UCLA	9606	SRS824619	GSM1588891	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290940	3290940	Pt21-DDP1	Medicine, UCLA	9606	SRS824631	GSM1588903	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290941	3290941	Pt22-DDP3	Medicine, UCLA	9606	SRS824637	GSM1588909	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290942	3290942	Pt20-baseline	Medicine, UCLA	9606	SRS824628	GSM1588900	melanoma	sensitive	none	tumor biopsy
+SAMN03290943	3290943	Pt18-baseline	Medicine, UCLA	9606	SRS824623	GSM1588895	melanoma	sensitive	none	tumor biopsy
+SAMN03290944	3290944	M229DDRpoly-PLXAZD	Medicine, UCLA	9606	SRS824644	GSM1588916	melanoma	resistant	BRAFi+MEKi	Melanoma cell line
+SAMN03290945	3290945	Pt24-baseline	Medicine, UCLA	9606	SRS824640	GSM1588912	melanoma	sensitive	none	tumor biopsy
+SAMN03290946	3290946	Pt20-DP1	Medicine, UCLA	9606	SRS824630	GSM1588902	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290947	3290947	Pt17-DP1	Medicine, UCLA	9606	SRS824621	GSM1588893	melanoma	resistant	BRAFi	tumor biopsy
+SAMN03290948	3290948	SKMel28-DMSO	Medicine, UCLA	9606	SRS824647	GSM1588919	melanoma	sensitive	none	Melanoma cell line
+SAMN03290949	3290949	Pt17-baseline	Medicine, UCLA	9606	SRS824620	GSM1588892	melanoma	sensitive	none	tumor biopsy
+SAMN03290950	3290950	Pt19-baseline	Medicine, UCLA	9606	SRS824625	GSM1588897	melanoma	sensitive	none	tumor biopsy
+SAMN03290951	3290951	M238-DMSO2D	Medicine, UCLA	9606	SRS824645	GSM1588917	melanoma	sensitive	none	Melanoma cell line
+SAMN03290952	3290952	M229-DMSO2D	Medicine, UCLA	9606	SRS824641	GSM1588914	melanoma	sensitive	none	Melanoma cell line
+SAMN03290953	3290953	Pt22-DDP2	Medicine, UCLA	9606	SRS824636	GSM1588908	melanoma	resistant	BRAFi+MEKi	tumor biopsy
+SAMN03290954	3290954	M229R5-PLX	Medicine, UCLA	9606	SRS824643	GSM1588915	melanoma	resistant	BRAFi	Melanoma cell line

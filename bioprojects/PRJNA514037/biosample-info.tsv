@@ -1,0 +1,43 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment compound	treatment time	tumor type
+SAMN10719166	10719166	UISO_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236493	GSM3557258	UISO	tumor derived cancer cell line	UISO	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719167	10719167	UISO_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236492	GSM3557257	UISO	tumor derived cancer cell line	UISO	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719168	10719168	UISO_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236491	GSM3557256	UISO	tumor derived cancer cell line	UISO	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719169	10719169	UISO_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236490	GSM3557255	UISO	tumor derived cancer cell line	UISO	Control	1 day	Merkel cell carcinoma
+SAMN10719170	10719170	UISO_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236489	GSM3557254	UISO	tumor derived cancer cell line	UISO	Control	1 day	Merkel cell carcinoma
+SAMN10719171	10719171	UISO_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236488	GSM3557253	UISO	tumor derived cancer cell line	UISO	Control	1 day	Merkel cell carcinoma
+SAMN10719172	10719172	broli_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236487	GSM3557252	BroLi	tumor derived cancer cell line	BroLi	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719173	10719173	broli_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236486	GSM3557251	BroLi	tumor derived cancer cell line	BroLi	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719174	10719174	broli_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236485	GSM3557250	BroLi	tumor derived cancer cell line	BroLi	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719175	10719175	broli_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236484	GSM3557249	BroLi	tumor derived cancer cell line	BroLi	Control	1 day	Merkel cell carcinoma
+SAMN10719176	10719176	broli_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236483	GSM3557248	BroLi	tumor derived cancer cell line	BroLi	Control	1 day	Merkel cell carcinoma
+SAMN10719177	10719177	broli_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236482	GSM3557247	BroLi	tumor derived cancer cell line	BroLi	Control	1 day	Merkel cell carcinoma
+SAMN10719178	10719178	PETA_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236481	GSM3557246	PeTa	tumor derived cancer cell line	PeTa	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719179	10719179	PETA_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236480	GSM3557245	PeTa	tumor derived cancer cell line	PeTa	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719180	10719180	PETA_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236479	GSM3557244	PeTa	tumor derived cancer cell line	PeTa	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719181	10719181	PETA_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236478	GSM3557243	PeTa	tumor derived cancer cell line	PeTa	Control	1 day	Merkel cell carcinoma
+SAMN10719182	10719182	PETA_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236477	GSM3557242	PeTa	tumor derived cancer cell line	PeTa	Control	1 day	Merkel cell carcinoma
+SAMN10719183	10719183	PETA_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236476	GSM3557241	PeTa	tumor derived cancer cell line	PeTa	Control	1 day	Merkel cell carcinoma
+SAMN10719184	10719184	waga_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236475	GSM3557240	WaGa	tumor derived cancer cell line	WaGa	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719185	10719185	waga_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236474	GSM3557239	WaGa	tumor derived cancer cell line	WaGa	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719186	10719186	waga_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236473	GSM3557238	WaGa	tumor derived cancer cell line	WaGa	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719188	10719188	waga_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236472	GSM3557237	WaGa	tumor derived cancer cell line	WaGa	Control	1 day	Merkel cell carcinoma
+SAMN10719189	10719189	waga_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236471	GSM3557236	WaGa	tumor derived cancer cell line	WaGa	Control	1 day	Merkel cell carcinoma
+SAMN10719190	10719190	waga_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236470	GSM3557235	WaGa	tumor derived cancer cell line	WaGa	Control	1 day	Merkel cell carcinoma
+SAMN10719191	10719191	MS1_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236469	GSM3557234	MS-1	tumor derived cancer cell line	MS-1	GSK-LSD1 0.1uM	3 days	Merkel cell carcinoma
+SAMN10719192	10719192	MS1_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236468	GSM3557233	MS-1	tumor derived cancer cell line	MS-1	GSK-LSD1 0.1uM	3 days	Merkel cell carcinoma
+SAMN10719193	10719193	MS1_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236467	GSM3557232	MS-1	tumor derived cancer cell line	MS-1	GSK-LSD1 0.1uM	3 days	Merkel cell carcinoma
+SAMN10719194	10719194	MS1_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236466	GSM3557231	MS-1	tumor derived cancer cell line	MS-1	Control	3 days	Merkel cell carcinoma
+SAMN10719195	10719195	MS1_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236465	GSM3557230	MS-1	tumor derived cancer cell line	MS-1	Control	3 days	Merkel cell carcinoma
+SAMN10719196	10719196	MS1_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236464	GSM3557229	MS-1	tumor derived cancer cell line	MS-1	Control	3 days	Merkel cell carcinoma
+SAMN10719205	10719205	MKL2_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236463	GSM3557228	MKL-2	tumor derived cancer cell line	MKL-2	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719206	10719206	MKL2_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236462	GSM3557227	MKL-2	tumor derived cancer cell line	MKL-2	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719207	10719207	MKL2_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236461	GSM3557226	MKL-2	tumor derived cancer cell line	MKL-2	CPI-670242	1 day	Merkel cell carcinoma
+SAMN10719208	10719208	MKL2_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236460	GSM3557225	MKL-2	tumor derived cancer cell line	MKL-2	Control	1 day	Merkel cell carcinoma
+SAMN10719209	10719209	MKL2_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236459	GSM3557224	MKL-2	tumor derived cancer cell line	MKL-2	Control	1 day	Merkel cell carcinoma
+SAMN10719210	10719210	MKL2_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236458	GSM3557223	MKL-2	tumor derived cancer cell line	MKL-2	Control	1 day	Merkel cell carcinoma
+SAMN10719211	10719211	MKL1_L3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236457	GSM3557222	MKL-1	tumor derived cancer cell line	MKL-1	GSK-LSD1 0.1uM	3 days	Merkel cell carcinoma
+SAMN10719212	10719212	MKL1_L2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236456	GSM3557221	MKL-1	tumor derived cancer cell line	MKL-1	GSK-LSD1 0.1uM	3 days	Merkel cell carcinoma
+SAMN10719213	10719213	MKL1_L1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236455	GSM3557220	MKL-1	tumor derived cancer cell line	MKL-1	GSK-LSD1 0.1uM	3 days	Merkel cell carcinoma
+SAMN10719214	10719214	MKL1_D3	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236454	GSM3557219	MKL-1	tumor derived cancer cell line	MKL-1	Control	3 days	Merkel cell carcinoma
+SAMN10719215	10719215	MKL1_D2	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236453	GSM3557218	MKL-1	tumor derived cancer cell line	MKL-1	Control	3 days	Merkel cell carcinoma
+SAMN10719216	10719216	MKL1_D1	James DeCaprio, Medical oncology, Dana-Farber Cancer Institute	9606	SRS4236452	GSM3557217	MKL-1	tumor derived cancer cell line	MKL-1	Control	3 days	Merkel cell carcinoma

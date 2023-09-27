@@ -1,0 +1,12 @@
+accession	uid	title	organization	taxonomy	sra	geo	origin	source_name	treatment
+SAMN16821841	16821841	THZ531_3	Longwood Center, Computational Biology, DFCI	9606	SRS7729513	GSM4911980	T-ALL	Jurkat cells	THZ531
+SAMN16821842	16821842	THZ531_2	Longwood Center, Computational Biology, DFCI	9606	SRS7729512	GSM4911979	T-ALL	Jurkat cells	THZ531
+SAMN16821843	16821843	THZ531_1	Longwood Center, Computational Biology, DFCI	9606	SRS7729511	GSM4911978	T-ALL	Jurkat cells	THZ531
+SAMN16821845	16821845	DMSO_3	Longwood Center, Computational Biology, DFCI	9606	SRS7729510	GSM4911977	T-ALL	Jurkat cells	DMSO
+SAMN16821846	16821846	DMSO_2	Longwood Center, Computational Biology, DFCI	9606	SRS7729509	GSM4911976	T-ALL	Jurkat cells	DMSO
+SAMN16821847	16821847	DMSO_1	Longwood Center, Computational Biology, DFCI	9606	SRS7729508	GSM4911975	T-ALL	Jurkat cells	DMSO
+SAMN16821848	16821848	CDK12nc_3	Longwood Center, Computational Biology, DFCI	9606	SRS7729507	GSM4911974	T-ALL	Jurkat cells	BSJ-4-23NC
+SAMN16821850	16821850	CDK12nc_2	Longwood Center, Computational Biology, DFCI	9606	SRS7729506	GSM4911973	T-ALL	Jurkat cells	BSJ-4-23NC
+SAMN16821852	16821852	CDK12degr_3	Longwood Center, Computational Biology, DFCI	9606	SRS7729504	GSM4911971	T-ALL	Jurkat cells	BSJ-4-23
+SAMN16821854	16821854	CDK12degr_2	Longwood Center, Computational Biology, DFCI	9606	SRS7729503	GSM4911970	T-ALL	Jurkat cells	BSJ-4-23
+SAMN16821855	16821855	CDK12degr_1	Longwood Center, Computational Biology, DFCI	9606	SRS7729502	GSM4911969	T-ALL	Jurkat cells	BSJ-4-23

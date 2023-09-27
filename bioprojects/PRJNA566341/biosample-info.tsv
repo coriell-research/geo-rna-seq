@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN12786805	12786805	CAL-62_400 nM THZ531 rep2	Tianjin Medical Universuty	9606	SRS5407406	GSM4085085	CAL-62	representative anaplastic thyroid carcinoma cell line	CAL-62_400 nM THZ531	400 nM THZ531 for 6h
+SAMN12786807	12786807	CAL-62_400 nM THZ531 rep1	Tianjin Medical Universuty	9606	SRS5407405	GSM4085084	CAL-62	representative anaplastic thyroid carcinoma cell line	CAL-62_400 nM THZ531	400 nM THZ531 for 6h
+SAMN12786809	12786809	CAL-62_100 nM THZ531 rep2	Tianjin Medical Universuty	9606	SRS5407404	GSM4085083	CAL-62	representative anaplastic thyroid carcinoma cell line	CAL-62_100 nM THZ531	100 nM THZ531 for 6h
+SAMN12786810	12786810	CAL-62_100 nM THZ531 rep1	Tianjin Medical Universuty	9606	SRS5407403	GSM4085082	CAL-62	representative anaplastic thyroid carcinoma cell line	CAL-62_100 nM THZ531	100 nM THZ531 for 6h
+SAMN12786812	12786812	CAL-62_DMSO rep2	Tianjin Medical Universuty	9606	SRS5407402	GSM4085081	CAL-62	representative anaplastic thyroid carcinoma cell line	CAL-62_DMSO	DMSO for 6h
+SAMN12786814	12786814	CAL-62_DMSO rep1	Tianjin Medical Universuty	9606	SRS5407401	GSM4085080	CAL-62	representative anaplastic thyroid carcinoma cell line	CAL-62_DMSO	DMSO for 6h

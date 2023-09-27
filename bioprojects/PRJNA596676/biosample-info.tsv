@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN13633919	13633919	SW6ODC2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863498	GSM4225689	SW620	CRC cell line	ODC (regorafenib, vemurafenib)
+SAMN13633920	13633920	SW6ODC1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863521	GSM4225688	SW620	CRC cell line	ODC (regorafenib, vemurafenib)
+SAMN13633921	13633921	SW6CTRL2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863497	GSM4225687	SW620	CRC cell line	CTRL
+SAMN13633922	13633922	SW6CTRL1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863496	GSM4225686	SW620	CRC cell line	CTRL
+SAMN13633923	13633923	SW4ODC2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863495	GSM4225685	SW48	CRC cell line	ODC (vemurafenib, crenolanib)
+SAMN13633924	13633924	SW4ODC1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863494	GSM4225684	SW48	CRC cell line	ODC (vemurafenib, crenolanib)
+SAMN13633926	13633926	SW4CTRL2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863493	GSM4225683	SW48	CRC cell line	CTRL
+SAMN13633928	13633928	SW4CTRL1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863503	GSM4225682	SW48	CRC cell line	CTRL
+SAMN13633930	13633930	LSODC2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863492	GSM4225681	LS174T	CRC cell line	ODC (regorafenib, GDC-0994)
+SAMN13633932	13633932	LSODC1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863490	GSM4225680	LS174T	CRC cell line	ODC (regorafenib, GDC-0994)
+SAMN13633934	13633934	LSCTRL2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863489	GSM4225679	LS174T	CRC cell line	CTRL
+SAMN13633936	13633936	LSCTRL1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863488	GSM4225678	LS174T	CRC cell line	CTRL
+SAMN13633937	13633937	HTODC2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863487	GSM4225677	HT29	CRC cell line	ODC (regorafenib, AZD-4547, vatalanib)
+SAMN13633939	13633939	HTODC1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863486	GSM4225676	HT29	CRC cell line	ODC (regorafenib, AZD-4547, vatalanib)
+SAMN13633940	13633940	HTCTRL2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863485	GSM4225675	HT29	CRC cell line	CTRL
+SAMN13633942	13633942	HTCTRL1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863483	GSM4225674	HT29	CRC cell line	CTRL
+SAMN13633944	13633944	HCTODC2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863499	GSM4225673	HCT116	CRC cell line	ODC (regorafenib, vemurafenib, GDC-0994)
+SAMN13633946	13633946	HCTODC1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863482	GSM4225672	HCT116	CRC cell line	ODC (regorafenib, vemurafenib, GDC-0994)
+SAMN13633947	13633947	HCTCTRL2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863481	GSM4225671	HCT116	CRC cell line	CTRL
+SAMN13633948	13633948	HCTCTRL1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863480	GSM4225670	HCT116	CRC cell line	CTRL
+SAMN13633949	13633949	DLDODC2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863479	GSM4225669	DLD1	CRC cell line	ODC (regorafenib, selumetinib)
+SAMN13633950	13633950	DLDODC1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863478	GSM4225668	DLD1	CRC cell line	ODC (regorafenib, selumetinib)
+SAMN13633951	13633951	DLDCTRL1	iGE3 Genomics Platform, University of Geneva	9606	SRS5863477	GSM4225667	DLD1	CRC cell line	CTRL
+SAMN13633952	13633952	DLDCTR2	iGE3 Genomics Platform, University of Geneva	9606	SRS5863476	GSM4225666	DLD1	CRC cell line	CTRL

@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	disease state	docetaxel sensitivity	source_name
+SAMN14783912	14783912	PCa_PC3_Res_2	University of Michigan	9606	SRS6590674	GSM4508919	PC3	Prostate cancer	Resistant	PC3_Res
+SAMN14783913	14783913	PCa_PC3_Res_1	University of Michigan	9606	SRS6590673	GSM4508918	PC3	Prostate cancer	Resistant	PC3_Res
+SAMN14783914	14783914	PCa_PC3_Sen_2	University of Michigan	9606	SRS6590671	GSM4508917	PC3	Prostate cancer	Sensitive	PC3_Sen
+SAMN14783915	14783915	PCa_PC3_Sen_1	University of Michigan	9606	SRS6590672	GSM4508916	PC3	Prostate cancer	Sensitive	PC3_Sen
+SAMN14783916	14783916	PCa_DU145_Res_2	University of Michigan	9606	SRS6590670	GSM4508915	DU145	Prostate cancer	Resistant	DU145_Res
+SAMN14783917	14783917	PCa_DU145_Res_1	University of Michigan	9606	SRS6590669	GSM4508914	DU145	Prostate cancer	Resistant	DU145_Res
+SAMN14783918	14783918	PCa_DU145_Sen_2	University of Michigan	9606	SRS6590667	GSM4508913	DU145	Prostate cancer	Sensitive	DU145_Sen
+SAMN14783919	14783919	PCa_DU145_Sen_1	University of Michigan	9606	SRS6590668	GSM4508912	DU145	Prostate cancer	Sensitive	DU145_Sen

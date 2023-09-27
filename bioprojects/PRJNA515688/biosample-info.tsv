@@ -1,0 +1,37 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	tissue	treatment
+SAMN10764406	10764406	VCaP_DHTsiNT_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259251	GSM3567202	VCaP	VCaP	Prostate Cancer	si knockdown non-target
+SAMN10764408	10764408	VCaP_DHTsiNT_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259250	GSM3567201	VCaP	VCaP	Prostate Cancer	si knockdown non-target
+SAMN10764410	10764410	LNCaP_DHTsiCDK7_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259246	GSM3567197	LNCaP	LNCaP	Prostate Cancer	si knockdown of CDK7
+SAMN10764411	10764411	LNCaP_DHTsiNT_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259244	GSM3567196	LNCaP	LNCaP	Prostate Cancer	si knockdown non-target
+SAMN10764413	10764413	LNCaP_DHTsiNT_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259245	GSM3567195	LNCaP	LNCaP	Prostate Cancer	si knockdown non-target
+SAMN10764415	10764415	DU145_24hTHZ1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259243	GSM3567194	DU145	DU145	Prostate Cancer	24h THZ1 treatment
+SAMN10764416	10764416	DU145_24hTHZ1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259242	GSM3567193	DU145	DU145	Prostate Cancer	24h THZ1 treatment
+SAMN10764418	10764418	DU145_24hDMSO_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259241	GSM3567192	DU145	DU145	Prostate Cancer	24h DMSO treatment
+SAMN10764419	10764419	DU145_24hDMSO_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259240	GSM3567191	DU145	DU145	Prostate Cancer	24h DMSO treatment
+SAMN10764421	10764421	VCaP_24hTHZ1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259238	GSM3567190	VCaP	VCaP	Prostate Cancer	24h THZ1 treatment
+SAMN10764422	10764422	VCaP_24hTHZ1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259239	GSM3567189	VCaP	VCaP	Prostate Cancer	24h THZ1 treatment
+SAMN10764424	10764424	VCaP_24hDMSO_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259237	GSM3567188	VCaP	VCaP	Prostate Cancer	24h DMSO treatment
+SAMN10764425	10764425	VCaP_24hDMSO_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259236	GSM3567187	VCaP	VCaP	Prostate Cancer	24h DMSO treatment
+SAMN10764427	10764427	LNCaP_24hTHZ1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259235	GSM3567186	LNCaP	LNCaP	Prostate Cancer	24h THZ1 treatment
+SAMN10764428	10764428	LNCaP_24hTHZ1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259234	GSM3567185	LNCaP	LNCaP	Prostate Cancer	24h THZ1 treatment
+SAMN10764430	10764430	LNCaP_24hDMSO_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259233	GSM3567184	LNCaP	LNCaP	Prostate Cancer	24h DMSO treatment
+SAMN10764432	10764432	LNCaP_24hDMSO_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259232	GSM3567183	LNCaP	LNCaP	Prostate Cancer	24h DMSO treatment
+SAMN10764433	10764433	VCaP_DHTTHZ1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259231	GSM3567182	VCaP	VCaP	Prostate Cancer	AR stimulation in presence of THZ1 (6h)
+SAMN10764435	10764435	VCaP_DHTTHZ1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259230	GSM3567181	VCaP	VCaP	Prostate Cancer	AR stimulation in presence of THZ1 (6h)
+SAMN10764436	10764436	VCaP_DHT_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259229	GSM3567180	VCaP	VCaP	Prostate Cancer	AR stimulation (6h)
+SAMN10764438	10764438	VCaP_DHT_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259228	GSM3567179	VCaP	VCaP	Prostate Cancer	AR stimulation (6h)
+SAMN10764440	10764440	VCaP_VEH_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259227	GSM3567178	VCaP	VCaP	Prostate Cancer	Vehicle control
+SAMN10764441	10764441	VCaP_VEH_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259226	GSM3567177	VCaP	VCaP	Prostate Cancer	Vehicle control
+SAMN10764443	10764443	LNCaP_DHTTHZ1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259225	GSM3567176	LNCaP	LNCaP	Prostate Cancer	AR stimulation in presence of THZ1 (6h)
+SAMN10764444	10764444	LNCaP_DHTTHZ1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259224	GSM3567175	LNCaP	LNCaP	Prostate Cancer	AR stimulation in presence of THZ1 (6h)
+SAMN10764446	10764446	LNCaP_DHT_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259223	GSM3567174	LNCaP	LNCaP	Prostate Cancer	AR stimulation (6h)
+SAMN10764447	10764447	LNCaP_DHT_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259222	GSM3567173	LNCaP	LNCaP	Prostate Cancer	AR stimulation (6h)
+SAMN10764449	10764449	LNCaP_VEH_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259221	GSM3567172	LNCaP	LNCaP	Prostate Cancer	Vehicle control
+SAMN10764450	10764450	LNCaP_VEH_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259220	GSM3567171	LNCaP	LNCaP	Prostate Cancer	Vehicle control
+SAMN10764526	10764526	VCaP_DHTsiMED1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259255	GSM3567206	VCaP	VCaP	Prostate Cancer	si knockdown of MED1
+SAMN10764527	10764527	VCaP_DHTsiMED1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259254	GSM3567205	VCaP	VCaP	Prostate Cancer	si knockdown of MED1
+SAMN10764528	10764528	LNCaP_DHTsiMED1_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259249	GSM3567200	LNCaP	LNCaP	Prostate Cancer	si knockdown of MED1
+SAMN10764529	10764529	LNCaP_DHTsiMED1_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259248	GSM3567199	LNCaP	LNCaP	Prostate Cancer	si knockdown of MED1
+SAMN10764530	10764530	LNCaP_DHTsiCDK7_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259247	GSM3567198	LNCaP	LNCaP	Prostate Cancer	si knockdown of CDK7
+SAMN10764531	10764531	VCaP_DHTsiCDK7_rep2	Cancer Biology, University of Pennsylvania	9606	SRS4259253	GSM3567204	VCaP	VCaP	Prostate Cancer	si knockdown of CDK7
+SAMN10764532	10764532	VCaP_DHTsiCDK7_rep1	Cancer Biology, University of Pennsylvania	9606	SRS4259252	GSM3567203	VCaP	VCaP	Prostate Cancer	si knockdown of CDK7

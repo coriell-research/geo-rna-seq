@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	tissue	treatment
+SAMN32008982	32008982	HS578T 17PKO_DOX_48H_rep3	Indiana University	9606	SRS15947917	GSM6781683	HS578T	Eukaryotic cells	one copy of chrom 17p knockout	Breast cancer	Breast cancer	Doxorubicin treated
+SAMN32008983	32008983	HS578T 17PKO_DOX_48H_rep2	Indiana University	9606	SRS15947918	GSM6781682	HS578T	Eukaryotic cells	one copy of chrom 17p knockout	Breast cancer	Breast cancer	Doxorubicin treated
+SAMN32008984	32008984	HS578T 17PKO_DOX_48H_rep1	Indiana University	9606	SRS15947916	GSM6781681	HS578T	Eukaryotic cells	one copy of chrom 17p knockout	Breast cancer	Breast cancer	Doxorubicin treated
+SAMN32008985	32008985	HS578T CAS9_DOX_48H_rep3	Indiana University	9606	SRS15947915	GSM6781680	HS578T	Eukaryotic cells	WT	Breast cancer	Breast cancer	Doxorubicin treated
+SAMN32008986	32008986	HS578T CAS9_DOX_48H_rep2	Indiana University	9606	SRS15947913	GSM6781679	HS578T	Eukaryotic cells	WT	Breast cancer	Breast cancer	Doxorubicin treated
+SAMN32008987	32008987	HS578T CAS9_DOX_48H_rep1	Indiana University	9606	SRS15947914	GSM6781678	HS578T	Eukaryotic cells	WT	Breast cancer	Breast cancer	Doxorubicin treated
+SAMN32008988	32008988	HS578T 17PKO_DMSO_48H_rep3	Indiana University	9606	SRS15947911	GSM6781677	HS578T	Eukaryotic cells	one copy of chrom 17p knockout	Breast cancer	Breast cancer	untreated
+SAMN32008989	32008989	HS578T 17PKO_DMSO_48H_rep2	Indiana University	9606	SRS15947912	GSM6781676	HS578T	Eukaryotic cells	one copy of chrom 17p knockout	Breast cancer	Breast cancer	untreated
+SAMN32008990	32008990	HS578T 17PKO_DMSO_48H_rep1	Indiana University	9606	SRS15947909	GSM6781675	HS578T	Eukaryotic cells	one copy of chrom 17p knockout	Breast cancer	Breast cancer	untreated
+SAMN32008991	32008991	HS578T cas9_DMSO_48H_rep3	Indiana University	9606	SRS15947910	GSM6781674	HS578T	Eukaryotic cells	WT	Breast cancer	Breast cancer	untreated
+SAMN32008992	32008992	HS578T cas9_DMSO_48H_rep2	Indiana University	9606	SRS15947908	GSM6781673	HS578T	Eukaryotic cells	WT	Breast cancer	Breast cancer	untreated
+SAMN32008993	32008993	HS578T cas9_DMSO_48H_rep1	Indiana University	9606	SRS15947907	GSM6781672	HS578T	Eukaryotic cells	WT	Breast cancer	Breast cancer	untreated

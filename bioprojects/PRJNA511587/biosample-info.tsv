@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN10640493	10640493	Chlorprothixene treated Kasumi-1 cells, 24 hours	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184347	GSM3529054	Kasumi-1	Kasumi-1 cell line	Chlorprothixene 40 uM 24 hours
+SAMN10640494	10640494	Chlorprothixene treated Kasumi-1 cells, 12 hours	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184346	GSM3529053	Kasumi-1	Kasumi-1 cell line	Chlorprothixene 40 uM 12 hours
+SAMN10640495	10640495	Chlorprothixene treated Kasumi-1 cells, 6 hours	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184345	GSM3529052	Kasumi-1	Kasumi-1 cell line	Chlorprothixene 40 uM 6 hours
+SAMN10640496	10640496	Un-treated Kasumi-1 cells	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184344	GSM3529051	Kasumi-1	Kasumi-1 cell line	None
+SAMN10640497	10640497	Chlorprothixene treated NB4 cells, 24 hours	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184343	GSM3529050	NB4	NB4 cell line	Chlorprothixene 40 uM 24 hours
+SAMN10640498	10640498	Chlorprothixene treated NB4 cells, 12 hours	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184342	GSM3529049	NB4	NB4 cell line	Chlorprothixene 40 uM 12 hours
+SAMN10640499	10640499	Chlorprothixene treated NB4 cells, 6 hours	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184341	GSM3529048	NB4	NB4 cell line	Chlorprothixene 40 uM 6 hours
+SAMN10640500	10640500	Un-treated NB4 cells	State Key Laboratory of Medical Genomics, Shanghai Jiao Tong University School of Medicine	9606	SRS4184340	GSM3529047	NB4	NB4 cell line	None

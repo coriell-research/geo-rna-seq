@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name
+SAMN03031462	3031462	siControl	Epigenomics, College of life science, Wuhan University	9606	SRS699479	GSM1500847	HCT116	HCT116
+SAMN03031463	3031463	siControl+BIX-01294	Epigenomics, College of life science, Wuhan University	9606	SRS699480	GSM1500848	HCT116	HCT116
+SAMN03031464	3031464	siControl+Rapamycin	Epigenomics, College of life science, Wuhan University	9606	SRS699481	GSM1500849	HCT116	HCT116
+SAMN03031465	3031465	siSMYD2.1	Epigenomics, College of life science, Wuhan University	9606	SRS699482	GSM1500850	HCT116	HCT116
+SAMN03031466	3031466	siSMYD2.1+BIX-01294	Epigenomics, College of life science, Wuhan University	9606	SRS699483	GSM1500851	HCT116	HCT116
+SAMN03031467	3031467	siSMYD2.1+Rapamycin	Epigenomics, College of life science, Wuhan University	9606	SRS699484	GSM1500852	HCT116	HCT116

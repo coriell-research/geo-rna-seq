@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN13039551	13039551	U3054_DMSO_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526344	GSM4125041	brain tumor derived cell line U3054	tumor cell line	DMSO
+SAMN13039552	13039552	U3054_DMSO_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526343	GSM4125040	brain tumor derived cell line U3054	tumor cell line	DMSO
+SAMN13039553	13039553	U3054_DMSO_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526342	GSM4125039	brain tumor derived cell line U3054	tumor cell line	DMSO
+SAMN13039554	13039554	U3054_JQ1_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526341	GSM4125038	brain tumor derived cell line U3054	tumor cell line	JQ1
+SAMN13039555	13039555	U3054_JQ1_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526340	GSM4125037	brain tumor derived cell line U3054	tumor cell line	JQ1
+SAMN13039556	13039556	U3054_JQ1_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526339	GSM4125036	brain tumor derived cell line U3054	tumor cell line	JQ1
+SAMN13039557	13039557	U3024_DMSO_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526338	GSM4125035	brain tumor derived cell line U3024	tumor cell line	DMSO
+SAMN13039558	13039558	U3024_DMSO_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526337	GSM4125034	brain tumor derived cell line U3024	tumor cell line	DMSO
+SAMN13039559	13039559	U3024_DMSO_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526336	GSM4125033	brain tumor derived cell line U3024	tumor cell line	DMSO
+SAMN13039560	13039560	U3024_JQ1_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526335	GSM4125032	brain tumor derived cell line U3024	tumor cell line	JQ1
+SAMN13039561	13039561	U3024_JQ1_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526334	GSM4125031	brain tumor derived cell line U3024	tumor cell line	JQ1
+SAMN13039562	13039562	U3024_JQ1_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526333	GSM4125030	brain tumor derived cell line U3024	tumor cell line	JQ1
+SAMN13039563	13039563	U3009_DMSO_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526332	GSM4125029	brain tumor derived cell line U3009	tumor cell line	DMSO
+SAMN13039564	13039564	U3009_DMSO_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526331	GSM4125028	brain tumor derived cell line U3009	tumor cell line	DMSO
+SAMN13039565	13039565	U3009_DMSO_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526330	GSM4125027	brain tumor derived cell line U3009	tumor cell line	DMSO
+SAMN13039566	13039566	U3009_JQ1_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526329	GSM4125026	brain tumor derived cell line U3009	tumor cell line	JQ1
+SAMN13039567	13039567	U3009_JQ1_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526328	GSM4125025	brain tumor derived cell line U3009	tumor cell line	JQ1
+SAMN13039568	13039568	U3009_JQ1_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526327	GSM4125024	brain tumor derived cell line U3009	tumor cell line	JQ1
+SAMN13039569	13039569	U3056_DMSO_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526350	GSM4125047	brain tumor derived cell line U3056	tumor cell line	DMSO
+SAMN13039570	13039570	U3056_DMSO_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526349	GSM4125046	brain tumor derived cell line U3056	tumor cell line	DMSO
+SAMN13039571	13039571	U3056_DMSO_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526348	GSM4125045	brain tumor derived cell line U3056	tumor cell line	DMSO
+SAMN13039572	13039572	U3056_JQ1_6h_3	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526347	GSM4125044	brain tumor derived cell line U3056	tumor cell line	JQ1
+SAMN13039573	13039573	U3056_JQ1_6h_2	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526346	GSM4125043	brain tumor derived cell line U3056	tumor cell line	JQ1
+SAMN13039574	13039574	U3056_JQ1_6h_1	Immunology, Genetics and Pathology, Uppsala University	9606	SRS5526345	GSM4125042	brain tumor derived cell line U3056	tumor cell line	JQ1

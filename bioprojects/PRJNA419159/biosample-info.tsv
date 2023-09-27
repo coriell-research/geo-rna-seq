@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	replicate	source_name	treatment
+SAMN08045415	8045415	C4: TNFSG_3	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706593	GSM2861689	K562	CML	3	CML Cell line	TNFSG
+SAMN08045523	8045523	C3: SG_3	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706572	GSM2861688	K562	CML	3	CML Cell line	SG
+SAMN08045524	8045524	C2: TNF_3	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706595	GSM2861687	K562	CML	3	CML Cell line	TNF
+SAMN08045525	8045525	C1: control_3	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706580	GSM2861686	K562	CML	3	CML Cell line	control
+SAMN08045526	8045526	B4: TNFSG_2	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706571	GSM2861685	K562	CML	2	CML Cell line	TNFSG
+SAMN08045527	8045527	B3: SG_2	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706569	GSM2861684	K562	CML	2	CML Cell line	SG
+SAMN08045528	8045528	B2: TNF_2	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706570	GSM2861683	K562	CML	2	CML Cell line	TNF
+SAMN08045529	8045529	B1: control_2	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706568	GSM2861682	K562	CML	2	CML Cell line	control
+SAMN08045530	8045530	A4: TNFSG_1	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706594	GSM2861681	K562	CML	1	CML Cell line	TNFSG
+SAMN08045531	8045531	A3: SG_1	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706567	GSM2861680	K562	CML	1	CML Cell line	SG
+SAMN08045532	8045532	A2: TNF_1	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706566	GSM2861679	K562	CML	1	CML Cell line	TNF
+SAMN08045533	8045533	A1: control_1	Molecular Oncology, College of Pharmacy, Seoul National University	9606	SRS2706565	GSM2861678	K562	CML	1	CML Cell line	control

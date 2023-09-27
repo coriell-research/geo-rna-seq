@@ -1,0 +1,19 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	disease	source_name	treated with
+SAMN06348086	6348086	BM_DM_141057	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991880	GSM2495762	KMS-12	multiple myeloma	BM_DM	Untreated (DMSO)
+SAMN06348087	6348087	BM_DM_141051	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991879	GSM2495761	KMS-12	multiple myeloma	BM_DM	Untreated (DMSO)
+SAMN06348088	6348088	JJ_AMIL_141062	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991890	GSM2495772	JJN3	plasma cell leukemia	JJ_AMIL	Amiloride 0.4 mM 24h
+SAMN06348089	6348089	JJ_AMIL_141056	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991889	GSM2495771	JJN3	plasma cell leukemia	JJ_AMIL	Amiloride 0.4 mM 24h
+SAMN06348090	6348090	JJ_AMIL_141050	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991888	GSM2495770	JJN3	plasma cell leukemia	JJ_AMIL	Amiloride 0.4 mM 24h
+SAMN06348091	6348091	JJ_DM_141060	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991887	GSM2495769	JJN3	plasma cell leukemia	JJ_DM	Untreated (DMSO)
+SAMN06348092	6348092	JJ_DM_141054	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991886	GSM2495768	JJN3	plasma cell leukemia	JJ_DM	Untreated (DMSO)
+SAMN06348093	6348093	JJ_DM_141048	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991885	GSM2495767	JJN3	plasma cell leukemia	JJ_DM	Untreated (DMSO)
+SAMN06348094	6348094	BM_AMIL_141065	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991884	GSM2495766	KMS-12	multiple myeloma	BM_AMIL	Amiloride 0.1 mM 24h
+SAMN06348095	6348095	BM_AMIL_141059	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991883	GSM2495765	KMS-12	multiple myeloma	BM_AMIL	Amiloride 0.1 mM 24h
+SAMN06348096	6348096	BM_AMIL_141053	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991882	GSM2495764	KMS-12	multiple myeloma	BM_AMIL	Amiloride 0.1 mM 24h
+SAMN06348097	6348097	BM_DM_141063	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS1991881	GSM2495763	KMS-12	multiple myeloma	BM_DM	Untreated (DMSO)
+SAMN09483905	9483905	BM_TG_141052	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS3460543	GSM3215905	KMS-12	multiple myeloma	KMS12-BM cell line	TG003 0.4 mM 24h
+SAMN09483913	9483913	JJ_TG_141061	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS3460547	GSM3215910	JJN3	plasma cell leukemia	JJN3 cell line	TG003 0.4 mM 24h
+SAMN09483914	9483914	JJ_TG_141055	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS3460546	GSM3215909	JJN3	plasma cell leukemia	JJN3 cell line	TG003 0.4 mM 24h
+SAMN09483915	9483915	JJ_TG_141049	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS3460545	GSM3215908	JJN3	plasma cell leukemia	JJN3 cell line	TG003 0.4 mM 24h
+SAMN09483916	9483916	BM_TG_141064	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS3460544	GSM3215907	KMS-12	multiple myeloma	KMS12-BM cell line	TG003 0.4 mM 24h
+SAMN09483918	9483918	BM_TG_141058	12, Hematologia, Centro de Investigación del Cáncer de Salamanca	9606	SRS3460542	GSM3215906	KMS-12	multiple myeloma	KMS12-BM cell line	TG003 0.4 mM 24h

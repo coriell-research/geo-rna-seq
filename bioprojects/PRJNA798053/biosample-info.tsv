@@ -1,0 +1,17 @@
+accession	uid	title	organization	taxonomy	sra	geo	source_name	treatment
+SAMN25044552	25044552	U937 cells treated with NEL-replicate 4	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697415	GSM5822317	AML cell line	NEL (10 uM)
+SAMN25044553	25044553	U937 cells treated with NEL-replicate 3	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697414	GSM5822316	AML cell line	NEL (10 uM)
+SAMN25044554	25044554	U937 cells treated with NEL-replicate 2	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697413	GSM5822315	AML cell line	NEL (10 uM)
+SAMN25044555	25044555	U937 cells treated with NEL-replicate 1	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697412	GSM5822314	AML cell line	NEL (10 uM)
+SAMN25044556	25044556	U937 cells treated with DMSO-replicate 4	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697411	GSM5822313	AML cell line	DMSO
+SAMN25044557	25044557	U937 cells treated with DMSO-replicate 3	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697410	GSM5822312	AML cell line	DMSO
+SAMN25044558	25044558	U937 cells treated with DMSO-replicate 2	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697409	GSM5822311	AML cell line	DMSO
+SAMN25044559	25044559	U937 cells treated with DMSO-replicate 1	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697408	GSM5822310	AML cell line	DMSO
+SAMN25044560	25044560	KG1A cells treated with NEL-replicate 4	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697407	GSM5822309	AML cell line	NEL (10 uM)
+SAMN25044561	25044561	KG1A cells treated with NEL-replicate 3	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697406	GSM5822308	AML cell line	NEL (10 uM)
+SAMN25044562	25044562	KG1A cells treated with NEL-replicate 2	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697405	GSM5822307	AML cell line	NEL (10 uM)
+SAMN25044563	25044563	KG1A cells treated with NEL-replicate 1	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697404	GSM5822306	AML cell line	NEL (10 uM)
+SAMN25044564	25044564	KG1A cells treated with DMSO-replicate 4	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697403	GSM5822305	AML cell line	DMSO
+SAMN25044565	25044565	KG1A cells treated with DMSO-replicate 3	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697402	GSM5822304	AML cell line	DMSO
+SAMN25044566	25044566	KG1A cells treated with DMSO-replicate 2	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697401	GSM5822303	AML cell line	DMSO
+SAMN25044567	25044567	KG1A cells treated with DMSO-replicate 1	Integrative Genomics Core, Shared Resource, City of Hope National Medical Center	9606	SRS11697400	GSM5822302	AML cell line	DMSO

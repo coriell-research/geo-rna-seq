@@ -1,0 +1,42 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	drug treatment	origin	source_name
+SAMN03276990	3276990	A375_vitro_vem_6h_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810647	GSM1579152	A375	melanoma cell line	vemurafenib_6h_0.1µM	cells in vitro	melanoma
+SAMN03276991	3276991	A375_vitro_vem_48h_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810648	GSM1579153	A375	melanoma cell line	vemurafenib_48h_0.1µM	cells in vitro	melanoma
+SAMN03276992	3276992	A375_vitro_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810644	GSM1579148	A375	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03276993	3276993	A375_vivo_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810652	GSM1579157	A375	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03276994	3276994	A375_vitro_vem_6h_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810646	GSM1579151	A375	melanoma cell line	vemurafenib_6h_0.1µM	cells in vitro	melanoma
+SAMN03276995	3276995	A375_vitro_vem_6h_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810645	GSM1579150	A375	melanoma cell line	vemurafenib_6h_0.1µM	cells in vitro	melanoma
+SAMN03276996	3276996	A375_vitro_vehicle_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810643	GSM1579149	A375	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03276997	3276997	A375_vitro_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810642	GSM1579147	A375	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03276998	3276998	UACC62_vitro_vem_48h_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810665	GSM1579170	UACC62	melanoma cell line	vemurafenib_48h_1µM	cells in vitro	melanoma
+SAMN03276999	3276999	UACC62_vitro_vem_48h_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810667	GSM1579171	UACC62	melanoma cell line	vemurafenib_48h_1µM	cells in vitro	melanoma
+SAMN03277000	3277000	Colo800_vitro_vem_48h_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810662	GSM1579167	Colo800	melanoma cell line	vemurafenib_48h_1µM	cells in vitro	melanoma
+SAMN03277001	3277001	Colo800_vitro_vem_48h_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810661	GSM1579166	Colo800	melanoma cell line	vemurafenib_48h_1µM	cells in vitro	melanoma
+SAMN03277002	3277002	A375_vivo_vem_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810655	GSM1579161	A375	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277003	3277003	H3122_vitro_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810668	GSM1579173	H3122	lung adenocarcinoma cell line	vehicle	cells in vitro	lung adenocarcinoma
+SAMN03277004	3277004	Colo800_vitro_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810658	GSM1579164	Colo800	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03277005	3277005	H3122_vitro_crizotinib_48h_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810670	GSM1579175	H3122	lung adenocarcinoma cell line	crizotinib_48h_300nM	cells in vitro	lung adenocarcinoma
+SAMN03277006	3277006	A375R_RPL10a_vivo__Ronly_vem10d_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810678	GSM1579184	A375R	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277007	3277007	A375_vivo_vehicle_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810659	GSM1579158	A375	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277008	3277008	A375_vitro_vem_48h_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810650	GSM1579155	A375	melanoma cell line	vemurafenib_48h_0.1µM	cells in vitro	melanoma
+SAMN03277009	3277009	A375_vivo_vem_rep4	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810657	GSM1579163	A375	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277010	3277010	H3122_vitro_crizotinib_48h_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810669	GSM1579174	H3122	lung adenocarcinoma cell line	crizotinib_48h_300nM	cells in vitro	lung adenocarcinoma
+SAMN03277011	3277011	A375R_RPL10a_vivo__SR_vehicle_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810675	GSM1579181	A375R	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277012	3277012	A375R_RPL10a_vivo__Ronly_vem10d_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810676	GSM1579183	A375R	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277013	3277013	A375_vitro_vem_48h_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810649	GSM1579154	A375	melanoma cell line	vemurafenib_48h_0.1µM	cells in vitro	melanoma
+SAMN03277014	3277014	A375_vivo_vem_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810654	GSM1579160	A375	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277015	3277015	Colo800_vitro_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810660	GSM1579165	Colo800	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03277016	3277016	UACC62_vitro_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810663	GSM1579168	UACC62	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03277017	3277017	A375R_RPL10a_vivo__Ronly_vem10d_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810673	GSM1579182	A375R	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277018	3277018	UACC62_vitro_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810664	GSM1579169	UACC62	melanoma cell line	vehicle	cells in vitro	melanoma
+SAMN03277019	3277019	A375R_RPL10a_vivo__Ronly_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810640	GSM1579177	A375R	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277020	3277020	A375R_RPL10a_vivo__Ronly_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810671	GSM1579176	A375R	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277021	3277021	A375R_RPL10a_vivo__SR_vem10d_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810677	GSM1579185	A375R	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277022	3277022	A375R_RPL10a_vivo__Ronly_vehicle_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810641	GSM1579178	A375R	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277023	3277023	A375_vivo_vem_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810656	GSM1579162	A375	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277024	3277024	A375_vivo_vehicle_rep4	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810653	GSM1579159	A375	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277025	3277025	A375R_RPL10a_vivo__SR_vem10d_rep3	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810680	GSM1579187	A375R	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277026	3277026	A375R_RPL10a_vivo__SR_vem10d_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810679	GSM1579186	A375R	melanoma cell line	vemurafenib_10 doses_75mg/kg	xenograft tumours	melanoma
+SAMN03277028	3277028	A375R_RPL10a_vivo__SR_vehicle_rep2	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810674	GSM1579180	A375R	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277029	3277029	A375R_RPL10a_vivo__SR_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810672	GSM1579179	A375R	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277030	3277030	A375_vivo_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810651	GSM1579156	A375	melanoma cell line	vehicle	xenograft tumours	melanoma
+SAMN03277031	3277031	H3122_vitro_vehicle_rep1	Genomics Core, Memorial Sloan Kettering Cancer Center	9606	SRS810666	GSM1579172	H3122	lung adenocarcinoma cell line	vehicle	cells in vitro	lung adenocarcinoma

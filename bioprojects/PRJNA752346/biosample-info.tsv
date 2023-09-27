@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	genotype	iPSc line	source_name	treatment
+SAMN20591380	20591380	OG-0UM-REP1	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689917	GSM5504163	RARG-WT/S427L	Case-003	hiPSC-derived cardiomyocytes	vehicle (DMSO)
+SAMN20591381	20591381	OG-0UM-REP2	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689919	GSM5504164	RARG-WT/S427L	Case-003	hiPSC-derived cardiomyocytes	vehicle (DMSO)
+SAMN20591382	20591382	OG-0UM-REP3	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689918	GSM5504165	RARG-WT/S427L	Case-003	hiPSC-derived cardiomyocytes	vehicle (DMSO)
+SAMN20591383	20591383	OG-1UM-REP1	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689925	GSM5504166	RARG-WT/S427L	Case-003	hiPSC-derived cardiomyocytes	1uM doxorubicin
+SAMN20591384	20591384	OG-1UM-REP2	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689920	GSM5504167	RARG-WT/S427L	Case-003	hiPSC-derived cardiomyocytes	1uM doxorubicin
+SAMN20591385	20591385	OG-1UM-REP3	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689921	GSM5504168	RARG-WT/S427L	Case-003	hiPSC-derived cardiomyocytes	1uM doxorubicin
+SAMN20591386	20591386	RP-0UM-REP1	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689922	GSM5504169	RARG-WT/WT	Case-003	hiPSC-derived cardiomyocytes	vehicle (DMSO)
+SAMN20591387	20591387	RP-0UM-REP2	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689923	GSM5504170	RARG-WT/WT	Case-003	hiPSC-derived cardiomyocytes	vehicle (DMSO)
+SAMN20591388	20591388	RP-0UM-REP3	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689924	GSM5504171	RARG-WT/WT	Case-003	hiPSC-derived cardiomyocytes	vehicle (DMSO)
+SAMN20591389	20591389	RP-1UM-REP1	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689926	GSM5504172	RARG-WT/WT	Case-003	hiPSC-derived cardiomyocytes	1uM doxorubicin
+SAMN20591390	20591390	RP-1UM-REP2	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689927	GSM5504173	RARG-WT/WT	Case-003	hiPSC-derived cardiomyocytes	1uM doxorubicin
+SAMN20591391	20591391	RP-1UM-REP3	Centre for Heart Lung Innovation, Department of Medicine, University of British Columbia	9606	SRS9689928	GSM5504174	RARG-WT/WT	Case-003	hiPSC-derived cardiomyocytes	1uM doxorubicin

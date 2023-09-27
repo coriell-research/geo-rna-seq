@@ -1,0 +1,6 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	time	treatment
+SAMN31253543	31253543	RPE1 cells, doxorubicin 0.34 uM	Mundlos, MPIMG	9606	SRS15381523	GSM6632436	RPE1	Human retinal pigment epithelial	WT	RPE1	18 h	doxorubicin 0.34 uM
+SAMN31253544	31253544	RPE1 cells, doxorubicin 02uM, rep2	Mundlos, MPIMG	9606	SRS15381521	GSM6632435	RPE1	Human retinal pigment epithelial	WT	RPE1	18 h	doxorubicin 0.2 uM
+SAMN31253545	31253545	RPE1 cells, doxorubicin 0.2 uM	Mundlos, MPIMG	9606	SRS15381520	GSM6632434	RPE1	Human retinal pigment epithelial	WT	RPE1	18 h	doxorubicin 0.2 uM
+SAMN31253546	31253546	RPE1 cells, DMSO, rep2	Mundlos, MPIMG	9606	SRS15381522	GSM6632433	RPE1	Human retinal pigment epithelial	WT	RPE1	18 h	DMSO
+SAMN31253547	31253547	RPE1 cells, DMSO	Mundlos, MPIMG	9606	SRS15381519	GSM6632432	RPE1	Human retinal pigment epithelial	WT	RPE1	18 h	DMSO

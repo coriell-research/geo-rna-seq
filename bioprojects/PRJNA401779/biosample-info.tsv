@@ -1,0 +1,10 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN07605623	7605623	FB23-2-rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS2492723	GSM2772470	NB4	acute monocytic leukemia	NB4	FTO inhibition
+SAMN07605624	7605624	FB23-2-rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS2492722	GSM2772469	NB4	acute monocytic leukemia	NB4	FTO inhibition
+SAMN07605625	7605625	FB23-2-rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS2492721	GSM2772468	NB4	acute monocytic leukemia	NB4	FTO inhibition
+SAMN07605626	7605626	FB23-rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS2492720	GSM2772467	NB4	acute monocytic leukemia	NB4	FTO inhibition
+SAMN07605627	7605627	FB23-rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS2492719	GSM2772466	NB4	acute monocytic leukemia	NB4	FTO inhibition
+SAMN07605628	7605628	FB23-rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS2492718	GSM2772465	NB4	acute monocytic leukemia	NB4	FTO inhibition
+SAMN07605629	7605629	DMSO-rep3	Chen Lab, Systems Biology, City of Hope	9606	SRS2492717	GSM2772464	NB4	acute monocytic leukemia	NB4	Ctrl
+SAMN07605630	7605630	DMSO-rep2	Chen Lab, Systems Biology, City of Hope	9606	SRS2492728	GSM2772463	NB4	acute monocytic leukemia	NB4	Ctrl
+SAMN07605631	7605631	DMSO-rep1	Chen Lab, Systems Biology, City of Hope	9606	SRS2492716	GSM2772462	NB4	acute monocytic leukemia	NB4	Ctrl

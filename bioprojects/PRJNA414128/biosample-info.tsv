@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	mycn status	source_name	tp53 status	treatment
+SAMN07780231	7780231	NB1691_TMZ_72hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588600	GSM2810007	NB1691	MYCN amplified	Neuroblastoma	WT	Temozolomide 72h
+SAMN07780232	7780232	NB1691_TMZ_72hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588599	GSM2810006	NB1691	MYCN amplified	Neuroblastoma	WT	Temozolomide 72h
+SAMN07780233	7780233	NB1691_TMZ_72hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588598	GSM2810005	NB1691	MYCN amplified	Neuroblastoma	WT	Temozolomide 72h
+SAMN07780234	7780234	NB1691_TMZ_24hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588597	GSM2810004	NB1691	MYCN amplified	Neuroblastoma	WT	Temozolomide 24h
+SAMN07780235	7780235	NB1691_TMZ_24hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588596	GSM2810003	NB1691	MYCN amplified	Neuroblastoma	WT	Temozolomide 24h
+SAMN07780236	7780236	NB1691_TMZ_24hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588595	GSM2810002	NB1691	MYCN amplified	Neuroblastoma	WT	Temozolomide 24h
+SAMN07780237	7780237	NB1691_R+T_72hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588594	GSM2810001	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 + Temozolomide 72h
+SAMN07780238	7780238	NB1691_R+T_72hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588593	GSM2810000	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 + Temozolomide 72h
+SAMN07780239	7780239	NB1691_R+T_72hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588592	GSM2809999	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 + Temozolomide 72h
+SAMN07780240	7780240	NB1691_R+T_24hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588591	GSM2809998	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 + Temozolomide 24h
+SAMN07780241	7780241	NB1691_R+T_24hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588590	GSM2809997	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 + Temozolomide 24h
+SAMN07780242	7780242	NB1691_R+T_24hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588589	GSM2809996	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 + Temozolomide 24h
+SAMN07780243	7780243	NB1691_RG_72hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588588	GSM2809995	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 72h
+SAMN07780244	7780244	NB1691_RG_72hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588587	GSM2809994	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 72h
+SAMN07780245	7780245	NB1691_RG_72hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588586	GSM2809993	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 72h
+SAMN07780246	7780246	NB1691_RG_24hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588585	GSM2809992	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 24h
+SAMN07780247	7780247	NB1691_RG_24hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588584	GSM2809991	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 24h
+SAMN07780248	7780248	NB1691_RG_24hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588583	GSM2809990	NB1691	MYCN amplified	Neuroblastoma	WT	RG7388 24h
+SAMN07780249	7780249	NB1691_DMSO_72hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588582	GSM2809989	NB1691	MYCN amplified	Neuroblastoma	WT	DMSO 72h
+SAMN07780250	7780250	NB1691_DMSO_72hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588581	GSM2809988	NB1691	MYCN amplified	Neuroblastoma	WT	DMSO 72h
+SAMN07780251	7780251	NB1691_DMSO_72hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588580	GSM2809987	NB1691	MYCN amplified	Neuroblastoma	WT	DMSO 72h
+SAMN07780252	7780252	NB1691_DMSO_24hr_n=3	Bioinformatics Support Unit, Newcastle University	9606	SRS2588579	GSM2809986	NB1691	MYCN amplified	Neuroblastoma	WT	DMSO 24h
+SAMN07780253	7780253	NB1691_DMSO_24hr_n=2	Bioinformatics Support Unit, Newcastle University	9606	SRS2588578	GSM2809985	NB1691	MYCN amplified	Neuroblastoma	WT	DMSO 24h
+SAMN07780254	7780254	NB1691_DMSO_24hr_n=1	Bioinformatics Support Unit, Newcastle University	9606	SRS2588577	GSM2809984	NB1691	MYCN amplified	Neuroblastoma	WT	DMSO 24h

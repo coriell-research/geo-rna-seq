@@ -1,0 +1,5 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	time point	treatment
+SAMN05001330	5001330	clofarabine treated K562 cells replicate 1	Baker lab, Department of Chemistry and Chemical Biology, Cornell University	9606	SRS1438029	GSM2152722	K562	K562 cells	3 h	clofarabine treated
+SAMN05001331	5001331	clofarabine treated K562 cells replicate 2	Baker lab, Department of Chemistry and Chemical Biology, Cornell University	9606	SRS1438030	GSM2152723	K562	K562 cells	3 h	clofarabine treated
+SAMN05001332	5001332	DMSO treated K562 cells replicate 1	Baker lab, Department of Chemistry and Chemical Biology, Cornell University	9606	SRS1438031	GSM2152724	K562	K562 cells	3 h	DMSO treated
+SAMN05001333	5001333	DMSO treated K562 cells replicate 2	Baker lab, Department of Chemistry and Chemical Biology, Cornell University	9606	SRS1438032	GSM2152725	K562	K562 cells	3 h	DMSO treated

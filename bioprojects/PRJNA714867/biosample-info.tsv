@@ -1,0 +1,19 @@
+accession	uid	title	organization	taxonomy	sra	geo	doxycycline	source_name	treatment
+SAMN18318828	18318828	UMUC3Drg1	Molecular Health Sciences, Utrecht University	9606	SRS8472767	GSM5173489	NA	UM-UC-3 cell line	Drg
+SAMN18318829	18318829	UMUC3Ctr3	Molecular Health Sciences, Utrecht University	9606	SRS8472766	GSM5173488	NA	UM-UC-3 cell line	Ctr
+SAMN18318830	18318830	UMUC3Ctr2	Molecular Health Sciences, Utrecht University	9606	SRS8472765	GSM5173487	NA	UM-UC-3 cell line	Ctr
+SAMN18318831	18318831	UMUC3Ctr1	Molecular Health Sciences, Utrecht University	9606	SRS8472764	GSM5173486	NA	UM-UC-3 cell line	Ctr
+SAMN18318832	18318832	F432HrasVehCtr1	Molecular Health Sciences, Utrecht University	9606	SRS8472763	GSM5173485	Veh	RPE1-hTERT cell line	Ctr
+SAMN18318833	18318833	F432HrasVehDrg1	Molecular Health Sciences, Utrecht University	9606	SRS8472762	GSM5173484	Veh	RPE1-hTERT cell line	Drg
+SAMN18318834	18318834	F432HrasDoxDrg1	Molecular Health Sciences, Utrecht University	9606	SRS8472761	GSM5173483	Dox	RPE1-hTERT cell line	Drg
+SAMN18318835	18318835	F432HrasDoxCtr1	Molecular Health Sciences, Utrecht University	9606	SRS8472760	GSM5173482	Dox	RPE1-hTERT cell line	Ctr
+SAMN18318836	18318836	F411HrasVehDrg2	Molecular Health Sciences, Utrecht University	9606	SRS8472759	GSM5173481	Veh	RPE1-hTERT cell line	Drg
+SAMN18318837	18318837	F411HrasVehDrg1	Molecular Health Sciences, Utrecht University	9606	SRS8472758	GSM5173480	Veh	RPE1-hTERT cell line	Drg
+SAMN18318838	18318838	F411HrasVehCtr2	Molecular Health Sciences, Utrecht University	9606	SRS8472757	GSM5173479	Veh	RPE1-hTERT cell line	Ctr
+SAMN18318839	18318839	F411HrasVehCtr1	Molecular Health Sciences, Utrecht University	9606	SRS8472756	GSM5173478	Veh	RPE1-hTERT cell line	Ctr
+SAMN18318840	18318840	F411HrasDoxDrg2	Molecular Health Sciences, Utrecht University	9606	SRS8472755	GSM5173477	Dox	RPE1-hTERT cell line	Drg
+SAMN18318841	18318841	F411HrasDoxDrg1	Molecular Health Sciences, Utrecht University	9606	SRS8472754	GSM5173476	Dox	RPE1-hTERT cell line	Drg
+SAMN18318842	18318842	F411HrasDoxCtr2	Molecular Health Sciences, Utrecht University	9606	SRS8472753	GSM5173475	Dox	RPE1-hTERT cell line	Ctr
+SAMN18318843	18318843	F411HrasDoxCtr1	Molecular Health Sciences, Utrecht University	9606	SRS8472752	GSM5173474	Dox	RPE1-hTERT cell line	Ctr
+SAMN18318844	18318844	UMUC3Drg3	Molecular Health Sciences, Utrecht University	9606	SRS8472769	GSM5173491	NA	UM-UC-3 cell line	Drg
+SAMN18318845	18318845	UMUC3Drg2	Molecular Health Sciences, Utrecht University	9606	SRS8472768	GSM5173490	NA	UM-UC-3 cell line	Drg

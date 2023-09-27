@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	treatment
+SAMN04632322	4632322	Mock Campothecin	Department of Microbiology, Icahn School of Medicine at Mount Sinai	9606	SRS1384132	GSM2113344	THP-1	human monocytic cell line	Campothecin
+SAMN04632323	4632323	Mock DMSO	Department of Microbiology, Icahn School of Medicine at Mount Sinai	9606	SRS1384131	GSM2113345	THP-1	human monocytic cell line	DMSO
+SAMN04632324	4632324	Mutated Ebola Campothecin	Department of Microbiology, Icahn School of Medicine at Mount Sinai	9606	SRS1384130	GSM2113346	THP-1	human monocytic cell line	Campothecin
+SAMN04632325	4632325	Mutated Ebola DMSO	Department of Microbiology, Icahn School of Medicine at Mount Sinai	9606	SRS1384129	GSM2113347	THP-1	human monocytic cell line	DMSO
+SAMN04632326	4632326	Wild-type Ebola Campothecin	Department of Microbiology, Icahn School of Medicine at Mount Sinai	9606	SRS1384128	GSM2113348	THP-1	human monocytic cell line	Campothecin
+SAMN04632327	4632327	Wild-type Ebola DMSO	Department of Microbiology, Icahn School of Medicine at Mount Sinai	9606	SRS1384127	GSM2113349	THP-1	human monocytic cell line	DMSO

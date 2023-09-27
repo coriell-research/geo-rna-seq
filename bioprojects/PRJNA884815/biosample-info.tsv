@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN31047615	31047615	MIA PaCa-2, L-Gln 40mM, Gem 0.5 uM, 48h [MP2_D_3]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257246	GSM6604253	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine, Gemcitabine
+SAMN31047616	31047616	MIA PaCa-2, L-Gln 40mM, Gem 0.5 uM, 48h [MP2_D_2]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257245	GSM6604252	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine, Gemcitabine
+SAMN31047617	31047617	MIA PaCa-2, L-Gln 40mM, Gem 0.5 uM, 48h [MP2_D_1]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257244	GSM6604251	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine, Gemcitabine
+SAMN31047618	31047618	MIA PaCa-2, L-Gln 40mM, Gem 0, 48h [MP2_C_3]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257243	GSM6604250	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine
+SAMN31047619	31047619	MIA PaCa-2, L-Gln 40mM, Gem 0, 48h [MP2_C_2]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257242	GSM6604249	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine
+SAMN31047620	31047620	MIA PaCa-2, L-Gln 40mM, Gem 0, 48h [MP2_C_1]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257241	GSM6604248	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine
+SAMN31047621	31047621	MIA PaCa-2, L-Gln 2mM, Gem 0.5 uM, 48h [MP2_B_3]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257240	GSM6604247	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine, Gemcitabine
+SAMN31047622	31047622	MIA PaCa-2, L-Gln 2mM, Gem 0.5 uM, 48h [MP2_B_2]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257239	GSM6604246	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine, Gemcitabine
+SAMN31047623	31047623	MIA PaCa-2, L-Gln 2mM, Gem 0.5 uM, 48h [MP2_B_1]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257238	GSM6604245	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine, Gemcitabine
+SAMN31047624	31047624	MIA PaCa-2, L-Gln 2mM, Gem 0, 48h [MP2_A_3]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257237	GSM6604244	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine
+SAMN31047625	31047625	MIA PaCa-2, L-Gln 2mM, Gem 0, 48h [MP2_A_2]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257236	GSM6604243	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine
+SAMN31047626	31047626	MIA PaCa-2, L-Gln 2mM, Gem 0, 48h [MP2_A_1]	Bhowmick's Lab, SOCC, Cedars Sinai	9606	SRS15257235	GSM6604242	MIA PaCa-2	Pancreatic cancer cell line	WT	MIA PaCa-2	L-Glutamine

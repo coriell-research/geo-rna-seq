@@ -1,0 +1,22 @@
+accession	uid	title	organization	taxonomy	sra	geo	cancer type	cell type	source_name	treatment
+SAMN15340171	15340171	HCT116_DMSO_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885364	GSM4630519	colorectal cancer	HCT116	HCT116 cells	DMSO
+SAMN15340172	15340172	HCT116_siCTNNB1_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885362	GSM4630518	colorectal cancer	HCT116	HCT116 cells	siCTNNB1
+SAMN15340173	15340173	HCT116_siNeg_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885361	GSM4630517	colorectal cancer	HCT116	HCT116 cells	siNeg
+SAMN15340174	15340174	HCT116_siNeg_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885354	GSM4630510	colorectal cancer	HCT116	HCT116 cells	siNeg
+SAMN15340175	15340175	HCT116_8679_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885353	GSM4630509	colorectal cancer	HCT116	HCT116 cells	8679
+SAMN15340176	15340176	HCT116_6853_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885352	GSM4630508	colorectal cancer	HCT116	HCT116 cells	6853
+SAMN15340177	15340177	HCT116_1874_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885351	GSM4630507	colorectal cancer	HCT116	HCT116 cells	1874
+SAMN15340178	15340178	HCT116_iCRT3_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885350	GSM4630506	colorectal cancer	HCT116	HCT116 cells	iCRT3
+SAMN15340179	15340179	HCT116_DMSO_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885349	GSM4630505	colorectal cancer	HCT116	HCT116 cells	DMSO
+SAMN15340180	15340180	HCT116_siCTNNB1_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885347	GSM4630504	colorectal cancer	HCT116	HCT116 cells	siCTNNB1
+SAMN15340181	15340181	HCT116_siNeg_1 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885348	GSM4630503	colorectal cancer	HCT116	HCT116 cells	siNeg
+SAMN15340182	15340182	HCT116_8679_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885360	GSM4630516	colorectal cancer	HCT116	HCT116 cells	8679
+SAMN15340183	15340183	HCT116_6853_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885359	GSM4630515	colorectal cancer	HCT116	HCT116 cells	6853
+SAMN15340184	15340184	HCT116_1874_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885358	GSM4630514	colorectal cancer	HCT116	HCT116 cells	1874
+SAMN15340185	15340185	HCT116_iCRT3_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885357	GSM4630513	colorectal cancer	HCT116	HCT116 cells	iCRT3
+SAMN15340187	15340187	HCT116_DMSO_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885356	GSM4630512	colorectal cancer	HCT116	HCT116 cells	DMSO
+SAMN15340189	15340189	HCT116_siCTNNB1_2 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885355	GSM4630511	colorectal cancer	HCT116	HCT116 cells	siCTNNB1
+SAMN15340190	15340190	HCT116_8679_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885366	GSM4630523	colorectal cancer	HCT116	HCT116 cells	8679
+SAMN15340191	15340191	HCT116_6853_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885367	GSM4630522	colorectal cancer	HCT116	HCT116 cells	6853
+SAMN15340192	15340192	HCT116_1874_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885365	GSM4630521	colorectal cancer	HCT116	HCT116 cells	1874
+SAMN15340193	15340193	HCT116_iCRT3_3 	Bioinformatics Consulting and Training Platform, Genome Institute of Singapore	9606	SRS6885363	GSM4630520	colorectal cancer	HCT116	HCT116 cells	iCRT3

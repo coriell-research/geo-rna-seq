@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	replicate	source_name	treatment
+SAMN13636160	13636160	1533-ADC-1: HKC_wt_D0-1	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863170	GSM4226504	HKC	rep 1	HKC proximal tubule cells	DMSO
+SAMN13636161	13636161	1534-ADC-6: 7860_wt_D300-2	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863181	GSM4226515	786-0	rep 2	786-0 RCC cells	300nM Decitabine
+SAMN13636162	13636162	1534-ADC-5: 7860_wt_D300-1	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863180	GSM4226514	786-0	rep 1	786-0 RCC cells	300nM Decitabine
+SAMN13636163	13636163	1534-ADC-4: 7860_wt_D100-2	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863178	GSM4226513	786-0	rep 2	786-0 RCC cells	100nM Decitabine
+SAMN13636164	13636164	1533-ADC-4: HKC_wt_D300-2	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863175	GSM4226507	HKC	rep 2	HKC proximal tubule cells	300nM Decitabine
+SAMN13636165	13636165	1533-ADC-3: HKC_wt_D300-1	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863173	GSM4226506	HKC	rep 1	HKC proximal tubule cells	300nM Decitabine
+SAMN13636166	13636166	1534-ADC-3: 7860_wt_D100-1	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863177	GSM4226512	786-0	rep 1	786-0 RCC cells	100nM Decitabine
+SAMN13636167	13636167	1534-ADC-2: 7860_wt_D0-2	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863179	GSM4226511	786-0	rep 2	786-0 RCC cells	DMSO
+SAMN13636168	13636168	1534-ADC-1: 7860_wt_D0-1	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863176	GSM4226510	786-0	rep 1	786-0 RCC cells	DMSO
+SAMN13636169	13636169	1533-ADC-10: HKC_wt_D100-2	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863172	GSM4226509	HKC	rep 2	HKC proximal tubule cells	100nM Decitabine
+SAMN13636170	13636170	1533-ADC-9: HKC_wt_D100-1	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863174	GSM4226508	HKC	rep 1	HKC proximal tubule cells	100nM Decitabine
+SAMN13636171	13636171	1533-ADC-2: HKC_wt_D0-2	Rathmell Lab, Hematology and Oncology, Vanderbilt University Medical Center	9606	SRS5863171	GSM4226505	HKC	rep 2	HKC proximal tubule cells	DMSO

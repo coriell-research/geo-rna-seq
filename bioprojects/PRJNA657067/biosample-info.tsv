@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN15814498	15814498	HCT116 cells, Extract treated N=3	Biodiscovery Institute, University of Nottingham	9606	SRS7200495	GSM4727063	HCT116 colorectal carcinoma cell line	HCT116	Extract Treatment
+SAMN15814500	15814500	HCT116 cells, Extract treated N=2	Biodiscovery Institute, University of Nottingham	9606	SRS7200494	GSM4727062	HCT116 colorectal carcinoma cell line	HCT116	Extract Treatment
+SAMN15814502	15814502	HCT116 cells, Extract treated N=1	Biodiscovery Institute, University of Nottingham	9606	SRS7200493	GSM4727061	HCT116 colorectal carcinoma cell line	HCT116	Extract Treatment
+SAMN15814504	15814504	HCT116 cells, Vehicle Control N=3	Biodiscovery Institute, University of Nottingham	9606	SRS7200492	GSM4727060	HCT116 colorectal carcinoma cell line	HCT116	Control
+SAMN15814506	15814506	HCT116 cells, Vehicle Control N=2	Biodiscovery Institute, University of Nottingham	9606	SRS7200491	GSM4727059	HCT116 colorectal carcinoma cell line	HCT116	Control
+SAMN15814507	15814507	HCT116 cells, Vehicle Control N=1	Biodiscovery Institute, University of Nottingham	9606	SRS7200490	GSM4727058	HCT116 colorectal carcinoma cell line	HCT116	Control

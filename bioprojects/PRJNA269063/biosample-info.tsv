@@ -1,0 +1,63 @@
+accession	uid	title	organization	taxonomy	sra	geo	diagnosis	shRNA	source_name	treatment
+SAMN03248094	3248094	MOLM-13 Ren.713	The Research Institute of Molecular Pathology (IMP)	9606	SRS777046	GSM1557120	Leukemia	Ren.713	Cell line	
+SAMN03248096	3248096	SHP-77 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777022	GSM1557096	SCLC		Cell line	2h JQ1 200 nM
+SAMN03248098	3248098	NCIH-69 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777010	GSM1557085	SCLC		Cell line	24h JQ1 200 nM
+SAMN03248099	3248099	K-562 Ren.713	The Research Institute of Molecular Pathology (IMP)	9606	SRS777041	GSM1557116	Leukemia	Ren.713	Cell line	
+SAMN03248100	3248100	NCIH-1048 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777007	GSM1557082	SCLC		Cell line	24h JQ1 200 nM
+SAMN03248101	3248101	NCIH-82 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777012	GSM1557086	SCLC		Cell line	DMSO
+SAMN03248102	3248102	MOLM-13 BRD3.3235	The Research Institute of Molecular Pathology (IMP)	9606	SRS777048	GSM1557122	Leukemia	BRD3.3235	Cell line	
+SAMN03248103	3248103	K-562 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777003	GSM1557077	Leukemia		Cell line	DMSO
+SAMN03248104	3248104	NCIH-69 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777008	GSM1557083	SCLC		Cell line	DMSO
+SAMN03248106	3248106	KASUMI-1 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS776991	GSM1557065	Leukemia		Cell line	DMSO
+SAMN03248107	3248107	MOLM-13 BRD2.1638	The Research Institute of Molecular Pathology (IMP)	9606	SRS777047	GSM1557121	Leukemia	BRD2.1638	Cell line	
+SAMN03248108	3248108	K-562 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777005	GSM1557079	Leukemia		Cell line	24h JQ1 200 nM
+SAMN03248109	3248109	SHP-77 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777021	GSM1557095	SCLC		Cell line	DMSO
+SAMN03248110	3248110	SU-8686 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777042	GSM1557114	PDAC		Cell line	2h JQ1 200 nM
+SAMN03248111	3248111	MIAPACA-2 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777039	GSM1557111	PDAC		Cell line	2h JQ1 200 nM
+SAMN03248112	3248112	K-562 BRD2.1638	The Research Institute of Molecular Pathology (IMP)	9606	SRS777043	GSM1557117	Leukemia	BRD2.1638	Cell line	
+SAMN03248113	3248113	HUPT-4 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777032	GSM1557107	PDAC		Cell line	DMSO
+SAMN03248114	3248114	ASPC-1 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777026	GSM1557099	PDAC		Cell line	2h JQ1 200 nM
+SAMN03248115	3248115	DMS-53 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777018	GSM1557092	SCLC		Cell line	DMSO
+SAMN03248117	3248117	MOLM-13 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776989	GSM1557063	Leukemia		Cell line	2h JQ1 200 nM
+SAMN03248119	3248119	NCIH-82 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777013	GSM1557087	SCLC		Cell line	2h JQ1 200 nM
+SAMN03248120	3248120	DMS-273 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777017	GSM1557091	SCLC		Cell line	24h JQ1 200 nM
+SAMN03248123	3248123	MV4-11 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776996	GSM1557069	Leukemia		Cell line	2h JQ1 200 nM
+SAMN03248124	3248124	DMS-53 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777020	GSM1557094	SCLC		Cell line	24h JQ1 200 nM
+SAMN03248125	3248125	KASUMI-1 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776993	GSM1557067	Leukemia		Cell line	24h JQ1 200 nM
+SAMN03248126	3248126	DMS-273 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777016	GSM1557090	SCLC		Cell line	2h JQ1 200 nM
+SAMN03248130	3248130	MEG-1 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS776997	GSM1557071	Leukemia		Cell line	DMSO
+SAMN03248132	3248132	DMS-53 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777019	GSM1557093	SCLC		Cell line	2h JQ1 200 nM
+SAMN03248133	3248133	NCIH-1048 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777009	GSM1557081	SCLC		Cell line	2h JQ1 200 nM
+SAMN03248136	3248136	MIAPACA-2 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777036	GSM1557110	PDAC		Cell line	DMSO
+SAMN03248137	3248137	MOLT-3 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777002	GSM1557076	Leukemia		Cell line	24h JQ1 200 nM
+SAMN03248138	3248138	MOLM-13 BRD4.1817	The Research Institute of Molecular Pathology (IMP)	9606	SRS777049	GSM1557123	Leukemia	BRD4.1817	Cell line	
+SAMN03248140	3248140	MEG-1 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776998	GSM1557072	Leukemia		Cell line	2h JQ1 200 nM
+SAMN03248141	3248141	MEG-1 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776999	GSM1557073	Leukemia		Cell line	24h JQ1 200 nM
+SAMN03248142	3248142	CAPAN-2 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777031	GSM1557105	PDAC		Cell line	2h JQ1 200 nM
+SAMN03248143	3248143	MOLT-3 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777001	GSM1557074	Leukemia		Cell line	DMSO
+SAMN03248144	3248144	MOLM-13 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS776987	GSM1557062	Leukemia		Cell line	DMSO
+SAMN03248145	3248145	K-562 BRD3.3235	The Research Institute of Molecular Pathology (IMP)	9606	SRS777044	GSM1557118	Leukemia	BRD3.3235	Cell line	
+SAMN03248146	3248146	KASUMI-1 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776992	GSM1557066	Leukemia		Cell line	2h JQ1 200 nM
+SAMN03248149	3248149	HUPT-4 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777034	GSM1557108	PDAC		Cell line	2h JQ1 200 nM
+SAMN03248151	3248151	NCIH-82 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777014	GSM1557088	SCLC		Cell line	24h JQ1 200 nM
+SAMN03248152	3248152	DMS-273 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777015	GSM1557089	SCLC		Cell line	DMSO
+SAMN03248153	3248153	MOLT-3 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777000	GSM1557075	Leukemia		Cell line	2h JQ1 200 nM
+SAMN03248154	3248154	NCIH-69 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777011	GSM1557084	SCLC		Cell line	2h JQ1 200 nM
+SAMN03248155	3248155	HPAF-1 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777029	GSM1557101	PDAC		Cell line	DMSO
+SAMN03248158	3248158	MV4-11 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776995	GSM1557070	Leukemia		Cell line	24h JQ1 200 nM
+SAMN03248159	3248159	HPAF-1 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777027	GSM1557102	PDAC		Cell line	2h JQ1 200 nM
+SAMN03248161	3248161	NCIH-1048 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777006	GSM1557080	SCLC		Cell line	DMSO
+SAMN03248162	3248162	HPAF-1 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777028	GSM1557103	PDAC		Cell line	24h JQ1 200 nM
+SAMN03248163	3248163	HUPT-4 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777035	GSM1557109	PDAC		Cell line	24h JQ1 200 nM
+SAMN03248165	3248165	MOLM-13 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS776990	GSM1557064	Leukemia		Cell line	24h JQ1 200 nM
+SAMN03248166	3248166	MV4-11 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS776994	GSM1557068	Leukemia		Cell line	DMSO
+SAMN03248168	3248168	CAPAN-2 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777030	GSM1557104	PDAC		Cell line	DMSO
+SAMN03248169	3248169	ASPC-1 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777024	GSM1557098	PDAC		Cell line	DMSO
+SAMN03248170	3248170	SU-8686 DMSO	The Research Institute of Molecular Pathology (IMP)	9606	SRS777038	GSM1557113	PDAC		Cell line	DMSO
+SAMN03248171	3248171	MIAPACA-2 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777037	GSM1557112	PDAC		Cell line	24h JQ1 200 nM
+SAMN03248172	3248172	K-562 BRD4.1817	The Research Institute of Molecular Pathology (IMP)	9606	SRS777045	GSM1557119	Leukemia	BRD4.1817	Cell line	
+SAMN03248173	3248173	SHP-77 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777023	GSM1557097	SCLC		Cell line	24h JQ1 200 nM
+SAMN03248174	3248174	K-562 2h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777004	GSM1557078	Leukemia		Cell line	2h JQ1 200 nM
+SAMN03248177	3248177	ASPC-1 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777025	GSM1557100	PDAC		Cell line	24h JQ1 200 nM
+SAMN03248178	3248178	SU-8686 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777040	GSM1557115	PDAC		Cell line	24h JQ1 200 nM
+SAMN03248181	3248181	CAPAN-2 24h JQ1 200 nM	The Research Institute of Molecular Pathology (IMP)	9606	SRS777033	GSM1557106	PDAC		Cell line	24h JQ1 200 nM

@@ -1,0 +1,31 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN30952356	30952356	PR_RUX_PTX_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191651	GSM6595603	SUM190_PR	SUM190_PR	15nM Ruxolitinib 6.5nM Paclitaxel
+SAMN30952357	30952357	PR_RUX_PTX_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191650	GSM6595602	SUM190_PR	SUM190_PR	15nM Ruxolitinib 6.5nM Paclitaxel
+SAMN30952358	30952358	PR_RUX_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191649	GSM6595601	SUM190_PR	SUM190_PR	15uM Ruxolitinib
+SAMN30952359	30952359	PR_RUX_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191648	GSM6595600	SUM190_PR	SUM190_PR	15uM Ruxolitinib
+SAMN30952360	30952360	PR_PTX_High_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191647	GSM6595599	SUM190_PR	SUM190_PR	10nM Paclitaxel
+SAMN30952361	30952361	PR_PTX_High_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191646	GSM6595598	SUM190_PR	SUM190_PR	10nM Paclitaxel
+SAMN30952362	30952362	PR_PTX_Low_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191645	GSM6595597	SUM190_PR	SUM190_PR	6.5nM Paclitaxel
+SAMN30952363	30952363	PR_PTX_Low_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191644	GSM6595596	SUM190_PR	SUM190_PR	6.5nM Paclitaxel
+SAMN30952364	30952364	PR_DMSO_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191643	GSM6595595	SUM190_PR	SUM190_PR	DMSO
+SAMN30952365	30952365	PR_DMSO_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191641	GSM6595594	SUM190_PR	SUM190_PR	DMSO
+SAMN30952366	30952366	DR_Dox_High_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191642	GSM6595593	SUM190_DR	SUM190_DR	1uM Doxorubicin
+SAMN30952367	30952367	DR_Dox_High_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191640	GSM6595592	SUM190_DR	SUM190_DR	1uM Doxorubicin
+SAMN30952368	30952368	DR_Dox_Low_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191639	GSM6595591	SUM190_DR	SUM190_DR	350nM Doxorubicin
+SAMN30952369	30952369	DR_Dox_Low_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191638	GSM6595590	SUM190_DR	SUM190_DR	350nM Doxorubicin
+SAMN30952370	30952370	DR_DMSO_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191637	GSM6595589	SUM190_DR	SUM190_DR	DMSO
+SAMN30952371	30952371	DR_DMSO_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191636	GSM6595588	SUM190_DR	SUM190_DR	DMSO
+SAMN30952372	30952372	Par_RUX_PTX_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191635	GSM6595587	SUM190_Parental	SUM190_Parental	15nM Ruxolitinib 2.5nM Paclitaxel
+SAMN30952373	30952373	Par_RUX_PTX_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191633	GSM6595586	SUM190_Parental	SUM190_Parental	15nM Ruxolitinib 2.5nM Paclitaxel
+SAMN30952374	30952374	Par_RUX_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191634	GSM6595585	SUM190_Parental	SUM190_Parental	15uM Ruxolitinib
+SAMN30952375	30952375	Par_RUX_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191632	GSM6595584	SUM190_Parental	SUM190_Parental	15uM Ruxolitinib
+SAMN30952376	30952376	Par_Dox_High_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191631	GSM6595583	SUM190_Parental	SUM190_Parental	1uM Doxorubicin
+SAMN30952377	30952377	Par_Dox_High_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191630	GSM6595582	SUM190_Parental	SUM190_Parental	1uM Doxorubicin
+SAMN30952378	30952378	Par_Dox_Low_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191629	GSM6595581	SUM190_Parental	SUM190_Parental	65nM Doxorubicin
+SAMN30952379	30952379	Par_Dox_Low_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191628	GSM6595580	SUM190_Parental	SUM190_Parental	65nM Doxorubicin
+SAMN30952380	30952380	Par_PTX_High_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191627	GSM6595579	SUM190_Parental	SUM190_Parental	10nM Paclitaxel
+SAMN30952381	30952381	Par_PTX_High_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191626	GSM6595578	SUM190_Parental	SUM190_Parental	10nM Paclitaxel
+SAMN30952382	30952382	Par_PTX_Low_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191625	GSM6595577	SUM190_Parental	SUM190_Parental	2.5nM Paclitaxel
+SAMN30952383	30952383	Par_PTX_Low_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191623	GSM6595576	SUM190_Parental	SUM190_Parental	2.5nM Paclitaxel
+SAMN30952384	30952384	Par_DMSO_2	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191624	GSM6595575	SUM190_Parental	SUM190_Parental	DMSO
+SAMN30952385	30952385	Par_DMSO_1	Polyak, Medical Oncology, Dana-Farber Cancer Institute	9606	SRS15191622	GSM6595574	SUM190_Parental	SUM190_Parental	DMSO

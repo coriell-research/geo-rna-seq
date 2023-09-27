@@ -1,0 +1,25 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	genotype	replicate	source_name	treatment
+SAMN22513018	22513018	ATRX KO cells, Etoposide treated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691892	GSM5651648	U87 glioblastoma cells	ATRX KO	3	U87 glioblastoma cells	etoposide
+SAMN22513019	22513019	ATRX KO cells, Etoposide treated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691889	GSM5651647	U87 glioblastoma cells	ATRX KO	2	U87 glioblastoma cells	etoposide
+SAMN22513020	22513020	ATRX KO cells, Etoposide treated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691888	GSM5651646	U87 glioblastoma cells	ATRX KO	1	U87 glioblastoma cells	etoposide
+SAMN22513021	22513021	ATRX KO cells, untreated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691886	GSM5651645	U87 glioblastoma cells	ATRX KO	3	U87 glioblastoma cells	control
+SAMN22513022	22513022	ATRX KO cells, untreated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691885	GSM5651644	U87 glioblastoma cells	ATRX KO	2	U87 glioblastoma cells	control
+SAMN22513023	22513023	ATRX KO cells, untreated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691884	GSM5651643	U87 glioblastoma cells	ATRX KO	1	U87 glioblastoma cells	control
+SAMN22513024	22513024	ATRX WT cells, Etoposide treated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691883	GSM5651642	U87 glioblastoma cells	WT	3	U87 glioblastoma cells	etoposide
+SAMN22513025	22513025	ATRX WT cells, Etoposide treated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691882	GSM5651641	U87 glioblastoma cells	WT	2	U87 glioblastoma cells	etoposide
+SAMN22513026	22513026	ATRX WT cells, Etoposide treated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691881	GSM5651640	U87 glioblastoma cells	WT	1	U87 glioblastoma cells	etoposide
+SAMN22513027	22513027	ATRX WT cells, untreated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691880	GSM5651639	U87 glioblastoma cells	WT	3	U87 glioblastoma cells	control
+SAMN22513028	22513028	ATRX WT cells, untreated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691878	GSM5651638	U87 glioblastoma cells	WT	2	U87 glioblastoma cells	control
+SAMN22513029	22513029	ATRX WT cells, untreated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691879	GSM5651637	U87 glioblastoma cells	WT	1	U87 glioblastoma cells	control
+SAMN22513030	22513030	DAXX KO cells, Etoposide treated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691877	GSM5651636	U87 glioblastoma cells	ATRX KO	3	U87 glioblastoma cells	etoposide
+SAMN22513031	22513031	DAXX KO cells, Etoposide treated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691876	GSM5651635	U87 glioblastoma cells	ATRX KO	2	U87 glioblastoma cells	etoposide
+SAMN22513032	22513032	DAXX KO cells, Etoposide treated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691875	GSM5651634	U87 glioblastoma cells	ATRX KO	1	U87 glioblastoma cells	etoposide
+SAMN22513033	22513033	DAXX KO cells, untreated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691874	GSM5651633	U87 glioblastoma cells	ATRX KO	3	U87 glioblastoma cells	control
+SAMN22513034	22513034	DAXX KO cells, untreated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691873	GSM5651632	U87 glioblastoma cells	ATRX KO	2	U87 glioblastoma cells	control
+SAMN22513035	22513035	DAXX KO cells, untreated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691872	GSM5651631	U87 glioblastoma cells	ATRX KO	1	U87 glioblastoma cells	control
+SAMN22513036	22513036	DAXX WT cells, Etoposide treated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691871	GSM5651630	U87 glioblastoma cells	WT	3	U87 glioblastoma cells	etoposide
+SAMN22513037	22513037	DAXX WT cells, Etoposide treated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691870	GSM5651629	U87 glioblastoma cells	WT	2	U87 glioblastoma cells	etoposide
+SAMN22513038	22513038	DAXX WT cells, Etoposide treated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691869	GSM5651628	U87 glioblastoma cells	WT	1	U87 glioblastoma cells	etoposide
+SAMN22513039	22513039	DAXX WT cells, untreated, replicate 3	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691868	GSM5651627	U87 glioblastoma cells	WT	3	U87 glioblastoma cells	control
+SAMN22513040	22513040	DAXX WT cells, untreated, replicate 2	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691867	GSM5651626	U87 glioblastoma cells	WT	2	U87 glioblastoma cells	control
+SAMN22513041	22513041	DAXX WT cells, untreated, replicate 1	Genomics, Bioinformatics, The Wistar Institute	9606	SRS10691866	GSM5651625	U87 glioblastoma cells	WT	1	U87 glioblastoma cells	control

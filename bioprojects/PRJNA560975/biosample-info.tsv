@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	treatment
+SAMN12604976	12604976	Both rep 2	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294049	GSM4039684	MOLM13-R2	MOLM13-R2 AML cell line	venetoclax (500 nM) + tedizolid (5 uM)
+SAMN12604977	12604977	Both rep 1	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294048	GSM4039683	MOLM13-R2	MOLM13-R2 AML cell line	venetoclax (500 nM) + tedizolid (5 uM)
+SAMN12604978	12604978	Tedizolid rep 2	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294047	GSM4039682	MOLM13-R2	MOLM13-R2 AML cell line	tedizolid (5 uM)
+SAMN12604979	12604979	Tedizolid rep 1	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294046	GSM4039681	MOLM13-R2	MOLM13-R2 AML cell line	tedizolid (5 uM)
+SAMN12604980	12604980	Venetoclax rep 2	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294045	GSM4039680	MOLM13-R2	MOLM13-R2 AML cell line	venetoclax (500 nM)
+SAMN12604981	12604981	Venetoclax rep 1	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294044	GSM4039679	MOLM13-R2	MOLM13-R2 AML cell line	venetoclax (500 nM)
+SAMN12604982	12604982	DMSO rep 2	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294043	GSM4039678	MOLM13-R2	MOLM13-R2 AML cell line	DMSO
+SAMN12604983	12604983	DMSO rep 1	Chan Lab, Princess Margaret Cancer Centre	9606	SRS5294042	GSM4039677	MOLM13-R2	MOLM13-R2 AML cell line	DMSO

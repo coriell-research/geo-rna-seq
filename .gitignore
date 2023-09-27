@@ -1,4 +1,18 @@
+# Project files
 .Rproj.user
+*.Rproj
 .Rhistory
 .RData
 .Ruserdata
+*.DS_Store
+.vscode
+
+# Processing results files
+*.fastq
+old.tar.gz
+quant.sf
+quant.sf.gz
+*.rds
+*/PRJNA*/quants
+*/PRJNA*/results
+appdata/

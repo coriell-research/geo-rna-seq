@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	time	treatment
+SAMN14444150	14444150	hCD45pos_IgG_treated_rep1	Medicine, University of Minnesota	9606	SRS6372680	GSM4432356	Human CD45+ cells	human CD45+ cells	one month treatment	IgG
+SAMN14444151	14444151	hCD45pos_TRC105_treated_rep4	Medicine, University of Minnesota	9606	SRS6372691	GSM4432363	Human CD45+ cells	human CD45+ cells	one month treatment	TRC105
+SAMN14444152	14444152	hCD45pos_TRC105_treated_rep3	Medicine, University of Minnesota	9606	SRS6372686	GSM4432362	Human CD45+ cells	human CD45+ cells	one month treatment	TRC105
+SAMN14444153	14444153	hCD45pos_TRC105_treated_rep2	Medicine, University of Minnesota	9606	SRS6372685	GSM4432361	Human CD45+ cells	human CD45+ cells	one month treatment	TRC105
+SAMN14444154	14444154	hCD45pos_TRC105_treated_rep1	Medicine, University of Minnesota	9606	SRS6372683	GSM4432360	Human CD45+ cells	human CD45+ cells	one month treatment	TRC105
+SAMN14444155	14444155	hCD45pos_IgG_treated_rep4	Medicine, University of Minnesota	9606	SRS6372682	GSM4432359	Human CD45+ cells	human CD45+ cells	one month treatment	IgG
+SAMN14444156	14444156	hCD45pos_IgG_treated_rep3	Medicine, University of Minnesota	9606	SRS6372681	GSM4432358	Human CD45+ cells	human CD45+ cells	one month treatment	IgG
+SAMN14444157	14444157	hCD45pos_IgG_treated_rep2	Medicine, University of Minnesota	9606	SRS6372684	GSM4432357	Human CD45+ cells	human CD45+ cells	one month treatment	IgG

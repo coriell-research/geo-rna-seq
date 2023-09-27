@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	source_name	treatment
+SAMN12136617	12136617	LS1034_DMSO_6hr_C	Broad Institute	9606	SRS5027719	GSM3904871	LS1034	colon cancer cell line	LS1034_DMSO_6hr	DMSO
+SAMN12136618	12136618	LS1034_DMSO_6hr_B	Broad Institute	9606	SRS5027717	GSM3904870	LS1034	colon cancer cell line	LS1034_DMSO_6hr	DMSO
+SAMN12136619	12136619	LS1034_DMSO_6hr_A	Broad Institute	9606	SRS5027718	GSM3904869	LS1034	colon cancer cell line	LS1034_DMSO_6hr	DMSO
+SAMN12136620	12136620	LS1034_12uM_Tepoxalin_6hr_C	Broad Institute	9606	SRS5027716	GSM3904868	LS1034	colon cancer cell line	LS1034_12uM_Tepoxalin_6hr	tepoxalin
+SAMN12136621	12136621	LS1034_12uM_Tepoxalin_6hr_B	Broad Institute	9606	SRS5027715	GSM3904867	LS1034	colon cancer cell line	LS1034_12uM_Tepoxalin_6hr	tepoxalin
+SAMN12136622	12136622	LS1034_12uM_Tepoxalin_6hr_A	Broad Institute	9606	SRS5027714	GSM3904866	LS1034	colon cancer cell line	LS1034_12uM_Tepoxalin_6hr	tepoxalin

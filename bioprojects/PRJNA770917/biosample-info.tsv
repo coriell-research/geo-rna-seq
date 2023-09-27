@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN22243659	22243659	SK-MEL-28 Etoposide 1	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547041	GSM5624076	SK-MEL-28	SK-MEL-28	Etoposide
+SAMN22243660	22243660	SK-MEL-28 Etoposide 2	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547042	GSM5624077	SK-MEL-28	SK-MEL-28	Etoposide
+SAMN22243661	22243661	SK-MEL-28 Etoposide 3	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547043	GSM5624078	SK-MEL-28	SK-MEL-28	Etoposide
+SAMN22243668	22243668	A375 Etoposide + Rapamycin 1	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547032	GSM5624067	A375	A375	Etoposide + Rapamycin
+SAMN22243711	22243711	A375 Etoposide + Rapamycin 2	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547033	GSM5624068	A375	A375	Etoposide + Rapamycin
+SAMN22243712	22243712	A375 Etoposide + Rapamycin 3	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547034	GSM5624069	A375	A375	Etoposide + Rapamycin
+SAMN22243713	22243713	A375 Etoposide 1	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547036	GSM5624070	A375	A375	Etoposide
+SAMN22243714	22243714	A375 Etoposide 2	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547035	GSM5624071	A375	A375	Etoposide
+SAMN22243715	22243715	A375 Etoposide 3	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547037	GSM5624072	A375	A375	Etoposide
+SAMN22243716	22243716	SK-MEL-28 Etoposide + Rapamycin 1	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547038	GSM5624073	SK-MEL-28	SK-MEL-28	Etoposide + Rapamycin
+SAMN22243717	22243717	SK-MEL-28 Etoposide + Rapamycin 2	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547039	GSM5624074	SK-MEL-28	SK-MEL-28	Etoposide + Rapamycin
+SAMN22243718	22243718	SK-MEL-28 Etoposide + Rapamycin 3	Liulab, Dermatology, Xiangya Hospital	9606	SRS10547040	GSM5624075	SK-MEL-28	SK-MEL-28	Etoposide + Rapamycin

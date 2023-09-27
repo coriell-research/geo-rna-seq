@@ -1,0 +1,5 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN19092534	19092534	RNA-seq_MCF7-DR_1	Chinese Academy of Sciences	9606	SRS8912429	GSM5287977	MCF7-DR	doxorubicin-resistant MCF7 (MCF7-DR)	treated with 1 μM doxorubicin hydrochloride
+SAMN19092535	19092535	RNA-seq_MCF7_2	Chinese Academy of Sciences	9606	SRS8912428	GSM5287976	MCF7	parental MCF7	untreated
+SAMN19092536	19092536	RNA-seq_MCF7_1	Chinese Academy of Sciences	9606	SRS8912427	GSM5287975	MCF7	parental MCF7	untreated
+SAMN19092562	19092562	RNA-seq_MCF7-DR_2	Chinese Academy of Sciences	9606	SRS8912430	GSM5287978	MCF7-DR	doxorubicin-resistant MCF7 (MCF7-DR)	treated with 1 μM doxorubicin hydrochloride

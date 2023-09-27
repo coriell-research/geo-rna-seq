@@ -1,0 +1,49 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	disease	genotype	source_name	treatment
+SAMN09445361	9445361	C_1KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431395	GSM3197049	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	control
+SAMN09445362	9445362	HS_WT_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431394	GSM3197048	U2OS	osteosarcoma	wild type	cell	heat shock 1 h in 42 degrees
+SAMN09445363	9445363	10h_WT_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431391	GSM3197047	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 10 h
+SAMN09445364	9445364	6h_WT_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431392	GSM3197046	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 6 h
+SAMN09445365	9445365	C_WT_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431390	GSM3197045	U2OS	osteosarcoma	wild type	cell	control
+SAMN09445366	9445366	HS_1KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431399	GSM3197052	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445367	9445367	10h_1KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431398	GSM3197051	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 10 h
+SAMN09445368	9445368	HS_2KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431389	GSM3197044	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445369	9445369	10h_2KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431393	GSM3197043	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 10 h
+SAMN09445370	9445370	6h_2KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431388	GSM3197042	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 6 h
+SAMN09445371	9445371	C_2KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431384	GSM3197041	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	control
+SAMN09445372	9445372	HS_1KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431387	GSM3197040	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445373	9445373	10h_1KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431385	GSM3197039	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 10 h
+SAMN09445374	9445374	6h_1KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431386	GSM3197038	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 6 h
+SAMN09445375	9445375	C_1KO_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431383	GSM3197037	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	control
+SAMN09445376	9445376	HS_WT_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431382	GSM3197036	U2OS	osteosarcoma	wild type	cell	heat shock 1 h in 42 degrees
+SAMN09445377	9445377	10h_WT_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431381	GSM3197035	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 10 h
+SAMN09445378	9445378	6h_WT_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431380	GSM3197034	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 6 h
+SAMN09445379	9445379	C_WT_rep2	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431378	GSM3197033	U2OS	osteosarcoma	wild type	cell	control
+SAMN09445380	9445380	HS_2KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431379	GSM3197032	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445381	9445381	10h_2KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431376	GSM3197031	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 10 h
+SAMN09445383	9445383	6h_2KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431377	GSM3197030	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 6 h
+SAMN09445384	9445384	C_2KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431375	GSM3197029	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	control
+SAMN09445385	9445385	HS_1KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431374	GSM3197028	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445386	9445386	10h_1KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431373	GSM3197027	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 10 h
+SAMN09445387	9445387	6h_1KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431372	GSM3197026	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 6 h
+SAMN09445388	9445388	C_1KO_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431371	GSM3197025	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	control
+SAMN09445389	9445389	HS_WT_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431369	GSM3197024	U2OS	osteosarcoma	wild type	cell	heat shock 1 h in 42 degrees
+SAMN09445390	9445390	10h_WT_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431368	GSM3197023	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 10 h
+SAMN09445391	9445391	6h_WT_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431367	GSM3197022	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 6 h
+SAMN09445392	9445392	C_WT_rep1	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431370	GSM3197021	U2OS	osteosarcoma	wild type	cell	control
+SAMN09445400	9445400	HS_2KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431413	GSM3197068	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445401	9445401	10h_2KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431412	GSM3197067	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 10 h
+SAMN09445402	9445402	6h_2KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431411	GSM3197066	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 6 h
+SAMN09445404	9445404	C_2KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431410	GSM3197065	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	control
+SAMN09445405	9445405	HS_1KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431409	GSM3197064	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445407	9445407	10h_1KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431408	GSM3197063	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 10 h
+SAMN09445408	9445408	6h_1KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431406	GSM3197062	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 6 h
+SAMN09445409	9445409	C_1KO_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431407	GSM3197061	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	control
+SAMN09445410	9445410	HS_WT_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431405	GSM3197060	U2OS	osteosarcoma	wild type	cell	heat shock 1 h in 42 degrees
+SAMN09445411	9445411	10h_WT_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431403	GSM3197059	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 10 h
+SAMN09445412	9445412	6h_WT_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431404	GSM3197058	U2OS	osteosarcoma	wild type	cell	treated with Bortezomib for 6 h
+SAMN09445413	9445413	C_WT_rep4	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431402	GSM3197057	U2OS	osteosarcoma	wild type	cell	control
+SAMN09445415	9445415	HS_2KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431414	GSM3197056	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	heat shock 1 h in 42 degrees
+SAMN09445416	9445416	10h_2KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431401	GSM3197055	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 10 h
+SAMN09445418	9445418	6h_2KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431396	GSM3197054	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	treated with Bortezomib for 6 h
+SAMN09445419	9445419	C_2KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431400	GSM3197053	U2OS	osteosarcoma	heat shock farctor 2 KO	cell	control
+SAMN09445420	9445420	6h_1KO_rep3	Lea Sistonen, Cell Biology, Åbo Akademi University	9606	SRS3431397	GSM3197050	U2OS	osteosarcoma	heat shock farctor 1 KO	cell	treated with Bortezomib for 6 h

@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name	treatment
+SAMN14150200	14150200	A549_DAC_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184394	GSM4323479	A549	cell line_A549	Decitabine-treated
+SAMN14150201	14150201	A549_Mock_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184395	GSM4323478	A549	cell line_A549	PBS-treated
+SAMN14150210	14150210	PC9_DAC_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184385	GSM4323489	PC9	cell line_PC9	Decitabine-treated
+SAMN14150211	14150211	PC9_Mock_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184383	GSM4323488	PC9	cell line_PC9	PBS-treated
+SAMN14150212	14150212	H1792_DAC_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184384	GSM4323487	H1792	cell line_H1792	Decitabine-treated
+SAMN14150213	14150213	H1792_Mock_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184382	GSM4323486	H1792	cell line_H1792	PBS-treated
+SAMN14150214	14150214	CL1-5_DAC_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184381	GSM4323485	CL1-5	cell line_CL1-5	Decitabine-treated
+SAMN14150215	14150215	CL1-5_Mock_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184380	GSM4323484	CL1-5	cell line_CL1-5	PBS-treated
+SAMN14150216	14150216	CL1-0_DAC_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184379	GSM4323483	CL1-0	cell line_CL1-0	Decitabine-treated
+SAMN14150217	14150217	CL1-0_Mock_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184378	GSM4323482	CL1-0	cell line_CL1-0	PBS-treated
+SAMN14150218	14150218	H1299_DAC_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184377	GSM4323481	H1299	cell line_H1299	Decitabine-treated
+SAMN14150219	14150219	H1299_Mock_mRNA	R1424, Internal Medicine, National Taiwan University Hospital	9606	SRS6184376	GSM4323480	H1299	cell line_H1299	PBS-treated

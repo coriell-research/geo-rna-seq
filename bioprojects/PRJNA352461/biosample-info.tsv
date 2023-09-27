@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	source_name	tissue
+SAMN05981345	5981345	Sample_20_TET2mut_AML_LSD1iplus5Aza_RNAseq3	Weill Cornell Medical College	9606	SRS1782623	GSM2375175	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981346	5981346	Sample_19_TET2mut_AML_LSD1iplus5Aza_RNAseq2	Weill Cornell Medical College	9606	SRS1782622	GSM2375174	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981347	5981347	Sample_18_TET2mut_AML_LSD1iplus5Aza_RNAseq1	Weill Cornell Medical College	9606	SRS1782621	GSM2375173	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981348	5981348	Sample_17_TET2mut_AML_LSD1i_RNAseq3	Weill Cornell Medical College	9606	SRS1782620	GSM2375172	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981349	5981349	Sample_16_TET2mut_AML_LSD1i_RNAseq2	Weill Cornell Medical College	9606	SRS1782619	GSM2375171	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981350	5981350	Sample_15_TET2mut_AML_LSD1i_RNAseq1	Weill Cornell Medical College	9606	SRS1782618	GSM2375170	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981351	5981351	Sample_14_TET2mut_AML_5Aza_RNAseq3	Weill Cornell Medical College	9606	SRS1782617	GSM2375169	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981352	5981352	Sample_13_TET2mut_AML_5Aza_RNAseq2	Weill Cornell Medical College	9606	SRS1782616	GSM2375168	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981353	5981353	Sample_12_TET2mut_AML_5Aza_RNAseq1	Weill Cornell Medical College	9606	SRS1782615	GSM2375167	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981354	5981354	Sample_11_TET2mut_AML_DMSO_RNAseq3	Weill Cornell Medical College	9606	SRS1782614	GSM2375166	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981355	5981355	Sample_10_TET2mut_AML_DMSO_RNAseq2	Weill Cornell Medical College	9606	SRS1782613	GSM2375165	AML ex vivo culture	patient-derived TET2 mutant AML
+SAMN05981356	5981356	Sample_9_TET2mut_AML_DMSO_RNAseq1	Weill Cornell Medical College	9606	SRS1782612	GSM2375164	AML ex vivo culture	patient-derived TET2 mutant AML

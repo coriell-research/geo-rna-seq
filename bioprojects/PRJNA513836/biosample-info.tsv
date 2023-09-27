@@ -1,0 +1,17 @@
+accession	uid	title	organization	taxonomy	sra	geo	disease	host cell line	host cell type	source_name	tissue	treatment
+SAMN10713763	10713763	HSV-1_EPZ6438_RNAseq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234859	GSM3554293	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h + EPZ6438 4h
+SAMN10713764	10713764	HSV-1_EPZ6438_RNAseq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234858	GSM3554292	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h + EPZ6438 4h
+SAMN10713765	10713765	HSV-1_C646_RNAseq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234857	GSM3554291	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h + C646 4h
+SAMN10713766	10713766	HSV-1_C646_RNAseq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234856	GSM3554290	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h + C646 4h
+SAMN10713767	10713767	HSV-1_DMSO_RNASeq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234855	GSM3554289	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h + DMSO 4h
+SAMN10713768	10713768	HSV-1_DMSO_RNASeq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234854	GSM3554288	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h + DMSO 4h
+SAMN10713769	10713769	HSV-1_24H_RNASeq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234853	GSM3554287	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 24h
+SAMN10713770	10713770	HSV-1_24H_RNASeq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234852	GSM3554286	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 24h
+SAMN10713771	10713771	HSV-1_8H_RNASeq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234851	GSM3554285	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 8h
+SAMN10713772	10713772	HSV-1_8H_RNASeq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234850	GSM3554284	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 8h
+SAMN10713773	10713773	HSV-1_4H_RNASeq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234849	GSM3554283	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h
+SAMN10713774	10713774	HSV-1_4H_RNASeq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234848	GSM3554282	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 4h
+SAMN10713775	10713775	HSV-1_2H_RNASeq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234847	GSM3554281	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 2h
+SAMN10713776	10713776	HSV-1_2H_RNASeq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234846	GSM3554280	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 2h
+SAMN10713777	10713777	HSV-1_1H_RNASeq_rep2	Epigenomics, College of life science, Wuhan university	9606	SRS4234845	GSM3554279	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 1h
+SAMN10713778	10713778	HSV-1_1H_RNASeq_rep1	Epigenomics, College of life science, Wuhan university	9606	SRS4234844	GSM3554278	acute monocytic leukemia	THP-1	monocyte	THP-1	peripheral blood	HSV-1 infect 1h

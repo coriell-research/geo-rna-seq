@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN31109228	31109228	RKO_f3	The Sixth Affiliated Hospital, Sun Yat-sen University	9606	SRS15291665	GSM6610950	RKO	Colorectal cancer (CRC) cells	WT	RKO	fasting medium (1%FBS+1g/L glucose)
+SAMN31109229	31109229	RKO_f2	The Sixth Affiliated Hospital, Sun Yat-sen University	9606	SRS15291664	GSM6610949	RKO	Colorectal cancer (CRC) cells	WT	RKO	fasting medium (1%FBS+1g/L glucose)
+SAMN31109230	31109230	RKO_f1	The Sixth Affiliated Hospital, Sun Yat-sen University	9606	SRS15291663	GSM6610948	RKO	Colorectal cancer (CRC) cells	WT	RKO	fasting medium (1%FBS+1g/L glucose)
+SAMN31109231	31109231	RKO_c3	The Sixth Affiliated Hospital, Sun Yat-sen University	9606	SRS15291662	GSM6610947	RKO	Colorectal cancer (CRC) cells	WT	RKO	control medium (10%FBS+4.5g/L glucose)
+SAMN31109232	31109232	RKO_c2	The Sixth Affiliated Hospital, Sun Yat-sen University	9606	SRS15291660	GSM6610946	RKO	Colorectal cancer (CRC) cells	WT	RKO	control medium (10%FBS+4.5g/L glucose)
+SAMN31109233	31109233	RKO_c1	The Sixth Affiliated Hospital, Sun Yat-sen University	9606	SRS15291661	GSM6610945	RKO	Colorectal cancer (CRC) cells	WT	RKO	control medium (10%FBS+4.5g/L glucose)

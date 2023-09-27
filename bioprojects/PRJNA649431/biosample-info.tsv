@@ -1,0 +1,13 @@
+accession	uid	title	organization	taxonomy	sra	geo	pdx	source_name	tissue	treatment
+SAMN15666594	15666594	Spleen-PDX T-ALL2 Decitabine Rep2 RNA-seq	Ghent University	9606	SRS7106237	GSM4699418	PDX T-ALL2	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	Decitabine
+SAMN15666595	15666595	Spleen-PDX T-ALL2 Decitabine Rep1 RNA-seq	Ghent University	9606	SRS7106236	GSM4699417	PDX T-ALL2	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	Decitabine
+SAMN15666596	15666596	Spleen-PDX T-ALL2 DMSO Rep3 RNA-seq	Ghent University	9606	SRS7106234	GSM4699416	PDX T-ALL2	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	DMSO
+SAMN15666597	15666597	Spleen-PDX T-ALL2 DMSO Rep2 RNA-seq	Ghent University	9606	SRS7106235	GSM4699415	PDX T-ALL2	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	DMSO
+SAMN15666598	15666598	Spleen-PDX T-ALL2 DMSO Rep1 RNA-seq	Ghent University	9606	SRS7106233	GSM4699414	PDX T-ALL2	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	DMSO
+SAMN15666599	15666599	Spleen-PDX T-ALL1 Decitabine Rep3 RNA-seq	Ghent University	9606	SRS7106231	GSM4699413	PDX T-ALL1	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	Decitabine
+SAMN15666600	15666600	Spleen-PDX T-ALL1 Decitabine Rep2 RNA-seq	Ghent University	9606	SRS7106232	GSM4699412	PDX T-ALL1	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	Decitabine
+SAMN15666601	15666601	Spleen-PDX T-ALL1 Decitabine Rep1 RNA-seq	Ghent University	9606	SRS7106230	GSM4699411	PDX T-ALL1	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	Decitabine
+SAMN15666602	15666602	Spleen-PDX T-ALL1 DMSO Rep3 RNA-seq	Ghent University	9606	SRS7106227	GSM4699410	PDX T-ALL1	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	DMSO
+SAMN15666603	15666603	Spleen-PDX T-ALL1 DMSO Rep2 RNA-seq	Ghent University	9606	SRS7106228	GSM4699409	PDX T-ALL1	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	DMSO
+SAMN15666604	15666604	Spleen-PDX T-ALL1 DMSO Rep1 RNA-seq	Ghent University	9606	SRS7106229	GSM4699408	PDX T-ALL1	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	DMSO
+SAMN15666618	15666618	Spleen-PDX T-ALL2 Decitabine Rep3 RNA-seq	Ghent University	9606	SRS7106238	GSM4699419	PDX T-ALL2	T-ALL blasts from PDX spleen	T-ALL blasts from PDX spleen	Decitabine

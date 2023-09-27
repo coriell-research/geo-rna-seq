@@ -1,0 +1,15 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	disease state	source_name	treatment
+SAMN04557538	4557538	SW48-p53KO_CTL	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345479	GSM2089699	SW48-p53_KO	colorectal cancer	SW48	untreated
+SAMN04557542	4557542	SW48-p53KO_DOXO	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345478	GSM2089700	SW48-p53_KO	colorectal cancer	SW48	Doxorubicin at a final concentration of 300 nM for 16 hours
+SAMN04558030	4558030	HCT116-p53KO_CTL	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345487	GSM2089691	HCT116-p53_KO	colorectal cancer	HCT116	untreated
+SAMN04558031	4558031	HCT116-p53KO_DOXO	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345486	GSM2089692	HCT116-p53_KO	colorectal cancer	HCT116	Doxorubicin at a final concentration of 300 nM for 16 hours
+SAMN04558032	4558032	HCT116-p53WT_CTL rep1	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345491	GSM2089687	HCT116-p53_WT	colorectal cancer	HCT116	untreated
+SAMN04558033	4558033	HCT116-p53WT_CTL rep2	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345490	GSM2089688	HCT116-p53_WT	colorectal cancer	HCT116	untreated
+SAMN04558034	4558034	HCT116-p53WT_DOXO rep1	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345489	GSM2089689	HCT116-p53_WT	colorectal cancer	HCT116	Doxorubicin at a final concentration of 300 nM for 16 hours
+SAMN04558035	4558035	HCT116-p53WT_DOXO rep2	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345488	GSM2089690	HCT116-p53_WT	colorectal cancer	HCT116	Doxorubicin at a final concentration of 300 nM for 16 hours
+SAMN04558036	4558036	RKO-p53WT_CTL	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345485	GSM2089693	RKO-p53_WT	colorectal cancer	RKO	untreated
+SAMN04558037	4558037	RKO-p53WT_DOXO	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345484	GSM2089694	RKO-p53_WT	colorectal cancer	RKO	Doxorubicin at a final concentration of 300 nM for 16 hours
+SAMN04558038	4558038	RKO-p53KO_CTL	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345483	GSM2089695	RKO-p53_KO	colorectal cancer	RKO	untreated
+SAMN04558039	4558039	RKO-p53KO_DOXO	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345482	GSM2089696	RKO-p53_KO	colorectal cancer	RKO	Doxorubicin at a final concentration of 300 nM for 16 hours
+SAMN04558040	4558040	SW48-p53WT_CTL	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345480	GSM2089697	SW48-p53_WT	colorectal cancer	SW48	untreated
+SAMN04558041	4558041	SW48-p53WT_DOXO	Javed Khan, Genetics Branch, NCI, NIH	9606	SRS1345481	GSM2089698	SW48-p53_WT	colorectal cancer	SW48	Doxorubicin at a final concentration of 300 nM for 16 hours

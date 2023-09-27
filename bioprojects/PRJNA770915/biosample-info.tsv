@@ -1,0 +1,5 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell type	source_name	time point	treatment
+SAMN22243698	22243698	HCT116_DMSO_RNA_seq_rep1	Institut für Informatik, Ludwig-Maximilians-Universität München	9606	SRS10546986	GSM5624019	HCT116 (wild type)	HCT116 cells in culture, 4h after treatment	4h	DMSO (solvent)
+SAMN22243699	22243699	HCT116_DMSO_RNA_seq_rep2	Institut für Informatik, Ludwig-Maximilians-Universität München	9606	SRS10546987	GSM5624020	HCT116 (wild type)	HCT116 cells in culture, 4h after treatment	4h	DMSO (solvent)
+SAMN22243700	22243700	HCT116_OTS964_RNA_seq_rep1	Institut für Informatik, Ludwig-Maximilians-Universität München	9606	SRS10546984	GSM5624021	HCT116 (wild type)	HCT116 cells in culture, 4h after treatment	4h	OTS964 30nM
+SAMN22243701	22243701	HCT116_OTS964_RNA_seq_rep2	Institut für Informatik, Ludwig-Maximilians-Universität München	9606	SRS10546985	GSM5624022	HCT116 (wild type)	HCT116 cells in culture, 4h after treatment	4h	OTS964 30nM

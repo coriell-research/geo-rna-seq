@@ -1,0 +1,9 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype/variation	source_name	treatment
+SAMN10160587	10160587	shTLP_eto1	Tokyo Institute of Technology	9606	SRS3862991	GSM3409493	HeLa	cervical adenocarcinoma	TLP knockdown	HeLa_shTLP_eto	etoposide-treated
+SAMN10160589	10160589	shTLP_nt2	Tokyo Institute of Technology	9606	SRS3862990	GSM3409492	HeLa	cervical adenocarcinoma	TLP knockdown	HeLa_shTLP_nt	DMSO-treatted
+SAMN10160590	10160590	shTLP_nt1	Tokyo Institute of Technology	9606	SRS3862989	GSM3409491	HeLa	cervical adenocarcinoma	TLP knockdown	HeLa_shTLP_nt	DMSO-treatted
+SAMN10160591	10160591	ctrl_eto2	Tokyo Institute of Technology	9606	SRS3862988	GSM3409490	HeLa	cervical adenocarcinoma	control knockdown	HeLa_ctrl_eto	etoposide-treated
+SAMN10160592	10160592	ctrl_eto1	Tokyo Institute of Technology	9606	SRS3862986	GSM3409489	HeLa	cervical adenocarcinoma	control knockdown	HeLa_ctrl_eto	etoposide-treated
+SAMN10160593	10160593	ctrl_nt2	Tokyo Institute of Technology	9606	SRS3862987	GSM3409488	HeLa	cervical adenocarcinoma	control knockdown	HeLa_ctrl_nt	DMSO-treatted
+SAMN10160594	10160594	ctrl_nt1	Tokyo Institute of Technology	9606	SRS3862985	GSM3409487	HeLa	cervical adenocarcinoma	control knockdown	HeLa_ctrl_nt	DMSO-treatted
+SAMN10160595	10160595	shTLP_eto2	Tokyo Institute of Technology	9606	SRS3862992	GSM3409494	HeLa	cervical adenocarcinoma	TLP knockdown	HeLa_shTLP_eto	etoposide-treated

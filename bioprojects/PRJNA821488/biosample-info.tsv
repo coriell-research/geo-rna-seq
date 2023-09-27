@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	genotype	source_name	treatment
+SAMN27103250	27103250	Neuroblastoma cells sgGPR91-3	Xinhua hospital	9606	SRS12431767	GSM5984265	SK-N-BE(2)	Neuroblastoma	Control	Neuroblastoma cells	treated with doxorubicin(Dox) 100 nmol/L for 48 hours
+SAMN27103251	27103251	Neuroblastoma cells sgGPR91-2	Xinhua hospital	9606	SRS12431768	GSM5984264	SK-N-BE(2)	Neuroblastoma	Control	Neuroblastoma cells	treated with doxorubicin(Dox) 100 nmol/L for 48 hours
+SAMN27103252	27103252	Neuroblastoma cells sgGPR91-1	Xinhua hospital	9606	SRS12431765	GSM5984263	SK-N-BE(2)	Neuroblastoma	Control	Neuroblastoma cells	treated with doxorubicin(Dox) 100 nmol/L for 48 hours
+SAMN27103253	27103253	Neuroblastoma cells sgcon-3	Xinhua hospital	9606	SRS12431764	GSM5984262	SK-N-BE(2)	Neuroblastoma	GPR91 knockout	Neuroblastoma cells	treated with doxorubicin(Dox) 100 nmol/L for 48 hours
+SAMN27103254	27103254	Neuroblastoma cells sgcon-2	Xinhua hospital	9606	SRS12431766	GSM5984261	SK-N-BE(2)	Neuroblastoma	GPR91 knockout	Neuroblastoma cells	treated with doxorubicin(Dox) 100 nmol/L for 48 hours
+SAMN27103255	27103255	Neuroblastoma cells sgcon-1	Xinhua hospital	9606	SRS12431763	GSM5984260	SK-N-BE(2)	Neuroblastoma	GPR91 knockout	Neuroblastoma cells	treated with doxorubicin(Dox) 100 nmol/L for 48 hours

@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	collection_date	genotype	geo_loc_name	source_name	tissue	treatment
+SAMN28835913	28835913	cell HCT116 shFBL,Mitomycin C overnight,rep3	hebei university	9606	SRS13276878	GSM6211037	HCT116	human colorectal carcinoma cells	missing	FBL knockdown	missing	colon	colon	Mitomycin C,overnight
+SAMN28835914	28835914	cell HCT116 shFBL,Mitomycin C overnight,rep2	hebei university	9606	SRS13276877	GSM6211036	HCT116	human colorectal carcinoma cells	missing	FBL knockdown	missing	colon	colon	Mitomycin C,overnight
+SAMN28835915	28835915	cell HCT116 shFBL,Mitomycin C overnight,rep1	hebei university	9606	SRS13276876	GSM6211035	HCT116	human colorectal carcinoma cells	missing	FBL knockdown	missing	colon	colon	Mitomycin C,overnight
+SAMN28835916	28835916	cell HCT116 shControl,Mitomycin C,overnight,rep3	hebei university	9606	SRS13276875	GSM6211034	HCT116	human colorectal carcinoma cells	missing	WT	missing	colon	colon	Mitomycin C,overnight
+SAMN28835917	28835917	cell HCT116 shControl,Mitomycin C,overnight,rep2	hebei university	9606	SRS13276874	GSM6211033	HCT116	human colorectal carcinoma cells	missing	WT	missing	colon	colon	Mitomycin C,overnight
+SAMN28835918	28835918	cell HCT116 shControl,Mitomycin C,overnight,rep1	hebei university	9606	SRS13276873	GSM6211032	HCT116	human colorectal carcinoma cells	missing	WT	missing	colon	colon	Mitomycin C,overnight

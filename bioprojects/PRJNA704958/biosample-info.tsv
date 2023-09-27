@@ -1,0 +1,7 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	grade	source_name	treatment
+SAMN18059268	18059268	T24_si_5	Molecular Lab, Dept. of Pathology, St. Vincent's University Hospital	9606	SRS8320832	GSM5107458	T24 (RRID:CVCL_0554)	Bladder cancer cell line	3	Human bladder cancer cell line T24	siRNA targetting RBM3
+SAMN18059269	18059269	T24_si_4	Molecular Lab, Dept. of Pathology, St. Vincent's University Hospital	9606	SRS8320831	GSM5107457	T24 (RRID:CVCL_0554)	Bladder cancer cell line	3	Human bladder cancer cell line T24	siRNA targetting RBM3
+SAMN18059270	18059270	T24_si_3	Molecular Lab, Dept. of Pathology, St. Vincent's University Hospital	9606	SRS8320829	GSM5107456	T24 (RRID:CVCL_0554)	Bladder cancer cell line	3	Human bladder cancer cell line T24	siRNA targetting RBM3
+SAMN18059271	18059271	T24_ctrl_5	Molecular Lab, Dept. of Pathology, St. Vincent's University Hospital	9606	SRS8320830	GSM5107455	T24 (RRID:CVCL_0554)	Bladder cancer cell line	3	Human bladder cancer cell line T24	Control
+SAMN18059272	18059272	T24_ctrl_3	Molecular Lab, Dept. of Pathology, St. Vincent's University Hospital	9606	SRS8320828	GSM5107454	T24 (RRID:CVCL_0554)	Bladder cancer cell line	3	Human bladder cancer cell line T24	Control
+SAMN18059273	18059273	T24_ctrl_1	Molecular Lab, Dept. of Pathology, St. Vincent's University Hospital	9606	SRS8320827	GSM5107453	T24 (RRID:CVCL_0554)	Bladder cancer cell line	3	Human bladder cancer cell line T24	Control

@@ -1,0 +1,10 @@
+accession	uid	title	organization	taxonomy	sra	geo	source_name	tissue	treatment
+SAMN11464250	11464250	PCIA_BuCy_3	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649436	GSM3731094	Hair follicle stem cells	Hair follicle	busulfan/cyclophosphamide
+SAMN11464251	11464251	PCIA_BuCy_2	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649435	GSM3731093	Hair follicle stem cells	Hair follicle	busulfan/cyclophosphamide
+SAMN11464252	11464252	PCIA_BuCy_1	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649434	GSM3731092	Hair follicle stem cells	Hair follicle	busulfan/cyclophosphamide
+SAMN11464253	11464253	PCIA_Bu_3	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649433	GSM3731091	Hair follicle stem cells	Hair follicle	busulfan
+SAMN11464254	11464254	PCIA_Bu_2	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649432	GSM3731090	Hair follicle stem cells	Hair follicle	busulfan
+SAMN11464255	11464255	PCIA_Bu_1	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649431	GSM3731089	Hair follicle stem cells	Hair follicle	busulfan
+SAMN11464256	11464256	PCIA_Con_3	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649430	GSM3731088	Hair follicle stem cells	Hair follicle	no treatment
+SAMN11464257	11464257	PCIA_Con_2	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649429	GSM3731087	Hair follicle stem cells	Hair follicle	no treatment
+SAMN11464258	11464258	PCIA_Con_1	Department of Dermatology, Seoul National University College of Medicine	9606	SRS4649428	GSM3731086	Hair follicle stem cells	Hair follicle	no treatment

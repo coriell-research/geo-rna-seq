@@ -1,0 +1,27 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	cell type	passage	source_name	time	treatment
+SAMN12818510	12818510	LNCaP p.11 DMSO 24h -1	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420898	GSM4089220	LNCaP	Prostate Adenocarcinoma	passage 30-50	LNCaP	24 hours	no ARD-61
+SAMN12818511	12818511	VCaP 100nM ARD-61b 6h-3	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420897	GSM4089219	VCaP	Prostate Adenocarcinoma	passage 30-50	VCaP	6 hours	ARD-61
+SAMN12818512	12818512	VCaP 100nM ARD-61b 6h-2	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420896	GSM4089218	VCaP	Prostate Adenocarcinoma	passage 30-50	VCaP	6 hours	ARD-61
+SAMN12818513	12818513	VCaP 100nM ARD-61b 6h-1	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420895	GSM4089217	VCaP	Prostate Adenocarcinoma	passage 30-50	VCaP	6 hours	ARD-61
+SAMN12818514	12818514	VCaP DMSO 6h -3	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420894	GSM4089216	VCaP	Prostate Adenocarcinoma	passage 30-50	VCaP	6 hours	no ARD-61
+SAMN12818515	12818515	VCaP DMSO 6h -2	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420893	GSM4089215	VCaP	Prostate Adenocarcinoma	passage 30-50	VCaP	6 hours	no ARD-61
+SAMN12818516	12818516	VCaP DMSO 6h -1	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420892	GSM4089214	VCaP	Prostate Adenocarcinoma	passage 30-50	VCaP	6 hours	no ARD-61
+SAMN12818517	12818517	AR-V7-30ARD	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420917	GSM4089239	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	ARD-61
+SAMN12818518	12818518	AR-V7-26ARD	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420916	GSM4089238	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	ARD-61
+SAMN12818519	12818519	AR-V7-15ARD	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420915	GSM4089237	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	ARD-61
+SAMN12818520	12818520	AR-V7-30DMSO	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420913	GSM4089235	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	no ARD-61
+SAMN12818522	12818522	AR-V7-26DMSO	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420912	GSM4089234	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	no ARD-61
+SAMN12818523	12818523	AR-V7-15DMSO	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420911	GSM4089233	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	no ARD-61
+SAMN12818525	12818525	AR-V7-13DMSO	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420910	GSM4089232	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	no ARD-61
+SAMN12818527	12818527	LNCaP EnzR 24h 100nM ARD 61b-3	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420909	GSM4089231	LNCaP-EnzR	Prostate Adenocarcinoma	passage 30-50	LNCaP-EnzR	24 hours	ARD-61
+SAMN12818528	12818528	LNCaP EnzR 24h 100nM ARD 61b-2	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420908	GSM4089230	LNCaP-EnzR	Prostate Adenocarcinoma	passage 30-50	LNCaP-EnzR	24 hours	ARD-61
+SAMN12818529	12818529	LNCaP EnzR 24h 100nM ARD 61b-1	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420907	GSM4089229	LNCaP-EnzR	Prostate Adenocarcinoma	passage 30-50	LNCaP-EnzR	24 hours	ARD-61
+SAMN12818531	12818531	LNCaP EnzR Cntl(w/MDV)-3	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420906	GSM4089228	LNCaP-EnzR	Prostate Adenocarcinoma	passage 30-50	LNCaP-EnzR	24 hours	no ARD-61
+SAMN12818532	12818532	LNCaP EnzR Cntl(w/MDV)-2	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420905	GSM4089227	LNCaP-EnzR	Prostate Adenocarcinoma	passage 30-50	LNCaP-EnzR	24 hours	no ARD-61
+SAMN12818533	12818533	LNCaP EnzR Cntl(w/MDV)-1	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420904	GSM4089226	LNCaP-EnzR	Prostate Adenocarcinoma	passage 30-50	LNCaP-EnzR	24 hours	no ARD-61
+SAMN12818535	12818535	LNCap p.11 100nm ARD-61b 24h -3	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420903	GSM4089225	LNCaP	Prostate Adenocarcinoma	passage 30-50	LNCaP	24 hours	ARD-61
+SAMN12818537	12818537	LNCap p.11 100nm ARD-61b 24h -2	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420902	GSM4089224	LNCaP	Prostate Adenocarcinoma	passage 30-50	LNCaP	24 hours	ARD-61
+SAMN12818538	12818538	LNCap p.11 100nm ARD-61b 24h -1	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420901	GSM4089223	LNCaP	Prostate Adenocarcinoma	passage 30-50	LNCaP	24 hours	ARD-61
+SAMN12818540	12818540	LNCaP p.11 DMSO 24h -3	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420900	GSM4089222	LNCaP	Prostate Adenocarcinoma	passage 30-50	LNCaP	24 hours	no ARD-61
+SAMN12818542	12818542	LNCaP p.11 DMSO 24h -2	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420899	GSM4089221	LNCaP	Prostate Adenocarcinoma	passage 30-50	LNCaP	24 hours	no ARD-61
+SAMN12818543	12818543	AR-V7-13ARD	Chinnaiyan, MCTP, University of Michigan	9606	SRS5420914	GSM4089236	LNCaP AR-V7	Prostate Adenocarcinoma	passage 30-50	LNCaP AR-V7	24 hours	ARD-61

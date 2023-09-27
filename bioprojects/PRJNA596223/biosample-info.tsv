@@ -1,0 +1,37 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	passage	source_name	tissue origin	treatment
+SAMN13615532	13615532	Run1_Pano_3	Creighton University	9606	SRS5845559	GSM4222756	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	Panobinostat
+SAMN13615533	13615533	Run1_Pano_2	Creighton University	9606	SRS5845555	GSM4222755	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	Panobinostat
+SAMN13615534	13615534	Run1_Pano_1	Creighton University	9606	SRS5845554	GSM4222754	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	Panobinostat
+SAMN13615535	13615535	Run1_FC65_plus_Pano_3	Creighton University	9606	SRS5845553	GSM4222753	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	E64FC65 + Panobinostat
+SAMN13615536	13615536	Run1_FC65_plus_Pano_2	Creighton University	9606	SRS5845550	GSM4222752	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	E64FC65 + Panobinostat
+SAMN13615537	13615537	Run1_FC65_plus_Pano_1	Creighton University	9606	SRS5845552	GSM4222751	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	E64FC65 + Panobinostat
+SAMN13615538	13615538	Run1_FC65_3	Creighton University	9606	SRS5845549	GSM4222750	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	E64FC65
+SAMN13615540	13615540	Run1_FC65_2	Creighton University	9606	SRS5845548	GSM4222749	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	E64FC65
+SAMN13615542	13615542	Run1_FC65_1	Creighton University	9606	SRS5845547	GSM4222748	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	E64FC65
+SAMN13615543	13615543	Run1_DMSO_3	Creighton University	9606	SRS5845551	GSM4222747	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	DMSO
+SAMN13615545	13615545	Run1_DMSO_2	Creighton University	9606	SRS5845546	GSM4222746	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	DMSO
+SAMN13615546	13615546	Run1_DMSO_1	Creighton University	9606	SRS5845544	GSM4222745	PANC-1	5	PANC-1 human pancreatic cancer cell line	pancreas	DMSO
+SAMN13615550	13615550	Run2_shATF3_FC26_plus_Pano_3	Creighton University	9606	SRS5845574	GSM4222774	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	ATF3 shRNA E64FC65 + Panobinostat
+SAMN13615552	13615552	Run2_shCTL_DMSO_3	Creighton University	9606	SRS5845577	GSM4222780	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	Scramble shRNA E64FC26 + Panobinostat
+SAMN13615553	13615553	Run2_shCTL_DMSO_2	Creighton University	9606	SRS5845581	GSM4222779	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	Scramble shRNA E64FC26 + Panobinostat
+SAMN13615555	13615555	Run2_shCTL_DMSO_1	Creighton University	9606	SRS5845578	GSM4222778	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	Scramble shRNA E64FC26 + Panobinostat
+SAMN13615557	13615557	Run2_shCTL_FC26_plus_Pano_3	Creighton University	9606	SRS5845579	GSM4222777	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	Scramble shRNA DMSO
+SAMN13615558	13615558	Run2_shCTL_FC26_plus_Pano_2	Creighton University	9606	SRS5845576	GSM4222776	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	Scramble shRNA DMSO
+SAMN13615560	13615560	Run2_shCTL_FC26_plus_Pano_1	Creighton University	9606	SRS5845575	GSM4222775	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	Scramble shRNA DMSO
+SAMN13615561	13615561	Run2_shATF3_FC26_plus_Pano_2	Creighton University	9606	SRS5845573	GSM4222773	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	ATF3 shRNA E64FC65 + Panobinostat
+SAMN13615562	13615562	Run2_shATF3_FC26_plus_Pano_1	Creighton University	9606	SRS5845572	GSM4222772	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	ATF3 shRNA E64FC65 + Panobinostat
+SAMN13615563	13615563	Run2_shATF3_DMSO_3	Creighton University	9606	SRS5845569	GSM4222771	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	ATF3 shRNA DMSO
+SAMN13615564	13615564	Run2_shATF3_DMSO_2	Creighton University	9606	SRS5845568	GSM4222770	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	ATF3 shRNA DMSO
+SAMN13615565	13615565	Run2_shATF3_DMSO_1	Creighton University	9606	SRS5845571	GSM4222769	PANC-1	9	PANC-1 human pancreatic cancer cell line	pancreas	ATF3 shRNA DMSO
+SAMN13615566	13615566	Run1b_Pano_3	Creighton University	9606	SRS5845570	GSM4222768	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	Panobinostat
+SAMN13615567	13615567	Run1b_Pano_2	Creighton University	9606	SRS5845567	GSM4222767	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	Panobinostat
+SAMN13615568	13615568	Run1b_Pano_1	Creighton University	9606	SRS5845566	GSM4222766	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	Panobinostat
+SAMN13615569	13615569	Run1b_FC65_plus_Pano_3	Creighton University	9606	SRS5845565	GSM4222765	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	E64FC65 + Panobinostat
+SAMN13615570	13615570	Run1b_FC65_plus_Pano_2	Creighton University	9606	SRS5845563	GSM4222764	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	E64FC65 + Panobinostat
+SAMN13615571	13615571	Run1b_FC65_plus_Pano_1	Creighton University	9606	SRS5845564	GSM4222763	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	E64FC65 + Panobinostat
+SAMN13615572	13615572	Run1b_FC65_3	Creighton University	9606	SRS5845560	GSM4222762	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	E64FC65
+SAMN13615573	13615573	Run1b_FC65_2	Creighton University	9606	SRS5845561	GSM4222761	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	E64FC65
+SAMN13615574	13615574	Run1b_FC65_1	Creighton University	9606	SRS5845562	GSM4222760	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	E64FC65
+SAMN13615575	13615575	Run1b_DMSO_3	Creighton University	9606	SRS5845558	GSM4222759	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	DMSO
+SAMN13615576	13615576	Run1b_DMSO_2	Creighton University	9606	SRS5845557	GSM4222758	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	DMSO
+SAMN13615577	13615577	Run1b_DMSO_1	Creighton University	9606	SRS5845556	GSM4222757	T98G	5	T98G human glioblastoma cancer cell line	glioblastoma	DMSO

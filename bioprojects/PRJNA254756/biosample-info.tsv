@@ -1,0 +1,17 @@
+accession	uid	title	organization	taxonomy	sra	geo	cell line	source_name
+SAMN02905118	2905118	Ls174T_pLKO-empty_DMSO_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655486	GSM1430904	Ls174T	Ls174T cells
+SAMN02905119	2905119	Ls174T_pLKO-empty_DMSO_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655487	GSM1430905	Ls174T	Ls174T cells
+SAMN02905120	2905120	Ls174T_pLKO-empty_BI8622_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655488	GSM1430906	Ls174T	Ls174T cells
+SAMN02905121	2905121	Ls174T_pLKO-empty_BI8622_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655489	GSM1430907	Ls174T	Ls174T cells
+SAMN02905122	2905122	Ls174T_pLKO-shHUWE1_DMSO_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655490	GSM1430908	Ls174T	Ls174T cells
+SAMN02905123	2905123	Ls174T_pLKO-shHUWE1_DMSO_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655491	GSM1430909	Ls174T	Ls174T cells
+SAMN02905124	2905124	Ls174T_pLKO-shHUWE1_BI8622_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655492	GSM1430910	Ls174T	Ls174T cells
+SAMN02905125	2905125	Ls174T_pLKO-shHUWE1_BI8622_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655493	GSM1430911	Ls174T	Ls174T cells
+SAMN02905126	2905126	Ls174T_pIND-shMiz1_-Dox_DMSO_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655494	GSM1430912	Ls174T	Ls174T cells
+SAMN02905127	2905127	Ls174T_pIND-shMiz1_-Dox_DMSO_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655495	GSM1430913	Ls174T	Ls174T cells
+SAMN02905128	2905128	Ls174T_pIND-shMiz1_-Dox_BI8622_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655497	GSM1430914	Ls174T	Ls174T cells
+SAMN02905129	2905129	Ls174T_pIND-shMiz1_-Dox_BI8622_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655496	GSM1430915	Ls174T	Ls174T cells
+SAMN02905130	2905130	Ls174T_pIND-shMiz1_+Dox_DMSO_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655499	GSM1430916	Ls174T	Ls174T cells
+SAMN02905131	2905131	Ls174T_pIND-shMiz1_+Dox_DMSO_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655498	GSM1430917	Ls174T	Ls174T cells
+SAMN02905132	2905132	Ls174T_pIND-shMiz1_+Dox_BI8622_replicate 1_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655500	GSM1430918	Ls174T	Ls174T cells
+SAMN02905133	2905133	Ls174T_pIND-shMiz1_+Dox_BI8622_replicate 2_RNAseq	Martin Eilers, Institute for Biochemistry and Molecular Biology, University of Wuerzburg	9606	SRS655502	GSM1430919	Ls174T	Ls174T cells

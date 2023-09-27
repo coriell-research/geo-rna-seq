@@ -1,0 +1,57 @@
+accession	uid	title	organization	taxonomy	sra	geo	drug exposure time	knockout	source_name	treatment condition
+SAMN12822720	12822720	STAT5_KO_AB22_5_S37	University of California San Francisco	9606	SRS5424059	GSM4091124	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822721	12822721	STAT5_KO_AB22_4_S51	University of California San Francisco	9606	SRS5424058	GSM4091123	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822723	12822723	STAT5_KO_AB22_3_S52	University of California San Francisco	9606	SRS5424049	GSM4091122	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822724	12822724	STAT5_KO_AB22_2_S47	University of California San Francisco	9606	SRS5424048	GSM4091121	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX16
+SAMN12822725	12822725	Scramble_S18_1_S43	University of California San Francisco	9606	SRS5424062	GSM4091127	NA	None	CCRF-CEM leukemia cell line	VEH
+SAMN12822726	12822726	STAT5_KO_AB22_7_S55	University of California San Francisco	9606	SRS5424061	GSM4091126	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822727	12822727	STAT5_KO_AB22_1_S44	University of California San Francisco	9606	SRS5424047	GSM4091120	NA	STAT5A and STAT5B	CCRF-CEM leukemia cell line	VEH
+SAMN12822728	12822728	STAT5_KO_AB1_7_S21	University of California San Francisco	9606	SRS5424046	GSM4091119	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822729	12822729	STAT5_KO_AB1_6_S39	University of California San Francisco	9606	SRS5424045	GSM4091118	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822730	12822730	STAT5_KO_AB1_5_S41	University of California San Francisco	9606	SRS5424044	GSM4091117	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822731	12822731	STAT5_KO_AB1_4_S34	University of California San Francisco	9606	SRS5424043	GSM4091116	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822732	12822732	STAT5_KO_AB1_3_S54	University of California San Francisco	9606	SRS5424042	GSM4091115	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822733	12822733	STAT5_KO_AB1_2_S47	University of California San Francisco	9606	SRS5424041	GSM4091114	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_16
+SAMN12822734	12822734	STAT5_KO_AB1_1_S39	University of California San Francisco	9606	SRS5424040	GSM4091113	NA	STAT5A and STAT5B	CCRF-CEM leukemia cell line	VEH
+SAMN12822736	12822736	STAT5_KO_AB17_7_S30	University of California San Francisco	9606	SRS5424039	GSM4091112	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822737	12822737	STAT5_KO_AB17_6_S44	University of California San Francisco	9606	SRS5424038	GSM4091111	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822739	12822739	STAT5_KO_AB17_5_S50	University of California San Francisco	9606	SRS5424037	GSM4091110	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822740	12822740	STAT5_KO_AB17_4_S31	University of California San Francisco	9606	SRS5424036	GSM4091109	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822741	12822741	STAT5_KO_AB17_3_S43	University of California San Francisco	9606	SRS5424035	GSM4091108	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822742	12822742	STAT5_KO_AB17_2_S42	University of California San Francisco	9606	SRS5424034	GSM4091107	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_16
+SAMN12822743	12822743	STAT5_KO_AB17_1_S48	University of California San Francisco	9606	SRS5424033	GSM4091106	NA	STAT5A and STAT5B	CCRF-CEM leukemia cell line	VEH
+SAMN12822744	12822744	STAT5_KO_AB10_5_S46	University of California San Francisco	9606	SRS5424030	GSM4091103	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822745	12822745	STAT5_KO_AB10_4_S53	University of California San Francisco	9606	SRS5424029	GSM4091102	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822746	12822746	STAT5_KO_AB10_3_S35	University of California San Francisco	9606	SRS5424028	GSM4091101	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822747	12822747	STAT5_KO_AB10_2_S31	University of California San Francisco	9606	SRS5424027	GSM4091100	16 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEX_16
+SAMN12822748	12822748	Scramble_S2_1_S25	University of California San Francisco	9606	SRS5424051	GSM4091148	NA	None	CCRF-CEM leukemia cell line	VEH
+SAMN12822749	12822749	Scramble_S1_7_S27	University of California San Francisco	9606	SRS5424050	GSM4091147	4 hours	None	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822750	12822750	Scramble_S1_6_S24	University of California San Francisco	9606	SRS5424081	GSM4091146	4 hours	None	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822751	12822751	Scramble_S1_5_S22	University of California San Francisco	9606	SRS5424080	GSM4091145	4 hours	None	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822752	12822752	Scramble_S1_4_S31	University of California San Francisco	9606	SRS5424079	GSM4091144	16 hours	None	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822753	12822753	Scramble_S1_3_S32	University of California San Francisco	9606	SRS5424078	GSM4091143	16 hours	None	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822754	12822754	Scramble_S1_2_S32	University of California San Francisco	9606	SRS5424077	GSM4091142	16 hours	None	CCRF-CEM leukemia cell line	DEX_16
+SAMN12822755	12822755	Scramble_S1_1_S33	University of California San Francisco	9606	SRS5424076	GSM4091141	NA	None	CCRF-CEM leukemia cell line	VEH
+SAMN12822756	12822756	Scramble_S19_7_S37	University of California San Francisco	9606	SRS5424075	GSM4091140	4 hours	None	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822757	12822757	Scramble_S19_6_S41	University of California San Francisco	9606	SRS5424074	GSM4091139	4 hours	None	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822758	12822758	Scramble_S19_5_S45	University of California San Francisco	9606	SRS5424073	GSM4091138	4 hours	None	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822759	12822759	Scramble_S19_4_S29	University of California San Francisco	9606	SRS5424072	GSM4091137	16 hours	None	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822760	12822760	Scramble_S19_3_S33	University of California San Francisco	9606	SRS5424071	GSM4091136	16 hours	None	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822761	12822761	Scramble_S19_2_S38	University of California San Francisco	9606	SRS5424070	GSM4091135	16 hours	None	CCRF-CEM leukemia cell line	DEX_16
+SAMN12822762	12822762	Scramble_S19_1_S40	University of California San Francisco	9606	SRS5424069	GSM4091134	NA	None	CCRF-CEM leukemia cell line	VEH
+SAMN12822763	12822763	Scramble_S18_7_S42	University of California San Francisco	9606	SRS5424068	GSM4091133	4 hours	None	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822764	12822764	Scramble_S18_6_S34	University of California San Francisco	9606	SRS5424067	GSM4091132	4 hours	None	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822765	12822765	Scramble_S18_5_S48	University of California San Francisco	9606	SRS5424066	GSM4091131	4 hours	None	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822766	12822766	Scramble_S18_4_S28	University of California San Francisco	9606	SRS5424065	GSM4091130	16 hours	None	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822767	12822767	Scramble_S18_3_S36	University of California San Francisco	9606	SRS5424064	GSM4091129	16 hours	None	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822768	12822768	Scramble_S18_2_S30	University of California San Francisco	9606	SRS5424063	GSM4091128	16 hours	None	CCRF-CEM leukemia cell line	DEX_16
+SAMN12822769	12822769	STAT5_KO_AB22_6_S49	University of California San Francisco	9606	SRS5424060	GSM4091125	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822770	12822770	STAT5_KO_AB10_7_S38	University of California San Francisco	9606	SRS5424032	GSM4091105	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822771	12822771	STAT5_KO_AB10_6_S46	University of California San Francisco	9606	SRS5424031	GSM4091104	4 hours	STAT5A and STAT5B	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822772	12822772	STAT5_KO_AB10_1_S45	University of California San Francisco	9606	SRS5424026	GSM4091099	NA	STAT5A and STAT5B	CCRF-CEM leukemia cell line	VEH
+SAMN12822775	12822775	Scramble_S2_7_S40	University of California San Francisco	9606	SRS5424057	GSM4091154	4 hours	None	CCRF-CEM leukemia cell line	DEXIL7_4
+SAMN12822776	12822776	Scramble_S2_6_S35	University of California San Francisco	9606	SRS5424056	GSM4091153	4 hours	None	CCRF-CEM leukemia cell line	IL7_4
+SAMN12822777	12822777	Scramble_S2_5_S30	University of California San Francisco	9606	SRS5424055	GSM4091152	4 hours	None	CCRF-CEM leukemia cell line	DEX_4
+SAMN12822778	12822778	Scramble_S2_4_S36	University of California San Francisco	9606	SRS5424054	GSM4091151	16 hours	None	CCRF-CEM leukemia cell line	DEXIL7_16
+SAMN12822779	12822779	Scramble_S2_3_S26	University of California San Francisco	9606	SRS5424053	GSM4091150	16 hours	None	CCRF-CEM leukemia cell line	IL7_16
+SAMN12822780	12822780	Scramble_S2_2_S23	University of California San Francisco	9606	SRS5424052	GSM4091149	16 hours	None	CCRF-CEM leukemia cell line	DEX16
