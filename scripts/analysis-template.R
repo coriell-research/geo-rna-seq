@@ -140,7 +140,7 @@ message("Saving results as a SummarizedExperiment object...")
 se <- SummarizedExperiment(
   assays = list("counts" = y$counts, "logcounts" = lcpm),
   colData = metadata,
-  metadata = list("fit" = fit, "de" = dt)
+  metadata = list("fit" = fit2, "de" = dt)
 )
 saveRDS(se, here(WD, "results", "rds-files", "se.rds"))
 

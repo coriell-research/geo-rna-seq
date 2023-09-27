@@ -1,3 +1,4 @@
+#!/usr/local/bin/Rscript
 # Create combined metadata SummarizedExperiment objects
 #
 # This script will import all SE files from each experiment and extract the DE
@@ -88,7 +89,7 @@ lfc <- as.matrix(
     data = de[, .(id, feature_id, logFC)], 
     formula = feature_id ~ id,
     value.var = "logFC",
-    fill = 0.0
+    fill = NA
     ),
   rownames = "feature_id"
 )
