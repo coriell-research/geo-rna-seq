@@ -1,25 +1,14 @@
-# GEO Cancer Dataset RNA-Seq Analysis
+# GEO Cancer RNAseq Database
 
-This directory contains the analysis of RNA-Seq data downloaded from GEO (or 
-possibly other sources) processed using the REdiscoverTE pipeline with the goal 
-of comparing gene expression across different cell-lines/chemotherapy drugs. 
+## Directory structure
 
-## data/ 
+- appdata/: contains all data used to create and used by the meta-app  
+- bioprojects/: contains subdirectories named by their bioproject ID from GEO.
+Each subdirectory contains all raw and processed data, analysis scripts, and 
+analysis output for that particular bioproject.
+- scripts/: contains all processing scripts used to download data from SRA and
+process for use in the meta-app
 
-Contains raw data downloaded from GEO using the `automate-geo-search` scripts. 
-Each directory is named by its BIOPROJECT ID and contains gene counts (quants)
-for each samples in the BIOPROJECT as well as run-info and additional metadata
-downloaded from SRA
+## Workflow
 
-See the `~/data/tools/automate-geo-search/` directory for details about scripts
-used to download all raw data.
 
-## doc/ 
-
-## results/
-
-Contains results from processing steps. Separate directories for each BIOPROJECT
-
-## src/
-
-Contains source code for each analysis.
