@@ -16,7 +16,7 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 
 # Set up global defaults
 BIOPROJECT <- "PRJNA985752"
-WD <- here("data","Database", BIOPROJECT)
+WD <- here("bioprojects", BIOPROJECT)
 CORES <- 12
 QTEST_ALPHA <- 0.01
 FC <- 1.2
@@ -112,8 +112,7 @@ if (perm_pval < QTEST_ALPHA || qaov_pval < QTEST_ALPHA) {
   message("Global scaling normalizations violated. Performing QSmooth normalization...")
   qs <- qsmooth(y$counts, group_factor = y$samples$group)
   qsd <- qsmoothData(qs)
-  offsets <- y$counts / qsd
-  offsets[is.na(offsets)] <- 0
+  offsets <- log(y$counts + 0.1) - log(qsd + 0.1)
   y <- scaleOffset(y, offsets)
 } else {
   message("Performing TMM normalization...")
