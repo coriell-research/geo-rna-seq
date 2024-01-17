@@ -26,7 +26,7 @@ violations of these global normalization assumptions using the [quantro](https:/
 R package. If violations of these assumptions are detected then normalization is performed using
 smooth quantile normalization ([qsmooth](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5862355/))
 in order to preserve these global expression differences. Appropriately normalized data are then 
-tested for differential expression against a fold-change threshold using the (limma-treat)[https://pubmed.ncbi.nlm.nih.gov/25605792/]
+tested for differential expression against a fold-change threshold using the [limma::treat](https://pubmed.ncbi.nlm.nih.gov/25605792/)
 method. These differential expression results, along with the fitted models, raw and normalized 
 counts, are then exported to `SummarizedExperiment` objects for each individual bioproject.
 3. The last arm of this project involves collecting each uniformly processed bioproject's 
