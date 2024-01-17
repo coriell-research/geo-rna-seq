@@ -41,7 +41,7 @@ tx2gene <- readRDS("/mnt/data/gdata/human/REdiscoverTE_hg38/tx2gene_REdiscoverTE
 message("Creating count matrices from quant files...")
 quant_files <- list.files(
   path = opt$quants_dir,
-  pattern = "quant.sf",
+  pattern = "quant.sf*",
   recursive = TRUE,
   full.names = TRUE
 )
