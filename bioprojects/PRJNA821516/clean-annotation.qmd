@@ -1,0 +1,79 @@
+---
+title: "PRJNA821516 Annotation"
+format: html
+---
+
+## Load Libraries
+
+```{r}
+library(data.table)
+library(stringr)
+```
+
+## Read in annotation informaiton
+
+```{r}
+metadata <- fread("/mnt/data/data_gc/cancer-rnaseq-database/bioprojects/PRJNA821516/metadata.txt")
+```
+
+The title column contains the the cell line, plate, drug, dose, and time. Split this column in order
+to extract group information. Some of the titles have a different number of delimiters than the 
+others. These need to be replaced with valid R names.
+
+```{r}
+metadata[, splits := str_count(title, "_")]
+metadata[splits > 5]
+```
+Manually replcae these values
+
+```{r}
+metadata[title == "lncap_LNCAPPS5B_C9_2_3-Dimethoxy-1_4-naphthoquinone_3-Dimethoxy-1_4-naphthoquinone_0.5_24", title := "lncap_LNCAPPS5B_C9_23Dimethoxy14naphthoquinone3Dimethoxy14naphthoquinone_0.5_24"]
+metadata[title == "lncap_LNCAPPS5B_B10_L-703_606 oxalate salt hydrate_2.5_24", title := "lncap_LNCAPPS5B_B10_L703606oxalateSaltHydrate_2.5_24"]
+metadata[title == "lncap_LNCAPPS5A_C9_2_3-Dimethoxy-1_4-naphthoquinone_3-Dimethoxy-1_4-naphthoquinone_0.5_24", title := "lncap_LNCAPPS5A_C9_23Dimethoxy14naphthoquinone3Dimethoxy14naphthoquinone_0.5_24"]
+metadata[title == "lncap_LNCAPPS5A_B10_L-703_606 oxalate salt hydrate_2.5_24", title := "lncap_LNCAPPS5A_B10_L703606oxalateSaltHydrate_2.5_24"]
+metadata[title == "du145_DU145PS4B_D12_MNS_4-Methylenedioxy-??-nitrostyrene)_4_24", title := "du145_DU145PS4B_D12_MNS4MethylenedioxyNitrostyrene_4_24"]
+metadata[title == "du145_DU145PS4A_D12_MNS_4-Methylenedioxy-??-nitrostyrene)_4_24", title := "du145_DU145PS4A_D12_MNS4MethylenedioxyNitrostyrene_4_24"]
+```
+
+Now all splits should be 5
+
+```{r}
+metadata[, splits := str_count(title, "_")]
+table(metadata$splits)
+```
+
+## Start construction group information
+
+```{r}
+metadata[, c("cell_line", "cell_rep", "plate", "drug", "dose", "time") := tstrsplit(title, "_", fixed=TRUE)]
+
+# It looks like the plate information has numbers sometime spadded with zeroes -- i.e. A01 == A1
+metadata[, `:=`(plate_letter = str_extract(plate, "[A-Z]"), plate_num = as.numeric(str_extract(plate, "[0-9]+")))]
+metadata[, plate_id := str_c(plate_letter, plate_num)][, `:=`(plate_num = NULL, plate_letter = NULL)]
+
+# Replace no drug label with a value
+metadata[drug == "-", drug := "None"]
+
+# Ensure drug names are valid R names
+metadata[, drug := make.names(drug)]
+
+# Make DMSO consistent
+metadata[drug == "DMSO", dose := "0"]
+metadata[drug == "UNTREATED", dose := "0"]
+
+# Create a single group label
+metadata[, group := str_c(cell_line, drug, dose, time, sep = "_")]
+```
+
+create a new contrast column to make constructing contrasts easier in analysis script
+
+```{r}
+metadata[, control_cond := fifelse(cell_line =="lncap", "lncap_DMSO_0_24", "du145_DMSO_0_24")]
+metadata[, contrast := paste0(group, "_vs_", control_cond, " = ", group, " - ", control_cond)]
+```
+
+Write annotation out to file
+
+```{r}
+fwrite(metadata, "/mnt/data/data_gc/cancer-rnaseq-database/bioprojects/PRJNA821516/annotation.tsv", sep="\t")
+```
