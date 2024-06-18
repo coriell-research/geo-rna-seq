@@ -147,7 +147,6 @@ se <- SummarizedExperiment(
   metadata = list("fit" = fit, "de" = dt)
 )
 saveRDS(se, here(WD, "results", "rds-files", "se.rds"))
-s
 
 # Diagnostic plots --------------------------------------------------------
 
