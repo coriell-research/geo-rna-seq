@@ -1,4 +1,4 @@
-#!/usr/local/bin/Rscript
+#!/usr/bin/Rscript
 # Create combined metadata SummarizedExperiment objects
 #
 # This script will import all SE files from each experiment and extract the DE
@@ -64,18 +64,12 @@ if (length(missing_annotation) > 0) {
   message("There are ", length(missing_annotation), " IDs without an annotation!")
   message("Writing these IDs to: appdata/missing-annotations.tsv")
   fwrite(data.table(id = missing_annotation), here("appdata", "missing-annotations.tsv"), sep = "\t")
-  message("Would you like to continue with downstream processing?")
-  ans <- menu(c("yes", "no"), title = "Continue Processing?")
-  if (ans != 1) stop()
 }
 
 if (length(missing_data) > 0) {
   message("There are ", length(missing_data), " IDs annotated without data!")
   message("Writing these IDs to: appdata/missing-data.tsv")
   fwrite(data.table(id = missing_data), here("appdata", "missing-data.tsv"), sep = "\t")
-  message("Would you like to continue with downstream processing?")
-  ans <- menu(c("yes", "no"), title = "Continue Processing?")
-  if (ans != 1) stop()
 }
 
 message("Inner joining metadata onto differential expression data...")

@@ -1,4 +1,4 @@
-#!/usr/local/bin/Rscript
+#!/usr/bin/Rscript
 #
 # Query NCBI BioSample for Metadata about each of the samples
 #

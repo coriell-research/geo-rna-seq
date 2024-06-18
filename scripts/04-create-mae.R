@@ -1,4 +1,4 @@
-#!/usr/local/bin/Rscript
+#!/usr/bin/Rscript
 #
 # Create a MultiAssayExperiment object a user supplied annotation file
 # and the quant.sf files for each sample processed by the REdiscoverTE pipeline.
