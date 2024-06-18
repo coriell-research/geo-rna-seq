@@ -99,12 +99,12 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  MDAMB.231.0.0005μM.Paclitaxel.96hr_vs_no.treatment.96hr = MDA.MB.231.0.0005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.96hr,
-  MDAMB.231.0.005μM.Paclitaxel.96hr_vs_no.treatment.96hr = MDA.MB.231.0.005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.96hr, 
-  MDAMB.231.0.05μM.Paclitaxel.96hr_vs_no.treatment.96hr = MDA.MB.231.0.05μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.96hr, 
-  MDAMB.231.0.0005μM.Paclitaxel.96hr_vs_no.treatment.48hr = MDA.MB.231.0.0005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.48hr,
-  MDAMB.231.0.005μM.Paclitaxel.96hr_vs_no.treatment.48hr = MDA.MB.231.0.005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.48hr, 
-  MDAMB.231.0.05μM.Paclitaxel.96hr_vs_no.treatment.48hr = MDA.MB.231.0.05μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.48hr,
+  MDAMB.231.0.0005uM.Paclitaxel.96hr_vs_no.treatment.96hr = MDA.MB.231.0.0005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.96hr,
+  MDAMB.231.0.005uM.Paclitaxel.96hr_vs_no.treatment.96hr = MDA.MB.231.0.005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.96hr, 
+  MDAMB.231.0.05uM.Paclitaxel.96hr_vs_no.treatment.96hr = MDA.MB.231.0.05μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.96hr, 
+  MDAMB.231.0.0005uM.Paclitaxel.96hr_vs_no.treatment.48hr = MDA.MB.231.0.0005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.48hr,
+  MDAMB.231.0.005uM.Paclitaxel.96hr_vs_no.treatment.48hr = MDA.MB.231.0.005μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.48hr, 
+  MDAMB.231.0.05uM.Paclitaxel.96hr_vs_no.treatment.48hr = MDA.MB.231.0.05μM.Paclitaxel.96hr - MDA.MB.231.no.treatment.48hr,
   levels = design
 )
 

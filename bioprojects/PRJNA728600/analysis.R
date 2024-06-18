@@ -93,7 +93,7 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  MCF7.DR.1μM.doxorubicin.hydrochloride_vs_untreated = MCF7.DR.treated.with.1.μM.doxorubicin.hydrochloride - MCF7.untreated,
+  MCF7.DR.1uM.doxorubicin.hydrochloride_vs_untreated = MCF7.DR.treated.with.1.μM.doxorubicin.hydrochloride - MCF7.untreated,
   levels = design
 )
 

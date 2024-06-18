@@ -96,7 +96,7 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  HCT116.Oxaliplatin.0.5µM.24hr_vs_none = HCT116.Oxaliplatin.0.5.µM.24hr - HCT116.none.24hr,
+  HCT116.Oxaliplatin.0.5uM.24hr_vs_none = HCT116.Oxaliplatin.0.5.µM.24hr - HCT116.none.24hr,
   levels = design
 )
 

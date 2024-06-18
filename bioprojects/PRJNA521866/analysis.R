@@ -93,8 +93,8 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  HUVEC.Axitinib..25.μM..1hr.pulse_vs_HUVEC.none = HUVEC.Axitinib..25.μM..1hr.pulse - HUVEC.none,
-  HUVEC.Doxorubicin..5.μM..1hr.pulse_vs_HUVEC.none= HUVEC.Doxorubicin..5.μM..1hr.pulse - HUVEC.none,
+  HUVEC.Axitinib..25.uM..1hr.pulse_vs_HUVEC.none = HUVEC.Axitinib..25.μM..1hr.pulse - HUVEC.none,
+  HUVEC.Doxorubicin..5.uM..1hr.pulse_vs_HUVEC.none = HUVEC.Doxorubicin..5.μM..1hr.pulse - HUVEC.none,
   levels = design
 )
 

@@ -97,13 +97,10 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  COV362_5µM.azacitidine_72hr.20µM.carboplatin_48hr_vs_Untreated = COV362_5µM.azacitidine..20µM.carboplatin - COV362_Untreated,
-  OAW28_5µM.azacitidine_72hr.20µM.carboplatin_48hr_vs_Untreated = OAW28_5µM.azacitidine..20µM.carboplatin - OAW28_Untreated,
-  OVCAR4_5µM.azacitidine_72hr.20µM.carboplatin_48hr_vs_Untreated = OVCAR4_5µM.azacitidine..20µM.carboplatin - OVCAR4_Untreated,
-  TYKnu_5µM.azacitidine_72hr.20µM.carboplatin_48hr_vs_Untreated = TYKnu_5µM.azacitidine..20µM.carboplatin - TYKnu_Untreated,
-  
-  
-  
+  COV362_5uM.azacitidine_72hr.20uM.carboplatin_48hr_vs_Untreated = COV362_5µM.azacitidine..20µM.carboplatin - COV362_Untreated,
+  OAW28_5uM.azacitidine_72hr.20uM.carboplatin_48hr_vs_Untreated = OAW28_5µM.azacitidine..20µM.carboplatin - OAW28_Untreated,
+  OVCAR4_5uM.azacitidine_72hr.20uM.carboplatin_48hr_vs_Untreated = OVCAR4_5µM.azacitidine..20µM.carboplatin - OVCAR4_Untreated,
+  TYKnu_5uM.azacitidine_72hr.20uM.carboplatin_48hr_vs_Untreated = TYKnu_5µM.azacitidine..20µM.carboplatin - TYKnu_Untreated,
   levels = design
 )
 

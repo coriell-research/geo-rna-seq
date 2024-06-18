@@ -93,9 +93,9 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  INA6.2μM.NG25.6hr_vs_untreated= INA.6.2.μM.NG25.6.hrs - INA.6.untreated, 
-  INA6.10μM.melphalan.6hr_vs_untreated = INA.6.10.μM.melphalan.6.hrs - INA.6.untreated,
-  INA6.10μM.melphalan.2μM.NG25.6hr_vs_untreated = INA.6.10.μM.melphalan.2.μM.NG25.6.hrs - INA.6.untreated, 
+  INA6.2uM.NG25.6hr_vs_untreated = INA.6.2.μM.NG25.6.hrs - INA.6.untreated, 
+  INA6.10uM.melphalan.6hr_vs_untreated = INA.6.10.μM.melphalan.6.hrs - INA.6.untreated,
+  INA6.10uM.melphalan.2uM.NG25.6hr_vs_untreated = INA.6.10.μM.melphalan.2.μM.NG25.6.hrs - INA.6.untreated, 
   
   levels = design
 )

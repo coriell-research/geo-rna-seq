@@ -93,11 +93,10 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  MCF7.siRNA.P4HB.PDIA1.tp53.wild.10.ng.ml.IFN.γ.24hrs_vs_Scramble.tp53.wild.10.ng.ml.IFN.γ = MCF.7.siRNA.P4HB.PDIA1.tp53.wild.10.ng.ml.IFN.γ..24hrs - MCF.7.Scramble.tp53.wild.10.ng.ml.IFN.γ..24hrs,
-  MCF7.siRNA.P4HB.PDIA1.tp53.wild.10.μM.etoposide.24hrs_vs_Scramble.tp53.wild.10.μM.etoposide.24hrs = MCF.7.siRNA.P4HB.PDIA1.tp53.wild.10.μM.etoposide.24hrs - MCF.7.Scramble.tp53.wild.10.μM.etoposide.24hrs,
-  MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.ng.ml.IFN.γ.24hrs_vs_Scramble.tp53.Mutated.R280K.10.ng.ml.IFN.γ.24hrs = MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.ng.ml.IFN.γ..24hrs - MDA.MB.231.Scramble.tp53.Mutated.R280K..10.ng.ml.IFN.γ..24hrs,
-  MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.μM.etoposide.24hrs_vs_Scramble.tp53.Mutated.R280K..10.μM.etoposide.24hrs = MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.μM.etoposide.24hrs - MDA.MB.231.Scramble.tp53.Mutated.R280K..10.μM.etoposide.24hrs,
-  
+  MCF7.siRNA.P4HB.PDIA1.tp53.wild.10.ng.ml.IFN.y.24hrs_vs_Scramble.tp53.wild.10.ng.ml.IFN.y = MCF.7.siRNA.P4HB.PDIA1.tp53.wild.10.ng.ml.IFN.γ..24hrs - MCF.7.Scramble.tp53.wild.10.ng.ml.IFN.γ..24hrs,
+  MCF7.siRNA.P4HB.PDIA1.tp53.wild.10.uM.etoposide.24hrs_vs_Scramble.tp53.wild.10.uM.etoposide.24hrs = MCF.7.siRNA.P4HB.PDIA1.tp53.wild.10.μM.etoposide.24hrs - MCF.7.Scramble.tp53.wild.10.μM.etoposide.24hrs,
+  MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.ng.ml.IFN.y.24hrs_vs_Scramble.tp53.Mutated.R280K.10.ng.ml.IFN.y.24hrs = MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.ng.ml.IFN.γ..24hrs - MDA.MB.231.Scramble.tp53.Mutated.R280K..10.ng.ml.IFN.γ..24hrs,
+  MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.uM.etoposide.24hrs_vs_Scramble.tp53.Mutated.R280K..10.uM.etoposide.24hrs = MDA.MB.231.siRNA.P4HB.PDIA1.tp53.Mutated.R280K..10.μM.etoposide.24hrs - MDA.MB.231.Scramble.tp53.Mutated.R280K..10.μM.etoposide.24hrs,
   levels = design
 )
 

@@ -93,9 +93,9 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  DIPG4.TRIAM.30µM.24hr_vs_DMSO = DIPG4.TRIAM.30µM.24hrs - DIPG4.DMSO.24hrs,
+  DIPG4.TRIAM.30uM.24hr_vs_DMSO = DIPG4.TRIAM.30µM.24hrs - DIPG4.DMSO.24hrs,
   DIPG4.TPL.2nM.24hr_vs_DMSO = DIPG4.TPL.2nM..24hrs - DIPG4.DMSO.24hrs,
-  DIPG4.MMF.1µM.24hr_vs_DMSO = DIPG4.MMF.1µM.24hrs - DIPG4.DMSO.24hrs,
+  DIPG4.MMF.1uM.24hr_vs_DMSO = DIPG4.MMF.1µM.24hrs - DIPG4.DMSO.24hrs,
   levels = design
 )
 
