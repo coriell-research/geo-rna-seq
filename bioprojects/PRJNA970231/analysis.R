@@ -16,7 +16,7 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 
 # Set up global defaults
 BIOPROJECT <- "PRJNA970231"
-WD <- here("data","Database",BIOPROJECT)
+WD <- here("bioprojects", BIOPROJECT)
 CORES <- 12
 QTEST_ALPHA <- 0.01
 FC <- 1.2
@@ -65,13 +65,10 @@ counts <- sumTechReps(counts, ID = mae$BioSample)
 mae$bases <- as.integer(mae$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
+metadata[, group := gsub("for.","", group)]
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
-
-#metadata edits 
-
-metadata <- metadata %>% mutate(group = gsub("for.","", group))
 
 # Test for global expression differences ----------------------------------
 
