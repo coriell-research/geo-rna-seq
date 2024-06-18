@@ -69,10 +69,8 @@ setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
-#metadata eidts 
-
-metadata <- metadata %>% mutate(group = gsub(".treated.with", "", group),
-                                group = gsub("knockout", "ko", group))
+metadata$group <- gsub(".treated.with", "", metadata$group)
+metadata$group <- gsub("knockout", "ko", metadata$group)
 
 # Test for global expression differences ----------------------------------
 
