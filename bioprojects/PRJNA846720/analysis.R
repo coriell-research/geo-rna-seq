@@ -13,7 +13,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(qsmooth))
 suppressPackageStartupMessages(library(quantro))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
-suppressPackageStartupMessages(library(tidyverse))
+
 # Set up global defaults
 BIOPROJECT <- "PRJNA846720"
 WD <- here("bioprojects", BIOPROJECT)
@@ -68,7 +68,7 @@ metadata <- unique(metadata[, .(BioSample, group)])
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
 
-metadata<- metadata %>% mutate(group = make.names(paste("PB", "131I", group, sep = ".")))
+metadata$group <- make.names(paste("PB", "131I", metadata$group, sep = "."))
 
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
