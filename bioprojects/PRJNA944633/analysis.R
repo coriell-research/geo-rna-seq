@@ -65,13 +65,11 @@ counts <- sumTechReps(counts, ID = mae$BioSample)
 mae$bases <- as.integer(mae$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
+metadata[, group := paste0(group, ".24hr")]
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
-#metadata edits 
-
-metadata <- metadata %>% mutate(group = paste0(group, ".24hr"))
 
 # Test for global expression differences ----------------------------------
 
