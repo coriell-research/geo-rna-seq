@@ -16,7 +16,7 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 
 # Set up global defaults
 BIOPROJECT <- "PRJNA321661"
-WD <- here("data", "Database", BIOPROJECT)
+WD <- here("bioprojects", BIOPROJECT)
 CORES <- 12
 QTEST_ALPHA <- 0.01
 FC <- 1.2
