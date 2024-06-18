@@ -65,16 +65,14 @@ counts <- sumTechReps(counts, ID = mae$BioSample)
 mae$bases <- as.integer(mae$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
+
+metadata[, group := paste(group, "96hr", sep = ".")]
+metadata[BioSample %chin% c("SAMN32812831", "SAMN32812830"), group := "MDA.MB.231.no.treatment.48hr"]
+
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
-#add time dimension to metadata 
-library(tidyverse)
-
-metadata<- metadata %>% mutate(group = paste(group, "96hr", sep = "."))
-
-metadata[metadata$BioSample %in% c("SAMN32812831", "SAMN32812830"),]$group <- "MDA.MB.231.no.treatment.48hr"
 
 # Test for global expression differences ----------------------------------
 
