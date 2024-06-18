@@ -66,17 +66,12 @@ counts <- sumTechReps(counts, ID = mae$BioSample)
 mae$bases <- as.integer(mae$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
+
+# Fix group names
+metadata[, group := fifelse(group %like% "erlotinib", "erlotinib", "control")]
+
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
-
-# making changes to this particular metadata 
-metadata<- metadata %>% 
-  mutate(group = gsub("_\\d+", "", group))
-
-metadata$group[metadata$group %in% "erlotinib.GPE.72hr"] <- paste("erlotinib.GPE.72hr", "2.15µg/mL", sep = ".")
-setDT(metadata)
-metadata[,group := make.names(group)]
-setDF(metadata, rownames = metadata$BioSample)
 
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
@@ -95,8 +90,6 @@ qaov_pval <- qaov[["Pr(>F)"]][1]
 
 
 # Differential expression testing -----------------------------------------
-# making changes to metadata 
-
 
 # Create experimental design
 message("Differential expression testing pipeline...")
@@ -105,7 +98,7 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  erlotinib.GPE_vs_Control = erlotinib.GPE.72hr.2.15µg.mL - Control.72hr,
+  erlotinib.GPE_vs_Control = erlotinib - control,
   levels = design
 )
 
