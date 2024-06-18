@@ -65,6 +65,7 @@ counts <- sumTechReps(counts, ID = mae$BioSample)
 mae$bases <- as.integer(mae$bases)
 metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
+metadata[, group := gsub(".non.specific.control.", "", group)]
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
@@ -82,10 +83,6 @@ qaov <- anova(qtest)
 perm_pval <- quantroPvalPerm(qtest)
 qaov_pval <- qaov[["Pr(>F)"]][1]
 
-#edit metadata 
-
-metadata<- metadata %>% 
-  mutate(group = gsub(".non.specific.control.", "", group))
 # Differential expression testing -----------------------------------------
 
 
