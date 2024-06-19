@@ -70,6 +70,12 @@ metadata <- metadata[colnames(counts), ]
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
 
+# REMOVE POTENTIAL OUTLIER
+metadata <- metadata[metadata$BioSample != "SAMN11288831", ]
+counts <- counts[, rownames(metadata)]
+stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
+
+
 # Test for global expression differences ----------------------------------
 
 
