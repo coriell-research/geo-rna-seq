@@ -93,8 +93,10 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  WT.etoposide_vs_WT.control = WT.etoposide - WT.control,
-  ATRX.KO.etoposide_vs_ATRX.KO.control= ATRX.KO.etoposide - ATRX.KO.control,
+  ATRX.KO.etoposide_vs_ATRX.KO.control = ATRX.KO.etoposide - ATRX.KO.control,
+  ATRX.WT.etoposide_vs_ATRX.WT.control = ATRX.WT.etoposide - ATRX.WT.control,
+  DAXX.KO.etoposide_vs_DAXX.KO.control = DAXX.KO.etoposide - DAXX.KO.control,
+  DAXX.WT.etoposide_vs_DAXX.WT.control = DAXX.WT.etoposide - DAXX.WT.control,
   levels = design
 )
 
