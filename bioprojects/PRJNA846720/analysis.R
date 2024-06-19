@@ -67,9 +67,6 @@ metadata <- as.data.table(colData(mae))
 metadata <- unique(metadata[, .(BioSample, group)])
 setDF(metadata, rownames = metadata$BioSample)
 metadata <- metadata[colnames(counts), ]
-
-metadata$group <- make.names(paste("PB", "131I", metadata$group, sep = "."))
-
 stopifnot("All rownames of metadata do not match colnames of counts" = all(rownames(metadata) == colnames(counts)))
 
 
@@ -96,10 +93,9 @@ colnames(design) <- gsub(pattern = "^group", replacement = "", x = colnames(desi
 
 # DEFINE CONTRAST MATRIX : THIS MUST BE MODIFIED FOR EACH EXPERIMENT
 cm <- makeContrasts(
-  MIBG.72hr_vs_MIBG.baseline = PB.131I.MIBG.72hr - PB.131I.MIBG.baseline,
-  MIBG.Irinotecan.72hr_vs_MIBG.Irinotecan.baseline = PB.131I.MIBG.Irinotecan.72hr - PB.131I.MIBG.Irinotecan.baseline,
-  MIBG.Vorinostat.72hr_vs_MIBG.vorinostat.baseline = PB.131I.MIBG.Vorinostat.72hr - PB.131I.MIBG.vorinostat.baseline,
-  
+  MIBG.72hr_vs_MIBG.baseline = MIBG.72hr - MIBG.baseline,
+  MIBG.Irinotecan.72hr_vs_MIBG.Irinotecan.baseline = MIBG.Irinotecan.72hr - MIBG.Irinotecan.baseline,
+  MIBG.Vorinostat.72hr_vs_MIBG.vorinostat.baseline = MIBG.Vorinostat.72hr - MIBG.vorinostat.baseline,
   levels = design
 )
 
