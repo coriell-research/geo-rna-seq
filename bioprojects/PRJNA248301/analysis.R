@@ -129,7 +129,7 @@ fit2 <- treat(fit2, fc = FC, trend = TRUE, robust = TRUE)
 # Collect all results into a single data.table
 message("Performing differential expression against a logFC cutoff with `limma::treat`")
 extractResults <- function(x) {
-  res <- topTreat(fit2, coef = x, lfc = log2(FC), number = Inf, confint = TRUE)
+  res <- topTreat(fit2, coef = x, number = Inf, confint = TRUE)
   d <- as.data.table(res, keep.rownames = "feature_id")
 }
 results <- lapply(colnames(cm), extractResults)
