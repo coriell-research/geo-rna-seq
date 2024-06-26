@@ -40,6 +40,9 @@ mae <- readRDS(here(WD, "MultiAssayExperiment.rds"))
 stopifnot("'group' column not found in MAE object metadata" = "group" %in% colnames(colData(mae)))
 stopifnot("'BioSample' column not found in MAE object metadata" = "BioSample" %in% colnames(colData(mae)))
 
+# Remove outlier sample
+mae <- mae[, mae$BioSample != "SAMN16821854"]
+
 # Import the GTF .rds file used in REdiscoverTE gene annotations to get
 message("Reading in GTF annotation...")
 gtf <- "/mnt/data/gdata/human/REdiscoverTE_hg38/gencode.v26.annotation.gtf.rds"
