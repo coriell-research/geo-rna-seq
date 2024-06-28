@@ -2,10 +2,10 @@
 # Create combined metadata SummarizedExperiment objects
 #
 # This script will import all SE files from each experiment and extract the DE
-# results into a single data.table. Individual columns of the data.table are then
-# cast wider into separate matrices, one for each measurement. Metadata information
-# annotated in Excel is read in and the metadata and measurement matrices are
-# then used to create a single Summarized Experiment of the DE results.
+# results into a single SummarizedExperiment object used as the backend database
+# for the Shiny app. Metadata information, annotated manually in Excel, is read
+# in and aligned with columns of the imported DE data in order to create a 
+# finalized SE object.
 # ------------------------------------------------------------------------------
 message("Loading libraries...")
 suppressPackageStartupMessages(library(here))
