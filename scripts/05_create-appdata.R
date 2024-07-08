@@ -108,11 +108,11 @@ lcpm <- as.matrix(
   rownames = "feature_id"
 )
 
-tstat <- as.matrix(
+zstat <- as.matrix(
   dcast(
-    data = de[, .(id, feature_id, t)], 
+    data = de[, .(id, feature_id, z)], 
     formula = feature_id ~ id,
-    value.var = "t",
+    value.var = "z",
     fill = NA
   ),
   rownames = "feature_id"
@@ -134,7 +134,7 @@ keep <- intersect(colnames(lfc), rownames(metadata))
 metadata <- metadata[keep, ]
 lfc <- lfc[, keep]
 fdr <- fdr[, keep]
-tstat <- tstat[, keep]
+zstat <- zstat[, keep]
 lcpm <- lcpm[, keep]
 stderr <- stderr[, keep]
 stopifnot("rownames of metadata do not match colnames of matrices!" = all(colnames(lfc) == rownames(metadata)))
@@ -143,7 +143,7 @@ message("Creating final SummarizedExperiment object from differential expression
 se <- SummarizedExperiment(
   assays = list(lfc = lfc, 
                 fdr = fdr,
-                stat = tstat,
+                stat = zstat,
                 lcpm = lcpm,
                 stderr = stderr),
   colData = metadata
