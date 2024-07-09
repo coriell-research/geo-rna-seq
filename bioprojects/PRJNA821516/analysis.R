@@ -886,6 +886,7 @@ fit2 <- treat(fit2, fc = FC, trend = TRUE, robust = TRUE)
 message("Performing differential expression against a logFC cutoff with `limma::treat`")
 extractResults <- function(x) {
   res <- topTreat(fit2, coef = x, number = Inf, confint = TRUE)
+  res$z <- zscoreT(res$t, df = fit2$df.total)
   d <- as.data.table(res, keep.rownames = "feature_id")
 }
 results <- lapply(colnames(cm), extractResults)
@@ -910,6 +911,10 @@ saveRDS(se, here(WD, "results", "rds-files", "se.rds"))
 # Diagnostic plots --------------------------------------------------------
 
 # message("Creating diagnostic plots...")
+png(here(WD, "results", "figures", "sa-plot.png"), width = 8, height = 6, units = "in", res = 150)
+plotSA(fit2)
+dev.off()
+
 # png(here(WD, "results", "figures", "logCPM-boxplots.png"), width = 11, height = 7, units = "in", res = 150)
 # print(plot_boxplot(lcpm, y$samples, fillBy = "group", rle = TRUE) + labs(y = "RLE") + theme_coriell())
 # dev.off()
