@@ -37,8 +37,7 @@ de <- rbindlist(
   )
 
 # Add new column as unique identifier "id"
-de[,  `:=`(id = str_c(BioProject, contrast, sep = "."),
-           feature_type = fifelse(feature_id %like% ".*\\..*\\..*", "TE", "Gene"))]
+de[, id := str_c(BioProject, contrast, sep = ".")]
 
 # Read in previous contrast-level metadata files -------------------------------
 message("Reading in contrast-level metadata...")
@@ -78,78 +77,34 @@ metadata <- metadata[cells, on = "cell_line", nomatch = 0L]
 
 # Shape into matrices ----------------------------------------------------------
 message("Creating assay data from differential expression results...")
-lfc <- as.matrix(
-  dcast(
-    data = de[, .(id, feature_id, logFC)], 
-    formula = feature_id ~ id,
-    value.var = "logFC",
-    fill = NA
-    ),
-  rownames = "feature_id"
-)
 
-fdr <- as.matrix(
-  dcast(
-    data = de[, .(id, feature_id, adj.P.Val)], 
-    formula = feature_id ~ id,
-    value.var = "adj.P.Val",
-    fill = NA
-  ),
-  rownames = "feature_id"
-)
+col2assay <- function(df, rows, cols, vals) {
+  m <- dcast(df, get(rows) ~ get(cols), value.var = vals, fill = NA)
+  as.matrix(m, rownames = "rows")
+}
 
-lcpm <- as.matrix(
-  dcast(
-    data = de[, .(id, feature_id, AveExpr)], 
-    formula = feature_id ~ id,
-    value.var = "AveExpr",
-    fill = NA
-  ),
-  rownames = "feature_id"
-)
+assay_cols <- c("logFC", "CI.L", "CI.R", "AveExpr", "t", "P.Value", "adj.P.Val", "z")
+assays <- vector("list", length(assay_cols))
 
-zstat <- as.matrix(
-  dcast(
-    data = de[, .(id, feature_id, z)], 
-    formula = feature_id ~ id,
-    value.var = "z",
-    fill = NA
-  ),
-  rownames = "feature_id"
-)
-
-stderr <- as.matrix(
-  dcast(
-    data = de[, .(id, feature_id, SE)], 
-    formula = feature_id ~ id,
-    value.var = "SE",
-    fill = NA
-  ),
-  rownames = "feature_id"
-)
+names(assays) <- assay_cols
+for (i in seq_along(assay_cols)) {
+  assays[[i]] <- col2assay(de, rows = "feature_id", cols = "id", vals = assay_cols[[i]])
+}
 
 # Create SummarizedExperiment object of DE results -----------------------------
 setDF(metadata, rownames = metadata$id)
-keep <- intersect(colnames(lfc), rownames(metadata))
+keep <- intersect(colnames(assays[[1]]), rownames(metadata))
 metadata <- metadata[keep, ]
-lfc <- lfc[, keep]
-fdr <- fdr[, keep]
-zstat <- zstat[, keep]
-lcpm <- lcpm[, keep]
-stderr <- stderr[, keep]
-stopifnot("rownames of metadata do not match colnames of matrices!" = all(colnames(lfc) == rownames(metadata)))
+assays <- lapply(assays, \(x) x[, keep])
+stopifnot("rownames of metadata do not match colnames of matrices!" = all(colnames(assays[[1]]) == rownames(metadata)))
 
 message("Creating final SummarizedExperiment object from differential expression results...")
 se <- SummarizedExperiment(
-  assays = list(lfc = lfc, 
-                fdr = fdr,
-                stat = zstat,
-                lcpm = lcpm,
-                stderr = stderr),
+  assays = assays,
   colData = metadata
 )
 rowData(se)$feature_type <- fifelse(rownames(se) %like% ".*\\..*\\..*", "TE", "Gene")
-saveRDS(se, here("appdata", "se.rds"), compress = FALSE)
+saveRDS(se, here("appdata", "se.rds"), compress = TRUE)
 
 # Select input data ---------------------------------------------------------------------------
 # create data used by the shiny app for populating select inputs
